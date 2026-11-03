@@ -2,6 +2,7 @@
 import { parseFeelingParam, toggleFeeling } from './lib/rank.js';
 import { venueFit } from './lib/tailor.js';
 import { load, save, readData } from './lib/store.js';
+import { parseBriefParam } from './lib/brief.js';
 
 const data = readData();
 const { concept } = data;
@@ -186,6 +187,7 @@ function renderTailored() {
     <div><dt>MAKERS</dt><dd>${t.suppliers.length ? t.suppliers.map((s) => `${escT(s.name)} (${escT(s.role.toLowerCase())})`).join(' · ') : 'Nog geen makers gekozen.'}</dd></div>
   </dl>
   ${t.fit.status === 'warn' ? `<p class="tl-warning">${escT(t.fit.text)}</p>` : ''}
+  ${t.adjustment ? `<p class="tl-warning">BIJGESTELD — ${escT(t.adjustment.label.toUpperCase())}: ${escT(t.adjustment.text)}</p>` : ''}
   ${t.variations.length ? `<h4 class="tl-mono tl-subhead tl-body--gap">AANBEVOLEN VARIANT</h4><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${t.variations.map((v) => `<div><dt>${escT(v.title)}</dt><dd>${escT(v.text)}</dd></div>`).join('')}</dl>` : ''}
   <h4 class="tl-mono tl-subhead tl-body--gap">DAGDRAAIBOEK — START ${escT(a.start || '')}</h4>
   <div class="tl-runbook tl-runbook--on-dark">${t.runbook.map((r) => `<div class="tl-runbook__row"><span class="tl-runbook__time">${escT(r.time)}</span><span class="tl-runbook__duration" data-label="DUUR">${escT(r.duration)}</span><span><strong class="tl-runbook__title">${escT(r.title)}</strong><span class="tl-runbook__desc">${escT(r.description)}</span></span><span class="tl-runbook__meta" data-label="WIE">${escT(r.owner)}</span><span class="tl-runbook__meta" data-label="WAAR">${escT(r.space)}</span></div>`).join('')}</div>
@@ -204,8 +206,16 @@ function renderTailored() {
   <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
   <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${escT([r.name, r.party].filter(Boolean).join(' · ') || 'Naam en telefoonnummer invullen')}</dd></div>`).join('')}</dl>
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-copy-status>Alles staat ook in de kopie: ook entertainment, ruimtes, risico's, kostenposten en evaluatie.</span>
-    <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT / BEWAAR ALS PDF</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
+    <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><a class="tl-button tl-button--outline tl-button--on-dark" href="/eventconcepten/${escT(concept.slug)}/conceptplan/">CONCEPTPLAN (12 HOOFDSTUKKEN) ↗</a><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT DRAAIBOEK</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
   tOut.hidden = false;
+}
+
+// Vanuit de briefing (/conceptplan/): antwoorden vooraf invullen, eigen eerdere antwoorden blijven leidend waar de briefing niets zegt.
+const fromBrief = parseBriefParam(new URLSearchParams(location.search).get('brief'));
+if (fromBrief) {
+  plan.answers = { ...(plan.answers || {}), ...fromBrief };
+  persist();
+  history.replaceState(null, '', location.pathname + (plan.feelings.length ? `?gevoel=${plan.feelings.join(',')}` : '') + location.hash);
 }
 
 if (tForm) {

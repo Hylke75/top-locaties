@@ -81,7 +81,7 @@ function dashboard() {
 
 /* ---------- Generieke repeaters voor het complete concept ---------- */
 const SPECS = {
-  program: [['time', 'Tijd'], ['title', 'Onderdeel'], ['description', 'Korte omschrijving', 'area'], ['d_intro', 'Pop-up: wat gebeurt er', 'area'], ['d_steps', 'Pop-up: zo pak je het aan (één stap per regel)', 'lines'], ['d_roles', 'Pop-up: wie (rollen, komma-gescheiden)', 'list'], ['d_needs', 'Pop-up: wat je nodig hebt (komma-gescheiden)', 'list'], ['d_tip', 'Pop-up: tip', 'area']],
+  program: [['time', 'Tijd'], ['title', 'Onderdeel'], ['description', 'Korte omschrijving', 'area'], ['d_intro', 'Pop-up: wat gebeurt er', 'area'], ['d_steps', 'Pop-up: zo pak je het aan (één stap per regel)', 'lines'], ['d_roles', 'Pop-up: wie (rollen, komma-gescheiden)', 'list'], ['d_needs', 'Pop-up: wat je nodig hebt (komma-gescheiden)', 'list'], ['d_tip', 'Pop-up: tip', 'area'], ['d_why', 'Waarom (functie voor het concept)', 'area'], ['d_result', 'Resultaat', 'area']],
   runbook: [['time', 'Tijd'], ['duration', 'Duur'], ['title', 'Onderdeel'], ['description', 'Beschrijving', 'area'], ['owner', 'Wie (rol)'], ['space', 'Waar'], ['needs', 'Nodig (komma-gescheiden)', 'list']],
   planning: [['when', 'Wanneer (bv. 8–4 WEKEN VOORAF)'], ['title', 'Fase'], ['tasks', 'Taken (één per regel)', 'lines']],
   moments: [['moment', 'Moment'], ['time', 'Tijd'], ['proposal', 'Voorstel (gerechten)', 'area'], ['format', 'Serveervorm'], ['dietary', 'Dieet']],
@@ -92,6 +92,9 @@ const SPECS = {
   variations: [['title', 'Variant'], ['text', 'Uitleg', 'area']],
   risks: [['risk', 'Risico'], ['mitigation', 'Plan B', 'area']],
   steps: [['when', 'Wanneer'], ['title', 'Stap'], ['items', 'Punten (één per regel)', 'lines']],
+  journey: [['phase', 'Fase (Vooraf, Aankomst, Programma, Hoogtepunt, Afsluiting, Nazorg)'], ['title', 'Gewenst gevoel'], ['text', 'Contactmoment of actie', 'area']],
+  communication: [['when', 'Wanneer'], ['channel', 'Middel'], ['message', 'Boodschap / gewenste actie', 'area']],
+  kpis: [['goal', 'Doel'], ['kpi', 'KPI', 'area'], ['when', 'Meetmoment (direct / 30 / 60 / 90 dagen)'], ['how', 'Meetmethode']],
   agency: [['task', 'Wat een bureau doet'], ['here', 'Waar het op de site staat', 'area']],
 };
 function repItem(key, item = {}) {
@@ -137,6 +140,12 @@ const field = (label, name, value, opts = {}) => {
   const input = opts.area ? `<textarea ${attrs}>${esc(value)}</textarea>` : `<input ${attrs} value="${esc(value)}">`;
   return `<label class="ad-field"><span>${esc(label)}</span>${input}${opts.help ? `<small>${esc(opts.help)}</small>` : ''}</label>`;
 };
+// Kwaliteitsmodel (100 punten) — gelijk aan scripts/validate-content.mjs.
+const QUALITY = [['doelen', 'Doelen helder en meetbaar', 25], ['doelgroep', 'Doelgroep aantoonbaar verwerkt', 20], ['originaliteit', 'Eigen creatieve kern', 15], ['betrokkenheid', 'Actieve betrokkenheid', 15], ['haalbaarheid', 'Haalbaar [locatie, partners, begroting]', 15], ['duurzaamheid', 'Duurzaamheid en inclusie', 10]];
+const QUALITY_MIN = 70;
+const qualityTotal = (q) => QUALITY.reduce((n, [k]) => n + (Number(q?.[k]) || 0), 0);
+// Bestaande volgorde behouden; nieuw aangevinkte waarden achteraan.
+const keepOrder = (prev = [], picked) => [...prev.filter((x) => picked.includes(x)), ...picked.filter((x) => !prev.includes(x))];
 const opt = (v, l, sel) => `<option value="${esc(v)}" ${sel ? 'selected' : ''}>${esc(l)}</option>`;
 
 function conceptEditor(slug) {
@@ -148,9 +157,9 @@ function conceptEditor(slug) {
   const suppliers = content.suppliers.suppliers;
   const supName = (id) => content.supplierSources.find((s) => s.greenbookingsSlug === (suppliers.find((x) => x.id === id) || {}).greenbookingsSlug)?.name || id;
   const venueSlugById = Object.fromEntries(content.venues.venues.map((v) => [v.id, v.greenbookingsSlug]));
-  const vm = (c.venueMatches || []).map((m) => venueRow(venueSlugById[m.venueId] || m.venueId, m.reason)).join('');
+  const vm = (c.venueMatches || []).map((m) => venueRow(venueSlugById[m.venueId] || m.venueId, m.reason, m)).join('');
   const smx = (c.supplierMatches || []).map((m) => supplierRow(m.supplierId, m.role, m.reason)).join('');
-  function venueRow(sel, reason) { return `<div class="ad-repeat__item" style="--cols:2"><label class="ad-field"><span>Aangesloten partnerlocatie</span><select name="v_slug">${partners.map((p) => opt(p.slug, `${p.name} — ${p.city}`, p.slug === sel)).join('')}</select></label>${field('Redactionele reden (waarom hier?)', 'v_reason', reason)}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`; }
+  function venueRow(sel, reason, m = {}) { return `<div class="ad-repeat__item" style="--cols:4"><label class="ad-field"><span>Aangesloten partnerlocatie</span><select name="v_slug">${partners.map((p) => opt(p.slug, `${p.name} — ${p.city}`, p.slug === sel)).join('')}</select></label><label class="ad-field"><span>Rol</span><select name="v_role">${opt('VOORKEUR', 'Voorkeur', m.role === 'VOORKEUR')}${opt('ALTERNATIEF', 'Alternatief', m.role !== 'VOORKEUR')}</select></label>${field('Redactionele reden (waarom hier?)', 'v_reason', reason)}${field('Pluspunt', 'v_pro', m.pro || '')}${field('Let op', 'v_watch', m.watch || '')}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`; }
   function supplierRow(sel, role, reason) { return `<div class="ad-repeat__item" style="--cols:3"><label class="ad-field"><span>Maker</span><select name="s_id">${suppliers.map((s) => opt(s.id, supName(s.id), s.id === sel)).join('')}</select></label>${field('Rol in dit concept', 's_role', role)}${field('Waarom deze maker', 's_reason', reason)}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`; }
   const statuses = chief() ? ['draft', 'review', 'published', 'archived'] : ['draft', 'review'];
 
@@ -180,7 +189,7 @@ function conceptEditor(slug) {
         ${field('Kernwaarden (TITEL: uitleg, één per regel)', 'values', (c.idea?.values || []).map(([t, x]) => `${t}: ${x}`).join('\n'), { area: true })}
       </fieldset>
       <fieldset ${locked ? 'disabled' : ''}><legend>04 / PROGRAMMA (MIN. 4) — MET DE INHOUD VAN DE POP-UP PER ONDERDEEL</legend>
-        ${repeater('program', (c.program || []).map((p) => ({ time: p.time, title: p.title, description: p.description, d_intro: p.details?.intro, d_steps: p.details?.steps, d_roles: p.details?.roles, d_needs: p.details?.needs, d_tip: p.details?.tip })))}
+        ${repeater('program', (c.program || []).map((p) => ({ time: p.time, title: p.title, description: p.description, d_intro: p.details?.intro, d_steps: p.details?.steps, d_roles: p.details?.roles, d_needs: p.details?.needs, d_tip: p.details?.tip, d_why: p.details?.why, d_result: p.details?.result })))}
         <small class="tl-note">De pop-up toont ook automatisch de draaiboekregels tussen dit en het volgende programmaonderdeel.</small>
       </fieldset>
       <fieldset ${locked ? 'disabled' : ''}><legend>05 / LOCATIES (2–4 AANGESLOTEN PARTNERS, ELK MET REDEN)</legend>
@@ -211,6 +220,33 @@ function conceptEditor(slug) {
         ${field('Onderwerp', 'inv_subject', c.invitation?.subject)}
         ${field('Tekst — gebruik [datum], [dag], [locatie], [plaats], [link], [centrale vraag]', 'inv_text', c.invitation?.text, { area: true })}
         ${field('Herinnering', 'inv_reminder', c.invitation?.reminder, { area: true })}
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>16 / METHODE: AANLEIDING, DOELEN EN DOELGROEP</legend>
+        <div class="ad-two"><label class="ad-field"><span>Dagdeel</span><select name="dayPart">${(content.dayParts || []).map((x) => opt(x.id, x.label, c.dayPart === x.id)).join('')}</select></label>${field('Stemming in één zin', 'mood', c.mood)}</div>
+        <div class="tl-chip-set">${(content.occasionTypes || []).map((o) => `<label class="tl-check"><input type="checkbox" name="occ" value="${esc(o.id)}" ${(c.occasions || []).includes(o.id) ? 'checked' : ''}> ${esc(o.label)}</label>`).join('')}</div>
+        ${field('Aanleiding (wanneer is dit concept het antwoord?)', 'occasionText', c.occasionText, { area: true })}
+        <div class="ad-three">${field('Doelen organisatie (één per regel)', 'g_business', lines(c.goals?.business), { area: true })}${field('Doelen deelnemer (één per regel)', 'g_participant', lines(c.goals?.participant), { area: true })}${field('Gedrag erna (één per regel)', 'g_behaviour', lines(c.goals?.behaviour), { area: true })}</div>
+        <div class="ad-two">${field('Waarom komen ze?', 'ai_why', c.audienceInsight?.why, { area: true })}${field('Wat boeit ze?', 'ai_interests', c.audienceInsight?.interests, { area: true })}</div>
+        <div class="ad-three">${field('Wat vermijden we?', 'ai_avoid', c.audienceInsight?.avoid, { area: true })}${field('Zo spreken we ze aan', 'ai_approach', c.audienceInsight?.approach, { area: true })}${field('Zo doen ze mee', 'ai_mode', c.audienceInsight?.mode, { area: true })}</div>
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>17 / METHODE: BELEVING, BEZOEKERSREIS (6 FASEN), COMMUNICATIE, IMPACT</legend>
+        <div class="tl-chip-set">${(content.moodDirections || []).map((o) => `<label class="tl-check"><input type="checkbox" name="mdir" value="${esc(o.id)}" ${(c.moodDirections || []).includes(o.id) ? 'checked' : ''}> ${esc(o.label)}</label>`).join('')}</div>
+        ${field('Zo ontstaat verbinding (één per regel)', 'connectionDesign', lines(c.connectionDesign), { area: true })}
+        ${repeater('journey', c.journey)}
+        ${repeater('communication', c.communication)}
+        ${repeater('kpis', c.kpis)}
+        <div class="ad-two">${field('Randvoorwaarden (één per regel)', 'conditions', lines(c.conditions), { area: true })}${field('Toegankelijkheid (één per regel)', 'accessibility', lines(c.accessibility), { area: true })}</div>
+        <div class="ad-three">${field('Bijstelling: exclusiever', 'adj_ex', c.adjustments?.exclusiever, { area: true })}${field('Bijstelling: meer interactie', 'adj_in', c.adjustments?.interactiever, { area: true })}${field('Bijstelling: budgetbewust', 'adj_bu', c.adjustments?.budgetbewust, { area: true })}</div>
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>18 / CONCEPTPLAN (SJABLOON IN TWAALF HOOFDSTUKKEN)</legend>
+        <div class="ad-two">${field('Wat gebeurt er zonder dit evenement?', 'pl_whyLive', c.plan?.whyLive, { area: true })}${field('Afbakening: wat hoort er niet bij?', 'pl_scope', c.plan?.scope, { area: true })}</div>
+        <div class="ad-two">${field('Rode draad', 'pl_redThread', c.plan?.redThread, { area: true })}${field('Eén onvervangbaar onderdeel', 'pl_irreplaceable', c.plan?.irreplaceable, { area: true })}</div>
+        <div class="ad-three">${field('Drie sfeerwoorden (komma-gescheiden)', 'pl_moodWords', (c.plan?.moodWords || []).join(', '))}${field('Belangrijkste boodschap', 'pl_keyMessage', c.plan?.keyMessage)}${field('Bewuste rustmomenten', 'pl_restMoments', c.plan?.restMoments)}</div>
+        <div class="ad-three">${field('Visuele richting', 'pl_visual', c.plan?.visual, { area: true })}${field('Geluid en zintuigen', 'pl_senses', c.plan?.senses, { area: true })}${field('Wrijvingspunten', 'pl_frictions', c.plan?.frictions, { area: true })}</div>
+      </fieldset>
+      <fieldset ${!chief() ? 'disabled' : ''}><legend>19 / KWALITEITSTOETS (100 PUNTEN, HOOFDREDACTEUR)</legend>
+        <div class="ad-three">${QUALITY.map(([k, l, max]) => field(`${l} (0–${max})`, `q_${k}`, c.quality?.[k] ?? '', { type: 'number' })).join('')}</div>
+        <p class="tl-note">${c.quality ? `Totaal ${qualityTotal(c.quality)} / 100 — beoordeeld door ${esc(c.quality.reviewedBy || '?')}${c.quality.reviewedAt ? ` op ${esc(c.quality.reviewedAt.slice(0, 10))}` : ''}.` : 'Nog niet beoordeeld.'} Publiceren vraagt minstens ${QUALITY_MIN} punten als de toets is ingevuld. Dit is een menselijk oordeel: controleer ook haalbaarheid bij locatie en leveranciers.</p>
       </fieldset>
       <fieldset ${locked ? 'disabled' : ''}><legend>15 / BEELD EN SEO</legend>
         <div class="ad-two">${field('Hero-beeld (pad of URL)', 'hero_src', c.hero?.src)}${field('Alt-tekst hero', 'hero_alt', c.hero?.alt)}</div>
@@ -245,6 +281,7 @@ function conceptEditor(slug) {
     // Locaties: zorg voor een redactionele id per gekozen partner (bestaand of slug).
     const idBySlug = Object.fromEntries(content.venues.venues.map((v) => [v.greenbookingsSlug, v.id]));
     const vSlugs = all('[data-venues]', 'v_slug'); const vReasons = all('[data-venues]', 'v_reason');
+    const vRoles = all('[data-venues]', 'v_role'); const vPros = all('[data-venues]', 'v_pro'); const vWatch = all('[data-venues]', 'v_watch');
     for (const s of vSlugs) if (!idBySlug[s]) { await call('PUT', `/api/venues/${s}`, { id: s }); idBySlug[s] = s; }
     const sid = all('[data-suppliers]', 's_id'), sr = all('[data-suppliers]', 's_role'), sre = all('[data-suppliers]', 's_reason');
     const body = {
@@ -258,8 +295,8 @@ function conceptEditor(slug) {
       feelingReasons: Object.fromEntries(on.map((f) => [f, g(`r_${f}`)])),
       idea: { label: g('idea_label'), headline: g('idea_headline').split('\n').map((x) => x.trim()).filter(Boolean), body: g('idea_body'), values: g('values').split('\n').map((l) => l.split(':')).filter((p) => p.length > 1).map(([t, ...x]) => [t.trim().toUpperCase(), x.join(':').trim()]) },
       audiences: list(g('audiences')), objective: g('objective'),
-      program: readRep(form, 'program').filter((p) => p.title).map((p) => ({ time: p.time, title: p.title, description: p.description, details: { intro: p.d_intro, steps: p.d_steps || [], roles: p.d_roles || [], needs: p.d_needs || [], tip: p.d_tip } })),
-      venueMatches: vSlugs.map((s, i) => ({ venueId: idBySlug[s], priority: i + 1, reason: vReasons[i] })),
+      program: readRep(form, 'program').filter((p) => p.title).map((p) => ({ time: p.time, title: p.title, description: p.description, details: { intro: p.d_intro, steps: p.d_steps || [], roles: p.d_roles || [], needs: p.d_needs || [], tip: p.d_tip, why: p.d_why, result: p.d_result } })),
+      venueMatches: vSlugs.map((s, i) => ({ venueId: idBySlug[s], priority: i + 1, reason: vReasons[i], pro: vPros[i], watch: vWatch[i], role: vRoles[i] || (i === 0 ? 'VOORKEUR' : 'ALTERNATIEF') })),
       supplierRoles: list(g('supplierRoles')),
       supplierMatches: sid.map((s, i) => ({ supplierId: s, role: sr[i], reason: sre[i] })).filter((m) => m.role),
       hero: { ...c.hero, src: g('hero_src'), alt: g('hero_alt'), illustrative: form.elements.hero_ill.checked, credit: c.hero?.credit || 'Top Locaties' },
@@ -276,6 +313,17 @@ function conceptEditor(slug) {
       risks: readRep(form, 'risks'),
       budgetItems: fromLines(g('budgetItems')), sustainability: fromLines(g('sustainability')), evaluation: fromLines(g('evaluation')),
       invitation: { subject: g('inv_subject'), text: g('inv_text'), reminder: g('inv_reminder') },
+      dayPart: g('dayPart'), mood: g('mood'), occasionText: g('occasionText'),
+      occasions: keepOrder(c.occasions, [...form.querySelectorAll('[name="occ"]:checked')].map((x) => x.value)),
+      moodDirections: keepOrder(c.moodDirections, [...form.querySelectorAll('[name="mdir"]:checked')].map((x) => x.value)),
+      goals: { business: fromLines(g('g_business')), participant: fromLines(g('g_participant')), behaviour: fromLines(g('g_behaviour')) },
+      audienceInsight: { why: g('ai_why'), interests: g('ai_interests'), avoid: g('ai_avoid'), approach: g('ai_approach'), mode: g('ai_mode') },
+      connectionDesign: fromLines(g('connectionDesign')),
+      journey: readRep(form, 'journey'), communication: readRep(form, 'communication'), kpis: readRep(form, 'kpis'),
+      conditions: fromLines(g('conditions')), accessibility: fromLines(g('accessibility')),
+      adjustments: { exclusiever: g('adj_ex'), interactiever: g('adj_in'), budgetbewust: g('adj_bu') },
+      plan: { ...(c.plan || {}), whyLive: g('pl_whyLive'), scope: g('pl_scope'), redThread: g('pl_redThread'), moodWords: list(g('pl_moodWords')), visual: g('pl_visual'), senses: g('pl_senses'), restMoments: g('pl_restMoments'), frictions: g('pl_frictions'), keyMessage: g('pl_keyMessage'), irreplaceable: g('pl_irreplaceable') },
+      ...(chief() && QUALITY.some(([k]) => g(`q_${k}`) !== '') ? { quality: Object.fromEntries(QUALITY.map(([k, , max]) => [k, Math.max(0, Math.min(max, Number(g(`q_${k}`)) || 0))])) } : {}),
     };
     const status = $('[data-save-status]');
     try {

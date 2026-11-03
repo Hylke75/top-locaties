@@ -360,6 +360,139 @@
       "line": "Een hotel in het groen bij Velsen-Zuid, tussen Amsterdam en de kust.",
       "illustrativeImage": null,
       "editorialCheckedAt": null
+    },
+    {
+      "id": "thcc",
+      "greenbookingsSlug": "the-hague-conference-centre",
+      "order": 22,
+      "label": "CONGRESCENTRUM / STATION",
+      "eventTypes": [
+        "congres",
+        "vergadering"
+      ],
+      "character": [
+        "stedelijk"
+      ],
+      "line": "Een congrescentrum naast Den Haag Centraal: met de trein tot aan de deur.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "fonos",
+      "greenbookingsSlug": "kerkbrink",
+      "order": 23,
+      "label": "MUZIEK / ERFGOED",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "creatief",
+        "historisch"
+      ],
+      "line": "Fonos in Hilversum, het huis van de grootste muziekcollectie van Nederland.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "bridge",
+      "greenbookingsSlug": "flexlabs-the-bridge-rotterdam",
+      "order": 24,
+      "label": "VERGADEREN / ERASMUSBRUG",
+      "eventTypes": [
+        "vergadering"
+      ],
+      "character": [
+        "stedelijk"
+      ],
+      "line": "Zakelijk vergaderen met uitzicht op de Erasmusbrug, midden in Rotterdam.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "collector",
+      "greenbookingsSlug": "the-collector-hotel",
+      "order": 25,
+      "label": "HOTEL / HISTORISCH",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "historisch",
+        "stedelijk"
+      ],
+      "line": "Een hotel met historisch karakter in Den Haag, voor kleine, besloten gezelschappen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "diligentia",
+      "greenbookingsSlug": "diligentia",
+      "order": 26,
+      "label": "THEATER / LANGE VOORHOUT",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "historisch",
+        "creatief"
+      ],
+      "line": "Een theaterpodium aan het Lange Voorhout voor congressen, feesten en ceremonies.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "kunstlinie",
+      "greenbookingsSlug": "kunstlinie",
+      "order": 27,
+      "label": "THEATER / ALMERE",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "creatief"
+      ],
+      "line": "Een theater in het centrum van Almere, met zalen voor grote gezelschappen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "bruno",
+      "greenbookingsSlug": "room-mate-bruno-rotterdam",
+      "order": 28,
+      "label": "DESIGNHOTEL / MAAS",
+      "eventTypes": [
+        "congres",
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "industrieel",
+        "creatief",
+        "stedelijk"
+      ],
+      "line": "Een designhotel en eventlocatie aan de Maas in Rotterdam.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "oudekerk",
+      "greenbookingsSlug": "oude-kerk-evenementen",
+      "order": 29,
+      "label": "MONUMENT / KERK",
+      "eventTypes": [
+        "feest",
+        "congres"
+      ],
+      "character": [
+        "historisch"
+      ],
+      "line": "De Oude Kerk in Den Haag: een monumentale plek voor bijzondere avonden.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
     }
   ]
 }

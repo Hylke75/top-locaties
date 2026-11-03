@@ -22,13 +22,9 @@ export function planningList(phases) {
   return html`<div class="tl-timeline">${phases.map((p) => html`<div class="tl-timeline__item tl-timeline__item--wide"><span class="tl-timeline__time">${p.when}</span><div><h3 class="tl-timeline__title">${p.title}</h3>${list(p.tasks)}</div></div>`)}</div>`;
 }
 
-export function completeSections(concept, startNumber = 3) {
-  let n = startNumber;
-  const num = () => pad(n++);
-  const c = concept;
-  return html`
+export const runbookSection = (c, n) => html`
 <section class="tl-section" id="draaiboek" aria-labelledby="runTitle">
-  ${overline(`${num()} / HET COMPLETE DRAAIBOEK`, (c.duration || 'MINUUT TOT MINUUT').toUpperCase())}
+  ${overline(`${n} / HET COMPLETE DRAAIBOEK`, (c.duration || 'MINUUT TOT MINUUT').toUpperCase())}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="runTitle">VAN MINUUT<br>TOT <span class="tl-accent">MINUUT.</span></h2>
     <p>Het volledige dagdraaiboek: wat er gebeurt, hoe lang, wie verantwoordelijk is en waar. Maak het onderaan deze pagina op maat met jouw datum, starttijd en groep.</p>
@@ -36,10 +32,11 @@ export function completeSections(concept, startNumber = 3) {
   ${runbookTable(c.runbook || [])}
   <h3 class="tl-display tl-display--sm tl-section-head tl-body--gap">DE AFTELPLANNING.</h3>
   ${planningList(c.planning || [])}
-</section>
+</section>`;
 
+export const cateringSection = (c, n) => html`
 <section class="tl-section tl-section--taupe" id="catering" aria-labelledby="cateringTitle">
-  ${overline(`${num()} / CATERINGVOORSTEL & ENTERTAINMENT`, 'EEN COMPLEET VOORSTEL OM MEE TE BEGINNEN')}
+  ${overline(`${n} / CATERINGVOORSTEL & ENTERTAINMENT`, 'EEN COMPLEET VOORSTEL OM MEE TE BEGINNEN')}
   <div class="tl-columns">
     <p class="tl-intro-label">${c.catering?.concept || ''}</p>
     <div>
@@ -57,10 +54,11 @@ export function completeSections(concept, startNumber = 3) {
     <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">MOMENT</span><span role="columnheader">VORM</span><span role="columnheader">WAT EN WAAROM</span><span role="columnheader">ROL</span></div>
     ${(c.entertainment || []).map((e) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${e.moment}</span><span class="tl-runbook__duration" role="cell">${e.format}</span><span role="cell"><strong class="tl-runbook__title">${e.option}</strong><span class="tl-runbook__desc">${e.why}</span></span><span class="tl-runbook__meta" role="cell">${e.role}</span></div>`)}
   </div>
-</section>
+</section>`;
 
+export const practicalSection = (c, n) => html`
 <section class="tl-section" id="praktisch" aria-labelledby="practTitle">
-  ${overline(`${num()} / ALLES PRAKTISCH`, 'BEZETTING / RUIMTES / CHECKLIST / PLAN B')}
+  ${overline(`${n} / PRAKTISCH &amp; HAALBAAR`, 'BEZETTING / RUIMTES / PLAN B / HAALBAARHEID')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="practTitle">NIETS<br><span class="tl-accent">VERGETEN.</span></h2>
     <p>Wie je nodig hebt, welke ruimtes, wat je moet regelen, hoe je het groter of kleiner maakt en wat je doet als iets misgaat.</p>
@@ -87,15 +85,26 @@ export function completeSections(concept, startNumber = 3) {
       <dl class="tl-facts tl-facts--stack">${(c.risks || []).map((x) => html`<div><dt>${x.risk}</dt><dd>${x.mitigation}</dd></div>`)}</dl>
     </div>
   </div>
-  <div class="tl-values">
-    <div><strong>06 / KOSTENPOSTEN</strong>${list(c.budgetItems || [])}<p>Bedragen vraag je op bij locatie en leveranciers; Top Locaties noemt geen prijzen.</p></div>
-    <div><strong>07 / DUURZAAM</strong>${list(c.sustainability || [])}</div>
-    <div><strong>08 / EVALUATIE</strong>${list(c.evaluation || [])}</div>
+  <div class="tl-columns tl-columns--equal tl-body--gap">
+    <div>
+      <h3 class="tl-mono tl-subhead">06 / RANDVOORWAARDEN</h3>
+      ${list(c.conditions || [])}
+    </div>
+    <div>
+      <h3 class="tl-mono tl-subhead">07 / TOEGANKELIJK &amp; INCLUSIEF</h3>
+      ${list(c.accessibility || [])}
+    </div>
   </div>
-</section>
+  <div class="tl-values">
+    <div><strong>08 / INVESTERING</strong>${list(c.budgetItems || [])}<p>Op te vragen via offertes bij locatie en leveranciers. Top Locaties noemt geen prijzen; in je plan op maat zet je per post de status: bevestigd, raming of op te vragen.</p></div>
+    <div><strong>09 / DUURZAAM</strong>${list(c.sustainability || [])}</div>
+    <div><strong>10 / BIJSTELLEN</strong><dl class="tl-facts tl-facts--stack">${Object.entries(c.adjustments || {}).map(([k, t]) => html`<div><dt>${{ exclusiever: 'Exclusiever', interactiever: 'Meer interactie', budgetbewust: 'Budgetbewust' }[k] || k}</dt><dd>${t}</dd></div>`)}</dl></div>
+  </div>
+</section>`;
 
+export const communicationSection = (c, n) => html`
 <section class="tl-section tl-section--mist" id="uitnodiging" aria-labelledby="invTitle">
-  ${overline(`${num()} / DE UITNODIGING`, 'KANT-EN-KLARE TEKST')}
+  ${overline(`${n} / COMMUNICATIE &amp; UITNODIGING`, 'DE ERVARING BEGINT BIJ DE UITNODIGING')}
   <div class="tl-columns">
     <p class="tl-intro-label">Vul de vragenlijst onderaan in en de tekst wordt automatisch aangevuld met jouw datum en locatie.</p>
     <div>
@@ -104,6 +113,73 @@ export function completeSections(concept, startNumber = 3) {
       <p class="tl-note"><strong>HERINNERING:</strong> ${c.invitation?.reminder || ''}</p>
     </div>
   </div>
+  <h3 class="tl-mono tl-subhead tl-body--gap">COMMUNICATIEPLAN</h3>
+  <div class="tl-runbook tl-runbook--four" role="table" aria-label="Communicatieplan">
+    <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">WANNEER</span><span role="columnheader">KANAAL</span><span role="columnheader">BOODSCHAP</span><span role="columnheader"></span></div>
+    ${(c.communication || []).map((x) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${x.when}</span><span class="tl-runbook__duration" role="cell">${x.channel}</span><span role="cell"><span class="tl-runbook__desc">${x.message}</span></span><span role="cell"></span></div>`)}
+  </div>
+</section>`;
+
+/** 02 — Aanleiding, doelen op drie niveaus en doelgroepinzicht (Event ROI / Event Canvas). */
+export function goalsSection(c, n, data) {
+  const occ = Object.fromEntries((data.occasionTypes || []).map((o) => [o.id, o.label]));
+  const ai = c.audienceInsight || {};
+  return html`<section class="tl-section tl-section--mist" id="doelen" aria-labelledby="goalTitle">
+  ${overline(`${n} / WAAROM EN VOOR WIE`, (c.occasions || []).map((o) => occ[o]).filter(Boolean).join(' / ').toUpperCase())}
+  <div class="tl-columns">
+    <p class="tl-intro-label">${c.occasionText || ''}</p>
+    <div>
+      <h2 class="tl-display tl-display--md" id="goalTitle">WAT HET<br><span class="tl-accent">MOET OPLEVEREN.</span></h2>
+      <div class="tl-values">
+        <div><strong>ZAKELIJK DOEL</strong>${list(c.goals?.business || [])}</div>
+        <div><strong>DOEL VAN DE DEELNEMER</strong>${list(c.goals?.participant || [])}</div>
+        <div><strong>GEWENST GEDRAG NA AFLOOP</strong>${list(c.goals?.behaviour || [])}</div>
+      </div>
+    </div>
+  </div>
+  <h3 class="tl-display tl-display--sm tl-section-head tl-body--gap">DE GASTEN.</h3>
+  <dl class="tl-facts">
+    <div><dt>WAAROM ZE KOMEN</dt><dd>${ai.why || ''}</dd></div>
+    <div><dt>WAT ZE INTERESSANT VINDEN</dt><dd>${ai.interests || ''}</dd></div>
+    <div><dt>WAT ZE ABSOLUUT NIET WILLEN</dt><dd>${ai.avoid || ''}</dd></div>
+    <div><dt>HOE JE ZE BENADERT</dt><dd>${ai.approach || ''}</dd></div>
+    <div><dt>LUISTEREN, ONTMOETEN, DOEN OF VIEREN</dt><dd>${ai.mode || ''}</dd></div>
+    <div><dt>VOOR WIE</dt><dd>${(c.audiences || []).join(', ')}</dd></div>
+  </dl>
+</section>`;
+}
+
+/** 03 — Beleving, georganiseerde verbinding en bezoekersreis in zes fasen. */
+export function experienceSection(c, n, data) {
+  const md = Object.fromEntries((data.moodDirections || []).map((m) => [m.id, m]));
+  return html`<section class="tl-section" id="beleving" aria-labelledby="expTitle">
+  ${overline(`${n} / DE BELEVING EN DE BEZOEKERSREIS`, 'VAN UITNODIGING TOT NAZORG')}
+  <div class="tl-section-head tl-section-head--top">
+    <h2 class="tl-display" id="expTitle">ZO GAAT HET<br><span class="tl-accent">VOELEN.</span></h2>
+    <p>${c.mood || ''}</p>
+  </div>
+  <dl class="tl-facts tl-facts--two">${(c.moodDirections || []).filter((m) => md[m]).map((m) => html`<div><dt>SFEERRICHTING / ${md[m].label}</dt><dd>${md[m].text}</dd></div>`)}</dl>
+  <div class="tl-journey">${(c.journey || []).map((j, i) => html`<div class="tl-journey__step"><span class="tl-mono">${pad(i + 1)} / ${j.phase}</span><strong class="tl-journey__title">${j.title}</strong><p>${j.text}</p></div>`)}</div>
+  <h3 class="tl-mono tl-subhead tl-body--gap">VERBINDING, BEWUST GEORGANISEERD</h3>
+  ${list(c.connectionDesign || [])}
+</section>`;
+}
+
+/** 11 — Impact: KPI's per doel en meetmoment (direct / 30 / 60 / 90 dagen). */
+export function impactSection(c, n) {
+  return html`<section class="tl-section tl-section--taupe" id="impact" aria-labelledby="impTitle">
+  ${overline(`${n} / IMPACT EN METEN`, 'VOORAF BEPAALD, ACHTERAF GEMETEN')}
+  <div class="tl-section-head tl-section-head--top">
+    <h2 class="tl-display" id="impTitle">WANNEER IS HET<br><span class="tl-accent">GESLAAGD?</span></h2>
+    <p>Een volle zaal zegt niet of het doel is bereikt. Daarom staat per doel vast wat je meet, hoe en wanneer. Sommige resultaten zie je direct, andere pas na 30, 60 of 90 dagen.</p>
+  </div>
+  <div class="tl-runbook tl-runbook--four" role="table" aria-label="Meetplan">
+    <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">DOEL</span><span role="columnheader">WANNEER</span><span role="columnheader">KPI</span><span role="columnheader">HOE</span></div>
+    ${(c.kpis || []).map((k) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${k.goal}</span><span class="tl-runbook__duration" role="cell" data-label="WANNEER">${k.when}</span><span role="cell"><strong class="tl-runbook__title">${k.kpi}</strong></span><span class="tl-runbook__meta" role="cell" data-label="HOE">${k.how}</span></div>`)}
+  </div>
+  <h3 class="tl-mono tl-subhead tl-body--gap">EVALUATIE</h3>
+  ${list(c.evaluation || [])}
+  <p class="tl-note tl-note--gap">Let op: een evenement kan bijdragen aan een resultaat zonder het volledig te veroorzaken. Vergelijk waar mogelijk met een uitgangssituatie.</p>
 </section>`;
 }
 
@@ -127,6 +203,8 @@ export function questionnaire(concept) {
     <fieldset class="tl-field"><legend>10 / TOEGANKELIJKHEID</legend><label class="tl-check tl-check--on-dark"><input type="checkbox" name="toegankelijk" value="ja"> Rolstoeltoegankelijk nodig</label></fieldset>
     <label class="tl-field"><span>11 / DUURZAAMHEID</span><select name="duurzaam"><option value="basis">Basis</option><option value="hoog">Zo duurzaam mogelijk</option></select></label>
     <label class="tl-field"><span>12 / EIGEN BUDGETINDICATIE (OPTIONEEL)</span><input name="budget" placeholder="Bijv. € 15.000 totaal"></label>
+    <label class="tl-field"><span>13 / AANLEIDING</span><input name="aanleiding" placeholder="${c.occasionText ? 'Bijv. jubileum, nieuwe strategie, klantdag…' : ''}"></label>
+    <label class="tl-field"><span>14 / BIJSTELLEN</span><select name="bijstelling"><option value="">Zoals het concept is</option><option value="exclusiever">Exclusiever</option><option value="interactiever">Meer interactie</option><option value="budgetbewust">Budgetbewust</option></select></label>
   </div>
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-status></span><button class="tl-button tl-button--accent" type="submit">MAAK MIJN DRAAIBOEK OP MAAT ↓</button></div>
 </form>
@@ -154,7 +232,8 @@ export function programTimeline(concept) {
       <div class="tl-dialog__head"><span class="tl-mono">${pad(i + 1)} / ${it.time} / ${concept.title.toUpperCase()}</span><button class="tl-dialog__close" type="button" data-close-dialog aria-label="Sluiten">SLUITEN ×</button></div>
       <h2 class="tl-display tl-display--md" id="${id}-t">${it.title}</h2>
       <p class="tl-lead">${d.intro || it.description}</p>
-      ${d.steps?.length ? html`<h3 class="tl-mono tl-subhead tl-body--gap">ZO PAK JE HET AAN</h3><ol class="tl-steplist">${d.steps.map((x) => html`<li>${x}</li>`)}</ol>` : ''}
+      ${(d.why || d.result) ? html`<dl class="tl-facts"><div><dt>WAT GEBEURT ER</dt><dd>${it.description}</dd></div><div><dt>WAAROM</dt><dd>${d.why || ''}</dd></div><div><dt>RESULTAAT</dt><dd>${d.result || ''}</dd></div></dl>` : ''}
+      ${d.steps?.length ? html`<h3 class="tl-mono tl-subhead tl-body--gap">ZO PAK JE HET AAN (HOE)</h3><ol class="tl-steplist">${d.steps.map((x) => html`<li>${x}</li>`)}</ol>` : ''}
       <div class="tl-columns tl-columns--equal tl-body--gap">
         ${d.roles?.length ? html`<div><h3 class="tl-mono tl-subhead">WIE</h3><div class="tl-chip-set">${d.roles.map((r) => html`<span class="tl-chip">${r}</span>`)}</div></div>` : ''}
         ${d.needs?.length ? html`<div><h3 class="tl-mono tl-subhead">WAT JE NODIG HEBT</h3><ul class="tl-list">${d.needs.map((x) => html`<li>${x}</li>`)}</ul></div>` : ''}

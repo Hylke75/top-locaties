@@ -89,7 +89,9 @@ export function tailor(concept, answers, { venue = null, suppliers = [] } = {}) 
   if (answers.toegankelijk) extraChecks.push('Rolstoeltoegankelijke route, lift en toilet bevestigen bij de locatie');
   if (answers.duurzaam === 'hoog') extraChecks.push('Duurzaamheidsafspraken vastleggen met locatie en leveranciers (zie DUURZAAM)');
   if (diets.length) extraChecks.push(`Dieetwensen doorgeven aan catering: ${diets.join(', ')}`);
+  const adjustment = answers.bijstelling && concept.adjustments?.[answers.bijstelling] ? { key: answers.bijstelling, label: { exclusiever: 'Exclusiever', interactiever: 'Meer interactie', budgetbewust: 'Budgetbewust' }[answers.bijstelling], text: concept.adjustments[answers.bijstelling] } : null;
   return {
+    adjustment,
     answers, guests, venue, suppliers, runbook, planning, crew, diets, extraChecks,
     variations: pickVariation(concept, answers),
     fit: venueFit(venue, guests),
@@ -106,6 +108,10 @@ export function toText(concept, t, labels = {}) {
   if (a.budget) L.push(`Eigen budgetindicatie: ${a.budget} (indicatie van de organisator; geen prijsopgave)`);
   L.push('', `LOCATIE: ${t.venue ? `${t.venue.name}, ${t.venue.city} — ${t.venue.url}` : 'nog te kiezen'}`, t.fit.text);
   if (t.suppliers.length) { L.push('', 'MAKERS:'); t.suppliers.forEach((s) => L.push(`- ${s.name} (${s.role}) — ${s.url}`)); }
+  if (t.adjustment) L.push('', `BIJGESTELD — ${t.adjustment.label.toUpperCase()}: ${t.adjustment.text}`);
+  if (a.aanleiding || concept.occasionText) L.push('', `AANLEIDING: ${a.aanleiding || concept.occasionText}`);
+  if (concept.goals) { L.push('', 'DOELEN:'); L.push(`- Zakelijk: ${concept.goals.business.join('; ')}`, `- Deelnemer: ${concept.goals.participant.join('; ')}`, `- Gewenst gedrag: ${concept.goals.behaviour.join('; ')}`); }
+  if (concept.journey) { L.push('', 'BEZOEKERSREIS:'); concept.journey.forEach((j) => L.push(`- ${j.phase} — ${j.title}: ${j.text}`)); }
   if (t.variations.length) { L.push('', 'AANBEVOLEN VARIANT:'); t.variations.forEach((v) => L.push(`- ${v.title}: ${v.text}`)); }
   L.push('', 'DAGDRAAIBOEK:');
   t.runbook.forEach((r) => L.push(`${r.time} (${r.duration})  ${r.title} — ${r.description} [wie: ${r.owner} · waar: ${r.space}${r.needs?.length ? ` · nodig: ${r.needs.join(', ')}` : ''}]`));
@@ -131,6 +137,8 @@ export function toText(concept, t, labels = {}) {
   (concept.budgetItems || []).forEach((x) => L.push(`- ${x}`));
   L.push('', 'DUURZAAM:');
   (concept.sustainability || []).forEach((x) => L.push(`- ${x}`));
+  if (concept.kpis) { L.push('', 'MEETPLAN (KPI):'); concept.kpis.forEach((k) => L.push(`- ${k.goal}: ${k.kpi} — ${k.when} — ${k.how}`)); }
+  if (concept.communication) { L.push('', 'COMMUNICATIEPLAN:'); concept.communication.forEach((x) => L.push(`- ${x.when} · ${x.channel}: ${x.message}`)); }
   L.push('', 'EVALUATIE:');
   (concept.evaluation || []).forEach((x) => L.push(`- ${x}`));
   L.push('', 'UITNODIGING', `Onderwerp: ${t.invitation.subject}`, t.invitation.text, '', `Herinnering: ${t.invitation.reminder}`);
@@ -185,13 +193,13 @@ export function quoteRequests(concept, t, questions = {}) {
 
 /** Begrotingsblad (CSV, puntkomma voor Nederlandse Excel). Bedragen vult de organisator in uit de offertes. */
 export function budgetCsv(concept, t) {
-  const rows = [['Kostenpost', 'Partij', 'Offerte ontvangen (ja/nee)', 'Bedrag excl. btw', 'Btw', 'Opmerking']];
+  const rows = [['Kostenpost', 'Partij', 'Status (bevestigd / raming / op te vragen)', 'Bedrag excl. btw', 'Btw', 'Opmerking']];
   const partyFor = (item) => {
     if (/locatie/i.test(item) && t.venue) return t.venue.name;
     const s = t.suppliers.find((x) => item.toLowerCase().includes(x.role.toLowerCase().split(' ')[0]));
     return s ? s.name : '';
   };
-  for (const item of concept.budgetItems || []) rows.push([item, partyFor(item), '', '', '', '']);
+  for (const item of concept.budgetItems || []) rows.push([item, partyFor(item), 'op te vragen', '', '', '']);
   rows.push(['Onvoorzien', '', '', '', '', 'Reserveer een deel van je budget voor het onverwachte']);
   rows.push(['TOTAAL', '', '', '', '', t.answers.budget ? `Eigen budgetindicatie: ${t.answers.budget}` : '']);
   return rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\r\n');

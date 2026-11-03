@@ -95,7 +95,8 @@ const serveFile = (res, file) => {
   fs.createReadStream(file).pipe(res);
 };
 
-const CONCEPT_FIELDS = ['title', 'slug', 'number', 'status', 'priority', 'headline', 'category', 'categoryLabel', 'format', 'teaser', 'proposition', 'tags', 'guestCountMin', 'guestCountMax', 'feelings', 'feelingWeights', 'feelingReasons', 'audiences', 'objective', 'idea', 'hero', 'programImage', 'program', 'venueMatches', 'supplierRoles', 'supplierMatches', 'seo', 'duration', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation'];
+const CONCEPT_FIELDS = ['title', 'slug', 'number', 'status', 'priority', 'headline', 'category', 'categoryLabel', 'format', 'teaser', 'proposition', 'tags', 'guestCountMin', 'guestCountMax', 'feelings', 'feelingWeights', 'feelingReasons', 'audiences', 'objective', 'idea', 'hero', 'programImage', 'program', 'venueMatches', 'supplierRoles', 'supplierMatches', 'seo', 'duration', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation',
+  'dayPart', 'occasions', 'occasionText', 'goals', 'audienceInsight', 'mood', 'moodDirections', 'connectionDesign', 'journey', 'communication', 'kpis', 'conditions', 'accessibility', 'adjustments', 'plan', 'quality'];
 
 async function api(req, res, user, url) {
   const m = req.method;
@@ -111,7 +112,7 @@ async function api(req, res, user, url) {
     const syncLog = fs.existsSync(path.join(root, '.admin/sync-log.json')) ? JSON.parse(fs.readFileSync(path.join(root, '.admin/sync-log.json'), 'utf8')).slice(0, 10) : [];
     const build = fs.existsSync(path.join(SITE, 'build-info.json')) ? JSON.parse(fs.readFileSync(path.join(SITE, 'build-info.json'), 'utf8')) : null;
     return send(res, 200, {
-      concepts: readDoc('concepts').concepts, categories: readDoc('concepts').categories || [], playbook: readDoc('playbook'), venues: readDoc('venues'), suppliers: readDoc('suppliers'), feelings: readDoc('feelings'),
+      concepts: readDoc('concepts').concepts, categories: readDoc('concepts').categories || [], occasionTypes: readDoc('concepts').occasionTypes || [], moodDirections: readDoc('concepts').moodDirections || [], dayParts: readDoc('concepts').dayParts || [], playbook: readDoc('playbook'), venues: readDoc('venues'), suppliers: readDoc('suppliers'), feelings: readDoc('feelings'),
       snapshotMeta: snapshot._meta, partners, supplierSources: snapshot.suppliers, validation: await validate(), syncLog, build,
     });
   }
@@ -130,6 +131,9 @@ async function api(req, res, user, url) {
     const current = doc.concepts[i];
     const next = { ...current };
     for (const f of CONCEPT_FIELDS) if (body[f] !== undefined) next[f] = body[f];
+    // Kwaliteitstoets (100 punten) is een menselijk oordeel van de hoofdredacteur.
+    if (!chief) next.quality = current.quality;
+    else if (body.quality) next.quality = { ...body.quality, reviewedBy: user.name, reviewedAt: new Date().toISOString() };
     if (!/^[a-z0-9-]+$/.test(next.slug)) return send(res, 400, { error: 'Slug: alleen kleine letters, cijfers en streepjes.' });
     if (next.slug !== current.slug && doc.concepts.some((c) => c.slug === next.slug)) return send(res, 400, { error: 'Slug bestaat al.' });
     if (!chief && current.status === 'published') return send(res, 403, { error: 'Dit concept staat live. Alleen de hoofdredacteur wijzigt gepubliceerde inhoud.' });

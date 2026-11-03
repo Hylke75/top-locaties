@@ -33,13 +33,20 @@ npm run admin
 Open http://127.0.0.1:4174/admin/ en log in met e-mailadres en wachtwoord.
 
 - **Redacteur:** concepten maken en bewerken (draft → review), locatieredactie, makers en gevoelsteksten.
-- **Hoofdredacteur:** daarnaast publiceren en archiveren, de site bouwen en de Greenbookings-sync starten.
+- **Hoofdredacteur:** daarnaast publiceren en archiveren, de kwaliteitstoets (100 punten) invullen, de site bouwen en de Greenbookings-sync starten.
+- Een concept bevat ook de methodevelden (aanleiding, doelen op drie niveaus, doelgroep, bezoekersreis, communicatie, KPI's, bijstellingen) en de velden voor het conceptplan in twaalf hoofdstukken (§16–18 in het beheer).
 - Elke mutatie wordt gevalideerd, als revisie bewaard en in `src/content/audit-log.jsonl` vastgelegd.
 - Bronvelden zijn niet bewerkbaar; keuzelijsten bevatten alleen aangesloten partners.
 - Na vijf mislukte inlogpogingen wacht het beheer vijf minuten.
 - Op een server: zet de accounts in `TL_ADMIN_USERS` met de uitvoer van `node scripts/admin-user.mjs export`, en draai het beheer alleen achter eigen toegangsbeveiliging.
 
 Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of deploy handmatig).
+
+## Routes voor bezoekers
+
+- `/conceptplan/`: briefing in acht vragen, geeft drie wezenlijk verschillende concepten.
+- `/eventconcepten/?dagdeel=ochtend|middag|dag|avond`: concepten per dagdeel.
+- `/eventconcepten/<slug>/conceptplan/`: het printbare conceptplan in twaalf hoofdstukken, vooraf ingevuld met de vragenlijst op maat.
 
 ## Data
 

@@ -21,3 +21,9 @@ Status: DONE · REVIEW (werkt, wacht op extern besluit) · BLOCKED (extern nodig
 | V-01..V-06 — design system en visuele regressie | `design-system/` v1.1, `styleguide.html` §10–12 | `scripts/screenshots.mjs` (16 routes × 5 breedtes), `check-design.mjs` | DONE | Visuele vergelijking door mij beoordeeld, geen pixeldiff-tool |
 | Toegankelijkheid | Native knoppen, `aria-pressed`/`expanded`, live regions, skip-link, focusringen, 44px-targets | flows (toetsenbord, touch targets) | REVIEW | Test met een echte screenreader staat open |
 | R-05 — productiepublicatie | — | — | BLOCKED | Wacht op de beslispunten in TECH-AUDIT §6 |
+| Onderzoek conceptplan (03-11-2026) — 12 onderdelen per concept | `concepts.json` (doelen 3 niveaus, doelgroepinzicht, sfeerrichting, bezoekersreis, communicatie, KPI's, bijstellingen), `runbook.mjs` secties 02/03/09/10/11 | `validate-content.mjs` methodecontroles | DONE | Cijfers uit het onderzoek bewust niet gepubliceerd |
+| Briefing → drie wezenlijk verschillende concepten | `src/pages/conceptplan.mjs` `renderBriefing`, `src/client/lib/brief.js`, `briefing.js` | `tests/brief.test.mjs`, flows | DONE | Regelgebaseerd en uitlegbaar; geen AI-generatie (vraagt apart besluit) |
+| Sjabloon eventconceptplan (twaalf hoofdstukken) | `renderPlanDocument`, `plandoc.js`, `concepts.json → plan` | flows (12 hoofdstukken, voorinvulling, bewaren) | DONE | Invulvelden alleen in de browser |
+| Kwaliteitsmodel 100 punten + menselijke haalbaarheidscheck | beheer §19, `scripts/admin.mjs`, `validate-content.mjs` | `admin-e2e.mjs` (opslaan, 422 bij < 70) | REVIEW | Nog door de hoofdredacteur in te vullen voor de 12 concepten |
+| Concepten per dagdeel (ochtend, middag, dag, avond) en vergaderingen | 12 concepten, `dayParts`, filter `?dagdeel=` | flows | DONE | — |
+

@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { loadData } from '../src/lib/data.mjs';
 import { validate } from './validate-content.mjs';
 import { renderHome } from '../src/pages/home.mjs';
+import { renderBriefing, renderPlanDocument } from '../src/pages/conceptplan.mjs';
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
 import { renderLegacy, renderNotFound } from '../src/pages/legacy.mjs';
@@ -51,6 +52,8 @@ data.suppliers.forEach((s) => write(`leveranciers/${s.slug}/index.html`, renderS
 write('mijn-plan/index.html', renderPlan(data));
 write('over/index.html', renderAbout(data));
 write('zelf-organiseren/index.html', renderPlaybook(data));
+write('conceptplan/index.html', renderBriefing(data));
+data.concepts.forEach((c) => write(`eventconcepten/${c.slug}/conceptplan/index.html`, renderPlanDocument(data, c)));
 
 // Oude prototype-URL's blijven werken; het prototype zelf staat ter vergelijking onder /prototype/.
 write('hupr.html', renderLegacy({ to: '/', title: 'Top Locaties' }));
@@ -74,7 +77,7 @@ write('styleguide/index.html', guide);
 copy('design-system/STYLE-GUIDE.md', 'styleguide/STYLE-GUIDE.md');
 
 // Sitemap: uitsluitend gepubliceerde concepten en AANGESLOTEN partnerlocaties (data.venues is al partner-only).
-const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/',
+const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/',
   ...data.concepts.map((c) => `/eventconcepten/${c.slug}/`),
   ...data.venues.map((v) => `/locaties/${v.slug}/`),
   ...data.suppliers.map((s) => `/leveranciers/${s.slug}/`)];

@@ -57,7 +57,8 @@ export function loadData() {
   const feelingLabels = Object.fromEntries(feelings.map((f) => [f.id, f.label]));
   const concepts = conceptDoc.concepts
     .filter((c) => c.status === 'published')
-    .sort((a, b) => a.priority - b.priority);
+    .sort((a, b) => a.priority - b.priority)
+    .map((c) => ({ ...c, dayPartLabel: (conceptDoc.dayParts || []).find((d) => d.id === c.dayPart)?.label || '' }));
 
   // Bron leidend: elke gepubliceerde, aangesloten partner is doorzoekbaar (FO §0.4).
   // De redactionele laag is optioneel; zonder redactie tonen we alleen bronfeiten.
@@ -153,6 +154,9 @@ export function loadData() {
     concepts,
     categories: (conceptDoc.categories || []).filter((cat) => concepts.some((c) => c.category === cat.id)),
     allCategories: conceptDoc.categories || [],
+    occasionTypes: conceptDoc.occasionTypes || [],
+    moodDirections: conceptDoc.moodDirections || [],
+    dayParts: (conceptDoc.dayParts || []).filter((d) => concepts.some((c) => c.dayPart === d.id)),
     venues,
     venueById: byId(venues),
     suppliers,

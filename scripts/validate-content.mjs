@@ -44,6 +44,7 @@ export function validate() {
     else if (!(ss.status === 'actief' && ss.aangesloten === true)) { warnings.push(`supplier ${s.id}: geen aangesloten partner — wordt niet getoond.`); nonPartnerSup.add(s.id); }
   }
 
+  const unscored = [];
   const titles = new Set();
   const slugs = new Set();
   for (const c of concepts.filter((x) => x.status !== 'archived')) {
@@ -80,7 +81,31 @@ export function validate() {
     need((c.budgetItems || []).every((x) => !/€|\d+\s*euro/i.test(x)), 'kostenposten mogen geen bedragen bevatten');
     need((c.sustainability || []).length >= 2 && (c.evaluation || []).length >= 2, 'duurzaamheid en evaluatie');
     need(c.invitation?.subject && c.invitation?.text, 'uitnodigingstekst');
+    // Conceptmethodiek (onderzoek 03-11-2026): 12 onderdelen van het ideale conceptplan.
+    need((c.occasions || []).length && c.occasionText, 'aanleiding (type en tekst)');
+    need(['business', 'participant', 'behaviour'].every((k) => (c.goals?.[k] || []).length >= 2), 'doelen op drie niveaus (zakelijk, deelnemer, gedrag; elk minstens 2)');
+    need(['why', 'interests', 'avoid', 'approach', 'mode'].every((k) => c.audienceInsight?.[k]), 'doelgroepinzicht (waarom, interesses, wat niet, benadering, vorm)');
+    need(c.mood && (c.moodDirections || []).length, 'sfeer en gevoelsrichting');
+    need((c.journey || []).length === 6, 'bezoekersreis in zes fasen');
+    need((c.connectionDesign || []).length >= 2, 'georganiseerde verbinding (minstens 2 werkvormen)');
+    need((c.program || []).every((it) => it.details?.why && it.details?.result), 'per programmaonderdeel: waarom en resultaat');
+    need((c.venueMatches || []).every((m) => m.pro && m.watch), 'per locatie: sterk punt en aandachtspunt');
+    need((c.communication || []).length >= 3, 'communicatieplan (minstens 3 momenten)');
+    need((c.conditions || []).length >= 2 && (c.accessibility || []).length >= 2, 'randvoorwaarden en toegankelijkheid');
+    need((c.kpis || []).length >= 3, 'meetplan (minstens 3 KPI\'s)');
+    need(['exclusiever', 'interactiever', 'budgetbewust'].every((k) => c.adjustments?.[k]), 'bijstellingen (exclusiever, interactiever, budgetbewust)');
     need((c.program || []).every((it) => it.details?.intro && (it.details?.steps || []).length >= 3), 'elk programmaonderdeel heeft pop-upinhoud (intro en minstens 3 stappen)');
+    // Sjabloon eventconceptplan (twaalf hoofdstukken).
+    need(['whyLive', 'scope', 'redThread', 'irreplaceable', 'keyMessage', 'restMoments', 'visual', 'senses', 'frictions'].every((k) => c.plan?.[k]), 'conceptplan (zonder-dit-event, afbakening, rode draad, onvervangbaar, boodschap, rust, visueel, zintuigen, wrijving)');
+    need((c.plan?.moodWords || []).length === 3, 'conceptplan: precies drie sfeerwoorden');
+    need(['ochtend', 'middag', 'dag', 'avond'].includes(c.dayPart), 'dagdeel (ochtend, middag, dag of avond)');
+    // Kwaliteitsmodel (100 punten): menselijk oordeel van de hoofdredacteur.
+    if (c.quality) {
+      const Q = { doelen: 25, doelgroep: 20, originaliteit: 15, betrokkenheid: 15, haalbaarheid: 15, duurzaamheid: 10 };
+      const total = Object.keys(Q).reduce((n, k) => n + (Number(c.quality[k]) || 0), 0);
+      if (Object.entries(Q).some(([k, max]) => Number(c.quality[k]) > max)) errors.push(`${where}: kwaliteitstoets — score boven het maximum.`);
+      if (total < 70) errors.push(`${where}: kwaliteitstoets ${total}/100 — minimaal 70 voor publicatie.`);
+    } else if (c.status === 'published') unscored.push(c.slug);
     if (c.venueMatches.length < 2 || c.venueMatches.length > 4) errors.push(`${where}: 2–4 aanbevolen locaties vereist.`);
     for (const m of c.venueMatches) {
       if (!vIds.has(m.venueId)) errors.push(`${where}: venueMatch '${m.venueId}' bestaat niet.`);
@@ -97,6 +122,7 @@ export function validate() {
     // Concepten in draft blokkeren de build niet (ze worden niet gepubliceerd): fouten worden aandachtspunten.
     if (c.status === 'draft') warnings.push(...errors.splice(outer).map((e) => `[draft] ${e}`));
   }
+  if (unscored.length) warnings.push(`kwaliteitstoets (100 punten) nog niet ingevuld voor ${unscored.length} gepubliceerde concepten (${unscored.join(", ")}) — hoofdredacteur, beheer → concept → 19.`);
   return { errors, warnings };
 }
 

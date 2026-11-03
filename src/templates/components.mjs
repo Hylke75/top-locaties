@@ -87,7 +87,7 @@ export function venueCard(v, match, i) {
     <span class="tl-mono">${pad(i + 1)} / ${v.city} — ${v.label}</span>
     <h3 class="tl-venue__name">${v.name}</h3>
     <p class="tl-venue__copy">${v.line}</p>
-    <div class="tl-venue__why"><b>WAAROM DEZE PLEK?</b>${match.reason}</div>
+    <div class="tl-venue__why"><b>${match.role ? `${match.role} — ` : ''}WAAROM DEZE PLEK?</b>${match.reason}${match.pro ? html`<span class="tl-venue__pro">+ ${match.pro}</span>` : ''}${match.watch ? html`<span class="tl-venue__watch">! ${match.watch}</span>` : ''}</div>
     <p class="tl-venue__facts"><span>${v.capacity}</span><span>BRON: GREENBOOKINGS ${v.sourceDate}</span></p>
     <div class="tl-venue__actions">
       <button class="tl-button tl-venue__choose" type="button" data-choose-venue="${v.id}" aria-pressed="false">KIES DEZE PLEK +</button>
@@ -176,13 +176,13 @@ export function feelingCompass(data, { number = '02', id = 'gevoel', headingLeve
 }
 
 export function conceptCard(c, i, labels) {
-  return html`<article class="tl-concept-card" data-concept-card="${c.slug}" data-category="${c.category}" data-feelings="${c.feelings.join(' ')}">
+  return html`<article class="tl-concept-card" data-concept-card="${c.slug}" data-category="${c.category}" data-daypart="${c.dayPart || ''}" data-feelings="${c.feelings.join(' ')}">
   <a class="tl-concept-card__photo tl-image-frame" href="/eventconcepten/${c.slug}/" tabindex="-1" aria-hidden="true"><img src="${c.hero.src}" alt="" loading="lazy" decoding="async"><span class="tl-image-caption">CONCEPT ${c.number} / SFEERBEELD</span></a>
   <div class="tl-catalog-card__kicker"><span>${pad(i + 1)} / ${c.categoryLabel}</span><span>${c.guestCountMin}–${c.guestCountMax} GASTEN</span></div>
   <h3 class="tl-catalog-card__title"><a href="/eventconcepten/${c.slug}/">${c.title}</a></h3>
   <p class="tl-catalog-card__desc">${c.teaser}</p>
   <div class="tl-chip-set tl-concept-card__feelings">${c.feelings.map((f) => html`<span class="tl-chip">${labels[f]}</span>`)}</div>
-  <div class="tl-catalog-card__foot"><span>${c.format}<br>${c.venueMatches.length} PARTNERLOCATIES / ${c.supplierRoles.length} ROLLEN</span><a class="tl-arrow-box" href="/eventconcepten/${c.slug}/" aria-label="Bekijk het concept ${c.title}">↗</a></div>
+  <div class="tl-catalog-card__foot"><span>${c.dayPartLabel ? html`${c.dayPartLabel} · ` : ''}${c.format}<br>${c.venueMatches.length} PARTNERLOCATIES / ${c.supplierRoles.length} ROLLEN</span><a class="tl-arrow-box" href="/eventconcepten/${c.slug}/" aria-label="Bekijk het concept ${c.title}">↗</a></div>
 </article>`;
 }
 

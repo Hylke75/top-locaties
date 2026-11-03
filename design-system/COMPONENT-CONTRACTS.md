@@ -158,3 +158,14 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 | Contact | `.tl-contact`, `.tl-contact-cta` | Contactpersoon uit het Greenbookings-profiel; versturen via de bevestigde contactroute (`site.json → contact.endpoint`), anders eerlijk afronden op het profiel. Nooit een schijnbevestiging. |
 
 **Programma's zijn het programma van het concept** (besluit opdrachtgever 03-11-2026) en worden niet meer als `VOORBEELD` gelabeld. Sfeerbeelden blijven altijd gelabeld; een programma is geen boekbaar arrangement.
+
+## I. Uitbreidingen v1.3–v1.4 — conceptmethode, briefing en conceptplan (3 november 2026)
+
+| Component | Klasse | Regel |
+|---|---|---|
+| Bezoekersreis | `.tl-journey`, `.tl-journey__step`, `.tl-journey__title` | Zes fasen (vooraf → nazorg); het hoogtepunt (4e) altijd koraal. Titels klein genoeg om nooit af te breken (geen automatische woordafbreking). |
+| Locatierol | `.tl-venue__pro`, `.tl-venue__watch` | Per aanbevolen locatie: VOORKEUR of ALTERNATIEF (max. twee), met pluspunt én aandachtspunt. |
+| Dagdeelfilter | `.tl-chip-button[data-ov-daypart]` | Ochtend / middag / hele dag / avond; deeplink `?dagdeel=`. |
+| Briefing | `.tl-questionnaire` (donker) + `.tl-concept-card__role`, `.tl-brief-reasons(--watch)` | Acht vragen → drie concepten uit **verschillende** categorieën (BESTE MATCH, ANDERE INVALSHOEK, VERRASSENDE KEUZE). Uitleg met ✓, aandachtspunten met !, nooit een score. Doorklik vult de vragenlijst op maat vooraf in (`?brief=`, gefilterd op bekende velden). |
+| Conceptplan | `.tl-doc`, `.tl-doc__cover`, `.tl-doc__part`, `.tl-doc__item`, `.tl-doc__table--three`, `.tl-doc__input`, `.tl-doc__hint`, `.tl-doc__status` | Volgt het sjabloon *Eventconceptplan voor zakelijke evenementen*: projectgegevens, conceptbelofte en twaalf hoofdstukken. Inhoud uit het concept; wat alleen de organisator weet (eigenaar, nulmeting, ramingen, besluiten, status) is invulbaar en blijft in de browser. Geen bedragen van ons; prijs en beschikbaarheid altijd "op te vragen". Printbaar (richtvragen en knoppen verdwijnen in print). `noindex`. |
+| Kwaliteitstoets | beheer §19 | 100 punten (doelen 25, doelgroep 20, originaliteit 15, betrokkenheid 15, haalbaarheid 15, duurzaamheid/inclusie 10). Alleen de hoofdredacteur; naam en datum worden vastgelegd. Ingevuld en < 70 blokkeert publicatie. |

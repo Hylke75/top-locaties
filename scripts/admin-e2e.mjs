@@ -42,7 +42,7 @@ try {
   // Redacteur
   const ed = await login('e2e-redacteur');
   check((await ed.textContent('[data-userbar]')).includes('REDACTEUR'), 'redacteur ingelogd');
-  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '06', 'overzicht toont 6 live concepten');
+  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '12', 'overzicht toont 12 live concepten');
   await ed.goto(base + '/admin/#concept/festival');
   await ed.waitForSelector('[data-concept-form]');
   check(await ed.locator('[data-concept-form] fieldset[disabled]').count() > 0, 'redacteur kan live concept niet bewerken');
@@ -78,9 +78,19 @@ try {
   await chief.click('[data-concept-form] button[type=submit]');
   await chief.waitForFunction(() => document.querySelector('[data-save-status]').textContent.includes('OPGESLAGEN'));
   const after = JSON.parse(fs.readFileSync(path.join(content, 'concepts.json'), 'utf8')).concepts.find((c) => c.slug === 'nacht');
-  const keys = ['program', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation', 'venueMatches', 'supplierMatches', 'feelingWeights', 'status'];
+  const keys = ['program', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation', 'venueMatches', 'supplierMatches', 'feelingWeights', 'status', 'dayPart', 'occasions', 'occasionText', 'goals', 'audienceInsight', 'mood', 'moodDirections', 'connectionDesign', 'journey', 'communication', 'kpis', 'conditions', 'accessibility', 'adjustments', 'plan', 'quality'];
   const diff = keys.filter((k) => JSON.stringify(before[k]) !== JSON.stringify(after[k]));
   check(diff.length === 0, `opslaan zonder wijziging behoudt het complete concept${diff.length ? ' — verschil in: ' + diff.join(', ') : ''}`);
+  // Kwaliteitstoets (100 punten): alleen de hoofdredacteur, met naam en datum vastgelegd.
+  await chief.goto(base + '/admin/#concept/nacht');
+  await chief.waitForSelector('[data-concept-form]');
+  for (const [k, v] of [['doelen', 22], ['doelgroep', 17], ['originaliteit', 14], ['betrokkenheid', 13], ['haalbaarheid', 12], ['duurzaamheid', 7]]) await chief.fill(`[name=q_${k}]`, String(v));
+  await chief.click('[data-concept-form] button[type=submit]');
+  await chief.waitForFunction(() => document.querySelector('[data-save-status]').textContent.includes('OPGESLAGEN'));
+  const q = JSON.parse(fs.readFileSync(path.join(content, 'concepts.json'), 'utf8')).concepts.find((c) => c.slug === 'nacht').quality;
+  check(q && q.doelen === 22 && q.reviewedBy && q.reviewedAt, 'kwaliteitstoets opgeslagen met beoordelaar en datum');
+  const lowQ = await chief.evaluate(async () => { const s = await fetch('/api/session').then((r) => r.json()); const r = await fetch('/api/concepts/nacht', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': s.csrf }, body: JSON.stringify({ quality: { doelen: 10, doelgroep: 10, originaliteit: 5, betrokkenheid: 5, haalbaarheid: 5, duurzaamheid: 5 } }) }); return { status: r.status, body: await r.json() }; });
+  check(lowQ.status === 422 && lowQ.body.errors.some((e) => e.includes('kwaliteitstoets')), 'te lage kwaliteitsscore blokkeert publicatie (422)');
   await chief.goto(base + '/admin/#locatie/kunstlinie');
   await chief.waitForSelector('[data-venue-form]');
   await chief.fill('[name=line]', 'Een theater in Almere.');

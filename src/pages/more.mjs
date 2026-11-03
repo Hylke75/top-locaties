@@ -16,11 +16,15 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'EVENTCONCEPTEN' }], `COLLECTIE 
   ${overline('01 / ALLE EVENTCONCEPTEN', 'IDEEËN WAAR BIJZONDERE BIJEENKOMSTEN MEE BEGINNEN')}
   <div class="tl-section-head tl-section-head--top">
     <h1 class="tl-display" id="ovTitle">ER IS ZÓVEEL<br><span class="tl-accent">MOGELIJK.</span></h1>
-    <p>Blader op type bijeenkomst of op het gevoel dat je wilt achterlaten. Elk concept is compleet: verhaal, programma, minuut-tot-minuutdraaiboek, cateringvoorstel, entertainment, aangesloten partnerlocaties en de makers die het waarmaken — en je maakt het op maat.</p>
+    <p>Weet je al wat het moet opleveren? <a href="/conceptplan/">Start met een briefing in acht vragen ↗</a> en krijg drie concepten die echt van elkaar verschillen. Of blader op type bijeenkomst, op dagdeel — ochtend, middag, hele dag of avond — of op het gevoel dat je wilt achterlaten. Elk concept is compleet: verhaal, programma, minuut-tot-minuutdraaiboek, cateringvoorstel, entertainment, aangesloten partnerlocaties en de makers die het waarmaken — en je maakt het op maat.</p>
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op type">
     <button class="tl-chip-button" type="button" data-ov-category="" aria-pressed="true">ALLE TYPES / ${pad(concepts.length)}</button>
     ${data.categories.map(({ id: k, label: l }) => html`<button class="tl-chip-button" type="button" data-ov-category="${k}" aria-pressed="false">${l} / ${pad(concepts.filter((c) => c.category === k).length)}</button>`)}
+  </div>
+  <div class="tl-chip-row" role="group" aria-label="Filter op dagdeel">
+    <button class="tl-chip-button" type="button" data-ov-daypart="" aria-pressed="true">ELK DAGDEEL</button>
+    ${data.dayParts.map((d) => html`<button class="tl-chip-button" type="button" data-ov-daypart="${d.id}" aria-pressed="false">${d.label} / ${pad(concepts.filter((c) => c.dayPart === d.id).length)}</button>`)}
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op gewenst gevoel (maximaal twee)">
     ${feelings.map((f) => html`<button class="tl-chip-button" type="button" data-ov-feeling="${f.id}" aria-pressed="false">${f.label.toUpperCase()} +</button>`)}

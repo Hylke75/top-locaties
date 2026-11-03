@@ -1,7 +1,7 @@
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
 import { header, footer, overline, venueCard, supplierCard, timeline, imageFrame, ext, SITE } from '../templates/components.mjs';
-import { completeSections, questionnaire, programTimeline, composerChoices, playbookSection } from '../templates/runbook.mjs';
+import { questionnaire, programTimeline, composerChoices, playbookSection, runbookSection, cateringSection, practicalSection, communicationSection, goalsSection, experienceSection, impactSection } from '../templates/runbook.mjs';
 
 export function renderConcept(data, concept, index) {
   const { concepts, venueById, supplierById, feelingLabels } = data;
@@ -40,7 +40,7 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
 
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
   <span class="tl-mono">HET CONCEPT / ${concept.number}</span>
-  <div class="tl-section-nav__tabs"><a href="#het-idee">HET IDEE</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING &amp; ENTERTAINMENT</a><a href="#praktisch">PRAKTISCH</a><a href="#zelf-regelen">ZELF REGELEN</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">LEVERANCIERS</a><a href="#samenstellen">OP MAAT</a></div>
+  <div class="tl-section-nav__tabs"><a href="#het-idee">IDEE</a><a href="#doelen">DOELEN</a><a href="#beleving">BELEVING</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">MAKERS</a><a href="#uitnodiging">COMMUNICATIE</a><a href="#praktisch">HAALBAARHEID</a><a href="#impact">IMPACT</a><a href="#samenstellen">OP MAAT</a></div>
   <a class="tl-button tl-button--accent" href="#samenstellen">SAMENSTELLEN ↗</a>
 </nav>
 
@@ -61,8 +61,10 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
   </div>
 </section>
 
+${goalsSection(concept, '02', data)}
+${experienceSection(concept, '03', data)}
 <section class="tl-section tl-section--taupe" id="programma" aria-labelledby="programTitle">
-  ${overline('02 / HET PROGRAMMA', 'KLIK OP EEN ONDERDEEL VOOR ALLE DETAILS')}
+  ${overline('04 / HET PROGRAMMA', 'KLIK OP EEN ONDERDEEL VOOR ALLE DETAILS')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="programTitle">VAN EERSTE<br>ONTMOETING<br>TOT <span class="tl-accent">WOW.</span></h2>
     <p>Het programma op hoofdlijnen. Open een onderdeel voor wat er gebeurt, hoe je het aanpakt, wie wat doet en wat je nodig hebt. Tijden schuiven mee met jouw starttijd in de vragenlijst.</p>
@@ -75,11 +77,11 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
     </div>
   </div>
 </section>
-${completeSections(concept, 3)}
-${playbookSection(data.playbook, '07')}
+${runbookSection(concept, '05')}
+${cateringSection(concept, '06')}
 
 <section class="tl-section" id="locaties" aria-labelledby="venueTitle">
-  ${overline('08 / DE PLEKKEN DIE HET WAAR KUNNEN MAKEN', 'UIT HET GREENBOOKINGS-NETWERK')}
+  ${overline('07 / DE PLEKKEN DIE HET WAAR KUNNEN MAKEN', 'UIT HET GREENBOOKINGS-NETWERK')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="venueTitle">DE JUISTE<br>PLEK VERANDERT<br><span class="tl-accent">ALLES.</span></h2>
     <p>Geen willekeurige locaties: redactionele suggesties op basis van sfeer en gebruik. Kies er één voor jouw plan, of klik door naar het profiel.</p>
@@ -90,7 +92,7 @@ ${playbookSection(data.playbook, '07')}
 </section>
 
 <section class="tl-section tl-section--mist" id="leveranciers" aria-labelledby="supplierTitle">
-  ${overline('09 / DE MENSEN DIE HET WAARMAKEN', 'PROFESSIONELE LEVERANCIERS')}
+  ${overline('08 / DE MENSEN DIE HET WAARMAKEN', 'PROFESSIONELE LEVERANCIERS')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="supplierTitle">EEN IDEE KOMT<br>TOT LEVEN MET<br><span class="tl-accent">DE JUISTE MAKERS.</span></h2>
     <p>Eerst de rol, dan de partij. Deze leveranciers staan in het Greenbookings-netwerk; voeg toe wie je wilt meenemen in je plan.</p>
@@ -99,12 +101,16 @@ ${playbookSection(data.playbook, '07')}
   <div class="tl-supplier-grid">${supplierMatches.map((m, i) => supplierCard(supplierById[m.supplierId], m, i))}</div>
   <p class="tl-note tl-note--gap">* Inspiratiesuggesties, geen bevestigde samenwerkingsverbanden of beschikbaarheidsclaims. Rollen met ‘nog open’ hebben nog geen gekoppelde partner.</p>
 </section>
+${communicationSection(concept, '09')}
+${practicalSection(concept, '10')}
+${impactSection(concept, '11')}
+${playbookSection(data.playbook, '12')}
 
 <section class="tl-section tl-section--dark" id="samenstellen" aria-labelledby="planTitle" data-composer data-concept="${concept.slug}">
-  ${overline('10 / JOUW CONCEPT OP MAAT', 'KIES, BEANTWOORD, NEEM MEE')}
+  ${overline('13 / JOUW CONCEPT OP MAAT', 'KIES, BEANTWOORD, NEEM MEE')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="planTitle">MAAK HET<br><span class="tl-accent">VAN JOU.</span></h2>
-    <p>Kies hierboven één locatie en je makers, beantwoord de vragen en je krijgt het complete draaiboek op maat: tijden, planning met data, catering, bezetting, checklist en uitnodiging. Het is geen boeking of reservering.</p>
+    <p>Kies hierboven één locatie en je makers, beantwoord de vragen en je krijgt het complete draaiboek op maat: tijden, planning met data, catering, bezetting, checklist en uitnodiging. Het is geen boeking of reservering. Daarna maak je het <a href="/eventconcepten/${concept.slug}/conceptplan/">conceptplan in twaalf hoofdstukken ↗</a> voor je opdrachtgever.</p>
   </div>
   <div class="tl-composer tl-composer--bare">
     ${composerChoices(concept, data)}

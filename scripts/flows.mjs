@@ -80,14 +80,42 @@ check(await count() === 3, 'deeplink ?concept=diner → 3 locaties');
 
 // 4. Nieuwe pagina's
 await page.goto(base + '/eventconcepten/');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 6, 'conceptoverzicht toont 6 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 12, 'conceptoverzicht toont 12 concepten');
 await page.click('[data-ov-feeling="rust"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 2, 'filter Rust → 2 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 3, 'filter Rust → 3 concepten');
 await page.click('[data-ov-feeling="focus"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 1, 'Rust + Focus → De vergadering die werkt');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 2, 'Rust + Focus → vergadering en walk & talk');
 await page.click('[data-ov-feeling="rust"]');
 await page.click('[data-ov-feeling="trots"]');
 check(await page.isVisible('[data-ov-empty]'), 'Focus + Trots → lege staat met alternatief');
+await page.goto(base + '/eventconcepten/?dagdeel=avond');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 4 && await page.getAttribute('[data-ov-daypart="avond"]', 'aria-pressed') === 'true', 'deeplink ?dagdeel=avond → 4 avondconcepten');
+await page.click('[data-ov-daypart="ochtend"]');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 3, 'dagdeel ochtend → 3 concepten');
+
+// Briefing → drie concepten → concept met vooringevulde vragenlijst → conceptplan (sjabloon, 12 hoofdstukken)
+await page.goto(base + '/conceptplan/');
+await page.selectOption('[name=aanleiding]', 'strategie');
+await page.fill('[name=gasten]', '14');
+await page.fill('[name=doel]', 'Drie besluiten over de koers');
+await page.click('[data-brief-feel="focus"]');
+await page.selectOption('[name=dagdeel]', 'halve');
+await page.click('[data-brief-form] button[type=submit]');
+await page.waitForSelector('[data-brief-card]');
+const recs = await page.$$eval('[data-brief-card]', (els) => els.map((e) => e.dataset.briefCard));
+check(recs.length === 3, `briefing → drie concepten (${recs.join(', ')})`);
+check(['vergadering', 'walk-en-talk', 'kennisontbijt'].includes(recs[0]), 'briefing strategie + focus + halve dag → beste match is een halve-dagconcept');
+check(await page.locator('[data-brief-card] .tl-brief-reasons li').count() >= 3, 'aanbevelingen zijn uitgelegd');
+await page.click('[data-brief-card] .tl-catalog-card__title a');
+await page.waitForSelector('[data-tailor-output]:not([hidden])');
+check(await page.inputValue('[data-tailor-form] [name=gasten]') === '14' && !page.url().includes('brief='), 'concept opent met briefing ingevuld (en schone URL)');
+await page.goto(base + `/eventconcepten/${recs[0]}/conceptplan/`);
+check(await page.locator('.tl-doc__part').count() === 12, 'conceptplan heeft twaalf hoofdstukken');
+check(await page.inputValue('[data-doc-field=opdracht]') === 'Drie besluiten over de koers', 'conceptplan vooraf ingevuld uit de vragenlijst');
+await page.fill('[data-doc-field=eigenaar]', 'Directiesecretaris');
+await page.check('[data-doc-check="kwaliteit-0"]');
+await page.reload();
+check(await page.inputValue('[data-doc-field=eigenaar]') === 'Directiesecretaris' && await page.isChecked('[data-doc-check="kwaliteit-0"]'), 'conceptplan bewaart invulvelden en vinkjes');
 await page.goto(base + '/eventconcepten/op-gevoel/?gevoel=verwondering,trots');
 check(await page.getAttribute('[data-feel="trots"]', 'aria-pressed') === 'true', 'op-gevoel herstelt keuze uit URL');
 check((await page.locator('[data-match-grid] .tl-match').first().textContent()).includes('Nacht van verwondering'), 'Verwondering + Trots → Nacht van verwondering');

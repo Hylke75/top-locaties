@@ -43,6 +43,7 @@ export function renderHome(data) {
     <nav class="tl-floatpanel__nav" id="panelNav" aria-label="Hoofdnavigatie" hidden>
       <a href="#gevoel">Kies op gevoel ↗</a>
       <a href="/eventconcepten/">Eventconcepten ↗</a>
+      <a href="/conceptplan/">Briefing: drie concepten ↗</a>
       <a href="/locaties/">Zoek locaties ↗</a>
       <a href="/leveranciers/">Leveranciers ↗</a>
       <a href="/mijn-plan/">Mijn plan ↗</a>
