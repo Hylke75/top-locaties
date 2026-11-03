@@ -1,0 +1,1455 @@
+{
+  "_meta": {
+    "description": "Read-only momentopname van brongegevens uit de Greenbookings-database (Supabase-project 'greenbookings'). Alleen publieke profielvelden. NIET handmatig bewerken: vervangen door een nieuwe sync. Redactionele context staat apart in venues.editorial.json en suppliers.editorial.json.",
+    "source": "greenbookings / public.locaties, public.locatie_media, public.organisaties, public.leverancier_profielen",
+    "query": "scripts/sync/greenbookings-snapshot.sql",
+    "syncedAt": "2026-11-03T19:30:00Z",
+    "mode": "handmatige snapshot (geen live koppeling)",
+    "profileUrlPattern": {
+      "venue": "https://greenbookings.nl/locaties/{slug}",
+      "supplier": "https://greenbookings.nl/partners/{slug}"
+    },
+    "placeholderImages": [
+      "content/_placeholder-foto-volgt.jpg"
+    ],
+    "partnerRule": "Alleen records met status='gepubliceerd' EN aangesloten=true (positief). Bron: kolom public.locaties.aangesloten. Relatie met API-filter alleen_partners=true is NOG NIET geverifieerd (API achter Vercel-checkpoint). Onbekend of false = niet publiceren.",
+    "partnerCountAtSync": {
+      "gepubliceerd": 3226,
+      "gepubliceerdEnAangesloten": 61,
+      "inSnapshot": 61
+    },
+    "scope": "Alle gepubliceerde, aangesloten partnerlocaties op 03-11-2026 (volledige partner-snapshot)."
+  },
+  "venues": [
+    {
+      "greenbookingsSlug": "fokker-terminal-den-haag",
+      "name": "Fokker Terminal",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Industrieel erfgoed",
+      "sfeer": "Industrieel",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 1000,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/30c84ca1-da2f-4e74-a281-75876174a50f/00.jpg",
+        "alt": "De industriële hangar van de Fokker Terminal in Den Haag"
+      },
+      "mediaCount": 7,
+      "sourceUpdatedAt": "2026-10-07T08:07:23Z"
+    },
+    {
+      "greenbookingsSlug": "nederlands-instituut-voor-beeld-geluid-hilversum",
+      "name": "Nederlands instituut voor Beeld & Geluid Hilversum",
+      "city": "Hilversum",
+      "province": "Noord-Holland",
+      "type": "Museum",
+      "sfeer": "Creatief & artistiek",
+      "tagline": "Creatief events organiseren in hart van de media industrie",
+      "capacityMin": 15,
+      "capacityMax": 1500,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "creatief",
+        "modern",
+        "artistiek"
+      ],
+      "bijeenkomstTypes": [
+        "vergadering",
+        "congres",
+        "borrel",
+        "brainstorm"
+      ],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/1c0a46ff-16ca-4a4d-bd46-06732aa60738/00.jpg",
+        "alt": "De kleurrijke glasgevel van Beeld & Geluid in Hilversum"
+      },
+      "mediaCount": 6,
+      "sourceUpdatedAt": "2026-09-30T12:24:32Z"
+    },
+    {
+      "greenbookingsSlug": "tobacco-theater-amsterdam",
+      "name": "TOBACCO Theater Amsterdam",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Creatief & artistiek",
+      "tagline": "Industrieel theater in het hart van Amsterdam voor events van 20 tot 600 personen",
+      "capacityMin": 20,
+      "capacityMax": 600,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "industrieel",
+        "trendy",
+        "historisch",
+        "urban",
+        "Cubaans accent",
+        "hoog opgetrokken zalen"
+      ],
+      "bijeenkomstTypes": [
+        "Bedrijfsfeest",
+        "Bedrijfsfestival",
+        "Beurs",
+        "Borrel",
+        "Brainstormsessie",
+        "Ceremonie",
+        "Concert",
+        "Congres",
+        "Diner",
+        "Expositie",
+        "Feest",
+        "Festival bruiloft",
+        "Fotoshoot",
+        "Gala & awardshow",
+        "Hybride event",
+        "Jubileum",
+        "Kick-off",
+        "Meerdaagse bijeenkomst",
+        "Netwerkevenement",
+        "Online event"
+      ],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/content/venue-tobacco-theater-amsterdam-668e9481.jpg",
+        "alt": "Sfeerbeeld van TOBACCO Theater Amsterdam"
+      },
+      "mediaCount": 0,
+      "sourceUpdatedAt": "2026-10-15T09:07:41Z"
+    },
+    {
+      "greenbookingsSlug": "geofort",
+      "name": "GeoFort",
+      "city": "Herwijnen",
+      "province": "Gelderland",
+      "type": "Monument",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 16,
+      "capacityMax": 2000,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/879bf309-6da5-40c5-afac-21dc36dc4bc2/00.webp",
+        "alt": "GeoFort"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-11-02T13:03:28Z"
+    },
+    {
+      "greenbookingsSlug": "euromast",
+      "name": "Euromast",
+      "city": "Rotterdam",
+      "province": "Zuid-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": "Vergaderen op 100 meter hoogte met zicht over de hele stad",
+      "capacityMin": 6,
+      "capacityMax": 350,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "iconisch",
+        "stedelijk",
+        "hoogtepunt",
+        "bijzonder",
+        "spectaculair uitzicht"
+      ],
+      "bijeenkomstTypes": [
+        "vergadering",
+        "presentatie",
+        "workshop",
+        "netwerkevent",
+        "borrel",
+        "receptie",
+        "diner",
+        "hybride meeting",
+        "online meeting"
+      ],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/02464ad5-fd75-431f-8f0d-a8a7882463fd/00.webp",
+        "alt": "Euromast"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "het-nutshuis",
+      "name": "Het Nutshuis",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Monument",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 150,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/401807f1-8984-4a5b-9f32-a655dfcc68b6/00.webp",
+        "alt": "Het Nutshuis"
+      },
+      "mediaCount": 6,
+      "sourceUpdatedAt": "2026-10-21T13:34:02Z"
+    },
+    {
+      "greenbookingsSlug": "het-spaansche-hof-by-peopleplaces",
+      "name": "people@places Den Haag – Spaansche Hof",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Monument",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 10,
+      "capacityMax": 300,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/57b5e2b2-50a1-47f2-bc16-3f06923523ba/00.webp",
+        "alt": "Het Spaansche Hof"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-10-07T08:02:03Z"
+    },
+    {
+      "greenbookingsSlug": "de-polderij",
+      "name": "De Polderij",
+      "city": "Maassluis",
+      "province": "Zuid-Holland",
+      "type": "Boerderij",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": 5,
+      "capacityMax": 120,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/130c93e7-9dd9-4a77-893c-dea200a1a6ca/00.webp",
+        "alt": "De Polderij"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-10-07T08:19:00Z"
+    },
+    {
+      "greenbookingsSlug": "milk-meetings",
+      "name": "Milk & Meetings",
+      "city": "Wilnis",
+      "province": "Utrecht",
+      "type": "Boerderij",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": 4,
+      "capacityMax": 40,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5b8b9835-4483-4efe-8a5c-151a2d989f3d/1247471e-e713-4e8b-ae9e-a330bc4e8520.webp",
+        "alt": "Milk & Meetings"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-10-07T21:28:13Z"
+    },
+    {
+      "greenbookingsSlug": "nederlands-openluchtmuseum",
+      "name": "Nederlands Openluchtmuseum",
+      "city": "Arnhem",
+      "province": "Gelderland",
+      "type": "Museum",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 220,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f834cc48-868d-43e9-bda5-6c727b8b9674/00.webp",
+        "alt": "Nederlands Openluchtmuseum"
+      },
+      "mediaCount": 5,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "grote-kerk-den-haag",
+      "name": "Grote Kerk Den Haag",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Monument",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 5,
+      "capacityMax": 1650,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/70e8d2b6-4554-41e2-9a37-d94f71b84931/00.jpg",
+        "alt": "De monumentale Grote Kerk in het centrum van Den Haag"
+      },
+      "mediaCount": 6,
+      "sourceUpdatedAt": "2026-10-26T13:47:20Z"
+    },
+    {
+      "greenbookingsSlug": "madurodam-events",
+      "name": "Madurodam Events",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 20,
+      "capacityMax": 1200,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b8104c00-46bb-49d3-9d74-81d828f52b39/00.webp",
+        "alt": "Madurodam Events"
+      },
+      "mediaCount": 6,
+      "sourceUpdatedAt": "2026-10-22T13:18:31Z"
+    },
+    {
+      "greenbookingsSlug": "singer-laren",
+      "name": "Singer Laren",
+      "city": "Laren",
+      "province": "Noord-Holland",
+      "type": "Museum",
+      "sfeer": null,
+      "tagline": null,
+      "capacityMin": 0,
+      "capacityMax": 700,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/import/singer-laren/cover.jpg",
+        "alt": "Singer Laren"
+      },
+      "mediaCount": 1,
+      "sourceUpdatedAt": "2026-10-16T14:38:25Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-den-haag-scheveningen-de-pier",
+      "name": "people@places Den Haag – Scheveningen De Pier",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Luxe",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 3000,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": null,
+      "mediaCount": 0,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "abe-lenstra-stadion",
+      "name": "Abe Lenstra Stadion",
+      "city": "Heerenveen",
+      "province": "Friesland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 21,
+      "capacityMax": 1000,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/d6db7d6f-2edc-4da7-a182-a581ee8d166e/00.webp",
+        "alt": "Abe Lenstra Stadion"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "abel-hospitality-leisure",
+      "name": "Abel. Grand Café Restaurant",
+      "city": "Poortugaal",
+      "province": "Zuid-Holland",
+      "type": "Restaurant",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": 11,
+      "capacityMax": 1500,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/3e5dd897-db03-42d1-8eb0-59d9d8c76e4f/02.png",
+        "alt": "Abel. Grand Café Restaurant"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-27T16:32:17Z"
+    },
+    {
+      "greenbookingsSlug": "clubspace",
+      "name": "ClubSpace",
+      "city": "Amstelveen",
+      "province": "Noord-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 200,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/9c4f885e-4c31-4549-8e3d-9273759ae0d9/00.webp",
+        "alt": "ClubSpace"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+    },
+    {
+      "greenbookingsSlug": "flexlabs-the-court-breda",
+      "name": "FlexLabs | The Court Breda",
+      "city": "Breda",
+      "province": "Noord-Brabant",
+      "type": "Monumentale vergaderlocatie",
+      "sfeer": "Huiselijk & Vintage",
+      "tagline": "Vergaderen in een voormalig rechtbankgebouw in het hart van Breda",
+      "capacityMin": 1,
+      "capacityMax": 50,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "Huiselijk",
+        "Vintage",
+        "Klassiek",
+        "Historisch",
+        "Monumentaal"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/content/venue-flexlabs-the-court-breda-ef885d94.png",
+        "alt": "Sfeerbeeld van FlexLabs | The Court Breda"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T08:00:02Z"
+    },
+    {
+      "greenbookingsSlug": "flexlabs-the-bridge-rotterdam",
+      "name": "FlexLabs The Bridge Rotterdam",
+      "city": "Rotterdam",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": "Zakelijk vergaderen met uitzicht op de Erasmusbrug, midden in Rotterdam",
+      "capacityMin": 50,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "Kleurrijk",
+        "Trendy",
+        "Stedelijk",
+        "Aan het water",
+        "Hartje centrum"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/cf9b936a-17e2-468b-8ea9-3e37ace8418d/00.webp",
+        "alt": "FlexLabs The Bridge Rotterdam"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "flexlabs-the-capital-rotterdam",
+      "name": "FlexLabs The Capital Amsterdam",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 5,
+      "capacityMax": 40,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/8338baaa-3d47-45d6-803d-5941a9cf2f5c/00.webp",
+        "alt": "FlexLabs The Capital Amsterdam"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T08:42:38Z"
+    },
+    {
+      "greenbookingsSlug": "flexlabs-the-loft-rotterdam",
+      "name": "FlexLabs The Loft Rotterdam",
+      "city": "Rotterdam",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Industrieel",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 40,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/e8ed252e-6c80-4387-8431-16431dc9755a/00.webp",
+        "alt": "FlexLabs The Loft Rotterdam"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "kerkbrink",
+      "name": "Fonos",
+      "city": "Hilversum",
+      "province": "Noord-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Huiselijk & informeel",
+      "tagline": "Ervaar de grootste muziekcollectie van Nederland",
+      "capacityMin": 12,
+      "capacityMax": 80,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "huiselijk",
+        "informeel"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/163a71c7-fb98-4b13-9a62-62def2648705/918f2cf7-027f-4fff-8259-4c5fce957f7d.webp",
+        "alt": "Fonos in Hilversum — groene event- en vergaderlocatie"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-28T10:55:12Z"
+    },
+    {
+      "greenbookingsSlug": "groot-obbink",
+      "name": "Groot Obbink",
+      "city": "Vorden",
+      "province": "Gelderland",
+      "type": "Boerderij",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 12,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b18b6caf-53bc-4994-839d-ab279404d620/00.webp",
+        "alt": "Groot Obbink"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T10:12:18Z"
+    },
+    {
+      "greenbookingsSlug": "het-kooi-stadion",
+      "name": "Het Kooi Stadion",
+      "city": "Leeuwarden",
+      "province": "Friesland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 5,
+      "capacityMax": 1000,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/bf205cfd-debd-466a-a415-4b5527ec1921/00.webp",
+        "alt": "Het Kooi Stadion"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:27:54Z"
+    },
+    {
+      "greenbookingsSlug": "hotel-luxer",
+      "name": "Hotel Luxer",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Hotel",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 1,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/be3c570f-5595-4ff5-a594-aee8d577ff8c/00.webp",
+        "alt": "Hotel Luxer"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "kanteen25",
+      "name": "Kanteen25",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Restaurant",
+      "sfeer": "Industrieel",
+      "tagline": null,
+      "capacityMin": 5,
+      "capacityMax": 300,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b740a84d-7df1-42e8-a098-691d14ce0ffa/00.webp",
+        "alt": "Kanteen25"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "koninklijk-instituut-van-ingenieurs-kivi",
+      "name": "Koninklijk Instituut Van Ingenieurs KIVI",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 100,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/da983ce7-9446-496d-807f-1fd910223498/33b0ca5c-7fc6-4cb0-b0aa-2a7b9f98ca97.jpeg",
+        "alt": "Koninklijk Instituut Van Ingenieurs KIVI in Den Haag — groene event- en vergaderlocatie"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "kunstlinie",
+      "name": "Kunstlinie",
+      "city": "Almere",
+      "province": "Flevoland",
+      "type": "Theater",
+      "sfeer": "Creatief & artistiek",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 975,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/6d4ce3c5-7ce3-431e-bceb-c99021a9c5d3/00.webp",
+        "alt": "Kunstlinie"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-01T08:24:11Z"
+    },
+    {
+      "greenbookingsSlug": "linden-hotel",
+      "name": "Linden Hotel",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Hotel",
+      "sfeer": "Huiselijk & informeel",
+      "tagline": null,
+      "capacityMin": 1,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/42007164-b520-449e-a862-e9df19c56748/00.webp",
+        "alt": "Linden Hotel"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "mr-jordaan",
+      "name": "Mr. Jordaan",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Hotel",
+      "sfeer": "Creatief & artistiek",
+      "tagline": null,
+      "capacityMin": 1,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/60b13a5f-9b2b-48b9-a5a6-e6df6facf6d0/00.webp",
+        "alt": "Mr. Jordaan"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "nieuwe-kerk-den-haag",
+      "name": "Nieuwe Kerk Den Haag",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Monument",
+      "sfeer": null,
+      "tagline": null,
+      "capacityMin": 150,
+      "capacityMax": 700,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": null,
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-11-02T08:12:46Z"
+    },
+    {
+      "greenbookingsSlug": "oude-kerk-evenementen",
+      "name": "Oude Kerk Evenementen",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Monument",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 500,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b5122a7a-fa99-444c-8727-b91ec84dc9e9/ef38acb4-e6da-4d00-a048-29fdfeef287f.webp",
+        "alt": "Oude Kerk Evenementen"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-29T09:50:53Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-almere-green-capitol-towers",
+      "name": "people@places Almere Green Capitol Towers",
+      "city": "Almere",
+      "province": "Flevoland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/7acff539-1775-4e62-bc06-8b5c23076f66/18795f10-1271-43be-b4ea-a58fea931c3c.webp",
+        "alt": "people@places Almere Green Capitol Towers"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-amersfoort-centraal-station",
+      "name": "people@places Amersfoort Centraal Station",
+      "city": "Amersfoort",
+      "province": "Utrecht",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/eaec8828-1f3c-45e4-a258-d4f128be8c35/00.webp",
+        "alt": "people@places Amersfoort Centraal Station"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:43:45Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-amersfoort-033",
+      "name": "people@places Amersfoort Mozaïek 033",
+      "city": "Nijkerk",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Huiselijk & informeel",
+      "tagline": null,
+      "capacityMin": 10,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b339cc01-16bd-45ca-aea3-c544deb719b5/00.jpg",
+        "alt": "people@places Amersfoort 033"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T08:00:02Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-amsterdam-arena",
+      "name": "people@places Amsterdam Zuidoost",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Industrieel",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 75,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/8f9cd8f9-fe68-4835-941f-5b69ef677b6b/00.webp",
+        "alt": "people@places Amsterdam Arena"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T08:19:00Z"
+    },
+    {
+      "greenbookingsSlug": "people-places-apeldoorn",
+      "name": "people@places Apeldoorn",
+      "city": "Apeldoorn",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Huiselijk & informeel",
+      "tagline": "Vergaderen en ontmoeten in Apeldoorn, met ruimte voor nieuwe ideeën",
+      "capacityMin": 1,
+      "capacityMax": 200,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "modern",
+        "huiselijk",
+        "licht",
+        "zakelijk",
+        "warm"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/32fbdf50-d396-45c6-a8c2-56302704a822/85d51067-bc1e-4ce1-a226-7c0aa0ee91c5.webp",
+        "alt": "Sfeerbeeld van people@places Apeldoorn"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-arnhem-gelderse-poort",
+      "name": "people@places Arnhem Gelderse Poort",
+      "city": "Arnhem",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 80,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/24baa58a-3db5-4bee-b24e-2fb385b47e21/b0b54517-97eb-4b02-a933-10a073881f47.webp",
+        "alt": "people@places Arnhem Gelderse Poort"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-assen",
+      "name": "people@places Assen",
+      "city": "Assen",
+      "province": "Drenthe",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 12,
+      "capacityMax": 80,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/cc76e66e-1dfd-4264-a2b0-ea9759be9cb1/00.webp",
+        "alt": "people@places Assen"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-culemborg",
+      "name": "people@places Culemborg",
+      "city": "Culemborg",
+      "province": "Gelderland",
+      "type": "Congrescentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 160,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f7071e9b-55ec-45ce-b7d4-264da8d2dd41/89b20cda-ed0c-4143-a837-a671cd294628.webp",
+        "alt": "people@places Culemborg"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "people-places-den-haag-mauritskade",
+      "name": "people@places Den Haag - Mauritskade",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": null,
+      "tagline": "Moderne vergader- en werklocatie in het hart van Den Haag, open vanaf 2026",
+      "capacityMin": 0,
+      "capacityMax": 60,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "modern",
+        "licht",
+        "professioneel",
+        "representatief",
+        "zakelijk",
+        "centraal"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": null,
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-deventer",
+      "name": "people@places Deventer",
+      "city": "Deventer",
+      "province": "Overijssel",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 11,
+      "capacityMax": 70,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5fc17a80-5e3f-452d-a617-5291c8dcaaf9/00.webp",
+        "alt": "people@places Deventer"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-enschede-technology-base",
+      "name": "people@places Enschede Technology Base",
+      "city": "Enschede",
+      "province": "Overijssel",
+      "type": "Evenementenlocatie",
+      "sfeer": "Industrieel",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/e7140eb4-388e-4e05-afc6-bd866fb28475/00.webp",
+        "alt": "people@places Enschede Technology Base"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "people-places-hoofddorp",
+      "name": "People@places Hoofddorp",
+      "city": "Hoofddorp",
+      "province": "Noord-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 0,
+      "capacityMax": 50,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/db5bf401-05ec-44a4-b3be-10e2e85d359d/08f96f72-7b8f-437e-ba02-2741310614a0.jpeg",
+        "alt": "People@places Hoofddorp in Hoofddorp — groene event- en vergaderlocatie"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-naarden",
+      "name": "people@places Naarden",
+      "city": "Naarden",
+      "province": "Noord-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 50,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f0da810c-765c-48e2-b5ae-93152bf0bf0e/00.webp",
+        "alt": "people@places Naarden"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-nijkerk",
+      "name": "people@places Nijkerk",
+      "city": "Nijkerk",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 50,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5403b915-ce9a-4210-abd1-b863e7c26a2e/00.webp",
+        "alt": "people@places Nijkerk"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:27:54Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-nunspeet",
+      "name": "people@places Nunspeet",
+      "city": "Nunspeet",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 60,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f9671b03-13a1-40c8-986c-7adedbda2b5c/00.webp",
+        "alt": "people@places Nunspeet"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "peopleplaces-zutphen",
+      "name": "people@places Zutphen",
+      "city": "Zutphen",
+      "province": "Gelderland",
+      "type": "Vergadercentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 50,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/6be1141a-347f-49e7-a050-9af06e6de2b4/00.webp",
+        "alt": "people@places Zutphen"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "room-mate-bruno-rotterdam",
+      "name": "Room Mate Bruno Rotterdam",
+      "city": "Rotterdam",
+      "province": "Zuid-Holland",
+      "type": "Hotel",
+      "sfeer": "Creatief & artistiek",
+      "tagline": "Design hotel en eventlocatie aan de Maas, met ruimte voor grote en kleine bijeenkomsten",
+      "capacityMin": 10,
+      "capacityMax": 200,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "industrieel",
+        "kleurrijk",
+        "aan het water",
+        "skyline uitzicht",
+        "black box",
+        "design"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/358cc32b-ed6d-4226-8740-31adf5568cb1/00.webp",
+        "alt": "Room Mate Bruno Rotterdam"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "sanadome-hotel-spa-nijmegen",
+      "name": "Sanadome Hotel & Spa Nijmegen",
+      "city": "Nijmegen",
+      "province": "Gelderland",
+      "type": null,
+      "sfeer": null,
+      "tagline": "Vergaderen in een bosrijke omgeving met spa en wellness onder één dak",
+      "capacityMin": 1,
+      "capacityMax": 220,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "bosrijke omgeving",
+        "groen",
+        "luxe",
+        "wellness",
+        "rustig",
+        "daglicht"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/fcf83611-6b75-411c-acbf-d417915fb091/dc4c224f-1540-4da6-9623-7f41c30ab381.webp",
+        "alt": "Sfeerbeeld van Sanadome Hotel & Spa Nijmegen"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-22T11:39:26Z"
+    },
+    {
+      "greenbookingsSlug": "spaarnwoude-park-hotel",
+      "name": "Spaarnwoude Park Hotel",
+      "city": "Velsen-Zuid",
+      "province": "Noord-Holland",
+      "type": "Hotel",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 120,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/23dd6c32-091b-4ba2-9384-283dcafe6c10/00.webp",
+        "alt": "Spaarnwoude Park Hotel"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "starthub-cafe-utrecht",
+      "name": "StartHub Cafe Utrecht",
+      "city": "Utrecht",
+      "province": "Utrecht",
+      "type": "Restaurant",
+      "sfeer": "Creatief & artistiek",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/505f938e-ab0b-4243-8542-f67dda24d7ce/00.webp",
+        "alt": "StartHub Cafe Utrecht"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:43:45Z"
+    },
+    {
+      "greenbookingsSlug": "tasman",
+      "name": "Tasman.",
+      "city": "Poortugaal",
+      "province": "Zuid-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Huiselijk & informeel",
+      "tagline": null,
+      "capacityMin": null,
+      "capacityMax": 350,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/0c156dc0-b560-4b9b-960b-b81b9566ed3c/00.png",
+        "alt": "Tasman."
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "the-collector-hotel",
+      "name": "The Collector Hotel",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Hotel",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 100,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/85aa04e3-0b6f-439a-a0fd-744598c164e0/43012b7c-1aea-4f14-933c-7bef515ac15a.jpeg",
+        "alt": "The Collector Hotel in Den Haag — groene event- en vergaderlocatie"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+    },
+    {
+      "greenbookingsSlug": "the-conference-club",
+      "name": "The Conference Club",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Luxe",
+      "tagline": null,
+      "capacityMin": 1,
+      "capacityMax": 20,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5822ec68-07ce-4e16-aee8-4c7c7cfd2a15/00.png",
+        "alt": "The Conference Club"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-11-01T18:56:57Z"
+    },
+    {
+      "greenbookingsSlug": "the-hague-conference-centre",
+      "name": "The Hague Conference Centre",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Congrescentrum",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 2,
+      "capacityMax": 650,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f59c3b40-ec38-49f1-8047-241d67818d9d/00.webp",
+        "alt": "The Hague Conference Centre naast Den Haag Centraal Station"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    },
+    {
+      "greenbookingsSlug": "diligentia",
+      "name": "Theater Diligentia",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Theater",
+      "sfeer": "Klassiek & historisch",
+      "tagline": "Theaterpodium aan het Lange Voorhout voor congressen, feesten en ceremonies",
+      "capacityMin": 20,
+      "capacityMax": 500,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [
+        "Klassiek",
+        "Industrieel",
+        "Monumentaal",
+        "Haags",
+        "Historische omgeving"
+      ],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/8e40b49e-1d51-49d6-a4bb-d3608c464d0b/00.webp",
+        "alt": "Theater Diligentia"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+    },
+    {
+      "greenbookingsSlug": "thialf",
+      "name": "Thialf",
+      "city": "Heerenveen",
+      "province": "Friesland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Modern & minimalistisch",
+      "tagline": null,
+      "capacityMin": 10,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/1df7df55-2663-4991-a4ed-108f0c84f719/00.webp",
+        "alt": "Thialf"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+    },
+    {
+      "greenbookingsSlug": "toussainthuis",
+      "name": "Toussainthuis",
+      "city": "Den Haag",
+      "province": "Zuid-Holland",
+      "type": "Vergadercentrum",
+      "sfeer": "Klassiek & historisch",
+      "tagline": null,
+      "capacityMin": 6,
+      "capacityMax": 100,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/91221b9e-e984-4d3e-8af8-27c77f14d3c1/00.webp",
+        "alt": "Toussainthuis"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+    },
+    {
+      "greenbookingsSlug": "veluwe-hotel-de-beyaerd",
+      "name": "Veluwe Hotel de Beyaerd",
+      "city": "Hulshorst",
+      "province": "Gelderland",
+      "type": "Hotel",
+      "sfeer": "Landelijk & natuur",
+      "tagline": null,
+      "capacityMin": 11,
+      "capacityMax": 500,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/ee69ba66-485c-42d2-84a6-de21c6233d30/00.webp",
+        "alt": "Veluwe Hotel de Beyaerd"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-10-14T18:46:14Z"
+    },
+    {
+      "greenbookingsSlug": "venue-collective",
+      "name": "Venue Collective",
+      "city": "Amsterdam",
+      "province": "Noord-Holland",
+      "type": "Evenementenlocatie",
+      "sfeer": "Creatief & artistiek",
+      "tagline": null,
+      "capacityMin": 8,
+      "capacityMax": 400,
+      "status": "gepubliceerd",
+      "aangesloten": true,
+      "sfeerTags": [],
+      "bijeenkomstTypes": [],
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/01124def-799a-4843-a9bf-04ed041bdb57/00.png",
+        "alt": "Venue Collective – eventlocatie in Amsterdam"
+      },
+      "mediaCount": null,
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+    }
+  ],
+  "suppliers": [
+    {
+      "greenbookingsSlug": "bourgonje",
+      "name": "Bourgonje",
+      "category": "AV-techniek",
+      "city": "Zoetermeer",
+      "tagline": "Geluid, licht en video voor evenementen en congressen, onder één dak.",
+      "status": "actief",
+      "toonInGids": false,
+      "website": "https://www.bourgonje.nl",
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "catering-van-t-hooge",
+      "name": "Catering van 't Hooge",
+      "category": "Catering",
+      "city": "Hoogeveen",
+      "tagline": "Eventcatering op maat voor een doelgericht en smaakvol zakelijk event.",
+      "status": "actief",
+      "toonInGids": false,
+      "website": "https://www.vthooge.nl",
+      "sourceUpdatedAt": "2026-11-03T04:40:16Z"
+    },
+    {
+      "greenbookingsSlug": "floris-van-maurik-catering-en-events",
+      "name": "Floris & van Maurik",
+      "category": "Catering",
+      "city": "Huizen",
+      "tagline": "Gerenommeerde cateraar voor particuliere en zakelijke evenementen.",
+      "status": "actief",
+      "toonInGids": false,
+      "website": "https://florisenvanmaurik.nl",
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "jb-productions-lev",
+      "name": "JB Productions",
+      "category": "Entertainment",
+      "city": "Heinenoord",
+      "tagline": "Is een entertainment-/artiestenbureau voor evenementen.",
+      "status": "actief",
+      "toonInGids": true,
+      "website": "https://www.jbproductions.nl/",
+      "sourceUpdatedAt": "2026-11-03T04:40:15Z"
+    },
+    {
+      "greenbookingsSlug": "flitz-events",
+      "name": "Flitz-Events",
+      "category": "Eventorganisatie",
+      "city": null,
+      "tagline": "Nationaal evenementenbureau voor jong en oud",
+      "status": "actief",
+      "toonInGids": true,
+      "website": "https://flitz-events.nl",
+      "sourceUpdatedAt": "2026-10-31T04:40:15Z"
+    }
+  ]
+}

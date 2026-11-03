@@ -1,0 +1,24 @@
+{
+  "name": "top-locaties",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Top Locaties \u2014 redactioneel inspiratieplatform voor eventconcepten, locaties en leveranciers (Greenbookings-netwerk).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "validate": "node scripts/validate-content.mjs",
+    "check": "node scripts/validate-content.mjs && node design-system/check-design.mjs src scripts",
+    "screenshots": "node scripts/screenshots.mjs",
+    "flows": "node scripts/flows.mjs",
+    "admin": "node scripts/admin.mjs",
+    "sync": "node scripts/sync/greenbookings.mjs",
+    "sync:dry": "node scripts/sync/greenbookings.mjs --dry-run",
+    "test": "node --test tests/*.test.mjs",
+    "qa": "node scripts/build.mjs && node --test tests/*.test.mjs && node scripts/flows.mjs && node design-system/check-design.mjs src scripts admin"
+  }
+}

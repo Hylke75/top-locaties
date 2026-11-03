@@ -1,0 +1,10 @@
+{
+  "_meta": "Redactionele laag voor leveranciers. De rol per concept staat in concepts.json (supplierMatches.role) omdat die contextueel is. 'symbol' is het typografische teken op de kaart (geen logo). profileLinkStatus: 'onbevestigd' zolang de publieke profielpagina niet handmatig is gecontroleerd.",
+  "suppliers": [
+    { "id": "bourgonje", "greenbookingsSlug": "bourgonje", "label": "AV / TECHNIEK", "symbol": "✳", "profileLinkStatus": "onbevestigd" },
+    { "id": "hooge", "greenbookingsSlug": "catering-van-t-hooge", "label": "CATERING", "symbol": "◉", "profileLinkStatus": "onbevestigd" },
+    { "id": "floris", "greenbookingsSlug": "floris-van-maurik-catering-en-events", "label": "CATERING / EVENTS", "symbol": "◌", "profileLinkStatus": "onbevestigd" },
+    { "id": "jb", "greenbookingsSlug": "jb-productions-lev", "label": "ENTERTAINMENT", "symbol": "✶", "profileLinkStatus": "onbevestigd" },
+    { "id": "flitz", "greenbookingsSlug": "flitz-events", "label": "EVENTORGANISATIE", "symbol": "↗", "profileLinkStatus": "onbevestigd" }
+  ]
+}

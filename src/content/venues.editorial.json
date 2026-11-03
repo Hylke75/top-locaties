@@ -1,0 +1,254 @@
+{
+  "_meta": "Redactionele laag van Top Locaties bovenop de Greenbookings-bron. Overschrijft GEEN bronvelden. eventTypes/character zijn Top Locaties-filtertaxonomie (fysieke sfeer, los van gevoelens). Concept-koppelingen staan in concepts.json (venueMatches) — niet hier dupliceren. illustrativeImage wordt alleen gebruikt als de bron geen eigen foto heeft en wordt altijd als SFEERBEELD gelabeld. Partner-only: alleen bronrecords met aangesloten=true worden getoond (fail-closed, zie src/lib/data.mjs).",
+  "taxonomy": {
+    "eventTypes": {
+      "congres": "Congres & kennisfestival",
+      "vergadering": "Vergadering & heidag",
+      "feest": "Feest & relatie-event",
+      "buiten": "Buiten & natuur"
+    },
+    "character": {
+      "industrieel": "Industrieel & rauw",
+      "groen": "Groen & buiten",
+      "stedelijk": "Stedelijk & iconisch",
+      "creatief": "Creatief & verrassend",
+      "historisch": "Historisch & monumentaal"
+    }
+  },
+  "venues": [
+    {
+      "id": "fokker",
+      "greenbookingsSlug": "fokker-terminal-den-haag",
+      "order": 1,
+      "label": "MONUMENTAAL / INDUSTRIEEL",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "industrieel",
+        "stedelijk"
+      ],
+      "line": "Een voormalige hangar in Den Haag: industrieel erfgoed waar één grote ruimte een heel programma kan dragen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "beeld",
+      "greenbookingsSlug": "nederlands-instituut-voor-beeld-geluid-hilversum",
+      "order": 2,
+      "label": "CULTUUR / MEDIA",
+      "eventTypes": [
+        "congres",
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "creatief",
+        "stedelijk"
+      ],
+      "line": "Het instituut voor media en cultuur in Hilversum: een omgeving die vanzelf over verhalen en verbeelding gaat.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "tobacco",
+      "greenbookingsSlug": "tobacco-theater-amsterdam",
+      "order": 3,
+      "label": "INDUSTRIEEL / THEATER",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "industrieel",
+        "creatief",
+        "stedelijk"
+      ],
+      "line": "Een industrieel theater in het hart van Amsterdam, met hoog opgetrokken zalen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "geofort",
+      "greenbookingsSlug": "geofort",
+      "order": 4,
+      "label": "MONUMENT / FORT",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "historisch",
+        "creatief"
+      ],
+      "line": "Een monumentaal fort in Herwijnen, in het Gelderse rivierenland.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "euromast",
+      "greenbookingsSlug": "euromast",
+      "order": 5,
+      "label": "ICONISCH / UITZICHT",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "stedelijk"
+      ],
+      "line": "Samenkomen op hoogte in Rotterdam, met zicht over de hele stad.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "nutshuis",
+      "greenbookingsSlug": "het-nutshuis",
+      "order": 6,
+      "label": "MONUMENT / STAD",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "historisch",
+        "stedelijk"
+      ],
+      "line": "Een monumentaal pand in het centrum van Den Haag.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "spaanschehof",
+      "greenbookingsSlug": "het-spaansche-hof-by-peopleplaces",
+      "order": 7,
+      "label": "MONUMENT / BINNENSTAD",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "historisch"
+      ],
+      "line": "Een historisch monument in de Haagse binnenstad.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "polderij",
+      "greenbookingsSlug": "de-polderij",
+      "order": 8,
+      "label": "BOERDERIJ / POLDER",
+      "eventTypes": [
+        "vergadering",
+        "buiten"
+      ],
+      "character": [
+        "groen"
+      ],
+      "line": "Een boerderij in Maassluis: landelijk, buiten de stad en toch dichtbij.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "milk",
+      "greenbookingsSlug": "milk-meetings",
+      "order": 9,
+      "label": "BOERDERIJ / KLEIN",
+      "eventTypes": [
+        "vergadering",
+        "buiten"
+      ],
+      "character": [
+        "groen"
+      ],
+      "line": "Vergaderen op een boerderij in Wilnis, voor kleine groepen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "openlucht",
+      "greenbookingsSlug": "nederlands-openluchtmuseum",
+      "order": 10,
+      "label": "MUSEUM / BUITEN",
+      "eventTypes": [
+        "vergadering",
+        "buiten"
+      ],
+      "character": [
+        "historisch",
+        "groen"
+      ],
+      "line": "Het Nederlands Openluchtmuseum in Arnhem: geschiedenis in de open lucht.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "grotekerk",
+      "greenbookingsSlug": "grote-kerk-den-haag",
+      "order": 11,
+      "label": "MONUMENT / KERK",
+      "eventTypes": [
+        "congres",
+        "feest"
+      ],
+      "character": [
+        "historisch",
+        "stedelijk"
+      ],
+      "line": "De monumentale Grote Kerk in het centrum van Den Haag.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "madurodam",
+      "greenbookingsSlug": "madurodam-events",
+      "order": 12,
+      "label": "ICONISCH / VERRASSEND",
+      "eventTypes": [
+        "feest",
+        "congres"
+      ],
+      "character": [
+        "creatief",
+        "stedelijk"
+      ],
+      "line": "De eventlocatie van Madurodam in Den Haag.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "singer",
+      "greenbookingsSlug": "singer-laren",
+      "order": 13,
+      "label": "MUSEUM / KUNST",
+      "eventTypes": [
+        "vergadering",
+        "feest"
+      ],
+      "character": [
+        "creatief"
+      ],
+      "line": "Museum Singer in Laren, in het Gooi.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "pier",
+      "greenbookingsSlug": "peopleplaces-den-haag-scheveningen-de-pier",
+      "order": 14,
+      "label": "ZEE / ZAKELIJK",
+      "eventTypes": [
+        "congres",
+        "vergadering"
+      ],
+      "character": [
+        "stedelijk"
+      ],
+      "line": "Vergader- en eventruimtes op de Pier van Scheveningen, boven zee.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    }
+  ]
+}

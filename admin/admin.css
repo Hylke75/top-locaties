@@ -1,0 +1,43 @@
+/* Beheer: functionele uitbreiding op tokens + tl-componenten. Geen eigen kleuren of fonts. */
+.ad-userbar { display:flex; justify-content:space-between; gap:12px; padding:10px var(--tl-gutter); background:var(--tl-ink); color:var(--tl-white); }
+.ad-login { display:grid; grid-template-columns:minmax(0,420px) auto; gap:0; margin-top:40px; background:var(--tl-white); border:1px solid var(--tl-ink); box-shadow:9px 9px 0 var(--tl-ink); max-width:640px; }
+.ad-login .tl-button { min-height:73px; border:0; background:var(--tl-coral); color:var(--tl-ink) !important; }
+.ad-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin:30px 0; }
+.ad-tile { border:1px solid var(--tl-line); background:var(--tl-paper); padding:20px; }
+.ad-tile b { display:block; font:400 clamp(36px,4vw,64px)/1 var(--tl-font-display); letter-spacing:-.06em; margin:14px 0 6px; }
+.ad-list { border-top:2px solid var(--tl-ink); }
+.ad-row { display:grid; grid-template-columns:1.4fr .8fr .8fr auto; gap:16px; align-items:center; padding:16px 0; border-bottom:var(--tl-border); }
+.ad-row__title { font:400 clamp(20px,2vw,30px)/1 var(--tl-font-display); letter-spacing:-.05em; text-transform:uppercase; }
+.ad-status { display:inline-block; padding:6px 9px; border:1px solid var(--tl-ink); font:400 10px var(--tl-font-mono); text-transform:uppercase; }
+.ad-status[data-s="published"] { background:var(--tl-ink); color:var(--tl-white); }
+.ad-status[data-s="review"] { background:var(--tl-cobalt); color:var(--tl-white); border-color:var(--tl-cobalt); }
+.ad-status[data-s="archived"] { color:var(--tl-muted); border-color:var(--tl-line); }
+.ad-form { display:grid; gap:22px; max-width:980px; }
+.ad-form fieldset { border:0; border-top:2px solid var(--tl-ink); margin:0; padding:20px 0 0; display:grid; gap:16px; }
+.ad-form legend { font:400 12px var(--tl-font-mono); text-transform:uppercase; padding:0 0 12px; }
+.ad-field { display:grid; gap:6px; }
+.ad-field > span { font:400 10px var(--tl-font-mono); text-transform:uppercase; }
+.ad-field input, .ad-field select, .ad-field textarea { width:100%; min-height:44px; border:1px solid var(--tl-line-strong); background:var(--tl-white); color:var(--tl-ink); padding:10px 12px; font:400 14px/1.5 var(--tl-font-body); border-radius:0; }
+.ad-field textarea { min-height:110px; }
+.ad-field small { color:var(--tl-muted); font:400 11px/1.5 var(--tl-font-mono); }
+.ad-two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.ad-three { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.ad-repeat { display:grid; gap:10px; }
+.ad-repeat__item { display:grid; grid-template-columns:repeat(var(--cols,3),minmax(0,1fr)) auto; gap:10px; align-items:end; padding:12px; border:1px solid var(--tl-line-soft); background:var(--tl-paper); }
+.ad-actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; position:sticky; bottom:0; padding:16px 0; background:var(--tl-paper); border-top:var(--tl-border); z-index:5; }
+.ad-issues { margin:0; padding:0; list-style:none; display:grid; gap:6px; font:400 12px/1.5 var(--tl-font-mono); }
+.ad-issues li { padding:8px 10px; border-left:4px solid var(--tl-line); background:var(--tl-white); }
+.ad-issues li[data-kind="error"] { border-left-color:var(--tl-coral); }
+.ad-pre { white-space:pre-wrap; max-height:420px; overflow:auto; background:var(--tl-ink); color:var(--tl-white); padding:16px; font:400 12px/1.5 var(--tl-font-mono); }
+.ad-table { width:100%; border-collapse:collapse; font:400 13px/1.5 var(--tl-font-body); }
+.ad-table th { text-align:left; font:400 10px var(--tl-font-mono); text-transform:uppercase; border-bottom:2px solid var(--tl-ink); padding:10px 8px; }
+.ad-table td { border-bottom:var(--tl-border); padding:10px 8px; vertical-align:top; }
+.ad-search { min-height:44px; width:min(420px,100%); border:1px solid var(--tl-ink); padding:10px 12px; margin:0 0 18px; font:400 14px var(--tl-font-body); }
+@media (max-width: 800px) {
+  .ad-grid { grid-template-columns:1fr 1fr; }
+  .ad-row { grid-template-columns:1fr; gap:8px; }
+  .ad-two, .ad-three { grid-template-columns:1fr; }
+  .ad-repeat__item { grid-template-columns:1fr; }
+  .ad-login { grid-template-columns:1fr; }
+  .ad-table { display:block; overflow-x:auto; }
+}

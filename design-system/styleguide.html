@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Visueel componentenboek voor de Top Locaties ontwerpstijl.">
+  <title>Design Manual — Top Locaties</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    /* Alleen de documentatie-overlay; de echte productcomponenten staan in components.css. */
+    .ds-tag { padding:8px 12px; border:1px solid currentColor; display:inline-block; font:10px var(--tl-font-mono); text-transform:uppercase; }
+    .ds-swatches { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:13px; margin-top:45px; }
+    .ds-swatch { min-width:0; border:1px solid #aaa; background:white; }
+    .ds-swatch__fill { height:135px; }
+    .ds-swatch__info { padding:15px; font:11px/1.7 var(--tl-font-mono); }
+    .ds-swatch__info strong { display:block; font-size:13px; }
+    .ds-type-samples { display:grid; grid-template-columns:1.1fr .9fr; gap:70px; margin-top:50px; }
+    .ds-component-line { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:26px 0 55px; }
+    .ds-pair { display:flex; justify-content:space-between; gap:20px; align-items:center; border-top:1px solid #999; padding:17px 0; }
+    .ds-pair__id { font:11px var(--tl-font-mono); text-transform:uppercase; }
+    .ds-pair__value { max-width:600px; text-align:right; }
+    .ds-caption { font:11px/1.65 var(--tl-font-mono); text-transform:uppercase; margin:28px 0; max-width:800px; }
+    .ds-flex { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:25px; margin-bottom:35px; }
+    .ds-supplier-demo .tl-supplier { background:var(--tl-paper); }
+    .ds-detail-header { padding-bottom:15px; border-bottom:1px solid currentColor; margin-bottom:45px; display:flex; justify-content:space-between; gap:20px; }
+    .ds-topnote { padding:11px var(--tl-gutter); background:var(--tl-cobalt); color:white; font:11px/1.5 var(--tl-font-mono); text-transform:uppercase; }
+    @media(max-width:800px) { .ds-swatches {grid-template-columns:repeat(3,1fr)} .ds-type-samples {grid-template-columns:1fr;gap:25px} }
+    @media(max-width:550px) { .ds-swatches {grid-template-columns:repeat(2,1fr)} .ds-swatch__fill {height:110px} .ds-pair{display:block}.ds-pair__value{text-align:left;margin-top:8px} }
+  </style>
+</head>
+<body class="tl-app">
+  <div class="ds-topnote">ONTWERPHANDBOEK / V1.1 / VISUELE REFERENTIE VOOR ELKE NIEUWE PAGINA</div>
+  <header class="tl-header">
+    <a class="tl-wordmark" href="../dist/hupr.html" aria-label="Top Locaties — naar de homepage">TOP<br>LOCATIES<span class="tl-wordmark__star">✳</span></a>
+    <nav class="tl-nav" aria-label="Hoofdnavigatie"><a href="#identiteit">IDENTITEIT</a><a href="#gevoel">GEVOEL</a><a href="#componenten">COMPONENTEN</a><a class="tl-button" href="../dist/hupr.html">BEKIJK DE SITE <span>↗</span></a></nav>
+  </header>
+
+  <main>
+    <section class="tl-hero" aria-labelledby="heroTitle">
+      <div class="tl-hero__copy">
+        <div class="tl-hero__meta"><span>DESIGN SYSTEM / TOP LOCATIES</span><span>01 / 08</span></div>
+        <h1 class="tl-display" id="heroTitle">GEEN<br>GEWONE<br><span class="tl-accent">WEBSITE.</span></h1>
+        <div>
+          <p class="tl-hero__intro">Eén herkenbare ontwerpstijl. Voor alle concepten, locaties, leveranciers en nieuwe ideeën die nog volgen.</p>
+          <div class="tl-hero__footer"><a class="tl-round-link" href="#identiteit">BEKIJK HET SYSTEEM <span class="tl-round-link__circle">↓</span></a><span class="tl-mono">ARCHIVO BLACK<br>DM MONO<br>DM SANS</span></div>
+        </div>
+      </div>
+      <figure class="tl-hero__image"><img src="../dist/festival-event.webp" alt="Artistieke evenementenfotografie met een levendige grote zaal"><figcaption>BEELD TER INSPIRATIE / DESIGNREFERENTIE 2026</figcaption></figure>
+    </section>
+
+    <section class="tl-section" id="identiteit">
+      <div class="tl-overline"><span>01 / DE VISUELE IDENTITEIT</span><span>WEINIG KLEUREN / VEEL KARAKTER</span></div>
+      <div class="tl-columns"><div class="tl-intro-label">De beste eventwebsites laten iets voelen nog vóór je gaat zoeken.</div><div><h2 class="tl-display">EEN POSTER.<br>EEN PLATFORM.<br><span class="tl-accent">ÉÉN STEM.</span></h2><p class="tl-body">De merktaal combineert zware, compacte typografie met het ritme van een onafhankelijk magazine. Geen sjabloon vol afgeronde kaarten, maar een grote gedachte met helder bruikbare informatie.</p><a class="tl-round-link" href="STYLE-GUIDE.md">LEES DE ONTWERPREGELS <span class="tl-round-link__circle">↗</span></a></div></div>
+      <div class="ds-swatches" aria-label="Kleurenpalet">
+        <div class="ds-swatch"><div class="ds-swatch__fill" style="background:#292A2C"></div><div class="ds-swatch__info"><strong>INKT</strong>#292A2C<br>PRIMAIR</div></div>
+        <div class="ds-swatch"><div class="ds-swatch__fill" style="background:#F45269"></div><div class="ds-swatch__info"><strong>KORAAL</strong>#F45269<br>ACCENT</div></div>
+        <div class="ds-swatch"><div class="ds-swatch__fill" style="background:#2546BB"></div><div class="ds-swatch__info"><strong>KOBALT</strong>#2546BB<br>FOCUS / MATCH</div></div>
+        <div class="ds-swatch"><div class="ds-swatch__fill" style="background:#D9C9BF"></div><div class="ds-swatch__info"><strong>TAUPE</strong>#D9C9BF<br>EDITORIAL</div></div>
+        <div class="ds-swatch"><div class="ds-swatch__fill" style="background:#F6F5F2"></div><div class="ds-swatch__info"><strong>PAPIER</strong>#F6F5F2<br>BASIS</div></div>
+      </div>
+      <div class="ds-type-samples">
+        <div><p class="ds-caption">DISPLAY / ARCHIVO BLACK / UPPERCASE / -0.075EM</p><div class="tl-display tl-display--sm">VIND EEN PLEK<br>DIE IETS<br>LOSMAAKT.</div></div>
+        <div><p class="ds-caption">MICROCOPY / DM MONO / 11PX</p><div class="tl-mono">01 / DE ONTDEKKING<br>CONCEPT × LOCATIE × MAKER<br><br>02 / HET VERHAAL<br>GEEN GEWOON CONGRES.</div><p class="ds-caption">BODY / DM SANS / 15PX</p><p class="tl-body">Een bijzondere bijeenkomst begint niet met een vergaderzaal. Ze begint met de vraag wat je bij mensen wilt losmaken.</p></div>
+      </div>
+    </section>
+
+    <section class="tl-section tl-section--mist" id="gevoel">
+      <div class="tl-overline"><span>02 / GEVOELENSKOMPAS</span><span>ONTDEKKEN IS GEEN FILTERFORMULIER</span></div>
+      <div class="ds-flex"><h2 class="tl-display">HOE MOET<br>HET <span class="tl-accent">VOELEN?</span></h2><p class="tl-mono" style="max-width:310px">Kies één of twee gevoelens. Het voorbeeld hieronder reageert op je keuze.</p></div>
+      <div class="tl-feeling-grid" id="dsMoodGrid">
+        <button class="tl-feeling" type="button" data-feel="energie" data-shape="ring" style="--tl-feeling-color:#F45269" aria-pressed="false"><span class="tl-feeling__meta">01 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">ENERGIE</strong><span class="tl-feeling__desc">Met nieuwe zin naar huis.</span></span></button>
+        <button class="tl-feeling" type="button" data-feel="verbinding" data-shape="square" style="--tl-feeling-color:#2546BB" aria-pressed="false"><span class="tl-feeling__meta">02 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">VERBINDING</strong><span class="tl-feeling__desc">Echt iets met elkaar delen.</span></span></button>
+        <button class="tl-feeling" type="button" data-feel="verwondering" data-shape="diamond" style="--tl-feeling-color:#D49E50" aria-pressed="false"><span class="tl-feeling__meta">03 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">VERWONDERING</strong><span class="tl-feeling__desc">Een beetje magie.</span></span></button>
+        <button class="tl-feeling" type="button" data-feel="rust" data-shape="arc" style="--tl-feeling-color:#94AC9E" aria-pressed="false"><span class="tl-feeling__meta">04 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">RUST</strong><span class="tl-feeling__desc">Tijd voor aandacht.</span></span></button>
+        <button class="tl-feeling" type="button" data-feel="focus" data-shape="target" style="--tl-feeling-color:#4C6B85" aria-pressed="false"><span class="tl-feeling__meta">05 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">FOCUS</strong><span class="tl-feeling__desc">Een helder idee verder.</span></span></button>
+        <button class="tl-feeling" type="button" data-feel="trots" data-shape="triangle" style="--tl-feeling-color:#BB8D9B" aria-pressed="false"><span class="tl-feeling__meta">06 / GEVOEL <span>+</span></span><span><strong class="tl-feeling__name">TROTS</strong><span class="tl-feeling__desc">Samen iets vieren.</span></span></button>
+      </div>
+      <div class="ds-flex" style="margin-top:46px"><h3 class="tl-display tl-display--sm">DIT PAST BIJ JOU.</h3><button type="button" id="dsResetMood" class="tl-button tl-button--outline">RESET KEUZE ↗</button></div>
+      <div class="tl-match-grid" id="dsMatches" aria-live="polite"></div>
+      <p class="tl-note" style="margin-top:23px">Demonstratie met redactionele matches; geen berekende waarschijnlijkheid.</p>
+    </section>
+
+    <section class="tl-section tl-section--taupe" id="componenten">
+      <div class="tl-overline"><span>03 / UITGELICHT CONCEPT</span><span>ÉÉN GROOT BEELD / ÉÉN VERHAAL</span></div>
+      <div class="tl-featured"><div class="tl-featured__photo"><img src="../dist/festival-event.webp" alt="Sfeerbeeld voor het eventconcept Het festival van morgen"></div><div class="tl-featured__content"><div class="tl-mono">CONCEPT 001 / EXPERIENCE SERIES</div><div><h2 class="tl-featured__title">HET FESTIVAL<br>VAN MORGEN.</h2><p class="tl-body">Een kennisfestival als ontdekkingstocht. Ontmoetingen, experimenten en ideeën die blijven hangen.</p><div class="tl-chip-set"><span class="tl-chip">100–500 GASTEN</span><span class="tl-chip">ENERGIE</span><span class="tl-chip">VERWONDERING</span></div></div><div class="tl-featured__bottom"><span class="tl-mono">BEKIJK HET IDEE.<br>VIND DE PLEK.</span><a class="tl-featured__arrow" href="../dist/concept.html?concept=festival" aria-label="Bekijk het festivalconcept">↗</a></div></div></div>
+    </section>
+
+    <section class="tl-section">
+      <div class="tl-overline"><span>04 / KNOPPEN, LABELS & INTERACTIES</span><span>BEWUST EENVOUDIG</span></div>
+      <h2 class="tl-display tl-display--sm">DE BEDIENING<br>HOUDT RUST.</h2>
+      <div class="ds-component-line"><a class="tl-button" href="../dist/hupr.html#gevoel">KIES OP GEVOEL ↗</a><a class="tl-button tl-button--accent" href="../dist/locaties.html">ZOEK LOCATIES ↗</a><a class="tl-button tl-button--outline" href="../dist/concept.html?concept=festival">ONTDEK HET CONCEPT ↗</a><span class="tl-chip">INDUSTRIEEL</span><span class="tl-chip">VERBINDING</span><span class="tl-chip tl-chip--dark">GEKOZEN ✓</span></div>
+      <div class="ds-pair"><span class="ds-pair__id">01 / DUNNE REGELS</span><span class="ds-pair__value">Structuur ontstaat met lijnen, niet met zes verschillende grijstinten of zware schaduwen.</span></div>
+      <div class="ds-pair"><span class="ds-pair__id">02 / ZICHTBARE ACTIES</span><span class="ds-pair__value">Korte imperatieven, rechte knoppen en een duidelijke pijl.</span></div>
+      <div class="ds-pair"><span class="ds-pair__id">03 / NOOIT ZOMAAR ICONEN</span><span class="ds-pair__value">Pijlen, nummering en de typografische ster vormen samen de vaste vormentaal.</span></div>
+    </section>
+
+    <section class="tl-section tl-section--mist">
+      <div class="tl-overline"><span>05 / ZOEKEN EN FILTEREN</span><span>VAN GEVOEL NAAR DE ECHTE PLEK</span></div>
+      <h2 class="tl-display tl-display--sm" style="margin-bottom:30px">VIND EEN PLEK<br>DIE IETS LOSMAAKT.</h2>
+      <form class="tl-search" id="dsSearch"><div class="tl-field"><label for="dsQuery">WAT ZOEK JE?</label><input id="dsQuery" placeholder="Stad, naam of een idee…" required></div><div class="tl-field"><label for="dsRegion">REGIO</label><select id="dsRegion"><option>HEEL NEDERLAND</option><option>NOORD-HOLLAND</option><option>ZUID-HOLLAND</option></select></div><div class="tl-field"><label for="dsSize">GASTEN</label><select id="dsSize"><option>AANTAL PERSONEN</option><option>TOT 50</option><option>50–150</option><option>150+</option></select></div><button class="tl-button" type="submit">ZOEK ↗</button></form>
+      <p class="tl-note" id="dsSearchFeedback" role="status" style="margin-top:26px">Voorbeeld van de zoekstrip. De live filtering staat in de bestaande locatiespagina.</p>
+    </section>
+
+    <section class="tl-section">
+      <div class="tl-overline"><span>06 / AANBEVOLEN LOCATIES</span><span>LOCATIE + MATCHREDEN</span></div>
+      <div class="ds-flex"><h2 class="tl-display">DE JUISTE<br>PLEK <span class="tl-accent">VERANDERT<br>ALLES.</span></h2><p class="tl-mono" style="max-width:280px">In deze voorbeelden zijn de beelden illustratief. Elke locatiekaart hoort later echte fotografie te krijgen.</p></div>
+      <div class="tl-venue-grid">
+        <article class="tl-venue" data-venue="Fokker Terminal" data-selected="false"><div class="tl-venue__photo"><img src="../dist/hero-event.webp" alt="Illustratief eventbeeld, niet de werkelijke Fokker Terminal"></div><div class="tl-venue__body"><span class="tl-mono">DEN HAAG / INDUSTRIEEL</span><h3 class="tl-venue__name">FOKKER TERMINAL</h3><p class="tl-venue__copy">Een locatie met karakter voor een festivalsetting.</p><div class="tl-venue__why"><b>WAAROM HIER?</b>Grote ruimtes maken verschillende programmaonderdelen mogelijk.</div><div class="tl-venue__actions"><button class="tl-button" type="button" data-choose-venue="Fokker Terminal">KIES DEZE PLEK</button></div></div></article>
+        <article class="tl-venue" data-venue="Graanfabriek" data-selected="false"><div class="tl-venue__photo"><img src="../dist/festival-event.webp" alt="Illustratief sfeerbeeld, niet de werkelijke Graanfabriek"></div><div class="tl-venue__body"><span class="tl-mono">GRONINGEN / RAUW</span><h3 class="tl-venue__name">GRAANFABRIEK</h3><p class="tl-venue__copy">Een rauwe omgeving voor een verrassend event.</p><div class="tl-venue__why"><b>WAAROM HIER?</b>Meerdere sferen en onderdelen kunnen naast elkaar ontstaan.</div><div class="tl-venue__actions"><button class="tl-button" type="button" data-choose-venue="Graanfabriek">KIES DEZE PLEK</button></div></div></article>
+        <article class="tl-venue" data-venue="Unmanned Valley" data-selected="false"><div class="tl-venue__photo"><img src="../dist/hero-event.webp" alt="Illustratief sfeerbeeld, niet de werkelijke Unmanned Valley"></div><div class="tl-venue__body"><span class="tl-mono">VALKENBURG / INNOVATIE</span><h3 class="tl-venue__name">UNMANNED VALLEY</h3><p class="tl-venue__copy">Een context waarin ontdekken en technologie samenkomen.</p><div class="tl-venue__why"><b>WAAROM HIER?</b>Past bij een toekomstgericht programma vol experimenten.</div><div class="tl-venue__actions"><button class="tl-button" type="button" data-choose-venue="Unmanned Valley">KIES DEZE PLEK</button></div></div></article>
+      </div>
+      <p class="tl-note" style="margin-top:15px">Voorbeelden uit de eerdere ontwerpstudie. Beschikbaarheid, faciliteiten en geschiktheid moeten worden bevestigd.</p>
+    </section>
+
+    <section class="tl-section tl-section--mist ds-supplier-demo">
+      <div class="tl-overline"><span>07 / DE MAKERS</span><span>DE ROL IN DIT CONCEPT TELT</span></div>
+      <h2 class="tl-display" style="margin-bottom:45px">HET WORDT PAS<br>ECHT MET <span class="tl-accent">MENSEN.</span></h2>
+      <div class="tl-supplier-grid">
+        <article class="tl-supplier" data-supplier="AV & techniek" data-selected="false"><span class="tl-mono">01 / AV & TECHNIEK</span><span class="tl-supplier__mark">✳</span><h3 class="tl-supplier__name">LICHT & GELUID.</h3><p class="tl-supplier__desc">Voor een dynamische show, goede verstaanbaarheid en een krachtig verhaal.</p><button class="tl-button tl-supplier__action" type="button" data-choose-supplier="AV & techniek">VOEG TOE <span>+</span></button></article>
+        <article class="tl-supplier" data-supplier="Catering" data-selected="false"><span class="tl-mono">02 / CATERING</span><span class="tl-supplier__mark">↗</span><h3 class="tl-supplier__name">ETEN ALS BELEVING.</h3><p class="tl-supplier__desc">Van ontvangst tot borrel: het culinaire programma vertelt mee.</p><button class="tl-button tl-supplier__action" type="button" data-choose-supplier="Catering">VOEG TOE <span>+</span></button></article>
+        <article class="tl-supplier" data-supplier="Experience design" data-selected="false"><span class="tl-mono">03 / EXPERIENCE</span><span class="tl-supplier__mark">+</span><h3 class="tl-supplier__name">CREATIEVE REGIE.</h3><p class="tl-supplier__desc">Een heldere route van eerste verwondering tot gezamenlijke afsluiting.</p><button class="tl-button tl-supplier__action" type="button" data-choose-supplier="Experience design">VOEG TOE <span>+</span></button></article>
+        <article class="tl-supplier" data-supplier="Hosts" data-selected="false"><span class="tl-mono">04 / ONTVANGST</span><span class="tl-supplier__mark">↓</span><h3 class="tl-supplier__name">MENSEN DIE VERBINDEN.</h3><p class="tl-supplier__desc">Gasten ontvangen, de weg wijzen en gesprekken op gang brengen.</p><button class="tl-button tl-supplier__action" type="button" data-choose-supplier="Hosts">VOEG TOE <span>+</span></button></article>
+      </div>
+      <p class="tl-note" style="margin-top:16px">Dit zijn voorbeeldrollen. Koppel in productie concrete, geverifieerde Greenbookings-leveranciers aan deze rollen.</p>
+    </section>
+
+    <section class="tl-section tl-section--taupe">
+      <div class="tl-overline"><span>08 / VOORBEELDPROGRAMMA</span><span>EEN DAG DIE BLIJFT HANGEN</span></div>
+      <div class="tl-columns tl-columns--equal"><div><h2 class="tl-display">VAN HALLO<br>TOT <span class="tl-accent">WOW.</span></h2><p class="tl-body">Een eventconcept wordt veel tastbaarder met een voorbeeldprogramma. De typografische tijdlijn past bij de editorial stijl.</p></div><div class="tl-timeline"><div class="tl-timeline__item"><span class="tl-timeline__time">09:30</span><div><h3 class="tl-timeline__title">EERST ONTDEKKEN.</h3><p class="tl-timeline__body">Een ontvangst waarbij de route zich vanzelf ontvouwt.</p></div></div><div class="tl-timeline__item"><span class="tl-timeline__time">11:00</span><div><h3 class="tl-timeline__title">HET EXPERIMENT.</h3><p class="tl-timeline__body">Korte sessies en verrassende ontmoetingen.</p></div></div><div class="tl-timeline__item"><span class="tl-timeline__time">14:00</span><div><h3 class="tl-timeline__title">SAMEN MAKEN.</h3><p class="tl-timeline__body">Nieuwe inzichten krijgen direct vorm.</p></div></div><div class="tl-timeline__item"><span class="tl-timeline__time">16:30</span><div><h3 class="tl-timeline__title">MET ENERGIE WEG.</h3><p class="tl-timeline__body">De laatste ontmoeting is het begin van iets nieuws.</p></div></div></div></div>
+      <p class="tl-note">Alle tijden zijn een illustratief programma, geen bestaand arrangement.</p>
+    </section>
+
+    <section class="tl-section tl-section--dark">
+      <div class="tl-overline"><span>09 / CONCEPTCOMPOSER</span><span>EEN PLAN DAT JE KUNT MEENEMEN</span></div>
+      <div class="ds-flex"><h2 class="tl-display">MAAK HET<br><span class="tl-accent">VAN JOU.</span></h2><p class="tl-mono" style="max-width:360px">Selecteer hierboven een plek en één of meer makers. Het plan hieronder reageert direct op je keuzes.</p></div>
+      <div class="tl-composer"><div class="tl-composer__grid"><div class="tl-composer__column"><span class="tl-mono">01 / GEKOZEN LOCATIE</span><div class="tl-composer__result" id="dsChosenVenue">NOG GEEN LOCATIE GEKOZEN.</div></div><div class="tl-composer__column"><span class="tl-mono">02 / GEKOZEN MAKERS</span><div class="tl-composer__result" id="dsChosenSuppliers">NOG GEEN MAKERS GEKOZEN.</div></div></div><div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" id="dsFeedback" role="status">JOUW SELECTIE / ONTWERPDEMO</span><button class="tl-button tl-button--accent" id="dsCopy" type="button">KOPIEER MIJN PLAN ↗</button></div></div>
+    </section>
+
+    <!-- ================= v1.1 — nieuwe bouwstenen (3 nov 2026) ================= -->
+    <section class="tl-section" id="v11">
+      <div class="tl-overline"><span>10 / NIEUW IN V1.1 — NAVIGATIE & RITME</span><span>UIT HUPR / CONCEPT / LOCATIES</span></div>
+      <h2 class="tl-display tl-display--md">TUSSENMAAT VOOR<br><span class="tl-accent">CONCEPTKOPPEN.</span></h2>
+      <p class="ds-caption">.TL-DISPLAY--MD / CLAMP(38PX, 5.6VW, 88PX) — VOOR KOPPEN DIE IN HUN ONTWORPEN REGELS MOETEN BLIJVEN</p>
+      <nav class="tl-crumb" aria-label="Voorbeeld kruimelpad" style="padding-inline:0"><span><a href="#">HOME</a> / <a href="#">EVENTCONCEPTEN</a> / HET FESTIVAL VAN MORGEN</span><span>.TL-CRUMB</span></nav>
+      <nav class="tl-section-nav" aria-label="Voorbeeld ankernavigatie" style="position:static"><span class="tl-mono">HET CONCEPT / 001</span><div class="tl-section-nav__tabs"><a href="#">HET IDEE</a><a href="#">PROGRAMMA</a><a href="#">LOCATIES</a><a href="#">LEVERANCIERS</a></div><a class="tl-button tl-button--accent" href="#">SAMENSTELLEN ↗</a></nav>
+      <div class="tl-signature" style="margin-top:24px"><span class="tl-signature__intro">DIT CONCEPT GEEFT JE GASTEN</span><span class="tl-signature__tags"><span data-chosen="true">ENERGIE</span><span>VERWONDERING</span><span data-chosen="true">VERBINDING</span></span><span class="tl-signature__intro">JIJ KOOS: ENERGIE + VERBINDING</span><a href="#">KIES OPNIEUW OP GEVOEL ↗</a></div>
+      <p class="ds-caption">.TL-SIGNATURE — WIT LABEL = DOOR DE BEZOEKER GEKOZEN GEVOEL</p>
+      <div class="ds-component-line"><div class="tl-chip-row" style="margin:0"><button class="tl-chip-button" type="button" aria-pressed="true">ALLE IDEEËN / 04</button><button class="tl-chip-button" type="button" aria-pressed="false">KENNIS & INSPIRATIE / 02</button></div><span class="tl-carousel__controls"><button class="tl-square-button" type="button" aria-label="Vorige">←</button><button class="tl-square-button" type="button" aria-label="Volgende">→</button></span><button class="tl-text-button" type="button">RESET ALLES ↺</button><span class="tl-label">VOORBEELD</span><a class="tl-arrow-box" href="#" aria-label="Voorbeeld pijl">↗</a></div>
+      <dl class="tl-facts"><div><dt>VOOR WIE</dt><dd>Kennisorganisaties, netwerken</dd></div><div><dt>BEDOELING</dt><dd>Kennis delen die deelnemers actief maakt.</dd></div><div><dt>GROEPSGROOTTE</dt><dd>100–500 gasten (indicatief)</dd></div></dl>
+      <p class="ds-caption">.TL-FACTS — NUCHTERE FEITEN ONDER EEN EDITORIAL KOP</p>
+    </section>
+
+    <section class="tl-section tl-section--mist">
+      <div class="tl-overline"><span>11 / LOCATIEZOEKER</span><span>FILTERS / CATALOGUS / STATES</span></div>
+      <div class="tl-columns">
+        <div class="tl-filters" style="position:static">
+          <div class="tl-filters__top"><span class="tl-filters__title">DE SELECTIE ✳</span><button class="tl-text-button" type="button">RESET ALLES ↺</button></div>
+          <fieldset class="tl-filter-group"><legend>SOORT BIJEENKOMST <span>01</span></legend><div class="tl-checks"><label class="tl-check"><input type="checkbox" checked> Congres & kennisfestival</label><label class="tl-check"><input type="checkbox"> Buiten & natuur</label></div></fieldset>
+          <div class="tl-active-filters" style="margin:0"><button type="button">Zuid-Holland ×</button><button type="button">100+ gasten ×</button></div>
+        </div>
+        <div class="tl-catalog" style="grid-template-columns:1fr 1fr">
+          <article class="tl-catalog-card"><div class="tl-catalog-card__image"><img src="../dist/hero-event.webp" alt="Illustratief sfeerbeeld"><span class="tl-catalog-card__badge">SFEERBEELD • INDUSTRIEEL</span><button class="tl-catalog-card__save" type="button" aria-pressed="true" aria-label="Bewaard">✓</button></div><div class="tl-catalog-card__kicker"><span>01 / ZUID-HOLLAND</span><span>DEN HAAG</span></div><h3 class="tl-catalog-card__title">VOORBEELD LOCATIE</h3><p class="tl-catalog-card__desc">Catalogusvariant met beeldstatus, bron en concepten.</p><div class="tl-catalog-card__foot"><span>2–1000 PERSONEN<br>BRON: GREENBOOKINGS / 07-10-2026</span><a class="tl-arrow-box" href="#" aria-label="Bekijk">↗</a></div></article>
+          <article class="tl-catalog-card" style="padding-top:70px"><div class="tl-catalog-card__image"><div class="tl-placeholder" role="img" aria-label="Nog geen foto"><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__text">FOTO VOLGT VIA GREENBOOKINGS</span></div></div><div class="tl-catalog-card__kicker"><span>02 / GRONINGEN</span><span>GRONINGEN</span></div><h3 class="tl-catalog-card__title">GEEN EIGEN FOTO</h3><p class="tl-catalog-card__desc">.tl-placeholder: eerlijk in plaats van een willekeurige stockfoto.</p></article>
+        </div>
+      </div>
+      <div class="ds-type-samples">
+        <div class="tl-state tl-state--empty"><h3 class="tl-state__title">GEEN MATCH.</h3><p>Lege staat met herstelactie.</p><button class="tl-button" type="button">RESET DE ZOEKOPDRACHT ↺</button></div>
+        <div class="tl-state tl-state--error"><h3 class="tl-state__title">DAT GING MIS.</h3><p>Foutstaat: benoem de storing, bied opnieuw proberen.</p><button class="tl-button tl-button--accent" type="button">OPNIEUW PROBEREN ↺</button></div>
+      </div>
+      <div class="tl-state tl-state--loading" style="margin-top:30px" aria-label="Laden"><div class="tl-skeleton"><span></span><span></span></div></div>
+      <p class="ds-caption">.TL-STATE--EMPTY / --ERROR / --LOADING (SKELET STOPT BIJ REDUCED MOTION)</p>
+    </section>
+
+    <section class="tl-section">
+      <div class="tl-overline"><span>12 / HOMEPAGE-BOUWSTENEN</span><span>PIECES / STEPS / ECOSYSTEEM</span></div>
+      <div class="tl-pieces"><a class="tl-piece" href="#"><span class="tl-mono">01 / HET BEGIN</span><strong class="tl-piece__title">EVENT<br>CONCEPTEN.</strong><span class="tl-piece__text">Drieluik met grafische vorm die bij hover groeit.</span></a><a class="tl-piece" href="#"><span class="tl-mono">02 / DE RUIMTE</span><strong class="tl-piece__title">BIJZONDERE<br>LOCATIES.</strong><span class="tl-piece__text">Kobalt vierkant als tegenstem.</span></a><a class="tl-piece" href="#"><span class="tl-mono">03 / DE MAKERS</span><strong class="tl-piece__title">CREATIEVE<br>MAKERS.</strong><span class="tl-piece__text">Taupe ring.</span></a></div>
+    </section>
+    <section class="tl-section tl-section--dark">
+      <div class="tl-steps"><div><b>01.</b><p>Ontdek een concept.</p></div><div><b>02.</b><p>Vind de plek.</p></div><div><b>03.</b><p>Betrek de makers.</p></div></div>
+      <div class="tl-callout"><span>.tl-callout — één verwijzing met kader.</span><a href="#">BEKIJK GREENBOOKINGS ↗</a></div>
+    </section>
+  </main>
+
+  <footer class="tl-footer"><div class="tl-overline"><span>TOP LOCATIES / DESIGN MANUAL</span><span>CONSISTENT VAN IDEE TOT ONTWERP</span></div><div class="tl-footer__name">TOP LOCATIES ✳</div><div class="tl-footer__bottom"><span class="tl-mono">ARCHIVO BLACK × DM MONO × DM SANS</span><a class="tl-mono" href="#heroTitle">TERUG NAAR BOVEN ↑</a></div></footer>
+
+  <script>
+    (() => {
+      const concepts = [
+        {title:'Het festival van morgen',slug:'festival',feel:['energie','verwondering','verbinding'],why:'Een levendige dag vol ervaringen en onverwachte ontmoetingen.'},
+        {title:'Het diner dat verbindt',slug:'diner',feel:['verbinding','trots','rust'],why:'Een intiem samenzijn met betekenisvolle gesprekken.'},
+        {title:'De dag vol nieuwe ideeën',slug:'ideeen',feel:['focus','energie','verbinding'],why:'Samen onderzoeken en met richting verdergaan.'},
+        {title:'Nacht van verwondering',slug:'nacht',feel:['verwondering','energie','trots'],why:'Een zintuiglijke ervaring die bijblijft.'}
+      ];
+      const moodGrid = document.getElementById('dsMoodGrid');
+      const matches = document.getElementById('dsMatches');
+      let selected = [];
+      function renderMoods(){
+        moodGrid.querySelectorAll('button').forEach(button => {
+          const on = selected.includes(button.dataset.feel);
+          button.setAttribute('aria-pressed',on?'true':'false');
+          button.querySelector('.tl-feeling__meta span').textContent = on?'✓':'+';
+        });
+        const ranking=concepts.map((concept,index)=>({ ...concept,index,score:selected.filter(x=>concept.feel.includes(x)).length })).sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,3);
+        matches.innerHTML=ranking.map((c,i)=>`<a class="tl-match ${i===0?'tl-match--first':''}" href="../dist/concept.html?concept=${c.slug}"><span class="tl-mono">0${i+1} / ${i===0?'VOORGESTELD CONCEPT':'MEER INSPIRATIE'}</span><strong class="tl-match__name">${c.title}</strong><span class="tl-match__reason">${selected.filter(f=>c.feel.includes(f)).length?'PAST BIJ '+selected.filter(f=>c.feel.includes(f)).join(' + ').toUpperCase()+'. ':''}${c.why}</span><span class="tl-match__footer">BEKIJK HET CONCEPT <span>↗</span></span></a>`).join('');
+      }
+      moodGrid.addEventListener('click',e=>{
+        const button=e.target.closest('button[data-feel]');if(!button)return;
+        const feel=button.dataset.feel;
+        if(selected.includes(feel)) selected=selected.filter(x=>x!==feel);
+        else { if(selected.length===2) selected.shift(); selected.push(feel); }
+        renderMoods();
+      });
+      document.getElementById('dsResetMood').addEventListener('click',()=>{selected=[];renderMoods();});
+      renderMoods();
+
+      let chosenVenue=''; const chosenSuppliers=new Set();
+      function renderComposer(){
+        document.getElementById('dsChosenVenue').textContent=chosenVenue||'NOG GEEN LOCATIE GEKOZEN.';
+        document.getElementById('dsChosenSuppliers').textContent=[...chosenSuppliers].join(' / ')||'NOG GEEN MAKERS GEKOZEN.';
+        document.querySelectorAll('[data-venue]').forEach(card=>{
+          const on=card.dataset.venue===chosenVenue;card.dataset.selected=String(on);
+          const b=card.querySelector('button[data-choose-venue]');b.textContent=on?'GEKOZEN ✓':'KIES DEZE PLEK';b.setAttribute('aria-pressed',String(on));
+        });
+        document.querySelectorAll('[data-supplier]').forEach(card=>{
+          const on=chosenSuppliers.has(card.dataset.supplier);card.dataset.selected=String(on);
+          const b=card.querySelector('button[data-choose-supplier]');b.innerHTML=on?'GEKOZEN ✓':'VOEG TOE <span>+</span>';b.setAttribute('aria-pressed',String(on));
+        });
+      }
+      document.querySelectorAll('[data-choose-venue]').forEach(b=>b.addEventListener('click',()=>{chosenVenue=chosenVenue===b.dataset.chooseVenue?'':b.dataset.chooseVenue;renderComposer();}));
+      document.querySelectorAll('[data-choose-supplier]').forEach(b=>b.addEventListener('click',()=>{let k=b.dataset.chooseSupplier;chosenSuppliers.has(k)?chosenSuppliers.delete(k):chosenSuppliers.add(k);renderComposer();}));
+      document.getElementById('dsCopy').addEventListener('click',async()=>{
+        const value=`TOP LOCATIES / CONCEPTPLAN\nConcept: Het festival van morgen\nGevoelens: ${selected.join(', ')||'nog te bepalen'}\nLocatie: ${chosenVenue||'nog te bepalen'}\nMakers: ${[...chosenSuppliers].join(', ')||'nog te bepalen'}\nNB: dit is een conceptstudie, geen boeking.`;
+        try { await navigator.clipboard.writeText(value);document.getElementById('dsFeedback').textContent='PLAN GEKOPIEERD ✓'; }
+        catch {document.getElementById('dsFeedback').textContent='KOPIËREN NIET BESCHIKBAAR OP DEZE LOKALE PAGINA'; }
+      });
+      document.getElementById('dsSearch').addEventListener('submit',e=>{
+        e.preventDefault();
+        const q=document.getElementById('dsQuery').value.trim();
+        document.getElementById('dsSearchFeedback').textContent=`ZOEKVOORBEELD: ${q.toUpperCase()} / OPEN DE LIVE ONTWERPZOEKER VIA DE BUTTON BOVENAAN.`;
+      });
+      renderComposer();
+    })();
+  </script>
+</body>
+</html>

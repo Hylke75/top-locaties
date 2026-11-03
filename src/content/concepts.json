@@ -1,0 +1,595 @@
+{
+  "_meta": "Redactionele eventconcepten. Een concept is een bewerkt object: elke venue- en supplierMatch heeft een eigen reason. Kopregels: elke string is een regel; *tekst* = koraal accent. Programma's zijn altijd VOORBEELD. guestCount is indicatief en geen capaciteitsclaim. feelingWeights (1–5) bepalen de interne rangorde (FO §7.3); de score wordt nooit getoond. venueMatches verwijzen uitsluitend naar aangesloten partnerlocaties.",
+  "concepts": [
+    {
+      "id": "festival",
+      "slug": "festival",
+      "number": "001",
+      "status": "published",
+      "priority": 1,
+      "title": "Het festival van morgen",
+      "headline": [
+        "HET FESTIVAL",
+        "*VAN MORGEN.*"
+      ],
+      "category": "inspiratie",
+      "categoryLabel": "KENNIS & INSPIRATIE",
+      "format": "KENNIS / FESTIVAL",
+      "teaser": "Een kennisfestival dat voelt als een ontdekkingstocht. Geen eindeloze rijen stoelen, maar ontmoetingen, experimenten en ideeën die blijven hangen.",
+      "proposition": "Geen klassiek congres, maar een dag die voelt als een ontdekkingstocht. Ontmoet, experimenteer en ontdek wat er mogelijk is.",
+      "tags": [
+        "INSPIRATIE",
+        "INDUSTRIEEL"
+      ],
+      "guestCountMin": 100,
+      "guestCountMax": 500,
+      "feelings": [
+        "energie",
+        "verwondering",
+        "verbinding"
+      ],
+      "feelingReasons": {
+        "energie": "Het programma wisselt steeds tussen luisteren, maken en ontmoeten.",
+        "verwondering": "Elke zone van de locatie verrast met een ander format.",
+        "verbinding": "Kleine groepen en open routes maken toevallige ontmoetingen makkelijk."
+      },
+      "audiences": [
+        "Kennisorganisaties",
+        "Netwerken en branches",
+        "Innovatieteams"
+      ],
+      "objective": "Kennis delen op een manier die deelnemers actief maakt.",
+      "idea": {
+        "label": "Van een passieve congresdag naar een ervaring waaraan iedereen actief meedoet.",
+        "headline": [
+          "MINDER LUISTEREN.",
+          "*MEER BELEVEN.*"
+        ],
+        "body": "De beste ideeën ontstaan wanneer mensen niet alleen luisteren, maar zelf ontdekken. Denk aan inspirerende verhalen, interactieve sessies, onverwachte ontmoetingen en plekken die nieuwsgierigheid opwekken. Iedere ruimte krijgt een eigen rol in het programma: van de grote opening tot een hands-on workshop of een verrassende afsluiting.",
+        "values": [
+          [
+            "ENERGIE",
+            "Veel afwisseling tussen luisteren, maken en ontmoeten."
+          ],
+          [
+            "ONTDEKKING",
+            "Meerdere zones en formats laten deelnemers kiezen."
+          ],
+          [
+            "IMPACT",
+            "Praktische ideeën die na het event blijven leven."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een levendige, donkere eventzaal met licht en publiek",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van gasten tijdens een evenement",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "program": [
+        {
+          "time": "09:30",
+          "title": "De eerste prikkel",
+          "description": "Ontvangst met een interactieve installatie en verrassend welkom."
+        },
+        {
+          "time": "10:30",
+          "title": "Het grote verhaal",
+          "description": "Inspirerende keynotes, optredens en scherpe toekomstvragen."
+        },
+        {
+          "time": "13:00",
+          "title": "Kies je eigen route",
+          "description": "Parallelle workshops, demonstraties en creatieve experimenten."
+        },
+        {
+          "time": "16:00",
+          "title": "De gezamenlijke finale",
+          "description": "Resultaten delen, nieuwe mensen ontmoeten en afsluiten met energie."
+        }
+      ],
+      "venueMatches": [
+        {
+          "venueId": "fokker",
+          "priority": 1,
+          "reason": "De hangar en de kleinere ruimtes eromheen lenen zich voor plenaire momenten én workshops."
+        },
+        {
+          "venueId": "beeld",
+          "priority": 2,
+          "reason": "Een omgeving die over media en verbeelding gaat, voor een dag vol verhalen en kennisdeling."
+        },
+        {
+          "venueId": "tobacco",
+          "priority": 3,
+          "reason": "Hoge, industriële theaterzalen geven een kennisdag de energie van een festival."
+        }
+      ],
+      "supplierRoles": [
+        "AV & techniek",
+        "Catering",
+        "Entertainment",
+        "Productie & begeleiding",
+        "Creatieve regie"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Technische regie en beleving voor keynotes én zalen."
+        },
+        {
+          "supplierId": "hooge",
+          "role": "Catering",
+          "reason": "Eten, drinken en gastvrijheid die met de route meebewegen."
+        },
+        {
+          "supplierId": "jb",
+          "role": "Entertainment",
+          "reason": "Shows en verrassende momenten tussen de sessies."
+        },
+        {
+          "supplierId": "flitz",
+          "role": "Productie & begeleiding",
+          "reason": "Productie, begeleiding en activatie op de dag zelf."
+        }
+      ],
+      "seo": {
+        "title": "Het festival van morgen — eventconcept | Top Locaties",
+        "description": "Een kennisfestival als ontdekkingstocht: voorbeeldprogramma, passende locaties uit het Greenbookings-netwerk en de makers die het waarmaken."
+      },
+      "feelingWeights": {
+        "energie": 5,
+        "verwondering": 4,
+        "verbinding": 3
+      }
+    },
+    {
+      "id": "diner",
+      "slug": "diner",
+      "number": "002",
+      "status": "published",
+      "priority": 2,
+      "title": "Het diner dat verbindt",
+      "headline": [
+        "HET DINER",
+        "*DAT VERBINDT.*"
+      ],
+      "category": "verbinden",
+      "categoryLabel": "SAMEN & VERBINDEN",
+      "format": "DINER / RELATIES",
+      "teaser": "Meer dan samen eten: een avond waarin verhalen, bijzondere gerechten en onverwachte ontmoetingen samenkomen.",
+      "proposition": "Eten is het begin. De echte waarde zit in de verhalen, gesprekken en ontmoetingen die daarna ontstaan.",
+      "tags": [
+        "DINER",
+        "VERBINDEN"
+      ],
+      "guestCountMin": 30,
+      "guestCountMax": 150,
+      "feelings": [
+        "verbinding",
+        "trots",
+        "rust"
+      ],
+      "feelingReasons": {
+        "verbinding": "Wisselende tafelgesprekken brengen mensen bij elkaar die elkaar nog niet kenden.",
+        "trots": "Een gezamenlijk ritueel geeft ruimte om iets of iemand te vieren.",
+        "rust": "Het tempo van een diner laat tijd voor echte aandacht."
+      },
+      "audiences": [
+        "Relatie-events",
+        "Directies en besturen",
+        "Jubilea en bedankmomenten"
+      ],
+      "objective": "Relaties verdiepen in een setting waarin gesprek vanzelf ontstaat.",
+      "idea": {
+        "label": "Een diner dat meer doet dan gasten verwennen: het brengt mensen dichter bij elkaar.",
+        "headline": [
+          "AAN TAFEL",
+          "*GEBEURT HET.*"
+        ],
+        "body": "Het concept combineert een zorgvuldig ontworpen dinerervaring met wisselende tafelgesprekken, korte verhalen, een verrassend ritueel en culinaire momenten. De setting maakt het makkelijk om met nieuwe mensen in gesprek te raken. Geen standaard tafelschikking, maar een avond met betekenis.",
+        "values": [
+          [
+            "SFEER",
+            "Licht, styling en ruimte versterken het verhaal."
+          ],
+          [
+            "VERBINDING",
+            "Gesprekken ontstaan door subtiele werkvormen."
+          ],
+          [
+            "SMAAK",
+            "Het culinaire programma is onderdeel van de beleving."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van gasten tijdens een avondevenement",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "program": [
+        {
+          "time": "17:30",
+          "title": "Een verrassende ontvangst",
+          "description": "Een kleine belevenis die mensen meteen met elkaar verbindt."
+        },
+        {
+          "time": "18:15",
+          "title": "Het eerste verhaal",
+          "description": "Een inspirerend welkom en de aftrap van het diner."
+        },
+        {
+          "time": "19:00",
+          "title": "Aan tafel, met aandacht",
+          "description": "Een bijzonder menu met wisselende gespreksonderwerpen."
+        },
+        {
+          "time": "21:00",
+          "title": "Een gezamenlijk slot",
+          "description": "Een muzikale of theatrale afsluiting van de avond."
+        }
+      ],
+      "venueMatches": [
+        {
+          "venueId": "euromast",
+          "priority": 1,
+          "reason": "Aan tafel boven de stad: het uitzicht wordt vanzelf gespreksonderwerp."
+        },
+        {
+          "venueId": "nutshuis",
+          "priority": 2,
+          "reason": "Een monumentaal pand dat een diner een gevoel van zorg en aandacht geeft."
+        },
+        {
+          "venueId": "spaanschehof",
+          "priority": 3,
+          "reason": "Een historische setting midden in de stad, passend bij een avond met betekenis."
+        }
+      ],
+      "supplierRoles": [
+        "Catering",
+        "Licht & sfeer",
+        "Muziek of performance"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "floris",
+          "role": "Catering",
+          "reason": "De culinaire invulling als hoofdrol van de avond."
+        },
+        {
+          "supplierId": "hooge",
+          "role": "Catering",
+          "reason": "Alternatief voor een dinerconcept op maat."
+        },
+        {
+          "supplierId": "bourgonje",
+          "role": "Licht & sfeer",
+          "reason": "Licht en geluid die de tafel laten spreken, niet de techniek."
+        },
+        {
+          "supplierId": "jb",
+          "role": "Muziek of performance",
+          "reason": "Een muzikale of theatrale afsluiting."
+        }
+      ],
+      "seo": {
+        "title": "Het diner dat verbindt — eventconcept | Top Locaties",
+        "description": "Een dinerconcept met tafelgesprekken, verhalen en een gezamenlijk ritueel. Met voorbeeldprogramma, passende locaties en leveranciers."
+      },
+      "feelingWeights": {
+        "verbinding": 5,
+        "trots": 3,
+        "rust": 4
+      }
+    },
+    {
+      "id": "ideeen",
+      "slug": "ideeen",
+      "number": "003",
+      "status": "published",
+      "priority": 3,
+      "title": "De dag vol nieuwe ideeën",
+      "headline": [
+        "DE DAG VOL",
+        "*NIEUWE IDEEËN.*"
+      ],
+      "category": "inspiratie",
+      "categoryLabel": "STRATEGIE & CREATIVITEIT",
+      "format": "HEIDAG / TEAM",
+      "teaser": "Een strategiedag zonder vergaderzaal. Denk, maak, test en ontdek samen een nieuwe manier van werken.",
+      "proposition": "Een heidag die begint met een vraag en eindigt met concrete plannen. Uit de dagelijkse routine, de verbeelding in.",
+      "tags": [
+        "CREATIVITEIT",
+        "TEAM"
+      ],
+      "guestCountMin": 15,
+      "guestCountMax": 100,
+      "feelings": [
+        "focus",
+        "energie",
+        "verbinding"
+      ],
+      "feelingReasons": {
+        "focus": "Eén gezamenlijke uitdaging vormt de rode draad van de dag.",
+        "energie": "Werkvormen wisselen af met buiten zijn en bewegen.",
+        "verbinding": "Teams maken samen iets, in plaats van alleen te praten."
+      },
+      "audiences": [
+        "Managementteams",
+        "Projectteams",
+        "Organisaties in verandering"
+      ],
+      "objective": "Van een open vraag naar gedragen vervolgstappen.",
+      "idea": {
+        "label": "Samen denken en maken werkt beter wanneer de omgeving je uitnodigt om anders te kijken.",
+        "headline": [
+          "NIET NOG EEN",
+          "*VERGADERDAG.*"
+        ],
+        "body": "Een intensieve dag waarin deelnemers door verschillende werkvormen gaan: samen de uitdaging scherpstellen, nieuwe invalshoeken ontdekken, ideeën prototypen en de beste plannen presenteren. Ruimte voor wandelen, reflecteren en verrassende interventies maakt het verschil.",
+        "values": [
+          [
+            "FOCUS",
+            "Eén gezamenlijke uitdaging vormt de rode draad."
+          ],
+          [
+            "VERBEELDING",
+            "Werkvormen brengen nieuwe perspectieven."
+          ],
+          [
+            "RESULTAAT",
+            "De dag eindigt met concrete vervolgstappen."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal met publiek",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van gasten tijdens een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "program": [
+        {
+          "time": "09:00",
+          "title": "De vraag op tafel",
+          "description": "Samen een scherpe uitdaging formuleren."
+        },
+        {
+          "time": "10:30",
+          "title": "Kijk eens anders",
+          "description": "Inspirerende interventies en verrassende perspectieven."
+        },
+        {
+          "time": "13:00",
+          "title": "Het ideeënatelier",
+          "description": "In teams experimenteren en concepten uitwerken."
+        },
+        {
+          "time": "16:00",
+          "title": "Van idee naar actie",
+          "description": "Presentatie en keuze van de beste vervolgstappen."
+        }
+      ],
+      "venueMatches": [
+        {
+          "venueId": "polderij",
+          "priority": 1,
+          "reason": "Een boerderij buiten de stad maakt het makkelijk werkvormen af te wisselen met buiten zijn."
+        },
+        {
+          "venueId": "milk",
+          "priority": 2,
+          "reason": "Kleinschalig en weg van kantoor: ruimte voor een team om echt samen te denken."
+        },
+        {
+          "venueId": "openlucht",
+          "priority": 3,
+          "reason": "Geschiedenis in de open lucht als prikkel om anders naar de toekomst te kijken."
+        }
+      ],
+      "supplierRoles": [
+        "Facilitatie & productie",
+        "Catering",
+        "AV & techniek"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "flitz",
+          "role": "Facilitatie & productie",
+          "reason": "Begeleiding van werkvormen en activiteiten door de dag heen."
+        },
+        {
+          "supplierId": "hooge",
+          "role": "Catering",
+          "reason": "Lichte, doorlopende catering die het ritme niet onderbreekt."
+        },
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Eenvoudige presentatietechniek voor de afsluitende pitches."
+        }
+      ],
+      "seo": {
+        "title": "De dag vol nieuwe ideeën — heidagconcept | Top Locaties",
+        "description": "Een heidag zonder vergaderzaal: van gezamenlijke vraag tot concrete vervolgstappen. Voorbeeldprogramma, passende locaties en makers."
+      },
+      "feelingWeights": {
+        "focus": 5,
+        "energie": 3,
+        "verbinding": 3
+      }
+    },
+    {
+      "id": "nacht",
+      "slug": "nacht",
+      "number": "004",
+      "status": "published",
+      "priority": 4,
+      "title": "Nacht van verwondering",
+      "headline": [
+        "NACHT VAN",
+        "*VERWONDERING.*"
+      ],
+      "category": "beleven",
+      "categoryLabel": "BELEVING & VERRASSEN",
+      "format": "AVOND / EXPERIENCE",
+      "teaser": "Een avond die zich langzaam ontvouwt: licht, muziek, performances en verrassende ruimtes die anders voelen dan overdag.",
+      "proposition": "Een avond die zich ontvouwt als een verhaal. Licht, muziek, eten en bijzondere ruimtes veranderen je perspectief.",
+      "tags": [
+        "BELEVING",
+        "CULTUUR"
+      ],
+      "guestCountMin": 80,
+      "guestCountMax": 400,
+      "feelings": [
+        "verwondering",
+        "energie",
+        "trots"
+      ],
+      "feelingReasons": {
+        "verwondering": "Iedere ruimte laat iets zien wat gasten niet verwachten.",
+        "energie": "Licht, muziek en performance bouwen de avond steeds verder op.",
+        "trots": "Een gezamenlijke finale maakt de avond tot een moment om te vieren."
+      },
+      "audiences": [
+        "Relatie- en klantevents",
+        "Jubilea",
+        "Culturele en creatieve organisaties"
+      ],
+      "objective": "Een avond neerzetten die gasten nog lang navertellen.",
+      "idea": {
+        "label": "Een evenement dat niet wordt uitgelegd, maar stap voor stap wordt ontdekt.",
+        "headline": [
+          "LAAT DE",
+          "*WERELD EVEN LOS.*"
+        ],
+        "body": "De gasten bewegen door een bijzondere omgeving waarin iedere ruimte iets nieuws laat zien. Denk aan lichtkunst, culinaire verrassingen, performances en onverwachte ontmoetingsplekken. Het programma voelt als een reis die samen een verhaal vormt.",
+        "values": [
+          [
+            "VERRASSING",
+            "Iedere nieuwe zone voegt iets onverwachts toe."
+          ],
+          [
+            "IMMERSIE",
+            "Licht, geluid en performance vormen één geheel."
+          ],
+          [
+            "ONTMOETING",
+            "Gasten beleven en ontdekken samen."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een avondevenement met licht",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een zaal met lichtshow",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "program": [
+        {
+          "time": "18:30",
+          "title": "De overgang",
+          "description": "Een mysterieuze ontvangst zet direct de toon."
+        },
+        {
+          "time": "19:00",
+          "title": "De eerste wereld",
+          "description": "Licht, geluid en een bijzondere culinaire ervaring."
+        },
+        {
+          "time": "20:30",
+          "title": "Ontdek de volgende ruimte",
+          "description": "Performances, installaties en ontmoetingen."
+        },
+        {
+          "time": "22:00",
+          "title": "De finale",
+          "description": "Een gezamenlijk moment om de avond te laten landen."
+        }
+      ],
+      "venueMatches": [
+        {
+          "venueId": "grotekerk",
+          "priority": 1,
+          "reason": "Een monumentale kerk die zich met licht en geluid laat transformeren."
+        },
+        {
+          "venueId": "geofort",
+          "priority": 2,
+          "reason": "Een fort dat bij avond vanzelf een decor van ontdekking wordt."
+        },
+        {
+          "venueId": "madurodam",
+          "priority": 3,
+          "reason": "Een plek die gasten op een andere schaal laat kijken — verwondering zit in het concept."
+        }
+      ],
+      "supplierRoles": [
+        "Licht & geluid",
+        "Performance",
+        "Catering",
+        "Productie"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "bourgonje",
+          "role": "Licht & geluid",
+          "reason": "Het lichtontwerp is hier de verteller van de avond."
+        },
+        {
+          "supplierId": "jb",
+          "role": "Performance",
+          "reason": "Acts die per ruimte een ander gevoel oproepen."
+        },
+        {
+          "supplierId": "floris",
+          "role": "Catering",
+          "reason": "Culinaire verrassingen verspreid over de route."
+        },
+        {
+          "supplierId": "flitz",
+          "role": "Productie",
+          "reason": "Regie over de looproute en de timing van de finale."
+        }
+      ],
+      "seo": {
+        "title": "Nacht van verwondering — avondconcept | Top Locaties",
+        "description": "Een avond als ontdekkingsreis met licht, muziek en performance. Voorbeeldprogramma, passende locaties en makers uit het Greenbookings-netwerk."
+      },
+      "feelingWeights": {
+        "verwondering": 5,
+        "energie": 4,
+        "trots": 3
+      }
+    }
+  ]
+}

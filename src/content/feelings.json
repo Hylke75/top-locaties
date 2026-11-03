@@ -1,0 +1,13 @@
+{
+  "_meta": "Redactioneel vastgestelde gevoelens. Nieuwe gevoelens alleen na redactiebesluit (COMPONENT-CONTRACTS B). Kleur = tokens.json emotions; shape = geometrische accentvorm (components.css .tl-feeling[data-shape]).",
+  "question": "Je gasten gaan naar huis. Wat wil je dat ze voelen?",
+  "maxSelected": 2,
+  "feelings": [
+    { "id": "energie", "label": "Energie", "sub": "Met nieuwe zin naar huis.", "explanation": "Gasten gaan met nieuwe zin naar huis.", "color": "#F45269", "shape": "ring" },
+    { "id": "verbinding", "label": "Verbinding", "sub": "Echt iets met elkaar delen.", "explanation": "Gasten voelen zich werkelijk verbonden.", "color": "#2546BB", "shape": "square" },
+    { "id": "verwondering", "label": "Verwondering", "sub": "Even niet weten wat je ziet.", "explanation": "Iets onverwachts maakt indruk.", "color": "#D49E50", "shape": "diamond" },
+    { "id": "rust", "label": "Rust", "sub": "Ruimte om echt stil te staan.", "explanation": "Er ontstaat ruimte voor aandacht.", "color": "#94AC9E", "shape": "arc" },
+    { "id": "focus", "label": "Focus", "sub": "Met een helder idee verder.", "explanation": "Er komt een richting of beslissing uit.", "color": "#4C6B85", "shape": "target" },
+    { "id": "trots", "label": "Trots", "sub": "Samen iets bijzonders vieren.", "explanation": "Samen vieren en erkennen.", "color": "#BB8D9B", "shape": "triangle" }
+  ]
+}

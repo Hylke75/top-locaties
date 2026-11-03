@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Beheer — Top Locaties</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body class="tl-app">
+<header class="tl-header">
+  <a class="tl-wordmark" href="#dashboard" aria-label="Beheer — overzicht">TOP<br>LOCATIES<span class="tl-wordmark__star" aria-hidden="true">✳</span></a>
+  <div class="tl-header__actions">
+    <nav class="tl-nav" id="tl-nav" aria-label="Beheernavigatie" data-open="false" hidden data-admin-nav>
+      <a href="#dashboard">OVERZICHT</a><a href="#concepten">CONCEPTEN</a><a href="#locaties">LOCATIES</a><a href="#makers">MAKERS</a><a href="#gevoelens">GEVOELENS</a><a href="#data">DATA &amp; PUBLICATIE</a><a href="#audit">AUDITLOG</a>
+      <a class="tl-button tl-button--outline" href="/admin/logout">UITLOGGEN</a>
+    </nav>
+    <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle hidden><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>
+  </div>
+</header>
+<div class="ad-userbar tl-mono" data-userbar hidden></div>
+<main id="main" data-view>
+  <section class="tl-section tl-section--mist tl-section--ring">
+    <div class="tl-overline"><span>BEHEER / TOP LOCATIES</span><span>ALLEEN VOOR DE REDACTIE</span></div>
+    <h1 class="tl-display tl-display--md">LOG IN OM TE<br><span class="tl-accent">BEHEREN.</span></h1>
+    <form class="ad-login" data-login>
+      <div class="tl-field"><label for="token">TOEGANGSCODE</label><input id="token" type="password" autocomplete="current-password" required></div>
+      <button class="tl-button" type="submit">INLOGGEN ↗</button>
+    </form>
+    <p class="tl-note tl-note--gap" role="status" data-login-status>De toegangscodes staan in de omgeving van de beheerserver (TL_EDITOR_TOKEN / TL_CHIEF_TOKEN).</p>
+  </section>
+</main>
+<div class="tl-toast" data-toast role="status" hidden></div>
+<script type="module" src="/admin/admin.js"></script>
+</body>
+</html>

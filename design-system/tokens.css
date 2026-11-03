@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --tl-ink: #292a2c;
+  --tl-coral: #f45269;
+  --tl-cobalt: #2546bb;
+  --tl-paper: #f6f5f2;
+  --tl-taupe: #d9c9bf;
+  --tl-mist: #e9e3df;
+  --tl-white: #ffffff;
+  --tl-muted: #656766;
+  --tl-line: #a5a19d;
+  --tl-line-strong: #8b8986;
+  --tl-line-soft: #d9d6d1;
+  --tl-line-light: #d0cfcb;
+  --tl-line-dark: #999999;
+  --tl-image-overlay-line: #ffffffa6;
+  --tl-image-overlay-line-soft: #ffffff8a;
+  --tl-image-caption-shadow: #00000099;
+  --tl-dim-text-on-dark: #d2d2d2;
+  --tl-image-placeholder: #dddddd;
+  --tl-photo-shade-top: #1b121a88;
+  --tl-photo-shade-bottom: #20191ca0;
+  --tl-shadow-panel: #00000022;
+  --tl-shadow-float: #00000055;
+  --tl-font-display: 'Archivo Black', Arial, sans-serif;
+  --tl-font-mono: 'DM Mono', monospace;
+  --tl-font-body: 'DM Sans', Arial, sans-serif;
+  --tl-gutter: max(24px, 3.5vw);
+  --tl-section-y: clamp(64px, 7.5vw, 116px);
+  --tl-space-1: 4px;
+  --tl-space-2: 8px;
+  --tl-space-3: 12px;
+  --tl-space-4: 16px;
+  --tl-space-5: 20px;
+  --tl-space-6: 24px;
+  --tl-space-8: 32px;
+  --tl-space-10: 40px;
+  --tl-space-12: 48px;
+  --tl-space-16: 64px;
+  --tl-space-20: 80px;
+  --tl-space-24: 96px;
+  --tl-space-28: 112px;
+  --tl-border: 1px solid var(--tl-line);
+  --tl-motion-fast: 160ms;
+  --tl-motion-base: 240ms;
+  --tl-motion-photo: 650ms;
+}
+
+@media (max-width: 767px) {
+  :root { --tl-gutter: 5vw; --tl-section-y: 68px; }
+}

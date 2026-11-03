@@ -1,0 +1,192 @@
+// Gedeelde Top Locaties-componenten (server-render). Uitsluitend tl- klassen
+// uit design-system/components.css. Geen pagina-eigen styling.
+import { html, lines, pad, raw } from '../lib/html.mjs';
+import { SITE } from '../lib/data.mjs';
+import { explainMatch, rankConcepts } from '../client/lib/rank.js';
+
+const NAV = [
+  { key: 'concepten', href: '/eventconcepten/', label: 'EVENTCONCEPTEN' },
+  { key: 'locaties', href: '/locaties/', label: 'LOCATIES' },
+  { key: 'leveranciers', href: '/leveranciers/', label: 'LEVERANCIERS' },
+  { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLAN' },
+];
+
+export const ext = (href, label, cls = '') =>
+  html`<a class="${cls}" href="${href}" target="_blank" rel="noopener noreferrer">${label}<span class="tl-visually-hidden"> (opent in nieuw tabblad)</span></a>`;
+
+export function wordmark({ light = false, href = '/' } = {}) {
+  return html`<a class="tl-wordmark${light ? ' tl-wordmark--light' : ''}" href="${href}" aria-label="Top Locaties — naar de homepage">TOP<br>LOCATIES<span class="tl-wordmark__star" aria-hidden="true">✳</span></a>`;
+}
+
+export function header({ current = '', cta = { href: '/#gevoel', label: 'KIES OP GEVOEL ↗' } } = {}) {
+  return html`<header class="tl-header">
+  ${wordmark()}
+  <div class="tl-header__actions">
+    <nav class="tl-nav" id="tl-nav" aria-label="Hoofdnavigatie" data-open="false">
+      ${NAV.map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
+      <a class="tl-button" href="${cta.href}">${cta.label}</a>
+    </nav>
+    <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>
+  </div>
+</header>`;
+}
+
+export const overline = (left, right) => html`<div class="tl-overline"><span>${left}</span><span>${right}</span></div>`;
+
+export function footer({ left = 'HET BEGINT MET EEN IDEE.', right = 'WAT GA JIJ MAKEN?', title = null, links = [] } = {}) {
+  return html`<footer class="tl-footer" id="footer">
+  ${overline(left, right)}
+  <div class="tl-footer__name">${title ? lines(title) : raw('TOP LOCATIES <span aria-hidden="true">✳</span>')}</div>
+  ${links.length ? html`<nav class="tl-footer__links" aria-label="Verder ontdekken">${links.map((l) => (l.external ? ext(l.href, l.label) : html`<a href="${l.href}">${l.label}</a>`))}</nav>` : ''}
+  <div class="tl-footer__bottom">
+    <span class="tl-mono">© TOP LOCATIES — ONDERDEEL VAN HET GREENBOOKINGS-NETWERK</span>
+    <span class="tl-mono">CONCEPT × LOCATIE × MAKER</span>
+    <a class="tl-mono" href="#top">TERUG NAAR BOVEN ↑</a>
+  </div>
+</footer>`;
+}
+
+/* ---------- Gevoelskompas ---------- */
+
+export function feelingButton(f, i, pressed = false) {
+  return html`<button class="tl-feeling" type="button" data-feel="${f.id}" data-shape="${f.shape}" style="--tl-feeling-color:${f.color}" aria-pressed="${pressed ? 'true' : 'false'}">
+  <span class="tl-feeling__meta">${pad(i + 1)} / GEVOEL <span class="tl-feeling__check" aria-hidden="true">${pressed ? '✓' : '+'}</span></span>
+  <span><strong class="tl-feeling__name">${f.label}</strong><span class="tl-feeling__desc">${f.sub}</span></span>
+</button>`;
+}
+
+export function matchCard(entry, i, labels, selected = []) {
+  const { concept, kind } = entry;
+  const q = selected.length ? `?gevoel=${selected.join(',')}` : '';
+  const rank = kind === 'match' ? (i === 0 ? 'ONZE MATCH' : 'OOK EEN MATCH') : kind === 'alternative' ? 'ANDERE RICHTING' : i === 0 ? 'UITGELICHT' : 'NOG EEN IDEE';
+  const first = i === 0 && kind !== 'alternative';
+  return html`<a class="tl-match${first ? ' tl-match--first' : ''}${kind === 'alternative' ? ' tl-match--alt' : ''}" href="/eventconcepten/${concept.slug}/${q}">
+  <span class="tl-mono">${pad(i + 1)} / ${rank}</span>
+  <strong class="tl-match__name">${concept.title}</strong>
+  <span class="tl-match__reason">${explainMatch(entry, labels)}</span>
+  <span class="tl-match__footer"><span>BEKIJK HET VOLLEDIGE CONCEPT</span><span aria-hidden="true">↗</span></span>
+</a>`;
+}
+
+/* ---------- Beeld ---------- */
+
+export function venueImage(v, { cls = 'tl-venue__photo', lazy = true } = {}) {
+  if (v.image.kind === 'none') {
+    return html`<div class="${cls}"><div class="tl-placeholder" role="img" aria-label="Nog geen foto van ${v.name} beschikbaar"><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__text">${v.image.label}<br>${v.city}</span></div></div>`;
+  }
+  return html`<div class="${cls}"><img src="${v.image.src}" alt="${v.image.alt}"${lazy ? raw(' loading="lazy"') : ''} decoding="async" width="900" height="675"><span class="tl-image-caption">${v.image.label}</span></div>`;
+}
+
+/* ---------- Locaties en leveranciers ---------- */
+
+export function venueCard(v, match, i) {
+  return html`<article class="tl-venue" data-venue-card="${v.id}" data-selected="false">
+  ${venueImage(v)}
+  <div class="tl-venue__body">
+    <span class="tl-mono">${pad(i + 1)} / ${v.city} — ${v.label}</span>
+    <h3 class="tl-venue__name">${v.name}</h3>
+    <p class="tl-venue__copy">${v.line}</p>
+    <div class="tl-venue__why"><b>WAAROM DEZE PLEK?</b>${match.reason}</div>
+    <p class="tl-venue__facts"><span>${v.capacity}</span><span>BRON: GREENBOOKINGS ${v.sourceDate}</span></p>
+    <div class="tl-venue__actions">
+      <button class="tl-button tl-venue__choose" type="button" data-choose-venue="${v.id}" aria-pressed="false">KIES DEZE PLEK +</button>
+      <a class="tl-button tl-button--outline" href="/locaties/${v.slug}/">BEKIJK ↗</a>
+    </div>
+  </div>
+</article>`;
+}
+
+export function supplierCard(s, match, i) {
+  return html`<article class="tl-supplier" data-supplier-card="${s.id}" data-selected="false">
+  <span class="tl-supplier__meta"><span>${pad(i + 1)} / ${s.label}</span><span>${s.city || 'NL'}</span></span>
+  <span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>
+  <h3 class="tl-supplier__name">${s.name}</h3>
+  <p class="tl-supplier__desc"><span class="tl-supplier__role">ROL: ${match.role}</span>${match.reason} ${s.tagline}</p>
+  <div class="tl-supplier__actions">
+    <button class="tl-button tl-supplier__choose" type="button" data-choose-supplier="${s.id}" aria-pressed="false">VOEG TOE <span aria-hidden="true">+</span></button>
+    <a class="tl-button tl-button--outline" href="/leveranciers/${s.slug}/">BEKIJK ↗</a>
+  </div>
+</article>`;
+}
+
+export function catalogCard(v, i, data) {
+  const types = v.eventTypes.join(' ');
+  return html`<article class="tl-catalog-card" data-venue="${v.id}" data-name="${v.name}" data-city="${v.city}" data-province="${v.province}" data-order="${v.order}" data-cap-min="${v.capacityMin ?? ''}" data-cap-max="${v.capacityMax ?? ''}" data-events="${types}" data-character="${v.character.join(' ')}" data-concepts="${v.concepts.map((c) => c.slug).join(' ')}" data-search="${[v.name, v.city, v.province, v.type, v.label, v.line].join(' ').toLowerCase()}">
+  <div class="tl-catalog-card__image">
+    ${v.image.kind === 'none'
+      ? html`<div class="tl-placeholder" role="img" aria-label="Nog geen foto van ${v.name} beschikbaar"><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__text">${v.image.label}</span></div>`
+      : html`<img src="${v.image.src}" alt="${v.image.alt}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" width="900" height="600"><span class="tl-catalog-card__badge">${v.image.kind === 'source' ? 'BEELD: GREENBOOKINGS' : 'SFEERBEELD'} • ${v.label}</span>`}
+    <button class="tl-catalog-card__save" type="button" data-save="${v.id}" aria-pressed="false" aria-label="Bewaar ${v.name}">+</button>
+  </div>
+  <div class="tl-catalog-card__kicker"><span><span data-index>${pad(i + 1)}</span> / ${v.province}</span><span>${v.city}</span></div>
+  <h3 class="tl-catalog-card__title"><a href="/locaties/${v.slug}/">${v.name}</a></h3>
+  <p class="tl-catalog-card__desc">${v.line}</p>
+  ${v.concepts.length ? html`<p class="tl-catalog-card__concepts">PAST BIJ: ${v.concepts.map((c, n) => html`${n ? ' / ' : ''}<a href="/eventconcepten/${c.slug}/#locaties">${c.title}</a>`)}</p>` : ''}
+  <div class="tl-catalog-card__foot">
+    <span>${v.capacity}<br>AANGESLOTEN PARTNER / BRON ${v.sourceDate}</span>
+    <a class="tl-arrow-box" href="/locaties/${v.slug}/" aria-label="Bekijk ${v.name}">↗</a>
+  </div>
+</article>`;
+}
+
+/* ---------- Programma ---------- */
+
+export function timeline(items) {
+  return html`<div class="tl-timeline">${items.map((it) => html`<div class="tl-timeline__item"><span class="tl-timeline__time">${it.time}</span><div><h3 class="tl-timeline__title">${it.title}</h3><p class="tl-timeline__body">${it.description}</p></div></div>`)}</div>`;
+}
+
+export function imageFrame(img, { cls = 'tl-image-frame--landscape', caption } = {}) {
+  return html`<figure class="tl-image-frame ${cls}"><img src="${img.src}" alt="${img.alt}" loading="lazy" decoding="async"><figcaption class="tl-image-caption">${caption || (img.illustrative ? 'SFEERBEELD TER ILLUSTRATIE' : img.credit)}</figcaption></figure>`;
+}
+
+/* ---------- Gevoelskompas (home, overzicht, op-gevoel) ---------- */
+
+export function compassData(data) {
+  return {
+    feelings: data.feelings.map(({ id, label }) => ({ id, label })),
+    concepts: data.concepts.map(({ id, slug, title, teaser, priority, feelings, feelingReasons, feelingWeights, category }) => ({ id, slug, title, teaser, priority, feelings, feelingReasons, feelingWeights, category })),
+  };
+}
+
+export function feelingCompass(data, { number = '02', id = 'gevoel', headingLevel = 'h2' } = {}) {
+  const initial = rankConcepts(data.concepts, []);
+  const H = headingLevel;
+  return html`<section class="tl-section tl-section--mist tl-section--ring" id="${id}" aria-labelledby="feelTitle" data-compass>
+  ${overline(`${number} / HET GEVOELENSKOMPAS`, 'GEEN BRANCHE. GEEN LOCATIE. EERST GEVOEL.')}
+  <div class="tl-feeling-head">
+    ${raw(`<${H} class="tl-display" id="feelTitle">HOE MOET HET<br><span class="tl-accent">VOELEN?</span></${H}>`)}
+    <p class="tl-feeling-head__question"><strong>${data.question}</strong>Kies maximaal twee gevoelens. Wij laten zien welke eventconcepten daarbij passen — en waarom.</p>
+  </div>
+  <p class="tl-mono" id="feelHint">KIES ÉÉN OF TWEE GEVOELENS ↓</p>
+  <div class="tl-feeling-grid" role="group" aria-labelledby="feelHint" data-feeling-grid>
+    ${data.feelings.map((f, i) => feelingButton(f, i))}
+  </div>
+  <p class="tl-note tl-note--gap" role="status" aria-live="polite" data-feel-notice></p>
+  <div class="tl-results-rule">
+    <div class="tl-results-rule__top">
+      <h3 class="tl-display tl-display--sm" data-match-heading>VERRASSENDE IDEEËN.</h3>
+      <button class="tl-text-button" type="button" data-feel-reset hidden>OPNIEUW KIEZEN ↺</button>
+    </div>
+    <p class="tl-visually-hidden" role="status" aria-live="polite" data-match-status></p>
+    <div class="tl-match-grid" data-match-grid>${initial.map((e, i) => matchCard(e, i, data.feelingLabels))}</div>
+    <p class="tl-note tl-note--gap">Deze suggesties zijn redactioneel gekoppeld aan de gewenste beleving — geen berekende score. Op de conceptpagina vind je het programma, passende locaties en leveranciers.</p>
+  </div>
+</section>`;
+}
+
+export function conceptCard(c, i, labels) {
+  return html`<article class="tl-concept-card" data-concept-card="${c.slug}" data-category="${c.category}" data-feelings="${c.feelings.join(' ')}">
+  <a class="tl-concept-card__photo tl-image-frame" href="/eventconcepten/${c.slug}/" tabindex="-1" aria-hidden="true"><img src="${c.hero.src}" alt="" loading="lazy" decoding="async"><span class="tl-image-caption">CONCEPT ${c.number} / SFEERBEELD</span></a>
+  <div class="tl-catalog-card__kicker"><span>${pad(i + 1)} / ${c.categoryLabel}</span><span>${c.guestCountMin}–${c.guestCountMax} GASTEN</span></div>
+  <h3 class="tl-catalog-card__title"><a href="/eventconcepten/${c.slug}/">${c.title}</a></h3>
+  <p class="tl-catalog-card__desc">${c.teaser}</p>
+  <div class="tl-chip-set tl-concept-card__feelings">${c.feelings.map((f) => html`<span class="tl-chip">${labels[f]}</span>`)}</div>
+  <div class="tl-catalog-card__foot"><span>${c.format}<br>${c.venueMatches.length} PARTNERLOCATIES / ${c.supplierRoles.length} ROLLEN</span><a class="tl-arrow-box" href="/eventconcepten/${c.slug}/" aria-label="Bekijk het concept ${c.title}">↗</a></div>
+</article>`;
+}
+
+export function state(kind, title, text, action = '') {
+  return html`<div class="tl-state tl-state--${kind}"><h3 class="tl-state__title">${title}</h3><p>${text}</p>${action}</div>`;
+}
+
+export { SITE };

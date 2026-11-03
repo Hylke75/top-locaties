@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/build.mjs",
+  "outputDirectory": "site",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/hupr.html", "destination": "/", "permanent": true },
+    { "source": "/locaties.html", "destination": "/locaties/", "permanent": true }
+  ]
+}

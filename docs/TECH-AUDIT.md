@@ -1,0 +1,98 @@
+# Top Locaties — technische audit, architectuur en datastatus
+
+**Datum:** 3 november 2026 · **Branch:** `claude/new-session-2z5cs1` · Bouwplan-fase 0 t/m 6 (release-akkoord in fase 7 staat open, zie §6).
+
+## 1. Uitgangssituatie (fase 0, A-01)
+
+| Onderwerp | Bevinding |
+|---|---|
+| Repository `hylke75/top-locaties` | Was leeg. Het ontwerppakket (designkit v1) is het startpunt. |
+| Prototype `dist/` | Buildless HTML/JS met hardcoded voorbeelddata en afwijkende kleuren per pagina. Blijft onaangeroerd en staat ter vergelijking op `/prototype/`. |
+| Vercel | Project **`top-locaties`** bestaat, leeg (geen deployments). Project **`greenbookings`** = Next.js, live op greenbookings.nl, achter een Vercel Security Checkpoint. |
+| Supabase | Project **`greenbookings`** bevat de bron (`locaties`, `locatie_media`, `ruimtes`, `organisaties`, `leverancier_profielen`, …). Project **`top-locaties`** bestaat, zonder tabellen. |
+
+## 2. Broncontract Greenbookings (A-02 t/m A-04)
+
+- **API** (`/api/v1/locaties?alleen_partners=true`, `/openapi.json`, gedocumenteerd in het FO §2.2): vanuit deze omgeving **niet bereikbaar**. Scripts krijgen HTTP 429 van de Vercel-checkpoint. De OpenAPI en de exacte betekenis van `alleen_partners` kon ik daardoor **niet zelf verifiëren**.
+- **Database (read-only onderzocht):** `public.locaties.status ∈ {concept, gepubliceerd, verborgen, geblokkeerd}` en de boolean `aangesloten`. Op 03-11-2026: 3.226 gepubliceerd, waarvan **61 gepubliceerd én aangesloten**.
+- **Gekozen partnerregel (fail-closed):** een locatie is publiek als, en alleen als, `status = 'gepubliceerd'` **en** `aangesloten === true`. Ontbrekend, `null`, `"true"`, `1` of `false` betekent niet tonen (`isPublishablePartner()` in `src/lib/data.mjs`, getest in `tests/rules.test.mjs`).
+- **Leveranciers:** er is geen publiek leveranciersendpoint. Vijf echte leveranciers uit het prototype zijn uit `organisaties` (`type = leverancier`, `status = actief`) als **voorlopige selectie** opgenomen, met een duidelijke vermelding op de site. De volledige gids blijft geblokkeerd tot er een bevestigde feed is (FO §14.4).
+- **Gevoelige kolommen:** in dezelfde tabel staan o.a. `chatbot_api_sleutel`, `mice_api_key`, `contactmail` en `telefoon`. De snapshotquery (`scripts/sync/greenbookings-snapshot.sql`) selecteert alleen publieke velden; de API-sync normaliseert naar een vaste veldenlijst.
+
+## 3. Architectuur (A-06, ADR)
+
+**Besluit:** een afhankelijkheidsvrije statische generator in Node (`npm run build` → `site/`), plus een lokale beheerserver (`npm run admin`).
+
+**Waarom:**
+- Er was geen bestaande stack.
+- Statische output is snel, veilig en indexeerbaar, en draait op elke host (`vercel.json` staat klaar).
+- Partner-only is als build-invariant af te dwingen: wat niet gebouwd wordt, kan ook niet uitlekken via een route, sitemap of API.
+- De templates zijn pure functies over JSON. Daardoor zijn ze 1-op-1 over te zetten naar Next.js/Supabase (de Greenbookings-stack) zodra live data nodig is.
+
+**Gevolg:** wijzigingen worden zichtbaar na *valideren → bouwen → deployen*. Een redacteur doet dat vanuit het beheer (de hoofdredacteur bouwt).
+
+```
+src/content/   greenbookings-snapshot.json (bron, read-only) · venues/suppliers.editorial.json · concepts.json · feelings.json · audit-log.jsonl
+src/lib/       data.mjs (merge + partnerpoort) · html.mjs
+src/templates/ components.mjs (gedeelde componenten) · layout.mjs
+src/pages/     home · concept · locaties · more (overzicht, op-gevoel, locatiedetail, leveranciers, plan, over) · legacy
+src/client/    compass · home · concept · finder · overview · suppliers · plan · nav · lib/{rank,store}
+scripts/       build · serve · validate-content · admin · admin-e2e · flows · screenshots · sync/greenbookings(.mjs|.sql)
+admin/         beheerinterface (alleen via scripts/admin.mjs)
+tests/         rules.test.mjs · sync.test.mjs
+```
+
+## 4. Routes
+
+| Route | Inhoud | Index |
+|---|---|---|
+| `/` | Posterhero, intro, gevoelskompas, conceptcarrousel, bouwstenen, ecosysteem | ja |
+| `/eventconcepten/` | Overzicht met filters op type en gevoel, plus het kompas | ja |
+| `/eventconcepten/op-gevoel/` | Kompas als hoofdpagina, met uitleg van de matching | ja |
+| `/eventconcepten/{slug}/` | 4 concepten: verhaal, gevoelsignatuur, voor wie, programma (VOORBEELD), 3 partnerlocaties met reden, rollen + makers, composer | ja |
+| `/locaties/` | Alle 61 partners: zoeken, filters (regio, gasten, type, karakter, concept), sorteren, beeld/regio, lege/fout-staat, filters in de URL | ja |
+| `/locaties/{slug}/` | 61 detailpagina's, alleen voor partners. Niet-partners geven 404 | ja |
+| `/leveranciers/`, `/leveranciers/{slug}/` | Voorlopige selectie met rol per concept | ja |
+| `/mijn-plan/` | Plannen uit de browser; waarschuwing als een partner vervalt | noindex |
+| `/over/` | Filosofie, ecosysteem, spelregels | ja |
+| `/styleguide/`, `/prototype/` | Design-referentie | noindex / disallow |
+| `/hupr.html`, `/concept.html?concept=x`, `/locaties.html` | Doorverwijzing naar de nieuwe routes | noindex |
+
+## 5. Wat is echt, wat is redactie, wat is voorbeeld
+
+| Gegeven | Status |
+|---|---|
+| Locaties (61): naam, plaats, provincie, type, sfeer, capaciteit, hoofdfoto, bijgewerkt-datum | **Echt — volledige partner-snapshot 03-11-2026** uit de Greenbookings-database. Handmatige snapshot, geen live koppeling; vervang die met `npm run sync` zodra de API bereikbaar is. |
+| Foto's | Uitsluitend hoofdfoto's uit Greenbookings (`locatie-media`), gelabeld *BEELD: GREENBOOKINGS-PROFIEL*. Placeholderfoto's uit de bron worden niet getoond: dan verschijnt de `tl-placeholder`. De Unsplash-sfeerbeelden uit het prototype zijn verwijderd. *Gebruiksrecht voor top-locaties.nl moet nog bevestigd worden.* |
+| Locatieredactie (14 gecureerd) | Eigen label, korte tekst en filtertaxonomie. Alleen controleerbare formuleringen, nog niet nagelezen (`editorialCheckedAt: null`). De andere 47 partners tonen alleen bronfeiten. |
+| Concepten, gevoelsgewichten, matchredenen, rollen | Redactioneel. Programma's gelabeld VOORBEELD, groepsgrootte "indicatief". |
+| Leveranciers (5) | Naam, categorie, plaats en tagline echt (bron). Profiellinks `greenbookings.nl/partners/{slug}` niet automatisch te controleren; drie hebben `toon_in_gids = false`. |
+| Prijs, beschikbaarheid, boeking | Worden nergens getoond. |
+
+## 6. Open beslispunten vóór productie (bouwplan §6)
+
+1. **Partnerdefinitie:** bevestig dat `aangesloten = true` gelijk is aan wat `alleen_partners=true` in de API teruggeeft. Bevestig ook of de sync met `--trust-filter` mag draaien als de API geen eigen partnerveld levert. Tot die tijd is de DB-kolom leidend en fail-closed.
+2. **Beeldrecht:** mogen de Greenbookings-hoofdfoto's op top-locaties.nl?
+3. **Leveranciersbron:** welke feed of export is rechtmatig? En zijn `/partners/{slug}` publiek voor partijen met `toon_in_gids = false`?
+4. **Rollen:** wie is hoofdredacteur en wie autoriseert deployment? Er is **niets gedeployd**; het Vercel-project `top-locaties` is klaar voor `vercel.json`.
+5. **API-toegang:** de checkpoint blokkeert server-side sync. Een bypass voor `/api/v1/*` of een read-only Supabase-view is nodig (zie `design-system/SQL-DATAMODEL-REFERENTIE.sql`, view-advies).
+
+## 7. Bewuste correcties t.o.v. het prototype
+
+- Canonieke tokens op alle pagina's.
+- Geen modals.
+- Capaciteitsfilter telt onbekend apart.
+- Verkeerde of verzonnen profiellinks en capaciteiten zijn vervangen door bronwaarden.
+- Bugfix: de CSS-reset gebruikt nu `:where()`, zodat componenten hun eigen font en kleur houden.
+- Partner-only: 7 van de 10 prototype-locaties waren géén aangesloten partner en zijn verwijderd. De conceptmatches zijn opnieuw gecureerd uit de partnerset.
+
+## 8. QA-resultaten
+
+Zie `docs/TRACEABILITY.md` voor eis → code → test. Samenvatting van de laatste run:
+
+- `npm test`: 12/12 unit- en integratietests (partnerpoort, sitemap/routes zonder niet-partners, matching, sync-normalisatie).
+- `node scripts/flows.mjs`: alle functionele browserflows geslaagd (gevoel → concept → plan, zoeker, nieuwe pagina's, 404 voor niet-partner, vervallen partner in plan, mobiel menu/filter, toetsenbord, oude URL's).
+- `node scripts/admin-e2e.mjs`: 18/18 beheercontroles (rollen, CSRF, publicatieblokkade bij onvolledige content, alleen partners in keuzelijsten, build, preview, audit, 390 px).
+- `npm run screenshots`: 16 routes × 5 breedtes (1440/1024/768/390/360). 0 px horizontale overflow, geen JS-fouten. Referentieset 1440/390 staat in `docs/screenshots/`.
+- Design-audit `check-design.mjs`: 0 signalen.
+- **Niet gedaan:** Lighthouse/CWV op echte hosting, test met een echte screenreader, handmatige controle van externe links in een gewone browser (checkpoint).
