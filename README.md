@@ -18,28 +18,28 @@ npm run serve
 
 ## Beheer
 
+Maak eenmalig een account aan. Het wachtwoord wordt via stdin gevraagd en alleen als scrypt-hash bewaard in `.admin/users.json`, dat niet in git staat:
+
 ```bash
-TL_EDITOR_TOKEN=kies-een-code TL_CHIEF_TOKEN=kies-een-andere npm run admin
+node scripts/admin-user.mjs add hylke@greenbookings.nl hoofdredacteur Hylke
 ```
 
-Open daarna http://127.0.0.1:4174/admin/.
+Start daarna het beheer:
 
-**Redacteur**
-- maakt concepten aan en bewerkt ze (draft → review);
-- beheert locatieredactie, makers en gevoelsteksten.
+```bash
+npm run admin
+```
 
-**Hoofdredacteur**
-- publiceert of archiveert concepten;
-- bouwt de site;
-- start de Greenbookings-sync.
+Open http://127.0.0.1:4174/admin/ en log in met e-mailadres en wachtwoord.
 
-**Wat het beheer verder doet**
+- **Redacteur:** concepten maken en bewerken (draft → review), locatieredactie, makers en gevoelsteksten.
+- **Hoofdredacteur:** daarnaast publiceren en archiveren, de site bouwen en de Greenbookings-sync starten.
 - Elke mutatie wordt gevalideerd, als revisie bewaard en in `src/content/audit-log.jsonl` vastgelegd.
-- Bronvelden uit Greenbookings zijn niet bewerkbaar.
-- Keuzelijsten bevatten uitsluitend aangesloten partners.
-- Draai het beheer alleen lokaal of achter eigen toegangsbeveiliging.
+- Bronvelden zijn niet bewerkbaar; keuzelijsten bevatten alleen aangesloten partners.
+- Na vijf mislukte inlogpogingen wacht het beheer vijf minuten.
+- Op een server: zet de accounts in `TL_ADMIN_USERS` met de uitvoer van `node scripts/admin-user.mjs export`, en draai het beheer alleen achter eigen toegangsbeveiliging.
 
-Na wijzigingen: commit `src/content/` en deploy `site/`.
+Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of deploy handmatig).
 
 ## Data
 
@@ -65,7 +65,7 @@ npm run screenshots
 
 ## Deployment
 
-`vercel.json` is ingesteld (build `node scripts/build.mjs`, output `site/`, redirects voor de prototype-URL's). Er is nog niets gedeployd: zie de beslispunten in `docs/TECH-AUDIT.md` §6.
+Productie draait op https://top-locaties.vercel.app (Vercel-project `top-locaties`). `vercel.json` regelt de build (`node scripts/build.mjs` → `site/`) en de redirects voor de prototype-URL's.
 
 ## Documentatie
 

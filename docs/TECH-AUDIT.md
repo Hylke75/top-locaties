@@ -16,7 +16,7 @@
 - **API** (`/api/v1/locaties?alleen_partners=true`, `/openapi.json`, gedocumenteerd in het FO §2.2): vanuit deze omgeving **niet bereikbaar**. Scripts krijgen HTTP 429 van de Vercel-checkpoint. De OpenAPI en de exacte betekenis van `alleen_partners` kon ik daardoor **niet zelf verifiëren**.
 - **Database (read-only onderzocht):** `public.locaties.status ∈ {concept, gepubliceerd, verborgen, geblokkeerd}` en de boolean `aangesloten`. Op 03-11-2026: 3.226 gepubliceerd, waarvan **61 gepubliceerd én aangesloten**.
 - **Gekozen partnerregel (fail-closed):** een locatie is publiek als, en alleen als, `status = 'gepubliceerd'` **en** `aangesloten === true`. Ontbrekend, `null`, `"true"`, `1` of `false` betekent niet tonen (`isPublishablePartner()` in `src/lib/data.mjs`, getest in `tests/rules.test.mjs`).
-- **Leveranciers:** er is geen publiek leveranciersendpoint. Vijf echte leveranciers uit het prototype zijn uit `organisaties` (`type = leverancier`, `status = actief`) als **voorlopige selectie** opgenomen, met een duidelijke vermelding op de site. De volledige gids blijft geblokkeerd tot er een bevestigde feed is (FO §14.4).
+- **Leveranciers (bevestigd 03-11-2026):** de leveranciers van Top Locaties zijn de Greenbookings-partners: `organisaties.type = 'leverancier'` **en** `aangesloten = true`, `status = 'actief'`, `is_test = false`. Dat zijn er 16. JB Productions en Flitz-Events uit het prototype zijn geen partner en zijn verwijderd (`isPublishableSupplier()`).
 - **Gevoelige kolommen:** in dezelfde tabel staan o.a. `chatbot_api_sleutel`, `mice_api_key`, `contactmail` en `telefoon`. De snapshotquery (`scripts/sync/greenbookings-snapshot.sql`) selecteert alleen publieke velden; de API-sync normaliseert naar een vaste veldenlijst.
 
 ## 3. Architectuur (A-06, ADR)
@@ -63,19 +63,25 @@ tests/         rules.test.mjs · sync.test.mjs
 | Gegeven | Status |
 |---|---|
 | Locaties (61): naam, plaats, provincie, type, sfeer, capaciteit, hoofdfoto, bijgewerkt-datum | **Echt — volledige partner-snapshot 03-11-2026** uit de Greenbookings-database. Handmatige snapshot, geen live koppeling; vervang die met `npm run sync` zodra de API bereikbaar is. |
-| Foto's | Uitsluitend hoofdfoto's uit Greenbookings (`locatie-media`), gelabeld *BEELD: GREENBOOKINGS-PROFIEL*. Placeholderfoto's uit de bron worden niet getoond: dan verschijnt de `tl-placeholder`. De Unsplash-sfeerbeelden uit het prototype zijn verwijderd. *Gebruiksrecht voor top-locaties.nl moet nog bevestigd worden.* |
+| Foto's | Uitsluitend hoofdfoto's uit Greenbookings (`locatie-media`), gelabeld *BEELD: GREENBOOKINGS-PROFIEL*. Placeholderfoto's uit de bron worden niet getoond: dan verschijnt de `tl-placeholder`. De Unsplash-sfeerbeelden uit het prototype zijn verwijderd. *Gebruiksrecht bevestigd door de opdrachtgever (03-11-2026).* Extra, speciaal voor Top Locaties bedoelde informatie op aangesloten profielen volgt later in Greenbookings. |
 | Locatieredactie (14 gecureerd) | Eigen label, korte tekst en filtertaxonomie. Alleen controleerbare formuleringen, nog niet nagelezen (`editorialCheckedAt: null`). De andere 47 partners tonen alleen bronfeiten. |
 | Concepten, gevoelsgewichten, matchredenen, rollen | Redactioneel. Programma's gelabeld VOORBEELD, groepsgrootte "indicatief". |
-| Leveranciers (5) | Naam, categorie, plaats en tagline echt (bron). Profiellinks `greenbookings.nl/partners/{slug}` niet automatisch te controleren; drie hebben `toon_in_gids = false`. |
+| Leveranciers (16 partners) | Naam, categorie, plaats, tagline, website en hoofdfoto echt (bron). Profiellinks `greenbookings.nl/partners/{slug}` volgen het prototypepatroon en zijn niet automatisch te controleren (checkpoint). |
 | Prijs, beschikbaarheid, boeking | Worden nergens getoond. |
 
-## 6. Open beslispunten vóór productie (bouwplan §6)
+## 6. Besluiten en open punten
 
-1. **Partnerdefinitie:** bevestig dat `aangesloten = true` gelijk is aan wat `alleen_partners=true` in de API teruggeeft. Bevestig ook of de sync met `--trust-filter` mag draaien als de API geen eigen partnerveld levert. Tot die tijd is de DB-kolom leidend en fail-closed.
-2. **Beeldrecht:** mogen de Greenbookings-hoofdfoto's op top-locaties.nl?
-3. **Leveranciersbron:** welke feed of export is rechtmatig? En zijn `/partners/{slug}` publiek voor partijen met `toon_in_gids = false`?
-4. **Rollen:** wie is hoofdredacteur en wie autoriseert deployment? Er is **niets gedeployd**; het Vercel-project `top-locaties` is klaar voor `vercel.json`.
-5. **API-toegang:** de checkpoint blokkeert server-side sync. Een bypass voor `/api/v1/*` of een read-only Supabase-view is nodig (zie `design-system/SQL-DATAMODEL-REFERENTIE.sql`, view-advies).
+**Bevestigd door de opdrachtgever (03-11-2026):**
+1. `aangesloten = true` in de database is de juiste partnerdefinitie.
+2. Greenbookings-foto's mogen op top-locaties.nl.
+3. Leveranciers zijn de aangesloten Greenbookings-leverancierspartners.
+4. Hoofdredacteur: hylke@greenbookings.nl. Het account staat als scrypt-hash in `.admin/users.json` (niet in git); zie README.
+5. Deployment naar het Vercel-project `top-locaties` (productie: top-locaties.vercel.app).
+
+**Nog open:**
+- **API-toegang:** de Vercel-checkpoint blokkeert server-side sync van `/api/v1/*`. Een bypass of een read-only Supabase-view is nodig voor automatische verversing. Tot die tijd wordt de snapshot handmatig ververst.
+- **Eigen domein:** top-locaties.nl is nog niet aan het Vercel-project gekoppeld.
+- **Beheer online:** het beheer draait lokaal of intern (`npm run admin`) en is bewust niet in de publieke deployment opgenomen.
 
 ## 7. Bewuste correcties t.o.v. het prototype
 

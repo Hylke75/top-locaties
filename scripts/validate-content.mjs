@@ -24,6 +24,7 @@ export function validate() {
 
   const vIds = new Set(venues.venues.map((v) => v.id));
   const nonPartner = new Set();
+  const nonPartnerSup = new Set();
   const sIds = new Set(suppliers.suppliers.map((s) => s.id));
   for (const v of venues.venues) {
     const src = snapshot.venues.find((x) => x.greenbookingsSlug === v.greenbookingsSlug);
@@ -35,8 +36,9 @@ export function validate() {
     if (!v.editorialCheckedAt) warnings.push(`venue ${v.id}: redactionele tekst nog niet gecontroleerd (editorialCheckedAt leeg).`);
   }
   for (const s of suppliers.suppliers) {
-    if (!snapshot.suppliers.find((x) => x.greenbookingsSlug === s.greenbookingsSlug)) errors.push(`supplier ${s.id}: geen bronrecord in de snapshot.`);
-    if (s.profileLinkStatus !== 'bevestigd') warnings.push(`supplier ${s.id}: profiellink nog niet handmatig bevestigd.`);
+    const ss = snapshot.suppliers.find((x) => x.greenbookingsSlug === s.greenbookingsSlug);
+    if (!ss) errors.push(`supplier ${s.id}: geen bronrecord in de snapshot.`);
+    else if (!(ss.status === 'actief' && ss.aangesloten === true)) { warnings.push(`supplier ${s.id}: geen aangesloten partner — wordt niet getoond.`); nonPartnerSup.add(s.id); }
   }
 
   const titles = new Set();
@@ -66,6 +68,7 @@ export function validate() {
     }
     for (const m of c.supplierMatches) {
       if (!sIds.has(m.supplierId)) errors.push(`${where}: supplierMatch '${m.supplierId}' bestaat niet.`);
+      if (nonPartnerSup.has(m.supplierId)) errors.push(`${where}: supplierMatch '${m.supplierId}' is geen leverancierspartner.`);
       if (!m.role || !m.reason) errors.push(`${where}: supplierMatch '${m.supplierId}' mist rol of reden.`);
       if (!c.supplierRoles.includes(m.role)) errors.push(`${where}: rol '${m.role}' staat niet in supplierRoles.`);
     }

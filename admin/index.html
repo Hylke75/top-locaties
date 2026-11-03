@@ -28,10 +28,11 @@
     <div class="tl-overline"><span>BEHEER / TOP LOCATIES</span><span>ALLEEN VOOR DE REDACTIE</span></div>
     <h1 class="tl-display tl-display--md">LOG IN OM TE<br><span class="tl-accent">BEHEREN.</span></h1>
     <form class="ad-login" data-login>
-      <div class="tl-field"><label for="token">TOEGANGSCODE</label><input id="token" type="password" autocomplete="current-password" required></div>
+      <div class="tl-field"><label for="email">E-MAILADRES</label><input id="email" type="email" autocomplete="username"></div>
+      <div class="tl-field"><label for="token">WACHTWOORD</label><input id="token" type="password" autocomplete="current-password" required></div>
       <button class="tl-button" type="submit">INLOGGEN ↗</button>
     </form>
-    <p class="tl-note tl-note--gap" role="status" data-login-status>De toegangscodes staan in de omgeving van de beheerserver (TL_EDITOR_TOKEN / TL_CHIEF_TOKEN).</p>
+    <p class="tl-note tl-note--gap" role="status" data-login-status>Accounts beheer je met scripts/admin-user.mjs. Na vijf mislukte pogingen wacht het beheer vijf minuten.</p>
   </section>
 </main>
 <div class="tl-toast" data-toast role="status" hidden></div>

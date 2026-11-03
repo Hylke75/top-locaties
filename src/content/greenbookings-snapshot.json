@@ -12,13 +12,15 @@
     "placeholderImages": [
       "content/_placeholder-foto-volgt.jpg"
     ],
-    "partnerRule": "Alleen records met status='gepubliceerd' EN aangesloten=true (positief). Bron: kolom public.locaties.aangesloten. Relatie met API-filter alleen_partners=true is NOG NIET geverifieerd (API achter Vercel-checkpoint). Onbekend of false = niet publiceren.",
+    "partnerRule": "Alleen records met status='gepubliceerd' EN aangesloten=true. Bevestigd door opdrachtgever (03-11-2026): de kolom aangesloten is de juiste partnerdefinitie. Onbekend of false = niet publiceren.",
     "partnerCountAtSync": {
       "gepubliceerd": 3226,
       "gepubliceerdEnAangesloten": 61,
       "inSnapshot": 61
     },
-    "scope": "Alle gepubliceerde, aangesloten partnerlocaties op 03-11-2026 (volledige partner-snapshot)."
+    "scope": "Alle gepubliceerde, aangesloten partnerlocaties op 03-11-2026 (volledige partner-snapshot).",
+    "supplierRule": "Leveranciers = Greenbookings-partners: organisaties.type='leverancier' EN aangesloten=true EN status='actief' EN is_test=false (bevestigd door opdrachtgever 03-11-2026).",
+    "imageRights": "Greenbookings-foto's mogen op top-locaties.nl worden getoond (bevestigd door opdrachtgever 03-11-2026)."
   },
   "venues": [
     {
@@ -1397,59 +1399,270 @@
   ],
   "suppliers": [
     {
+      "greenbookingsSlug": "xr-events",
+      "name": "Beau & XR Events",
+      "category": "Marketing & events",
+      "tipCategory": "tips-voor-locaties",
+      "city": "Hendrik-Ido-Ambacht",
+      "tagline": "Online marketing en innovatieve eventbeleving onder één dak.",
+      "website": "https://www.beau-xrevents.nl/",
+      "heroImage": null,
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
       "greenbookingsSlug": "bourgonje",
       "name": "Bourgonje",
       "category": "AV-techniek",
+      "tipCategory": "techniek-av",
       "city": "Zoetermeer",
       "tagline": "Geluid, licht en video voor evenementen en congressen, onder één dak.",
-      "status": "actief",
-      "toonInGids": false,
       "website": "https://www.bourgonje.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-bourgonje.webp",
+        "alt": "Beeld van Bourgonje"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
       "sourceUpdatedAt": "2026-11-03T03:00:47Z"
     },
     {
       "greenbookingsSlug": "catering-van-t-hooge",
       "name": "Catering van 't Hooge",
       "category": "Catering",
+      "tipCategory": "catering",
       "city": "Hoogeveen",
       "tagline": "Eventcatering op maat voor een doelgericht en smaakvol zakelijk event.",
-      "status": "actief",
-      "toonInGids": false,
       "website": "https://www.vthooge.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-catering-van-t-hooge.webp",
+        "alt": "Beeld van Catering van 't Hooge"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
       "sourceUpdatedAt": "2026-11-03T04:40:16Z"
     },
     {
       "greenbookingsSlug": "floris-van-maurik-catering-en-events",
       "name": "Floris & van Maurik",
       "category": "Catering",
+      "tipCategory": "catering",
       "city": "Huizen",
       "tagline": "Gerenommeerde cateraar voor particuliere en zakelijke evenementen.",
-      "status": "actief",
-      "toonInGids": false,
       "website": "https://florisenvanmaurik.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-floris-van-maurik-catering-en-events.webp",
+        "alt": "Beeld van Floris & van Maurik"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
       "sourceUpdatedAt": "2026-11-03T03:00:47Z"
     },
     {
-      "greenbookingsSlug": "jb-productions-lev",
-      "name": "JB Productions",
-      "category": "Entertainment",
-      "city": "Heinenoord",
-      "tagline": "Is een entertainment-/artiestenbureau voor evenementen.",
+      "greenbookingsSlug": "stichting-kmvk",
+      "name": "Green Key Nederland",
+      "category": "Duurzaamheidskeurmerk",
+      "tipCategory": "tips-voor-locaties",
+      "city": "Leusden",
+      "tagline": "Het internationale duurzaamheidskeurmerk voor de gastvrijheidssector.",
+      "website": "https://www.greenkey.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-stichting-kmvk.png",
+        "alt": "Beeld van Green Key Nederland"
+      },
       "status": "actief",
-      "toonInGids": true,
-      "website": "https://www.jbproductions.nl/",
-      "sourceUpdatedAt": "2026-11-03T04:40:15Z"
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
     },
     {
-      "greenbookingsSlug": "flitz-events",
-      "name": "Flitz-Events",
-      "category": "Eventorganisatie",
+      "greenbookingsSlug": "green-side",
+      "name": "Green Side",
+      "category": "Duurzame giveaways",
+      "tipCategory": "duurzame-giveaways",
       "city": null,
-      "tagline": "Nationaal evenementenbureau voor jong en oud",
+      "tagline": "Notitieboeken uit ingezameld schoolpapier, opgehaald op de fiets.",
+      "website": "https://green-side.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-green-side.webp",
+        "alt": "Beeld van Green Side"
+      },
       "status": "actief",
-      "toonInGids": true,
-      "website": "https://flitz-events.nl",
-      "sourceUpdatedAt": "2026-10-31T04:40:15Z"
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "karsten-en-kuiper",
+      "name": "Karsten & Kuiper",
+      "category": "Catering",
+      "tipCategory": "catering",
+      "city": "Den Haag",
+      "tagline": "Verse, smaakvolle gerechten voor evenementen en zakelijke momenten.",
+      "website": "https://www.karstenenkuiper.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-karsten-en-kuiper.webp",
+        "alt": "Beeld van Karsten & Kuiper"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T04:40:24Z"
+    },
+    {
+      "greenbookingsSlug": "link-lead",
+      "name": "Link & Lead",
+      "category": "Leadgeneratie & sales",
+      "tipCategory": "tips-voor-locaties",
+      "city": null,
+      "tagline": "B2B-leadgeneratie en sales met slimme inzet van AI",
+      "website": "https://linkandlead.nl",
+      "heroImage": null,
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "local-heroes",
+      "name": "Local Heroes",
+      "category": "Horecapersoneel",
+      "tipCategory": "eventpersoneel",
+      "city": "Den Haag",
+      "tagline": "Getraind en ervaren horecapersoneel voor evenementen en feesten.",
+      "website": "https://thelocalheroes.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-local-heroes.png",
+        "alt": "Beeld van Local Heroes"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "meeting-magazine",
+      "name": "Meeting Magazine (Van Munster Media)",
+      "category": "Vakmedia",
+      "tipCategory": "tips-voor-locaties",
+      "city": null,
+      "tagline": "Inspiratie en locaties voor meetings, congressen en events.",
+      "website": "https://www.meetingmagazine.nl/",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-meeting-magazine.png",
+        "alt": "Beeld van Meeting Magazine (Van Munster Media)"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "meeting-review",
+      "name": "MeetingReview",
+      "category": "Locatieplatform",
+      "tipCategory": "tips-voor-locaties",
+      "city": null,
+      "tagline": "Het grootste onafhankelijke platform voor vergader- en eventlocaties.",
+      "website": "https://www.meetingreview.com",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-meeting-review.png",
+        "alt": "Beeld van MeetingReview"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "mice-operations",
+      "name": "MICE Operations",
+      "category": "Event-software",
+      "tipCategory": "registratie-software",
+      "city": "Breda",
+      "tagline": "Software die aanvragen, offertes en events in één tool bundelt.",
+      "website": "https://www.miceoperations.com/nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-mice-operations.png",
+        "alt": "Beeld van MICE Operations"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "objektiv",
+      "name": "Objektiv",
+      "category": "Contentproductie",
+      "tipCategory": "fotografie-video",
+      "city": null,
+      "tagline": "Video, animatie, podcasts en livestreams voor mooie klanten.",
+      "website": "https://www.objektiv.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-objektiv.webp",
+        "alt": "Beeld van Objektiv"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "van-der-kroft-events",
+      "name": "Van der Kroft Events",
+      "category": "Eventverhuur & inrichting",
+      "tipCategory": "organisatie-inrichting",
+      "city": "Wassenaar",
+      "tagline": "Al 50 jaar complete inrichting en verhuur voor evenementen.",
+      "website": "https://www.vdkroft.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-van-der-kroft-events.webp",
+        "alt": "Beeld van Van der Kroft Events"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "vermaat",
+      "name": "Vermaat Events",
+      "category": "Catering",
+      "tipCategory": "catering",
+      "city": "IJsselstein",
+      "tagline": "Culinaire ervaringen: classy, catchy en responsible.",
+      "website": "https://www.vermaatevents.nl",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-vermaat.png",
+        "alt": "Beeld van Vermaat Events"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
+    },
+    {
+      "greenbookingsSlug": "worldmeetings-com",
+      "name": "Worldmeetings.com",
+      "category": "Boekingsplatform",
+      "tipCategory": "registratie-software",
+      "city": "Den Haag",
+      "tagline": "Al 30 jaar opdrachtgevers en locatiepartners verbonden in de meetingmarkt.",
+      "website": "https://www.worldmeetings.com",
+      "heroImage": {
+        "url": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/partners/hero-worldmeetings-com.webp",
+        "alt": "Beeld van Worldmeetings.com"
+      },
+      "status": "actief",
+      "aangesloten": true,
+      "toonInGids": false,
+      "sourceUpdatedAt": "2026-11-03T03:00:47Z"
     }
   ]
 }

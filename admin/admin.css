@@ -1,6 +1,6 @@
 /* Beheer: functionele uitbreiding op tokens + tl-componenten. Geen eigen kleuren of fonts. */
 .ad-userbar { display:flex; justify-content:space-between; gap:12px; padding:10px var(--tl-gutter); background:var(--tl-ink); color:var(--tl-white); }
-.ad-login { display:grid; grid-template-columns:minmax(0,420px) auto; gap:0; margin-top:40px; background:var(--tl-white); border:1px solid var(--tl-ink); box-shadow:9px 9px 0 var(--tl-ink); max-width:640px; }
+.ad-login { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:0; margin-top:40px; background:var(--tl-white); border:1px solid var(--tl-ink); box-shadow:9px 9px 0 var(--tl-ink); max-width:900px; }
 .ad-login .tl-button { min-height:73px; border:0; background:var(--tl-coral); color:var(--tl-ink) !important; }
 .ad-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin:30px 0; }
 .ad-tile { border:1px solid var(--tl-line); background:var(--tl-paper); padding:20px; }

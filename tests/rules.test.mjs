@@ -66,3 +66,23 @@ test('matching: gewogen, uitlegbaar, zonder percentages, altijd 3 resultaten', (
 test('contentvalidatie heeft geen fouten', () => {
   assert.deepEqual(validate().errors, []);
 });
+
+test('leveranciers: alleen aangesloten partners, ook in concepten', () => {
+  const snap = JSON.parse(fs.readFileSync('src/content/greenbookings-snapshot.json', 'utf8'));
+  for (const s of data.suppliers) {
+    const src = snap.suppliers.find((x) => x.name === s.name);
+    assert.ok(src && src.aangesloten === true && src.status === 'actief', s.name);
+  }
+  const ids = new Set(data.suppliers.map((s) => s.id));
+  for (const c of data.concepts) for (const m of c.supplierMatches) assert.ok(ids.has(m.supplierId), `${c.slug} → ${m.supplierId}`);
+  assert.ok(!data.suppliers.some((s) => /JB Productions|Flitz/.test(s.name)));
+});
+
+test('wachtwoorden: scrypt-hash, verificatie en geen klare tekst', async () => {
+  const { hashPassword, verifyPassword } = await import('../scripts/admin-user.mjs');
+  const h = hashPassword('een-lang-wachtwoord');
+  assert.match(h, /^scrypt\$[0-9a-f]{32}\$[0-9a-f]{128}$/);
+  assert.equal(verifyPassword('een-lang-wachtwoord', h), true);
+  assert.equal(verifyPassword('fout', h), false);
+  assert.ok(fs.readFileSync('.gitignore', 'utf8').includes('.admin/'));
+});

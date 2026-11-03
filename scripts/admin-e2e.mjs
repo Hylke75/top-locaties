@@ -35,7 +35,7 @@ try {
   await anon.goto(base + '/admin/');
   await anon.fill('#token', 'fout'); await anon.click('[data-login] button');
   await anon.waitForTimeout(900);
-  check((await anon.textContent('[data-login-status]')).includes('Onbekende'), 'onbekende toegangscode wordt geweigerd');
+  check((await anon.textContent('[data-login-status]')).includes('Onbekend'), 'onbekende toegangscode wordt geweigerd');
   const apiAnon = await anon.evaluate(() => fetch('/api/content').then((r) => r.status));
   check(apiAnon === 401, 'API zonder sessie → 401');
 

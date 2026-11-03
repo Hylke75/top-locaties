@@ -19,6 +19,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { loadUsers, verifyPassword } from './admin-user.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = path.join(root, 'src/content');
@@ -29,10 +30,19 @@ const AUDIT = path.join(CONTENT, 'audit-log.jsonl');
 const PORT = Number(process.env.ADMIN_PORT || 4174);
 const HOST = process.env.ADMIN_HOST || '127.0.0.1';
 
-const tokens = {
-  [process.env.TL_EDITOR_TOKEN || crypto.randomBytes(12).toString('hex')]: { role: 'redacteur', name: process.env.TL_EDITOR_NAME || 'Redacteur' },
-  [process.env.TL_CHIEF_TOKEN || crypto.randomBytes(12).toString('hex')]: { role: 'hoofdredacteur', name: process.env.TL_CHIEF_NAME || 'Hoofdredacteur' },
-};
+// Accounts (e-mail + wachtwoord, scrypt) uit .admin/users.json of TL_ADMIN_USERS.
+// Toegangscodes (TL_EDITOR_TOKEN / TL_CHIEF_TOKEN) alleen als ze expliciet gezet zijn (bijv. voor tests).
+const tokens = {};
+if (process.env.TL_EDITOR_TOKEN) tokens[process.env.TL_EDITOR_TOKEN] = { role: 'redacteur', name: process.env.TL_EDITOR_NAME || 'Redacteur' };
+if (process.env.TL_CHIEF_TOKEN) tokens[process.env.TL_CHIEF_TOKEN] = { role: 'hoofdredacteur', name: process.env.TL_CHIEF_NAME || 'Hoofdredacteur' };
+const failed = new Map(); // ip → { count, until } — rem op raden
+function authenticate({ email, password, token } = {}) {
+  if (token && tokens[token]) return tokens[token];
+  if (!email || !password) return null;
+  const u = loadUsers().find((x) => x.email.toLowerCase() === String(email).trim().toLowerCase());
+  if (!u || !verifyPassword(String(password), u.passwordHash)) return null;
+  return { role: u.role, name: u.name, email: u.email };
+}
 const sessions = new Map(); // sid → { role, name, csrf, expires }
 const FILES = { concepts: 'concepts.json', venues: 'venues.editorial.json', suppliers: 'suppliers.editorial.json', feelings: 'feelings.json', snapshot: 'greenbookings-snapshot.json' };
 
@@ -227,9 +237,17 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   try {
     if (url.pathname === '/admin/login' && req.method === 'POST') {
-      const { token } = await readBody(req);
-      const user = tokens[token];
-      if (!user) { await new Promise((r) => setTimeout(r, 600)); return send(res, 401, { error: 'Onbekende toegangscode' }); }
+      const ip = req.socket.remoteAddress;
+      const f = failed.get(ip);
+      if (f && f.until > Date.now()) return send(res, 429, { error: 'Te veel pogingen. Probeer het over een paar minuten opnieuw.' });
+      const user = authenticate(await readBody(req));
+      if (!user) {
+        const n = (f?.count || 0) + 1;
+        failed.set(ip, { count: n, until: n >= 5 ? Date.now() + 5 * 60e3 : 0 });
+        await new Promise((r) => setTimeout(r, 600));
+        return send(res, 401, { error: 'Onbekend e-mailadres of onjuist wachtwoord' });
+      }
+      failed.delete(ip);
       const sid = crypto.randomBytes(24).toString('hex');
       sessions.set(sid, { ...user, csrf: crypto.randomBytes(16).toString('hex'), expires: Date.now() + 8 * 3600e3 });
       audit(user, 'login', {});
@@ -262,5 +280,7 @@ http.createServer(async (req, res) => {
   }
 }).listen(PORT, HOST, () => {
   console.log(`TOP LOCATIES BEHEER → http://${HOST}:${PORT}/admin/`);
-  for (const [t, u] of Object.entries(tokens)) console.log(`  ${u.role.padEnd(15)} toegangscode: ${process.env[u.role === 'redacteur' ? 'TL_EDITOR_TOKEN' : 'TL_CHIEF_TOKEN'] ? '(uit omgeving)' : t}`);
+  const users = loadUsers();
+  console.log(`  ${users.length} account(s): ${users.map((u) => `${u.email} (${u.role})`).join(', ') || 'geen — maak er een aan met: node scripts/admin-user.mjs add <email> hoofdredacteur'}`);
+  if (Object.keys(tokens).length) console.log('  + toegangscodes uit de omgeving actief');
 });

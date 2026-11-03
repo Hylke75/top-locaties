@@ -35,6 +35,11 @@ export function isPublishablePartner(src) {
   return Boolean(src) && src.status === 'gepubliceerd' && src.aangesloten === true;
 }
 
+/** Leveranciers: alleen actieve, aangesloten Greenbookings-partners (bevestigd 03-11-2026). */
+export function isPublishableSupplier(src) {
+  return Boolean(src) && src.status === 'actief' && src.aangesloten === true;
+}
+
 export const slugify = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' en ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export function loadData() {
@@ -115,13 +120,14 @@ export function loadData() {
   const suppliers = supplierDoc.suppliers
     .map((ed) => {
       const src = snapshot.suppliers.find((s) => s.greenbookingsSlug === ed.greenbookingsSlug);
-      if (!src || src.status !== 'actief') return null;
+      if (!isPublishableSupplier(src)) return null; // alleen aangesloten leverancierspartners
       return {
         id: ed.id,
         slug: slugify(src.name),
         name: src.name,
         category: src.category,
         website: src.website,
+        image: src.heroImage ? { src: src.heroImage.url, alt: src.heroImage.alt } : null,
         concepts: concepts.flatMap((c) => c.supplierMatches.filter((m) => m.supplierId === ed.id).map((m) => ({ slug: c.slug, title: c.title, role: m.role, reason: m.reason }))),
         label: ed.label,
         symbol: ed.symbol,

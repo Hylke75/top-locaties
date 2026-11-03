@@ -115,9 +115,10 @@
       "supplierRoles": [
         "AV & techniek",
         "Catering",
-        "Entertainment",
-        "Productie & begeleiding",
-        "Creatieve regie"
+        "Beleving & XR",
+        "Content & livestream",
+        "Inrichting",
+        "Entertainment"
       ],
       "supplierMatches": [
         {
@@ -131,14 +132,19 @@
           "reason": "Eten, drinken en gastvrijheid die met de route meebewegen."
         },
         {
-          "supplierId": "jb",
-          "role": "Entertainment",
-          "reason": "Shows en verrassende momenten tussen de sessies."
+          "supplierId": "xr",
+          "role": "Beleving & XR",
+          "reason": "Interactieve, digitale beleving die een kennisdag laat voelen als een festival."
         },
         {
-          "supplierId": "flitz",
-          "role": "Productie & begeleiding",
-          "reason": "Productie, begeleiding en activatie op de dag zelf."
+          "supplierId": "objektiv",
+          "role": "Content & livestream",
+          "reason": "Sessies vastleggen of live delen, zodat de kennis na de dag blijft leven."
+        },
+        {
+          "supplierId": "vanderkroft",
+          "role": "Inrichting",
+          "reason": "Meubilair en inrichting die van één hal meerdere festivalzones maken."
         }
       ],
       "seo": {
@@ -264,7 +270,9 @@
       ],
       "supplierRoles": [
         "Catering",
+        "Bediening & gastvrijheid",
         "Licht & sfeer",
+        "Inrichting & styling",
         "Muziek of performance"
       ],
       "supplierMatches": [
@@ -274,9 +282,14 @@
           "reason": "De culinaire invulling als hoofdrol van de avond."
         },
         {
-          "supplierId": "hooge",
+          "supplierId": "karsten",
           "role": "Catering",
-          "reason": "Alternatief voor een dinerconcept op maat."
+          "reason": "Een alternatief met verse gerechten voor een diner op maat."
+        },
+        {
+          "supplierId": "localheroes",
+          "role": "Bediening & gastvrijheid",
+          "reason": "Bediening die gasten op hun gemak stelt, zodat het gesprek centraal staat."
         },
         {
           "supplierId": "bourgonje",
@@ -284,9 +297,9 @@
           "reason": "Licht en geluid die de tafel laten spreken, niet de techniek."
         },
         {
-          "supplierId": "jb",
-          "role": "Muziek of performance",
-          "reason": "Een muzikale of theatrale afsluiting."
+          "supplierId": "vanderkroft",
+          "role": "Inrichting & styling",
+          "reason": "Tafels, linnen en inrichting voor een tafelschikking met betekenis."
         }
       ],
       "seo": {
@@ -413,23 +426,30 @@
       "supplierRoles": [
         "Facilitatie & productie",
         "Catering",
-        "AV & techniek"
+        "Inrichting",
+        "Materialen",
+        "Vastleggen & delen"
       ],
       "supplierMatches": [
-        {
-          "supplierId": "flitz",
-          "role": "Facilitatie & productie",
-          "reason": "Begeleiding van werkvormen en activiteiten door de dag heen."
-        },
         {
           "supplierId": "hooge",
           "role": "Catering",
           "reason": "Lichte, doorlopende catering die het ritme niet onderbreekt."
         },
         {
-          "supplierId": "bourgonje",
-          "role": "AV & techniek",
-          "reason": "Eenvoudige presentatietechniek voor de afsluitende pitches."
+          "supplierId": "vanderkroft",
+          "role": "Inrichting",
+          "reason": "Flexibel meubilair voor werkvormen in wisselende groepen."
+        },
+        {
+          "supplierId": "greenside",
+          "role": "Materialen",
+          "reason": "Notitieboeken uit ingezameld papier: om ideeën op te schrijven en mee te nemen."
+        },
+        {
+          "supplierId": "objektiv",
+          "role": "Vastleggen & delen",
+          "reason": "De beste pitches vastleggen, zodat de rest van de organisatie meekijkt."
         }
       ],
       "seo": {
@@ -555,9 +575,10 @@
       ],
       "supplierRoles": [
         "Licht & geluid",
-        "Performance",
+        "Beleving & XR",
         "Catering",
-        "Productie"
+        "Gastvrijheid",
+        "Performance"
       ],
       "supplierMatches": [
         {
@@ -566,19 +587,19 @@
           "reason": "Het lichtontwerp is hier de verteller van de avond."
         },
         {
-          "supplierId": "jb",
-          "role": "Performance",
-          "reason": "Acts die per ruimte een ander gevoel oproepen."
+          "supplierId": "xr",
+          "role": "Beleving & XR",
+          "reason": "Digitale installaties die elke ruimte een ander gevoel geven."
         },
         {
-          "supplierId": "floris",
+          "supplierId": "vermaat",
           "role": "Catering",
           "reason": "Culinaire verrassingen verspreid over de route."
         },
         {
-          "supplierId": "flitz",
-          "role": "Productie",
-          "reason": "Regie over de looproute en de timing van de finale."
+          "supplierId": "localheroes",
+          "role": "Gastvrijheid",
+          "reason": "Hosts die gasten van ruimte naar ruimte begeleiden."
         }
       ],
       "seo": {

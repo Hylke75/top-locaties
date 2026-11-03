@@ -1,10 +1,117 @@
 {
-  "_meta": "Redactionele laag voor leveranciers. De rol per concept staat in concepts.json (supplierMatches.role) omdat die contextueel is. 'symbol' is het typografische teken op de kaart (geen logo). profileLinkStatus: 'onbevestigd' zolang de publieke profielpagina niet handmatig is gecontroleerd.",
+  "_meta": "Redactionele laag voor de Greenbookings-leverancierspartners (aangesloten=true). De rol per concept staat in concepts.json. 'symbol' is het typografische teken op de kaart (geen logo).",
   "suppliers": [
-    { "id": "bourgonje", "greenbookingsSlug": "bourgonje", "label": "AV / TECHNIEK", "symbol": "✳", "profileLinkStatus": "onbevestigd" },
-    { "id": "hooge", "greenbookingsSlug": "catering-van-t-hooge", "label": "CATERING", "symbol": "◉", "profileLinkStatus": "onbevestigd" },
-    { "id": "floris", "greenbookingsSlug": "floris-van-maurik-catering-en-events", "label": "CATERING / EVENTS", "symbol": "◌", "profileLinkStatus": "onbevestigd" },
-    { "id": "jb", "greenbookingsSlug": "jb-productions-lev", "label": "ENTERTAINMENT", "symbol": "✶", "profileLinkStatus": "onbevestigd" },
-    { "id": "flitz", "greenbookingsSlug": "flitz-events", "label": "EVENTORGANISATIE", "symbol": "↗", "profileLinkStatus": "onbevestigd" }
+    {
+      "id": "bourgonje",
+      "greenbookingsSlug": "bourgonje",
+      "label": "AV / TECHNIEK",
+      "symbol": "✳",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "hooge",
+      "greenbookingsSlug": "catering-van-t-hooge",
+      "label": "CATERING",
+      "symbol": "◉",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "floris",
+      "greenbookingsSlug": "floris-van-maurik-catering-en-events",
+      "label": "CATERING / EVENTS",
+      "symbol": "◌",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "karsten",
+      "greenbookingsSlug": "karsten-en-kuiper",
+      "label": "CATERING",
+      "symbol": "●",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "vermaat",
+      "greenbookingsSlug": "vermaat",
+      "label": "CATERING / BELEVING",
+      "symbol": "◎",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "localheroes",
+      "greenbookingsSlug": "local-heroes",
+      "label": "HORECAPERSONEEL",
+      "symbol": "+",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "vanderkroft",
+      "greenbookingsSlug": "van-der-kroft-events",
+      "label": "VERHUUR / INRICHTING",
+      "symbol": "▢",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "xr",
+      "greenbookingsSlug": "xr-events",
+      "label": "BELEVING / XR",
+      "symbol": "✶",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "objektiv",
+      "greenbookingsSlug": "objektiv",
+      "label": "VIDEO / LIVESTREAM",
+      "symbol": "▶",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "greenside",
+      "greenbookingsSlug": "green-side",
+      "label": "DUURZAME GIVEAWAYS",
+      "symbol": "↺",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "greenkey",
+      "greenbookingsSlug": "stichting-kmvk",
+      "label": "KEURMERK",
+      "symbol": "✓",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "miceops",
+      "greenbookingsSlug": "mice-operations",
+      "label": "EVENTSOFTWARE",
+      "symbol": "⌘",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "worldmeetings",
+      "greenbookingsSlug": "worldmeetings-com",
+      "label": "BOEKINGSPLATFORM",
+      "symbol": "↗",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "meetingreview",
+      "greenbookingsSlug": "meeting-review",
+      "label": "LOCATIEPLATFORM",
+      "symbol": "↘",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "meetingmagazine",
+      "greenbookingsSlug": "meeting-magazine",
+      "label": "VAKMEDIA",
+      "symbol": "¶",
+      "profileLinkStatus": "onbevestigd"
+    },
+    {
+      "id": "linklead",
+      "greenbookingsSlug": "link-lead",
+      "label": "SALES / LEADS",
+      "symbol": "→",
+      "profileLinkStatus": "onbevestigd"
+    }
   ]
 }

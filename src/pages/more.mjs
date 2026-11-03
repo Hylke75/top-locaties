@@ -153,20 +153,20 @@ export function renderSuppliers(data) {
   const { suppliers, syncedDate } = data;
   const cats = [...new Set(suppliers.map((s) => s.category))];
   const body = html`${header({ current: 'leveranciers' })}
-${crumb([{ href: '/', label: 'HOME' }, { label: 'LEVERANCIERS' }], `${pad(suppliers.length)} MAKERS IN DEZE SELECTIE`)}
+${crumb([{ href: '/', label: 'HOME' }, { label: 'LEVERANCIERS' }], `${pad(suppliers.length)} LEVERANCIERSPARTNERS`)}
 <main id="main">
 <section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="supTitle" data-supplier-dir-root>
   ${overline('01 / DE MAKERS', 'DE ROL IN HET CONCEPT TELT')}
   <div class="tl-section-head tl-section-head--top">
     <h1 class="tl-display" id="supTitle">HET WORDT PAS<br>ECHT MET<br><span class="tl-accent">MENSEN.</span></h1>
-    <p>Van techniek tot catering en entertainment. Per maker zie je bij welke eventconcepten de redactie hem noemt, en in welke rol.</p>
+    <p>De leverancierspartners van Greenbookings: van techniek en catering tot inrichting, content en eventsoftware. Per maker zie je bij welke eventconcepten de redactie hem noemt, en in welke rol.</p>
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op vakgebied">
     <button class="tl-chip-button" type="button" data-sup-cat="" aria-pressed="true">ALLE VAKGEBIEDEN / ${pad(suppliers.length)}</button>
     ${cats.map((c) => html`<button class="tl-chip-button" type="button" data-sup-cat="${c}" aria-pressed="false">${c.toUpperCase()} / ${pad(suppliers.filter((s) => s.category === c).length)}</button>`)}
   </div>
   <div class="tl-supplier-grid" data-sup-grid>${suppliers.map(supplierDirCard)}</div>
-  <p class="tl-note tl-note--gap">Voorlopige, redactionele selectie uit het Greenbookings-leveranciersbestand (bronstand ${syncedDate}). De volledige leveranciersgids verschijnt zodra Greenbookings een bevestigde leveranciersfeed levert. Een vermelding is geen bevestigde samenwerking.</p>
+  <p class="tl-note tl-note--gap">Alle aangesloten leverancierspartners van Greenbookings (bronstand ${syncedDate}). Een vermelding bij een concept is een redactionele suggestie, geen bevestigde samenwerking.</p>
 </section>
 <section class="tl-section tl-section--dark" aria-labelledby="supMore">
   ${overline('02 / MEER MAKERS', 'IN HET NETWERK')}
@@ -187,12 +187,12 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/leveranciers/', label: 'LEVERAN
   <div class="tl-columns">
     <p class="tl-intro-label">${s.tagline}</p>
     <div>
-      <span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>
-      <h1 class="tl-display tl-display--md" id="sTitle">${s.name}</h1>
+      ${s.image ? html`<figure class="tl-image-frame tl-image-frame--landscape"><img src="${s.image.src}" alt="${s.image.alt}" fetchpriority="high"><figcaption class="tl-image-caption">BEELD: GREENBOOKINGS-PROFIEL</figcaption></figure>` : html`<span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>`}
+      <h1 class="tl-display tl-display--md tl-body--gap" id="sTitle">${s.name}</h1>
       <dl class="tl-facts">
         <div><dt>VAKGEBIED</dt><dd>${s.category}</dd></div>
         <div><dt>PLAATS</dt><dd>${s.city || 'Onbekend in de bron'}</dd></div>
-        <div><dt>PROFIEL</dt><dd>${s.profileLinkStatus === 'bevestigd' ? 'Op Greenbookings' : 'Greenbookings-profiel (link nog niet handmatig gecontroleerd)'}</dd></div>
+        <div><dt>STATUS</dt><dd>Aangesloten partner van Greenbookings</dd></div>
       </dl>
       <p class="tl-chip-set tl-body--gap">${ext(s.profileUrl, 'PROFIEL OP GREENBOOKINGS ↗', 'tl-button')}${s.website ? ext(s.website, 'WEBSITE VAN DE MAKER ↗', 'tl-button tl-button--outline') : ''}</p>
     </div>

@@ -24,7 +24,9 @@ const issues = (list, kind) => list.map((x) => `<li data-kind="${kind}">${esc(x)
 /* ---------- Inloggen ---------- */
 $('[data-login]')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  try { await call('POST', '/admin/login', { token: $('#token').value.trim() }); start(); }
+  const email = $('#email').value.trim();
+  const secret = $('#token').value;
+  try { await call('POST', '/admin/login', email ? { email, password: secret } : { token: secret.trim() }); start(); }
   catch (err) { $('[data-login-status]').textContent = err.message; }
 });
 
