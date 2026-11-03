@@ -1,0 +1,37 @@
+{
+  "_meta": "Gedeelde gids 'Zo regel je het zelf': de kennis die een eventbureau normaal meebrengt. Algemeen geldend; regels verschillen per gemeente en locatie — daarom altijd 'check bij…', nooit harde drempels als feit. Bronnen staan in sources.",
+  "title": "Zo regel je het zelf",
+  "intro": "Alles wat een eventbureau voor je doet, in negen stappen. Met dit concept, de vragenlijst en deze gids heb je een compleet draaiboek, de juiste vragen voor offertes en een planning tot en met de evaluatie.",
+  "agencyVsYou": [
+    ["Concept en programma bedenken", "Het concept, het voorbeeldprogramma en het draaiboek staan op elke conceptpagina."],
+    ["Locatie zoeken en offreren", "Aangesloten partnerlocaties met reden, capaciteitscheck en een kant-en-klare offerteaanvraag."],
+    ["Leveranciers kiezen en aansturen", "Makers per rol, met per maker een offerteaanvraag op basis van jouw draaiboek."],
+    ["Draaiboek en callsheet", "Dagdraaiboek op jouw starttijd, aftelplanning met data en een contactlijst om in te vullen."],
+    ["Budget bewaken", "Een begrotingsblad met alle kostenposten, om naast de offertes te leggen."],
+    ["Deelnemers en communicatie", "Uitnodiging, herinnering en praktische informatie, ingevuld met jouw gegevens."],
+    ["Veiligheid en regels", "Een checklist voor melding/vergunning, BHV, verzekering en privacy."],
+    ["Regie op de dag zelf", "Rollen, briefing en een plan B per risico."]
+  ],
+  "steps": [
+    { "id": "briefing", "title": "Briefing: waarom, voor wie, wat moet het opleveren", "when": "Bij de start", "items": ["Formuleer het doel in één zin en het gevoel dat gasten mee naar huis nemen", "Bepaal doelgroep, groepsgrootte, datum (met een uitwijkdatum) en dagdeel", "Wijs één eindverantwoordelijke aan en een klein kernteam", "Leg je eigen budgetkader vast, inclusief een post onvoorzien"] },
+    { "id": "offertes", "title": "Offertes opvragen en vergelijken", "when": "10–8 weken vooraf", "items": ["Vraag bij minstens twee partijen per discipline een offerte aan, met dezelfde briefing", "Gebruik de offerteaanvragen uit je draaiboek op maat: datum, aantallen, tijden, ruimtes en wensen staan er al in", "Vergelijk op wat inbegrepen is (personeel, opbouw, materiaal, btw), niet alleen op de totaalprijs", "Vraag naar annuleringsvoorwaarden en tot wanneer je aantallen kunt wijzigen"] },
+    { "id": "contracten", "title": "Afspraken vastleggen", "when": "8–6 weken vooraf", "items": ["Laat bevestigen: datum, tijden inclusief op- en afbouw, ruimtes, aantallen en wat inbegrepen is", "Noteer de deadline voor definitieve aantallen en dieetwensen", "Leg vast wie het aanspreekpunt is op de dag zelf, met telefoonnummer", "Bewaar alle bevestigingen bij elkaar (bijvoorbeeld in één map of mail)"] },
+    { "id": "deelnemers", "title": "Deelnemers en communicatie", "when": "8–1 weken vooraf", "items": ["Save the date, uitnodiging, herinnering en praktische informatie (route, ov, parkeren, kleding)", "Registratie: vraag alleen wat je nodig hebt (naam, organisatie, dieetwensen, eventueel keuzes)", "Privacy: vertel deelnemers waarvoor je hun gegevens gebruikt en hoe lang je ze bewaart; vraag toestemming voor foto's en video", "Houd een actuele deelnemerslijst bij voor registratie, catering en badges"] },
+    { "id": "logistiek", "title": "Logistiek en bereikbaarheid", "when": "6–2 weken vooraf", "items": ["Route, ov-advies en parkeren in de deelnemersinformatie", "Toegankelijkheid: rolstoelroute, lift en toilet bevestigen bij de locatie", "Garderobe, bewegwijzering en een plek voor crew en leveranciers", "Laad- en lostijden voor leveranciers afstemmen met de locatie"] },
+    { "id": "veiligheid", "title": "Veiligheid, regels en verzekering", "when": "Zo vroeg mogelijk", "items": ["Vraag de locatie wat zij regelen (vergunningen, BHV, ontruimingsplan) — in een vaste eventlocatie is veel al geregeld", "Gebruik je openbare ruimte of buitenterrein, check dan bij de gemeente of een melding of vergunning nodig is; regels en termijnen verschillen per gemeente en kunnen weken duren", "Zorg voor BHV/EHBO volgens de afspraken met de locatie, zeker bij buitenactiviteiten", "Check of je aansprakelijkheidsverzekering het evenement dekt"] },
+    { "id": "callsheet", "title": "Draaiboek en callsheet", "when": "2–1 weken vooraf", "items": ["Deel het dagdraaiboek met alle partijen", "Maak een callsheet: wie, rol, telefoonnummer, aankomsttijd", "Spreek één centraal aanspreekpunt af en een plan B per risico", "Plan een korte briefing met crew en hosts op de dag zelf"] },
+    { "id": "dagzelf", "title": "Regie op de dag zelf", "when": "Dag zelf", "items": ["Wees als eerste aanwezig; loop de ruimtes en techniek na", "Houd het draaiboek en de callsheet bij de hand (geprint én op je telefoon)", "Bewaak de tijd per onderdeel; buffers staan in het draaiboek", "Houd één persoon vrij voor onverwachte vragen"] },
+    { "id": "nazorg", "title": "Nazorg en evaluatie", "when": "Na afloop", "items": ["Bedankbericht met foto's of opbrengst binnen een paar dagen", "Korte evaluatie onder deelnemers (drie vragen is genoeg)", "Facturen naast de offertes en afspraken leggen", "Leerpunten noteren voor een volgende keer"] }
+  ],
+  "quoteQuestions": {
+    "locatie": ["Is de ruimte beschikbaar op de datum, inclusief op- en afbouw?", "Welke ruimtes en opstellingen passen bij het aantal gasten?", "Wat is inbegrepen (techniek, wifi, personeel, schoonmaak)?", "Welke cateringafspraken gelden (eigen catering of vrije keuze)?", "Wat zijn de annuleringsvoorwaarden en de deadline voor aantallen?", "Wat regelt de locatie op het gebied van BHV en vergunningen?"],
+    "catering": ["Kunnen jullie het voorstel per moment verzorgen voor dit aantal gasten?", "Hoe gaan jullie om met dieetwensen en allergenen?", "Wat is inbegrepen: personeel, materiaal, op- en afbouw?", "Wat is de deadline voor definitieve aantallen?", "Welke duurzame of lokale keuzes bieden jullie?"],
+    "techniek": ["Wat is nodig voor de ruimtes en onderdelen uit het draaiboek?", "Is er een technicus aanwezig tijdens het programma?", "Hoe laat bouwen jullie op en wanneer is de soundcheck?", "Wat gebeurt er bij een storing?"],
+    "overig": ["Kunnen jullie de rol uit het draaiboek invullen op deze datum en tijden?", "Wat is inbegrepen en wat niet?", "Wat hebben jullie van ons of de locatie nodig?", "Wat zijn de annuleringsvoorwaarden?"]
+  },
+  "sources": [
+    { "label": "Gemeente Den Haag — evenement melden of vergunning aanvragen", "url": "https://www.denhaag.nl/nl/vergunningen-en-ontheffingen/evenementvergunningen/evenement-melden.htm" },
+    { "label": "Ondernemersplein (KVK) — evenementen organiseren, regels per gemeente", "url": "https://ondernemersplein.overheid.nl/wetten-en-regels/evenementen-organiseren/gemeente/zaanstad/" },
+    { "label": "Handreiking veiligheidsplan evenementen (gemeente Barneveld)", "url": "https://www.barneveld.nl/fileadmin/Barneveld/Producten/Documenten/Handreiking_veiligheidsplan_evenementen__versie_03-2022_01.pdf" }
+  ]
+}

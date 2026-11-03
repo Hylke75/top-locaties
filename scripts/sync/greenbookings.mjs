@@ -37,13 +37,17 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function fetchPage(start, attempt = 0) {
   const url = `${BASE}?alleen_partners=true&limiet=${PAGE}&start=${start}`;
-  const res = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': 'TopLocatiesSync/1.0 (+https://top-locaties.nl)' } });
+  // API-sleutel alleen uit de omgeving (nooit in de repository): GREENBOOKINGS_API_KEY.
+  const key = process.env.GREENBOOKINGS_API_KEY;
+  const auth = key ? { Authorization: `Bearer ${key}`, 'x-api-key': key } : {};
+  const res = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': 'TopLocatiesSync/1.0 (+https://top-locaties.nl)', ...auth } });
   if (res.status === 429 && attempt < 4) {
     const wait = Number(res.headers.get('retry-after')) * 1000 || 2000 * 2 ** attempt;
     await sleep(wait);
     return fetchPage(start, attempt + 1);
   }
   const type = res.headers.get('content-type') || '';
+  if (res.status === 429) { const b = await res.json().catch(() => ({})); if (b?.error?.code === 'challenge') throw new Error('Vercel-firewall vraagt een challenge (bot-bescherming op greenbookings.nl). Voeg een bypass-regel toe voor /api/v1/* of voor deze server. Niets gewijzigd.'); }
   if (!type.includes('json')) throw new Error(`Bron gaf geen JSON (${res.status} ${type}) — mogelijk Vercel Security Checkpoint. Sync gestopt; niets gewijzigd.`);
   if (!res.ok) throw new Error(`Bron gaf HTTP ${res.status}. Sync gestopt; niets gewijzigd.`);
   return res.json();

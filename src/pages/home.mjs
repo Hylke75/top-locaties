@@ -2,12 +2,6 @@ import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
 import { footer, overline, ext, wordmark, feelingCompass, compassData, SITE } from '../templates/components.mjs';
 
-const CATEGORIES = [
-  { id: 'all', label: 'ALLE IDEEËN' },
-  { id: 'inspiratie', label: 'KENNIS & INSPIRATIE' },
-  { id: 'verbinden', label: 'SAMEN & VERBINDEN' },
-  { id: 'beleven', label: 'BELEVEN & VERRASSEN' },
-];
 
 function guests(c) {
   return `${c.guestCountMin}–${c.guestCountMax} GASTEN`;
@@ -86,7 +80,7 @@ ${feelingCompass(data, { number: '02' })}
     <p>Een selectie van ideeën waar bijzondere bijeenkomsten mee beginnen. Kies wat je raakt, wij laten zien hoe het kan.</p>
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter concepten op type">
-    ${CATEGORIES.map((c) => {
+    ${[{ id: 'all', label: 'ALLE IDEEËN' }, ...data.categories].map((c) => {
       const n = c.id === 'all' ? concepts.length : concepts.filter((x) => x.category === c.id).length;
       return html`<button class="tl-chip-button" type="button" data-category-filter="${c.id}" aria-pressed="${c.id === 'all' ? 'true' : 'false'}">${c.label} / ${pad(n)}</button>`;
     })}

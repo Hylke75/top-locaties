@@ -42,7 +42,11 @@
         "alt": "De industriële hangar van de Fokker Terminal in Den Haag"
       },
       "mediaCount": 7,
-      "sourceUpdatedAt": "2026-10-07T08:07:23Z"
+      "sourceUpdatedAt": "2026-10-07T08:07:23Z",
+      "contactPerson": {
+        "name": "Tom Verhaar",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "nederlands-instituut-voor-beeld-geluid-hilversum",
@@ -72,7 +76,11 @@
         "alt": "De kleurrijke glasgevel van Beeld & Geluid in Hilversum"
       },
       "mediaCount": 6,
-      "sourceUpdatedAt": "2026-09-30T12:24:32Z"
+      "sourceUpdatedAt": "2026-09-30T12:24:32Z",
+      "contactPerson": {
+        "name": "Jessie Schaduw",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/1c0a46ff-16ca-4a4d-bd46-06732aa60738/f283e1cc-10da-49be-b05d-f8d5a47caf2d.webp"
+      }
     },
     {
       "greenbookingsSlug": "tobacco-theater-amsterdam",
@@ -121,7 +129,11 @@
         "alt": "Sfeerbeeld van TOBACCO Theater Amsterdam"
       },
       "mediaCount": 0,
-      "sourceUpdatedAt": "2026-10-15T09:07:41Z"
+      "sourceUpdatedAt": "2026-10-15T09:07:41Z",
+      "contactPerson": {
+        "name": "Liza Henzen",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "geofort",
@@ -142,7 +154,11 @@
         "alt": "GeoFort"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-11-02T13:03:28Z"
+      "sourceUpdatedAt": "2026-11-02T13:03:28Z",
+      "contactPerson": {
+        "name": "Darrel de Zwarte",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "euromast",
@@ -179,7 +195,11 @@
         "alt": "Euromast"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Lennard Montizaan",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "het-nutshuis",
@@ -200,7 +220,8 @@
         "alt": "Het Nutshuis"
       },
       "mediaCount": 6,
-      "sourceUpdatedAt": "2026-10-21T13:34:02Z"
+      "sourceUpdatedAt": "2026-10-21T13:34:02Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "het-spaansche-hof-by-peopleplaces",
@@ -221,7 +242,8 @@
         "alt": "Het Spaansche Hof"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-10-07T08:02:03Z"
+      "sourceUpdatedAt": "2026-10-07T08:02:03Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "de-polderij",
@@ -242,7 +264,11 @@
         "alt": "De Polderij"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-10-07T08:19:00Z"
+      "sourceUpdatedAt": "2026-10-07T08:19:00Z",
+      "contactPerson": {
+        "name": "Tom en Joyce van Zwet",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "milk-meetings",
@@ -263,7 +289,11 @@
         "alt": "Milk & Meetings"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-10-07T21:28:13Z"
+      "sourceUpdatedAt": "2026-10-07T21:28:13Z",
+      "contactPerson": {
+        "name": "Willeke de Boer",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5b8b9835-4483-4efe-8a5c-151a2d989f3d/69fa295f-7dc7-4dec-aaa9-a7564b035f44.webp"
+      }
     },
     {
       "greenbookingsSlug": "nederlands-openluchtmuseum",
@@ -284,7 +314,11 @@
         "alt": "Nederlands Openluchtmuseum"
       },
       "mediaCount": 5,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": {
+        "name": "Paul van Zeist",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f834cc48-868d-43e9-bda5-6c727b8b9674/3d0e240d-834b-4e8e-9f83-f3a95a846e48.webp"
+      }
     },
     {
       "greenbookingsSlug": "grote-kerk-den-haag",
@@ -305,7 +339,11 @@
         "alt": "De monumentale Grote Kerk in het centrum van Den Haag"
       },
       "mediaCount": 6,
-      "sourceUpdatedAt": "2026-10-26T13:47:20Z"
+      "sourceUpdatedAt": "2026-10-26T13:47:20Z",
+      "contactPerson": {
+        "name": "Bieke Oosterheert",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "madurodam-events",
@@ -326,7 +364,11 @@
         "alt": "Madurodam Events"
       },
       "mediaCount": 6,
-      "sourceUpdatedAt": "2026-10-22T13:18:31Z"
+      "sourceUpdatedAt": "2026-10-22T13:18:31Z",
+      "contactPerson": {
+        "name": "Marianne van de Graaf",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b8104c00-46bb-49d3-9d74-81d828f52b39/6fd13186-2d3e-4878-8c86-794cb1322a7e.webp"
+      }
     },
     {
       "greenbookingsSlug": "singer-laren",
@@ -347,7 +389,11 @@
         "alt": "Singer Laren"
       },
       "mediaCount": 1,
-      "sourceUpdatedAt": "2026-10-16T14:38:25Z"
+      "sourceUpdatedAt": "2026-10-16T14:38:25Z",
+      "contactPerson": {
+        "name": "Johan de Jong",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-den-haag-scheveningen-de-pier",
@@ -365,7 +411,11 @@
       "bijeenkomstTypes": [],
       "heroImage": null,
       "mediaCount": 0,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "abe-lenstra-stadion",
@@ -386,7 +436,11 @@
         "alt": "Abe Lenstra Stadion"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": {
+        "name": "Elisa",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "abel-hospitality-leisure",
@@ -407,7 +461,8 @@
         "alt": "Abel. Grand Café Restaurant"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-27T16:32:17Z"
+      "sourceUpdatedAt": "2026-09-27T16:32:17Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "clubspace",
@@ -428,7 +483,11 @@
         "alt": "ClubSpace"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z",
+      "contactPerson": {
+        "name": "Ferry",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "flexlabs-the-court-breda",
@@ -455,7 +514,11 @@
         "alt": "Sfeerbeeld van FlexLabs | The Court Breda"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T08:00:02Z"
+      "sourceUpdatedAt": "2026-10-07T08:00:02Z",
+      "contactPerson": {
+        "name": "Amber van Bussel",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "flexlabs-the-bridge-rotterdam",
@@ -482,7 +545,11 @@
         "alt": "FlexLabs The Bridge Rotterdam"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Amber van Bussel",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "flexlabs-the-capital-rotterdam",
@@ -503,7 +570,8 @@
         "alt": "FlexLabs The Capital Amsterdam"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T08:42:38Z"
+      "sourceUpdatedAt": "2026-10-07T08:42:38Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "flexlabs-the-loft-rotterdam",
@@ -524,7 +592,11 @@
         "alt": "FlexLabs The Loft Rotterdam"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Amber van Bussel",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/e8ed252e-6c80-4387-8431-16431dc9755a/9caa289e-09d1-4e75-ab3a-6e4c76288fd0.webp"
+      }
     },
     {
       "greenbookingsSlug": "kerkbrink",
@@ -548,7 +620,11 @@
         "alt": "Fonos in Hilversum — groene event- en vergaderlocatie"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-28T10:55:12Z"
+      "sourceUpdatedAt": "2026-09-28T10:55:12Z",
+      "contactPerson": {
+        "name": "Kaija de Valk",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/163a71c7-fb98-4b13-9a62-62def2648705/34b47a9f-7fea-4def-afd1-fd022802e44f.webp"
+      }
     },
     {
       "greenbookingsSlug": "groot-obbink",
@@ -569,7 +645,8 @@
         "alt": "Groot Obbink"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T10:12:18Z"
+      "sourceUpdatedAt": "2026-10-15T10:12:18Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "het-kooi-stadion",
@@ -590,7 +667,8 @@
         "alt": "Het Kooi Stadion"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:27:54Z"
+      "sourceUpdatedAt": "2026-09-25T08:27:54Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "hotel-luxer",
@@ -611,7 +689,8 @@
         "alt": "Hotel Luxer"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "kanteen25",
@@ -632,7 +711,8 @@
         "alt": "Kanteen25"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "koninklijk-instituut-van-ingenieurs-kivi",
@@ -653,7 +733,11 @@
         "alt": "Koninklijk Instituut Van Ingenieurs KIVI in Den Haag — groene event- en vergaderlocatie"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Melanie Hooijmans",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "kunstlinie",
@@ -674,7 +758,8 @@
         "alt": "Kunstlinie"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-01T08:24:11Z"
+      "sourceUpdatedAt": "2026-10-01T08:24:11Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "linden-hotel",
@@ -695,7 +780,8 @@
         "alt": "Linden Hotel"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "mr-jordaan",
@@ -716,7 +802,8 @@
         "alt": "Mr. Jordaan"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "nieuwe-kerk-den-haag",
@@ -734,7 +821,8 @@
       "bijeenkomstTypes": [],
       "heroImage": null,
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-11-02T08:12:46Z"
+      "sourceUpdatedAt": "2026-11-02T08:12:46Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "oude-kerk-evenementen",
@@ -755,7 +843,11 @@
         "alt": "Oude Kerk Evenementen"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-29T09:50:53Z"
+      "sourceUpdatedAt": "2026-09-29T09:50:53Z",
+      "contactPerson": {
+        "name": "David van Kruiselbergen",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b5122a7a-fa99-444c-8727-b91ec84dc9e9/e3d103d1-11a2-4aff-8a8b-ba732abd6402.webp"
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-almere-green-capitol-towers",
@@ -776,7 +868,11 @@
         "alt": "people@places Almere Green Capitol Towers"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-amersfoort-centraal-station",
@@ -797,7 +893,8 @@
         "alt": "people@places Amersfoort Centraal Station"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:43:45Z"
+      "sourceUpdatedAt": "2026-10-15T07:43:45Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-amersfoort-033",
@@ -818,7 +915,8 @@
         "alt": "people@places Amersfoort 033"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T08:00:02Z"
+      "sourceUpdatedAt": "2026-10-07T08:00:02Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-amsterdam-arena",
@@ -839,7 +937,8 @@
         "alt": "people@places Amsterdam Arena"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T08:19:00Z"
+      "sourceUpdatedAt": "2026-10-07T08:19:00Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "people-places-apeldoorn",
@@ -866,7 +965,11 @@
         "alt": "Sfeerbeeld van people@places Apeldoorn"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-arnhem-gelderse-poort",
@@ -887,7 +990,11 @@
         "alt": "people@places Arnhem Gelderse Poort"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-assen",
@@ -908,7 +1015,8 @@
         "alt": "people@places Assen"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-culemborg",
@@ -929,7 +1037,11 @@
         "alt": "people@places Culemborg"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "people-places-den-haag-mauritskade",
@@ -954,7 +1066,11 @@
       "bijeenkomstTypes": [],
       "heroImage": null,
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-29T16:47:59Z"
+      "sourceUpdatedAt": "2026-10-29T16:47:59Z",
+      "contactPerson": {
+        "name": "Wendy Arnoldus",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-deventer",
@@ -975,7 +1091,8 @@
         "alt": "people@places Deventer"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-enschede-technology-base",
@@ -996,7 +1113,8 @@
         "alt": "people@places Enschede Technology Base"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "people-places-hoofddorp",
@@ -1017,7 +1135,11 @@
         "alt": "People@places Hoofddorp in Hoofddorp — groene event- en vergaderlocatie"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z",
+      "contactPerson": {
+        "name": "Erik Werners",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "peopleplaces-naarden",
@@ -1038,7 +1160,8 @@
         "alt": "people@places Naarden"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-nijkerk",
@@ -1059,7 +1182,8 @@
         "alt": "people@places Nijkerk"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:27:54Z"
+      "sourceUpdatedAt": "2026-09-25T08:27:54Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-nunspeet",
@@ -1080,7 +1204,8 @@
         "alt": "people@places Nunspeet"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "peopleplaces-zutphen",
@@ -1101,7 +1226,8 @@
         "alt": "people@places Zutphen"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "room-mate-bruno-rotterdam",
@@ -1129,7 +1255,11 @@
         "alt": "Room Mate Bruno Rotterdam"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Michaël ten Brink",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "sanadome-hotel-spa-nijmegen",
@@ -1157,7 +1287,11 @@
         "alt": "Sfeerbeeld van Sanadome Hotel & Spa Nijmegen"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-22T11:39:26Z"
+      "sourceUpdatedAt": "2026-10-22T11:39:26Z",
+      "contactPerson": {
+        "name": "Michelle Melsen",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "spaarnwoude-park-hotel",
@@ -1178,7 +1312,8 @@
         "alt": "Spaarnwoude Park Hotel"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "starthub-cafe-utrecht",
@@ -1199,7 +1334,8 @@
         "alt": "StartHub Cafe Utrecht"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:43:45Z"
+      "sourceUpdatedAt": "2026-10-15T07:43:45Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "tasman",
@@ -1220,7 +1356,8 @@
         "alt": "Tasman."
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "the-collector-hotel",
@@ -1241,7 +1378,11 @@
         "alt": "The Collector Hotel in Den Haag — groene event- en vergaderlocatie"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z",
+      "contactPerson": {
+        "name": "Floor de With",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "the-conference-club",
@@ -1262,7 +1403,11 @@
         "alt": "The Conference Club"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-11-01T18:56:57Z"
+      "sourceUpdatedAt": "2026-11-01T18:56:57Z",
+      "contactPerson": {
+        "name": "Corina Christiaanse",
+        "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5822ec68-07ce-4e16-aee8-4c7c7cfd2a15/c242159d-630b-4a7b-92bf-a31bb3c90d03.webp"
+      }
     },
     {
       "greenbookingsSlug": "the-hague-conference-centre",
@@ -1283,7 +1428,8 @@
         "alt": "The Hague Conference Centre naast Den Haag Centraal Station"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "diligentia",
@@ -1310,7 +1456,11 @@
         "alt": "Theater Diligentia"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-07T07:43:13Z"
+      "sourceUpdatedAt": "2026-10-07T07:43:13Z",
+      "contactPerson": {
+        "name": "Stephanie Roomeijer",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "thialf",
@@ -1331,7 +1481,8 @@
         "alt": "Thialf"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-15T07:31:56Z"
+      "sourceUpdatedAt": "2026-10-15T07:31:56Z",
+      "contactPerson": null
     },
     {
       "greenbookingsSlug": "toussainthuis",
@@ -1352,7 +1503,11 @@
         "alt": "Toussainthuis"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-15T12:01:16Z"
+      "sourceUpdatedAt": "2026-09-15T12:01:16Z",
+      "contactPerson": {
+        "name": "Philip Pieters",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "veluwe-hotel-de-beyaerd",
@@ -1373,7 +1528,11 @@
         "alt": "Veluwe Hotel de Beyaerd"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-10-14T18:46:14Z"
+      "sourceUpdatedAt": "2026-10-14T18:46:14Z",
+      "contactPerson": {
+        "name": "Anouk van der Meulen",
+        "photo": null
+      }
     },
     {
       "greenbookingsSlug": "venue-collective",
@@ -1394,7 +1553,8 @@
         "alt": "Venue Collective – eventlocatie in Amsterdam"
       },
       "mediaCount": null,
-      "sourceUpdatedAt": "2026-09-25T08:26:42Z"
+      "sourceUpdatedAt": "2026-09-25T08:26:42Z",
+      "contactPerson": null
     }
   ],
   "suppliers": [

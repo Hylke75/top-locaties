@@ -620,3 +620,142 @@ figure.tl-image-frame { margin:0; }
 .tl-state--empty { color:var(--tl-ink); }
 .tl-facts > div:nth-child(3n+1) { padding-left:0; border-left:0; }
 @media (max-width: 800px) { .tl-facts > div { padding-left:0 !important; border-left:0 !important; } }
+
+/* =====================================================================
+   v1.2 — COMPLETE CONCEPTEN: draaiboek, menu, checklist, vragenlijst
+   ===================================================================== */
+.tl-list { margin:10px 0 0; padding:0; list-style:none; display:grid; gap:7px; font:400 13px/1.55 var(--tl-font-body); }
+.tl-list li { position:relative; padding-left:18px; }
+.tl-list li:before { content:'—'; position:absolute; left:0; color:var(--tl-coral); }
+.tl-subhead { margin:0 0 14px; font-size:12px; }
+.tl-timeline__item--wide { grid-template-columns:minmax(120px,190px) 1fr; }
+
+/* Dagdraaiboek als redactionele tabel (geen datagrid-look: dunne lijnen, mono meta) */
+.tl-runbook { border-top:2px solid var(--tl-ink); margin-top:14px; }
+.tl-runbook__row { display:grid; grid-template-columns:70px 80px minmax(0,1fr) minmax(0,170px) minmax(0,150px); gap:18px; align-items:start; padding:16px 0; border-bottom:var(--tl-border); }
+.tl-runbook--four .tl-runbook__row { grid-template-columns:minmax(0,150px) minmax(0,150px) minmax(0,1fr) minmax(0,170px); }
+.tl-runbook__row--head { padding:10px 0; font:400 10px var(--tl-font-mono); text-transform:uppercase; color:var(--tl-muted); }
+.tl-runbook__time { font:400 15px var(--tl-font-mono); }
+.tl-runbook__duration, .tl-runbook__meta { font:400 11px/1.5 var(--tl-font-mono); text-transform:uppercase; }
+.tl-runbook__title { display:block; margin-bottom:4px; font:400 clamp(18px,1.7vw,24px)/1.05 var(--tl-font-display); letter-spacing:-.04em; text-transform:uppercase; }
+.tl-runbook__desc { display:block; font:400 13px/1.55 var(--tl-font-body); }
+.tl-runbook__needs { display:block; margin-top:6px; color:var(--tl-muted); font:400 10px/1.5 var(--tl-font-mono); text-transform:uppercase; }
+.tl-runbook--on-dark { border-top-color:var(--tl-white); }
+.tl-runbook--on-dark .tl-runbook__row { border-bottom-color:var(--tl-line-dark); }
+
+/* Cateringvoorstel als menukaart */
+.tl-menu { display:grid; gap:0; margin-top:30px; border-top:2px solid var(--tl-ink); }
+.tl-menu__item { display:grid; grid-template-columns:minmax(0,200px) minmax(0,1fr); grid-template-areas:'when dish' 'when meta'; column-gap:24px; padding:18px 0; border-bottom:var(--tl-border); }
+.tl-menu__when { grid-area:when; font:400 11px/1.5 var(--tl-font-mono); text-transform:uppercase; }
+.tl-menu__dish { grid-area:dish; margin:0 0 6px; font:400 15px/1.6 var(--tl-font-body); }
+.tl-menu__meta { grid-area:meta; color:var(--tl-muted); font:400 10px/1.5 var(--tl-font-mono); text-transform:uppercase; }
+.tl-menu--on-dark { border-top-color:var(--tl-white); }
+.tl-menu--on-dark .tl-menu__item { border-bottom-color:var(--tl-line-dark); }
+.tl-menu--on-dark .tl-menu__meta, .tl-checklist--on-dark .tl-runbook__desc { color:var(--tl-dim-text-on-dark); }
+
+/* Checklist per vakgebied */
+.tl-checklist { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+.tl-checklist__group { border-top:2px solid var(--tl-ink); padding-top:12px; display:grid; gap:8px; align-content:start; }
+.tl-checklist__title { font:400 11px var(--tl-font-mono); text-transform:uppercase; }
+.tl-checklist--on-dark .tl-checklist__group { border-top-color:var(--tl-coral); }
+.tl-check--on-dark { color:var(--tl-white); font-size:13px; align-items:flex-start; }
+.tl-check--on-dark input { border-color:var(--tl-line-dark); background:transparent; margin-top:1px; }
+.tl-check--on-dark input:checked { background:var(--tl-coral); border-color:var(--tl-coral); }
+.tl-facts--stack { grid-template-columns:1fr; margin-top:0; }
+.tl-facts--stack > div, .tl-facts--stack > div + div { padding-left:0; border-left:0; }
+.tl-facts--on-dark { border-top-color:var(--tl-white); }
+.tl-facts--on-dark > div { border-bottom-color:var(--tl-line-dark); }
+.tl-facts--on-dark > div + div { border-left-color:var(--tl-line-dark); }
+.tl-facts--on-dark dt { color:var(--tl-dim-text-on-dark); }
+
+/* Vragenlijst op maat (in de donkere composer) */
+.tl-questionnaire { margin-top:clamp(40px,5vw,70px); border-top:2px solid var(--tl-coral); padding-top:28px; }
+.tl-questionnaire .tl-mono { max-width:640px; margin:16px 0 26px; }
+.tl-questionnaire__grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; background:var(--tl-white); color:var(--tl-ink); border:1px solid var(--tl-white); }
+.tl-questionnaire__grid .tl-field { border:0; border-right:var(--tl-border); border-bottom:var(--tl-border); margin:0; padding:15px 17px; min-width:0; }
+.tl-questionnaire__grid .tl-field > span, .tl-questionnaire__grid legend { display:block; padding:0; margin-bottom:10px; font:400 10px var(--tl-font-mono); text-transform:uppercase; }
+.tl-questionnaire__grid .tl-check--on-dark { color:var(--tl-ink); }
+.tl-questionnaire__grid .tl-check--on-dark input { border-color:var(--tl-muted); }
+.tl-questionnaire__wide { grid-column:span 2; }
+.tl-tailored { margin-top:clamp(40px,5vw,70px); border:1px solid var(--tl-line-dark); padding:clamp(18px,3vw,40px); }
+.tl-tailored:focus { outline:3px solid var(--tl-cobalt); outline-offset:4px; }
+.tl-invite { border-left:4px solid var(--tl-coral); padding:6px 0 6px 18px; max-width:760px; font:400 15px/1.65 var(--tl-font-body); }
+.tl-invite strong { display:block; margin-bottom:8px; font:400 12px var(--tl-font-mono); text-transform:uppercase; }
+
+@media (max-width: 1100px) {
+  .tl-checklist { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tl-questionnaire__grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 800px) {
+  .tl-runbook__row, .tl-runbook--four .tl-runbook__row { grid-template-columns:62px minmax(0,1fr); gap:6px 14px; }
+  .tl-runbook__row > :nth-child(2) { grid-column:2; grid-row:2; }
+  .tl-runbook__row > :nth-child(3) { grid-column:2; grid-row:1; }
+  .tl-runbook__row > :nth-child(n+4) { grid-column:2; }
+  .tl-runbook__row--head { display:none; }
+  .tl-menu__item { grid-template-columns:1fr; grid-template-areas:'when' 'dish' 'meta'; }
+  .tl-timeline__item--wide { grid-template-columns:1fr; gap:6px; }
+}
+@media (max-width: 550px) {
+  .tl-checklist, .tl-questionnaire__grid { grid-template-columns:1fr; }
+  .tl-questionnaire__wide { grid-column:auto; }
+}
+
+/* Printen / bewaren als pdf: alleen het draaiboek op maat, zwart op wit */
+@media print {
+  .tl-app { background:var(--tl-white); }
+  .tl-app .tl-header, .tl-app .tl-crumb, .tl-app .tl-hero, .tl-app .tl-signature, .tl-app .tl-section-nav, .tl-app .tl-footer, .tl-app .tl-selection-bar,
+  .tl-app main > section:not(#samenstellen), .tl-app #samenstellen > :not(.tl-composer), .tl-app .tl-composer > :not(.tl-tailored), .tl-app .tl-composer__actions, .tl-app .tl-skip { display:none !important; }
+  .tl-app #samenstellen, .tl-app .tl-tailored { background:var(--tl-white) !important; color:var(--tl-ink) !important; border:0; padding:0; }
+  .tl-app .tl-tailored * { color:var(--tl-ink) !important; border-color:var(--tl-line) !important; }
+  .tl-app .tl-runbook__row, .tl-app .tl-menu__item, .tl-app .tl-checklist__group { break-inside:avoid; }
+}
+
+/* v1.2 — programma-dialoog, stappen, composerkeuzes */
+.tl-timeline__open { all:unset; cursor:pointer; }
+.tl-timeline__open:hover { color:var(--tl-coral); }
+.tl-timeline__open:focus-visible { outline:3px solid var(--tl-cobalt); outline-offset:4px; }
+.tl-timeline__body + .tl-text-button { margin-top:8px; }
+.tl-dialog { width:min(920px, calc(100vw - 2 * var(--tl-gutter))); max-height:calc(100dvh - 40px); overflow:auto; border:1px solid var(--tl-ink); border-radius:0; padding:clamp(20px,3vw,40px); background:var(--tl-paper); color:var(--tl-ink); box-shadow:9px 9px 0 var(--tl-ink); }
+.tl-dialog::backdrop { background:color-mix(in srgb, var(--tl-ink) 70%, transparent); }
+.tl-dialog__head { display:flex; justify-content:space-between; align-items:center; gap:16px; border-bottom:var(--tl-border); padding-bottom:12px; margin-bottom:24px; }
+.tl-dialog__close { min-height:44px; border:1px solid var(--tl-ink); background:transparent; color:var(--tl-ink); padding:8px 14px; font:400 11px var(--tl-font-mono); text-transform:uppercase; }
+.tl-dialog__close:hover { background:var(--tl-ink); color:var(--tl-white); }
+.tl-dialog .tl-lead { margin-top:18px; }
+.tl-dialog__tip { margin:26px 0 0; padding:14px 16px; background:var(--tl-mist); font:400 14px/1.6 var(--tl-font-body); }
+.tl-dialog__tip strong { margin-right:8px; color:var(--tl-coral); font:400 11px var(--tl-font-mono); }
+.tl-steplist { margin:0; padding-left:22px; display:grid; gap:8px; font:400 15px/1.6 var(--tl-font-body); }
+.tl-steplist li::marker { color:var(--tl-coral); font-family:var(--tl-font-mono); }
+.tl-facts--two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.tl-facts--two > div:nth-child(3n+1) { padding-left:18px; border-left:var(--tl-border); }
+.tl-facts--two > div:nth-child(2n+1) { padding-left:0; border-left:0; }
+.tl-section--dark .tl-facts--two > div:nth-child(2n) { border-left-color:var(--tl-line-dark); }
+.tl-composer__choices { margin:16px 0 4px; }
+.tl-chip-button--on-dark { color:var(--tl-white); border-color:var(--tl-line-dark); min-height:40px; padding:9px 12px; }
+.tl-chip-button--on-dark[aria-pressed="true"], .tl-chip-button--on-dark:hover { background:var(--tl-coral); border-color:var(--tl-coral); color:var(--tl-ink); }
+.tl-composer__select { width:100%; min-height:46px; margin:14px 0 4px; border:1px solid var(--tl-line-dark); background:var(--tl-ink); color:var(--tl-white); padding:10px 12px; font:400 14px var(--tl-font-body); border-radius:0; }
+.tl-composer__checks { display:grid; gap:10px; margin:14px 0 6px; }
+.tl-composer__more summary { list-style:none; cursor:pointer; color:var(--tl-white); }
+.tl-composer__more summary::-webkit-details-marker { display:none; }
+.tl-composer .tl-composer__result { font-size:clamp(16px,1.6vw,22px); }
+@media (max-width: 800px) { .tl-facts--two { grid-template-columns:1fr; } }
+
+/* v1.2 — contact-pop-up (partnerlocatie) */
+.tl-contact { width:min(640px, calc(100vw - 2 * var(--tl-gutter))); }
+.tl-contact__person { display:flex; align-items:center; gap:16px; padding-bottom:18px; margin-bottom:22px; border-bottom:var(--tl-border); }
+.tl-contact__photo { flex:0 0 auto; width:72px; height:72px; object-fit:cover; border:1px solid var(--tl-ink); }
+.tl-contact__photo--mark { display:grid; place-items:center; background:var(--tl-taupe); color:var(--tl-coral); font:400 34px Arial,sans-serif; }
+.tl-contact__name { display:block; font:400 clamp(20px,2vw,28px)/1 var(--tl-font-display); letter-spacing:-.05em; text-transform:uppercase; margin-bottom:6px; }
+.tl-contact__form { display:grid; gap:14px; margin-top:20px; }
+.tl-contact__two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.tl-contact__field { display:grid; gap:7px; }
+.tl-contact__field > span { font:400 10px var(--tl-font-mono); text-transform:uppercase; }
+.tl-contact__field input, .tl-contact__field textarea { width:100%; min-height:46px; border:1px solid var(--tl-ink); border-radius:0; background:var(--tl-white); color:var(--tl-ink); padding:11px 13px; font:400 15px/1.5 var(--tl-font-body); }
+.tl-contact__actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin-top:4px; }
+.tl-contact__done { margin-top:20px; display:grid; gap:14px; }
+.tl-contact__done:focus { outline:none; }
+.tl-contact__copy { color:var(--tl-ink); border-color:var(--tl-ink); }
+.tl-contact__check { margin:22px 0 0; color:var(--tl-cobalt); }
+.tl-contact-cta { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; margin-top:28px; padding:20px; border:1px solid var(--tl-ink); background:var(--tl-white); }
+.tl-contact-cta strong { display:block; margin-bottom:6px; }
+@media (max-width: 550px) { .tl-contact__two { grid-template-columns:1fr; } }
+@media (max-width: 800px) { .tl-runbook__row > [data-label]::before { content:attr(data-label) ' · '; color:var(--tl-muted); } .tl-runbook--on-dark .tl-runbook__row > [data-label]::before { color:var(--tl-dim-text-on-dark); } }

@@ -15,7 +15,9 @@ export function validate() {
   const feelings = read('feelings.json');
   const venues = read('venues.editorial.json');
   const suppliers = read('suppliers.editorial.json');
-  const { concepts } = read('concepts.json');
+  const conceptDoc = read('concepts.json');
+  const { concepts } = conceptDoc;
+  const catIds = new Set((conceptDoc.categories || []).map((x) => x.id));
   const FEELINGS = ['energie', 'verbinding', 'verwondering', 'rust', 'focus', 'trots'];
 
   const fIds = feelings.feelings.map((f) => f.id);
@@ -33,8 +35,9 @@ export function validate() {
     for (const t of v.eventTypes) if (!venues.taxonomy.eventTypes[t]) errors.push(`venue ${v.id}: onbekend eventType '${t}'.`);
     for (const t of v.character) if (!venues.taxonomy.character[t]) errors.push(`venue ${v.id}: onbekend karakter '${t}'.`);
     if (v.illustrativeImage && !v.illustrativeImage.credit) errors.push(`venue ${v.id}: illustratief beeld zonder credit.`);
-    if (!v.editorialCheckedAt) warnings.push(`venue ${v.id}: redactionele tekst nog niet gecontroleerd (editorialCheckedAt leeg).`);
   }
+  const unchecked = venues.venues.filter((v) => !v.editorialCheckedAt).length;
+  if (unchecked) warnings.push(`${unchecked} locatieteksten nog niet nagelezen (editorialCheckedAt leeg) — markeer ze in het beheer als gecontroleerd.`);
   for (const s of suppliers.suppliers) {
     const ss = snapshot.suppliers.find((x) => x.greenbookingsSlug === s.greenbookingsSlug);
     if (!ss) errors.push(`supplier ${s.id}: geen bronrecord in de snapshot.`);
@@ -46,6 +49,7 @@ export function validate() {
   for (const c of concepts.filter((x) => x.status !== 'archived')) {
     const where = `concept ${c.slug}`;
     const outer = errors.length;
+    if (!catIds.has(c.category)) errors.push(`${where}: onbekend type '${c.category}' (zie categories in concepts.json).`);
     if (slugs.has(c.slug)) errors.push(`${where}: dubbele slug.`); slugs.add(c.slug);
     if (titles.has(c.seo.title)) errors.push(`${where}: SEO-titel niet uniek.`); titles.add(c.seo.title);
     if (!c.seo.description || c.seo.description.length < 70) errors.push(`${where}: SEO-beschrijving ontbreekt of is te kort.`);
@@ -60,6 +64,23 @@ export function validate() {
     }
     if (!['draft', 'review', 'published', 'archived'].includes(c.status)) errors.push(`${where}: ongeldige status '${c.status}'.`);
     if (!c.program || c.program.length < 4) errors.push(`${where}: voorbeeldprogramma heeft minstens vier onderdelen nodig.`);
+    // Compleetheid: een concept moet direct inzetbaar zijn (opdrachtgever 03-11-2026).
+    const need = (cond, what) => { if (!cond) errors.push(`${where}: onvolledig — ${what}.`); };
+    need((c.runbook || []).length >= 8, 'dagdraaiboek heeft minstens 8 onderdelen nodig');
+    need((c.runbook || []).every((r) => /^\d{2}:\d{2}$/.test(r.time) && r.title && r.owner), 'elk draaiboekonderdeel heeft een tijd (UU:MM), titel en verantwoordelijke rol');
+    need((c.planning || []).length >= 4, 'aftelplanning heeft minstens 4 fasen nodig');
+    need((c.catering?.moments || []).length >= 3 && c.catering?.concept && c.catering?.drinks, 'cateringvoorstel (concept, minstens 3 momenten, dranken)');
+    need((c.entertainment || []).length >= 2, 'entertainment (minstens 2 onderdelen)');
+    need((c.crew || []).length >= 3, 'bezetting (minstens 3 rollen)');
+    need((c.spaces || []).length >= 2, 'ruimte-eisen (minstens 2 ruimtes)');
+    need((c.checklist || []).length >= 3, 'checklist (minstens 3 groepen)');
+    need((c.variations || []).length >= 2, 'varianten (minstens 2)');
+    need((c.risks || []).length >= 2, "risico's met plan B (minstens 2)");
+    need((c.budgetItems || []).length >= 4, 'kostenposten (minstens 4, zonder bedragen)');
+    need((c.budgetItems || []).every((x) => !/€|\d+\s*euro/i.test(x)), 'kostenposten mogen geen bedragen bevatten');
+    need((c.sustainability || []).length >= 2 && (c.evaluation || []).length >= 2, 'duurzaamheid en evaluatie');
+    need(c.invitation?.subject && c.invitation?.text, 'uitnodigingstekst');
+    need((c.program || []).every((it) => it.details?.intro && (it.details?.steps || []).length >= 3), 'elk programmaonderdeel heeft pop-upinhoud (intro en minstens 3 stappen)');
     if (c.venueMatches.length < 2 || c.venueMatches.length > 4) errors.push(`${where}: 2–4 aanbevolen locaties vereist.`);
     for (const m of c.venueMatches) {
       if (!vIds.has(m.venueId)) errors.push(`${where}: venueMatch '${m.venueId}' bestaat niet.`);

@@ -48,6 +48,8 @@ export function loadData() {
   const venueDoc = read('venues.editorial.json');
   const supplierDoc = read('suppliers.editorial.json');
   const conceptDoc = read('concepts.json');
+  const playbook = read('playbook.json');
+  const site = read('site.json');
   const placeholders = snapshot._meta.placeholderImages;
   const isPlaceholder = (url) => !url || placeholders.some((p) => url.includes(p));
 
@@ -112,6 +114,7 @@ export function loadData() {
         sourceDate: formatDate(src.sourceUpdatedAt),
         concepts: conceptLinks,
         curated: Boolean(curated),
+        contactPerson: src.contactPerson || null,
       };
     })
     .filter(Boolean)
@@ -148,10 +151,14 @@ export function loadData() {
     feelings,
     feelingLabels,
     concepts,
+    categories: (conceptDoc.categories || []).filter((cat) => concepts.some((c) => c.category === cat.id)),
+    allCategories: conceptDoc.categories || [],
     venues,
     venueById: byId(venues),
     suppliers,
     supplierById: byId(suppliers),
     taxonomy: venueDoc.taxonomy,
+    playbook,
+    site,
   };
 }

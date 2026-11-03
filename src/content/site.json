@@ -1,0 +1,8 @@
+{
+  "_meta": "Site-instellingen. contact.endpoint: URL van de bevestigde Greenbookings-contactroute (schrijft naar public.contactberichten met bron='top-locaties'). Leeg = bezoeker kopieert het bericht en rondt af op het Greenbookings-profiel.",
+  "contact": {
+    "endpoint": null,
+    "source": "top-locaties",
+    "privacyUrl": "https://greenbookings.nl/privacy"
+  }
+}

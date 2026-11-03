@@ -49,7 +49,7 @@ async function reload() { content = await call('GET', '/api/content'); }
 function route() {
   const [name, arg] = (location.hash.slice(1) || 'dashboard').split('/');
   document.querySelectorAll('[data-admin-nav] a').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === `#${name === 'concept' ? 'concepten' : name}`));
-  const views = { dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView };
+  const views = { gids: guideView, dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView };
   (views[name] || dashboard)();
   window.scrollTo(0, 0);
 }
@@ -77,6 +77,37 @@ function dashboard() {
       </div>
     </div></section>`;
 }
+
+
+/* ---------- Generieke repeaters voor het complete concept ---------- */
+const SPECS = {
+  program: [['time', 'Tijd'], ['title', 'Onderdeel'], ['description', 'Korte omschrijving', 'area'], ['d_intro', 'Pop-up: wat gebeurt er', 'area'], ['d_steps', 'Pop-up: zo pak je het aan (één stap per regel)', 'lines'], ['d_roles', 'Pop-up: wie (rollen, komma-gescheiden)', 'list'], ['d_needs', 'Pop-up: wat je nodig hebt (komma-gescheiden)', 'list'], ['d_tip', 'Pop-up: tip', 'area']],
+  runbook: [['time', 'Tijd'], ['duration', 'Duur'], ['title', 'Onderdeel'], ['description', 'Beschrijving', 'area'], ['owner', 'Wie (rol)'], ['space', 'Waar'], ['needs', 'Nodig (komma-gescheiden)', 'list']],
+  planning: [['when', 'Wanneer (bv. 8–4 WEKEN VOORAF)'], ['title', 'Fase'], ['tasks', 'Taken (één per regel)', 'lines']],
+  moments: [['moment', 'Moment'], ['time', 'Tijd'], ['proposal', 'Voorstel (gerechten)', 'area'], ['format', 'Serveervorm'], ['dietary', 'Dieet']],
+  entertainment: [['moment', 'Moment'], ['option', 'Wat'], ['format', 'Vorm / duur'], ['why', 'Waarom', 'area'], ['role', 'Rol']],
+  crew: [['role', 'Rol'], ['count', 'Aantal (bv. 1 per 10–12 gasten)'], ['task', 'Taak']],
+  spaces: [['space', 'Ruimte'], ['use', 'Gebruik'], ['requirements', 'Eisen']],
+  checklist: [['group', 'Groep'], ['items', 'Items (één per regel)', 'lines']],
+  variations: [['title', 'Variant'], ['text', 'Uitleg', 'area']],
+  risks: [['risk', 'Risico'], ['mitigation', 'Plan B', 'area']],
+  steps: [['when', 'Wanneer'], ['title', 'Stap'], ['items', 'Punten (één per regel)', 'lines']],
+  agency: [['task', 'Wat een bureau doet'], ['here', 'Waar het op de site staat', 'area']],
+};
+function repItem(key, item = {}) {
+  const spec = SPECS[key];
+  const val = (f, kind) => (kind === 'list' ? (item[f] || []).join(', ') : kind === 'lines' ? (item[f] || []).join('\n') : item[f] ?? '');
+  return `<div class="ad-repeat__item" style="--cols:${Math.min(spec.length, 4)}">${spec.map(([f, label, kind]) => `<label class="ad-field"><span>${esc(label)}</span>${kind === 'area' || kind === 'lines' ? `<textarea data-f="${f}" data-k="${kind || ''}">${esc(val(f, kind))}</textarea>` : `<input data-f="${f}" data-k="${kind || ''}" value="${esc(val(f, kind))}">`}</label>`).join('')}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`;
+}
+const repeater = (key, items) => `<div class="ad-repeat" data-rep="${key}">${(items || []).map((it) => repItem(key, it)).join('')}</div><div><button class="tl-button tl-button--outline" type="button" data-add-rep="${key}">TOEVOEGEN +</button></div>`;
+function readRep(form, key) {
+  return [...form.querySelectorAll(`[data-rep="${key}"] > .ad-repeat__item`)].map((row) => Object.fromEntries([...row.querySelectorAll('[data-f]')].map((el) => {
+    const v = el.value.trim();
+    return [el.dataset.f, el.dataset.k === 'list' ? v.split(',').map((x) => x.trim()).filter(Boolean) : el.dataset.k === 'lines' ? v.split('\n').map((x) => x.trim()).filter(Boolean) : v];
+  }))).filter((o) => Object.values(o).some((v) => (Array.isArray(v) ? v.length : v)));
+}
+const lines = (arr) => (arr || []).join('\n');
+const fromLines = (v) => v.split('\n').map((x) => x.trim()).filter(Boolean);
 
 /* ---------- Concepten ---------- */
 function concepten() {
@@ -117,7 +148,6 @@ function conceptEditor(slug) {
   const suppliers = content.suppliers.suppliers;
   const supName = (id) => content.supplierSources.find((s) => s.greenbookingsSlug === (suppliers.find((x) => x.id === id) || {}).greenbookingsSlug)?.name || id;
   const venueSlugById = Object.fromEntries(content.venues.venues.map((v) => [v.id, v.greenbookingsSlug]));
-  const program = (c.program || []).map((p) => `<div class="ad-repeat__item" style="--cols:3">${field('Tijd', 'p_time', p.time)}${field('Onderdeel', 'p_title', p.title)}${field('Uitleg', 'p_desc', p.description)}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`).join('');
   const vm = (c.venueMatches || []).map((m) => venueRow(venueSlugById[m.venueId] || m.venueId, m.reason)).join('');
   const smx = (c.supplierMatches || []).map((m) => supplierRow(m.supplierId, m.role, m.reason)).join('');
   function venueRow(sel, reason) { return `<div class="ad-repeat__item" style="--cols:2"><label class="ad-field"><span>Aangesloten partnerlocatie</span><select name="v_slug">${partners.map((p) => opt(p.slug, `${p.name} — ${p.city}`, p.slug === sel)).join('')}</select></label>${field('Redactionele reden (waarom hier?)', 'v_reason', reason)}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`; }
@@ -133,7 +163,7 @@ function conceptEditor(slug) {
         <div class="ad-two">${field('Titel', 'title', c.title, { required: true })}${field('Slug', 'slug', c.slug, { required: true, help: 'Wijzigen verandert de URL.' })}</div>
         ${field('Kopregels (één per regel; *tekst* = koraal)', 'headline', (c.headline || []).join('\n'), { area: true, help: 'Breek bewust af — max. 2–3 korte regels.' })}
         <div class="ad-three">
-          <label class="ad-field"><span>Type</span><select name="category">${opt('inspiratie', 'Kennis & inspiratie', c.category === 'inspiratie')}${opt('verbinden', 'Samen & verbinden', c.category === 'verbinden')}${opt('beleven', 'Beleven & verrassen', c.category === 'beleven')}</select></label>
+          <label class="ad-field"><span>Type</span><select name="category">${(content.categories || []).map((x) => opt(x.id, x.label, c.category === x.id)).join('')}</select></label>
           ${field('Categorielabel', 'categoryLabel', c.categoryLabel)}${field('Format (mono)', 'format', c.format)}</div>
         <div class="ad-three">${field('Gasten min (indicatief)', 'guestCountMin', c.guestCountMin, { type: 'number' })}${field('Gasten max (indicatief)', 'guestCountMax', c.guestCountMax, { type: 'number' })}${field('Prioriteit (1 = eerst)', 'priority', c.priority, { type: 'number' })}</div>
         ${field('Teaser (kaarten)', 'teaser', c.teaser, { area: true })}${field('Belofte (hero)', 'proposition', c.proposition, { area: true })}
@@ -149,8 +179,9 @@ function conceptEditor(slug) {
         ${field('Voor wie (komma-gescheiden)', 'audiences', (c.audiences || []).join(', '))}${field('Bedoeling', 'objective', c.objective)}
         ${field('Kernwaarden (TITEL: uitleg, één per regel)', 'values', (c.idea?.values || []).map(([t, x]) => `${t}: ${x}`).join('\n'), { area: true })}
       </fieldset>
-      <fieldset ${locked ? 'disabled' : ''}><legend>04 / VOORBEELDPROGRAMMA (MIN. 4, ALTIJD ALS VOORBEELD GELABELD)</legend>
-        <div class="ad-repeat" data-program>${program}</div><div><button class="tl-button tl-button--outline" type="button" data-add="program">ONDERDEEL TOEVOEGEN +</button></div>
+      <fieldset ${locked ? 'disabled' : ''}><legend>04 / PROGRAMMA (MIN. 4) — MET DE INHOUD VAN DE POP-UP PER ONDERDEEL</legend>
+        ${repeater('program', (c.program || []).map((p) => ({ time: p.time, title: p.title, description: p.description, d_intro: p.details?.intro, d_steps: p.details?.steps, d_roles: p.details?.roles, d_needs: p.details?.needs, d_tip: p.details?.tip })))}
+        <small class="tl-note">De pop-up toont ook automatisch de draaiboekregels tussen dit en het volgende programmaonderdeel.</small>
       </fieldset>
       <fieldset ${locked ? 'disabled' : ''}><legend>05 / LOCATIES (2–4 AANGESLOTEN PARTNERS, ELK MET REDEN)</legend>
         <div class="ad-repeat" data-venues>${vm}</div><div><button class="tl-button tl-button--outline" type="button" data-add="venue">LOCATIE TOEVOEGEN +</button></div>
@@ -160,7 +191,28 @@ function conceptEditor(slug) {
         ${field('Benodigde rollen (komma-gescheiden)', 'supplierRoles', (c.supplierRoles || []).join(', '))}
         <div class="ad-repeat" data-suppliers>${smx}</div><div><button class="tl-button tl-button--outline" type="button" data-add="supplier">MAKER TOEVOEGEN +</button></div>
       </fieldset>
-      <fieldset ${locked ? 'disabled' : ''}><legend>07 / BEELD EN SEO</legend>
+      <fieldset ${locked ? 'disabled' : ''}><legend>07 / HET COMPLETE DRAAIBOEK (MIN. 8 ONDERDELEN)</legend>
+        ${field('Duur en opbouw (bv. 1 dag 09:00–17:30, opbouw de dag ervoor)', 'duration', c.duration)}
+        ${repeater('runbook', c.runbook)}
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>08 / AFTELPLANNING (MIN. 4 FASEN)</legend>${repeater('planning', c.planning)}</fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>09 / CATERINGVOORSTEL</legend>
+        ${field('Cateringconcept', 'cat_concept', c.catering?.concept, { area: true })}
+        ${repeater('moments', c.catering?.moments)}
+        <div class="ad-two">${field('Dranken', 'cat_drinks', c.catering?.drinks, { area: true })}${field('Notities voor de cateraar', 'cat_notes', c.catering?.notes, { area: true })}</div>
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>10 / ENTERTAINMENT</legend>${repeater('entertainment', c.entertainment)}</fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>11 / BEZETTING EN RUIMTES</legend>${repeater('crew', c.crew)}${repeater('spaces', c.spaces)}<small class="tl-note">Tip: schrijf aantallen als “1 per 10–12 gasten” — de site rekent dat om voor de groep van de bezoeker.</small></fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>12 / CHECKLIST, VARIANTEN EN PLAN B</legend>${repeater('checklist', c.checklist)}${repeater('variations', c.variations)}${repeater('risks', c.risks)}<small class="tl-note">Varianten met “klein/intiem/compact”, “groot” of “hybride” in de titel worden automatisch aanbevolen op basis van de antwoorden van de bezoeker.</small></fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>13 / KOSTENPOSTEN, DUURZAAM, EVALUATIE</legend>
+        <div class="ad-three">${field('Kostenposten (één per regel, geen bedragen)', 'budgetItems', lines(c.budgetItems), { area: true })}${field('Duurzaam (één per regel)', 'sustainability', lines(c.sustainability), { area: true })}${field('Evaluatie (één per regel)', 'evaluation', lines(c.evaluation), { area: true })}</div>
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>14 / UITNODIGING</legend>
+        ${field('Onderwerp', 'inv_subject', c.invitation?.subject)}
+        ${field('Tekst — gebruik [datum], [dag], [locatie], [plaats], [link], [centrale vraag]', 'inv_text', c.invitation?.text, { area: true })}
+        ${field('Herinnering', 'inv_reminder', c.invitation?.reminder, { area: true })}
+      </fieldset>
+      <fieldset ${locked ? 'disabled' : ''}><legend>15 / BEELD EN SEO</legend>
         <div class="ad-two">${field('Hero-beeld (pad of URL)', 'hero_src', c.hero?.src)}${field('Alt-tekst hero', 'hero_alt', c.hero?.alt)}</div>
         <label class="tl-check"><input type="checkbox" name="hero_ill" ${c.hero?.illustrative !== false ? 'checked' : ''}> Sfeerbeeld ter illustratie (geen foto van een specifieke locatie)</label>
         ${field('SEO-titel (uniek)', 'seo_title', c.seo?.title, { max: 70 })}${field('SEO-beschrijving (uniek, 70–160 tekens)', 'seo_description', c.seo?.description, { area: true, max: 300 })}
@@ -178,26 +230,27 @@ function conceptEditor(slug) {
   form.addEventListener('click', (e) => {
     if (e.target.closest('[data-remove]')) e.target.closest('.ad-repeat__item').remove();
     const add = e.target.closest('[data-add]')?.dataset.add;
-    if (add === 'program') $('[data-program]').insertAdjacentHTML('beforeend', `<div class="ad-repeat__item" style="--cols:3">${field('Tijd', 'p_time', '')}${field('Onderdeel', 'p_title', '')}${field('Uitleg', 'p_desc', '')}<button class="tl-button tl-button--outline" type="button" data-remove>×</button></div>`);
     if (add === 'venue') $('[data-venues]').insertAdjacentHTML('beforeend', venueRow(partners[0]?.slug, ''));
     if (add === 'supplier') $('[data-suppliers]').insertAdjacentHTML('beforeend', supplierRow(suppliers[0]?.id, '', ''));
+    const rep = e.target.closest('[data-add-rep]')?.dataset.addRep;
+    if (rep) form.querySelector(`[data-rep="${rep}"]`).insertAdjacentHTML('beforeend', repItem(rep));
   });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const g = (n) => form.elements[n]?.value ?? '';
     const all = (sel, n) => [...form.querySelectorAll(`${sel} [name="${n}"]`)].map((x) => x.value.trim());
     const list = (s) => s.split(',').map((x) => x.trim()).filter(Boolean);
-    const on = [...form.querySelectorAll('[name="f_on"]:checked')].map((x) => x.value);
+    const checkedF = [...form.querySelectorAll('[name="f_on"]:checked')].map((x) => x.value);
+    const on = [...c.feelings.filter((f) => checkedF.includes(f)), ...checkedF.filter((f) => !c.feelings.includes(f))]; // bestaande volgorde behouden
     // Locaties: zorg voor een redactionele id per gekozen partner (bestaand of slug).
     const idBySlug = Object.fromEntries(content.venues.venues.map((v) => [v.greenbookingsSlug, v.id]));
     const vSlugs = all('[data-venues]', 'v_slug'); const vReasons = all('[data-venues]', 'v_reason');
     for (const s of vSlugs) if (!idBySlug[s]) { await call('PUT', `/api/venues/${s}`, { id: s }); idBySlug[s] = s; }
-    const pt = all('[data-program]', 'p_time'), pti = all('[data-program]', 'p_title'), pd = all('[data-program]', 'p_desc');
     const sid = all('[data-suppliers]', 's_id'), sr = all('[data-suppliers]', 's_role'), sre = all('[data-suppliers]', 's_reason');
     const body = {
       title: g('title'), slug: g('slug'), status: g('status'), priority: Number(g('priority')) || 99,
       headline: g('headline').split('\n').map((x) => x.trim()).filter(Boolean),
-      category: g('category'), categoryLabel: g('categoryLabel'), format: g('format'),
+      category: g('category'), categoryLabel: (content.categories || []).find((x) => x.id === g('category'))?.label || g('categoryLabel'), format: g('format'),
       guestCountMin: Number(g('guestCountMin')) || null, guestCountMax: Number(g('guestCountMax')) || null,
       teaser: g('teaser'), proposition: g('proposition'), tags: list(g('tags')),
       feelings: on,
@@ -205,12 +258,24 @@ function conceptEditor(slug) {
       feelingReasons: Object.fromEntries(on.map((f) => [f, g(`r_${f}`)])),
       idea: { label: g('idea_label'), headline: g('idea_headline').split('\n').map((x) => x.trim()).filter(Boolean), body: g('idea_body'), values: g('values').split('\n').map((l) => l.split(':')).filter((p) => p.length > 1).map(([t, ...x]) => [t.trim().toUpperCase(), x.join(':').trim()]) },
       audiences: list(g('audiences')), objective: g('objective'),
-      program: pt.map((t, i) => ({ time: t, title: pti[i], description: pd[i] })).filter((p) => p.title),
+      program: readRep(form, 'program').filter((p) => p.title).map((p) => ({ time: p.time, title: p.title, description: p.description, details: { intro: p.d_intro, steps: p.d_steps || [], roles: p.d_roles || [], needs: p.d_needs || [], tip: p.d_tip } })),
       venueMatches: vSlugs.map((s, i) => ({ venueId: idBySlug[s], priority: i + 1, reason: vReasons[i] })),
       supplierRoles: list(g('supplierRoles')),
       supplierMatches: sid.map((s, i) => ({ supplierId: s, role: sr[i], reason: sre[i] })).filter((m) => m.role),
       hero: { ...c.hero, src: g('hero_src'), alt: g('hero_alt'), illustrative: form.elements.hero_ill.checked, credit: c.hero?.credit || 'Top Locaties' },
       seo: { title: g('seo_title'), description: g('seo_description') },
+      duration: g('duration'),
+      runbook: readRep(form, 'runbook'),
+      planning: readRep(form, 'planning'),
+      catering: { concept: g('cat_concept'), moments: readRep(form, 'moments'), drinks: g('cat_drinks'), notes: g('cat_notes') },
+      entertainment: readRep(form, 'entertainment'),
+      crew: readRep(form, 'crew'),
+      spaces: readRep(form, 'spaces'),
+      checklist: readRep(form, 'checklist'),
+      variations: readRep(form, 'variations'),
+      risks: readRep(form, 'risks'),
+      budgetItems: fromLines(g('budgetItems')), sustainability: fromLines(g('sustainability')), evaluation: fromLines(g('evaluation')),
+      invitation: { subject: g('inv_subject'), text: g('inv_text'), reminder: g('inv_reminder') },
     };
     const status = $('[data-save-status]');
     try {
@@ -288,6 +353,27 @@ function gevoelens() {
       <label class="ad-field"><span>Uitleg</span><input name="explanation" value="${esc(f.explanation)}" maxlength="120"></label>
       <button class="tl-button" type="submit">OPSLAAN</button></form>`).join('')}</div></section>`;
   view.querySelectorAll('[data-feel]').forEach((f) => { f.onsubmit = async (e) => { e.preventDefault(); try { await call('PUT', `/api/feelings/${f.dataset.feel}`, { sub: f.elements.sub.value, explanation: f.elements.explanation.value }); await reload(); toast('Opgeslagen'); } catch (err) { toast(err.message); } }; });
+}
+
+/* ---------- Gids 'Zo regel je het zelf' ---------- */
+function guideView() {
+  const p = content.playbook;
+  view.innerHTML = `<section class="tl-section">${overline('06 / GIDS ZELF ORGANISEREN', 'GEDEELD DOOR ALLE CONCEPTEN')}
+    <h1 class="tl-display tl-display--md tl-section-head">ZO REGEL JE<br><span class="tl-accent">HET ZELF.</span></h1>
+    <form class="ad-form" data-guide-form>
+      <fieldset><legend>INTRO</legend>${field('Introductie', 'intro', p.intro, { area: true })}</fieldset>
+      <fieldset><legend>STAPPEN</legend>${repeater('steps', p.steps)}</fieldset>
+      <fieldset><legend>WAT EEN BUREAU DOET → WAAR HET OP DE SITE STAAT</legend>${repeater('agency', p.agencyVsYou.map(([task, here]) => ({ task, here })))}</fieldset>
+      <fieldset><legend>OFFERTEVRAGEN (ÉÉN PER REGEL)</legend><div class="ad-two">${Object.entries(p.quoteQuestions).map(([k, v]) => field(k, `q_${k}`, lines(v), { area: true })).join('')}</div></fieldset>
+      <div class="ad-actions"><button class="tl-button" type="submit" ${chief() ? '' : 'disabled'}>OPSLAAN ✓</button>${chief() ? '' : '<span class="tl-mono">Alleen de hoofdredacteur wijzigt de gids.</span>'}<span class="tl-mono" data-save-status></span></div>
+    </form></section>`;
+  const form = $('[data-guide-form]');
+  form.addEventListener('click', (e) => { if (e.target.closest('[data-remove]')) e.target.closest('.ad-repeat__item').remove(); const rep = e.target.closest('[data-add-rep]')?.dataset.addRep; if (rep) form.querySelector(`[data-rep="${rep}"]`).insertAdjacentHTML('beforeend', repItem(rep)); });
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const body = { intro: form.elements.intro.value.trim(), steps: readRep(form, 'steps').map((x, i) => ({ id: x.id || `stap-${i + 1}`, ...x })), agencyVsYou: readRep(form, 'agency').map((x) => [x.task, x.here]), quoteQuestions: Object.fromEntries(Object.keys(p.quoteQuestions).map((k) => [k, fromLines(form.elements[`q_${k}`].value)])) };
+    try { await call('PUT', '/api/playbook', body); await reload(); $('[data-save-status]').textContent = 'OPGESLAGEN ✓'; toast('Gids opgeslagen'); } catch (err) { toast(err.message); }
+  };
 }
 
 /* ---------- Data, sync en publicatie ---------- */

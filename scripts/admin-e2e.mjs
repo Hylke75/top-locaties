@@ -42,7 +42,7 @@ try {
   // Redacteur
   const ed = await login('e2e-redacteur');
   check((await ed.textContent('[data-userbar]')).includes('REDACTEUR'), 'redacteur ingelogd');
-  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '04', 'overzicht toont 4 live concepten');
+  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '06', 'overzicht toont 6 live concepten');
   await ed.goto(base + '/admin/#concept/festival');
   await ed.waitForSelector('[data-concept-form]');
   check(await ed.locator('[data-concept-form] fieldset[disabled]').count() > 0, 'redacteur kan live concept niet bewerken');
@@ -71,6 +71,16 @@ try {
   const chief = await login('e2e-hoofdredacteur');
   const pub = await chief.evaluate(async () => { const s = await fetch('/api/session').then((r) => r.json()); const r = await fetch('/api/concepts/ochtend-die-opent/status', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': s.csrf }, body: JSON.stringify({ status: 'published' }) }); return { status: r.status, body: await r.json() }; });
   check(pub.status === 422 && pub.body.errors.some((e) => e.includes('2–4 aanbevolen locaties')), 'onvolledig concept kan niet gepubliceerd worden (422 + reden)');
+  // Roundtrip: openen en opslaan zonder wijzigingen mag niets van het complete concept verliezen.
+  const before = JSON.parse(fs.readFileSync(path.join(content, 'concepts.json'), 'utf8')).concepts.find((c) => c.slug === 'nacht');
+  await chief.goto(base + '/admin/#concept/nacht');
+  await chief.waitForSelector('[data-concept-form]');
+  await chief.click('[data-concept-form] button[type=submit]');
+  await chief.waitForFunction(() => document.querySelector('[data-save-status]').textContent.includes('OPGESLAGEN'));
+  const after = JSON.parse(fs.readFileSync(path.join(content, 'concepts.json'), 'utf8')).concepts.find((c) => c.slug === 'nacht');
+  const keys = ['program', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation', 'venueMatches', 'supplierMatches', 'feelingWeights', 'status'];
+  const diff = keys.filter((k) => JSON.stringify(before[k]) !== JSON.stringify(after[k]));
+  check(diff.length === 0, `opslaan zonder wijziging behoudt het complete concept${diff.length ? ' — verschil in: ' + diff.join(', ') : ''}`);
   await chief.goto(base + '/admin/#locatie/kunstlinie');
   await chief.waitForSelector('[data-venue-form]');
   await chief.fill('[name=line]', 'Een theater in Almere.');

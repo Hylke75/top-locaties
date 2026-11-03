@@ -80,11 +80,14 @@ check(await count() === 3, 'deeplink ?concept=diner → 3 locaties');
 
 // 4. Nieuwe pagina's
 await page.goto(base + '/eventconcepten/');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 4, 'conceptoverzicht toont 4 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 6, 'conceptoverzicht toont 6 concepten');
 await page.click('[data-ov-feeling="rust"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 1, 'filter Rust → 1 concept');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 2, 'filter Rust → 2 concepten');
 await page.click('[data-ov-feeling="focus"]');
-check(await page.isVisible('[data-ov-empty]'), 'Rust + Focus → lege staat met alternatief');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 1, 'Rust + Focus → De vergadering die werkt');
+await page.click('[data-ov-feeling="rust"]');
+await page.click('[data-ov-feeling="trots"]');
+check(await page.isVisible('[data-ov-empty]'), 'Focus + Trots → lege staat met alternatief');
 await page.goto(base + '/eventconcepten/op-gevoel/?gevoel=verwondering,trots');
 check(await page.getAttribute('[data-feel="trots"]', 'aria-pressed') === 'true', 'op-gevoel herstelt keuze uit URL');
 check((await page.locator('[data-match-grid] .tl-match').first().textContent()).includes('Nacht van verwondering'), 'Verwondering + Trots → Nacht van verwondering');
@@ -108,6 +111,60 @@ await page.reload();
 check((await page.textContent('[data-plan-list]')).includes('niet meer beschikbaar als aangesloten partner'), 'vervallen partner in plan → waarschuwing, niet als optie');
 await page.click('[data-plan-remove="diner"]');
 check(await page.locator('[data-plan-item="diner"]').count() === 0, 'plan verwijderen werkt');
+
+// 5. Compleet concept: programma-pop-up, keuzes in de composer, vragenlijst op maat
+await page.goto(base + '/eventconcepten/festival/');
+await page.locator('[data-open-dialog^="prog-festival-1"]').first().click();
+check(await page.isVisible('#prog-festival-1') && (await page.textContent('#prog-festival-1')).includes('ZO PAK JE HET AAN'), 'programma-onderdeel opent pop-up met aanpak');
+await page.keyboard.press('Escape');
+check(!(await page.isVisible('#prog-festival-1')), 'pop-up sluit met Escape');
+check(!(await page.content()).includes('>VOORBEELD<'), 'programma niet meer als voorbeeld gelabeld');
+await page.selectOption('[data-composer-venue]', 'beeld');
+check((await page.textContent('[data-plan-venue]')).includes('Beeld & Geluid'), 'locatie kiezen in de composer');
+check(await page.getAttribute('[data-venue-card="beeld"]', 'data-selected') === 'true', 'composerkeuze synchroon met locatiekaart');
+await page.check('[data-composer-supplier="bourgonje"]');
+await page.click('.tl-composer__more summary');
+await page.check('[data-composer-supplier="objektiv"]');
+check((await page.textContent('[data-plan-suppliers]')).includes('Objektiv'), 'makers kiezen in de composer (ook overige partners)');
+const wasOn = await page.getAttribute('[data-composer-feel="focus"]', 'aria-pressed');
+await page.click('[data-composer-feel="focus"]');
+check(await page.getAttribute('[data-composer-feel="focus"]', 'aria-pressed') !== wasOn, 'gevoel kiezen in de composer');
+await page.fill('[data-tailor-form] [name=organisatie]', 'Testbedrijf');
+await page.fill('[data-tailor-form] [name=datum]', '2027-03-18');
+await page.fill('[data-tailor-form] [name=start]', '10:00');
+await page.fill('[data-tailor-form] [name=gasten]', '700');
+await page.fill('[data-tailor-form] [name=contact]', 'Sam');
+await page.check('[data-tailor-form] [name=dieet][value=vegan]');
+await page.click('[data-tailor-form] button[type=submit]');
+const out = await page.textContent('[data-tailor-output]');
+check(out.includes('10:00') && out.includes('Inloop en registratie'), 'draaiboek op maat start op 10:00');
+check(/VANAF .*2026/.test(out), 'aftelplanning met echte data');
+check(out.includes('700 GASTEN') && out.includes('VEGAN'), 'catering op maat met aantallen en dieet');
+check(out.includes('Groter (500+ gasten)'), 'passende variant aanbevolen bij 700 gasten');
+check(out.includes('OFFERTEAANVRAGEN') && await page.locator('[data-copy-quote]').count() === 3, 'offerteaanvragen voor locatie en 2 makers');
+await page.click('[data-copy-quote="0"]');
+const q = await page.evaluate(() => navigator.clipboard.readText());
+check(q.includes('700 gasten') && q.includes('Beeld & Geluid'), 'offerteaanvraag gekopieerd met gegevens');
+const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-download-budget]')]);
+check(dl.suggestedFilename() === 'begroting-festival.csv', 'begroting downloadbaar als CSV');
+await page.click('[data-tailor-copy]');
+const full = await page.evaluate(() => navigator.clipboard.readText());
+check(['DAGDRAAIBOEK', 'CALLSHEET', 'ENTERTAINMENT', 'UITNODIGING', 'Testbedrijf'].every((x) => full.includes(x)), 'compleet draaiboek gekopieerd');
+await page.reload();
+check((await page.textContent('[data-tailor-output]')).includes('Testbedrijf'), 'antwoorden blijven bewaard na herladen');
+
+// 6. Contact-pop-up op locatiedetail
+await page.goto(base + '/locaties/nederlands-instituut-voor-beeld-geluid-hilversum/');
+await page.locator('[data-open-dialog^="contact-"]').first().click();
+check(await page.isVisible('[data-contact-dialog]') && (await page.textContent('[data-contact-dialog]')).includes('Jessie Schaduw'), 'contact-pop-up met contactpersoon');
+check((await page.inputValue('[data-contact-form] [name=aantal]')) === '700', 'contactformulier voorgevuld vanuit het plan');
+await page.click('[data-contact-submit]');
+check(await page.isVisible('[data-contact-error]'), 'validatie: verplichte velden');
+await page.fill('[data-contact-form] [name=naam]', 'Sam');
+await page.fill('[data-contact-form] [name=email]', 'sam@example.com');
+await page.click('[data-contact-submit]');
+await page.waitForSelector('[data-contact-done]:not([hidden])');
+check((await page.textContent('[data-contact-done]')).includes('OPEN HET CONTACTFORMULIER'), 'zonder endpoint: eerlijke afronding via Greenbookings-profiel');
 
 // Mobiel: menu en filterpaneel
 const m = await browser.newPage({ viewport: { width: 360, height: 800 } });

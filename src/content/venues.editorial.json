@@ -249,6 +249,117 @@
       "line": "Vergader- en eventruimtes op de Pier van Scheveningen, boven zee.",
       "illustrativeImage": null,
       "editorialCheckedAt": null
+    },
+    {
+      "id": "kivi",
+      "greenbookingsSlug": "koninklijk-instituut-van-ingenieurs-kivi",
+      "order": 15,
+      "label": "VERGADERCENTRUM / HISTORISCH",
+      "eventTypes": [
+        "vergadering",
+        "congres"
+      ],
+      "character": [
+        "historisch",
+        "stedelijk"
+      ],
+      "line": "Het instituut van ingenieurs in Den Haag, met vergaderruimte in een historische omgeving.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "court",
+      "greenbookingsSlug": "flexlabs-the-court-breda",
+      "order": 16,
+      "label": "MONUMENT / VERGADEREN",
+      "eventTypes": [
+        "vergadering"
+      ],
+      "character": [
+        "historisch"
+      ],
+      "line": "Vergaderen in een voormalig rechtbankgebouw in het hart van Breda.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "toussaint",
+      "greenbookingsSlug": "toussainthuis",
+      "order": 17,
+      "label": "VERGADERCENTRUM / DEN HAAG",
+      "eventTypes": [
+        "vergadering"
+      ],
+      "character": [
+        "historisch"
+      ],
+      "line": "Een vergaderlocatie met historisch karakter in Den Haag.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "conferenceclub",
+      "greenbookingsSlug": "the-conference-club",
+      "order": 18,
+      "label": "KLEIN / LUXE",
+      "eventTypes": [
+        "vergadering"
+      ],
+      "character": [
+        "stedelijk"
+      ],
+      "line": "Een vergaderclub in Den Haag voor kleine, besloten gezelschappen.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "beyaerd",
+      "greenbookingsSlug": "veluwe-hotel-de-beyaerd",
+      "order": 19,
+      "label": "HOTEL / VELUWE",
+      "eventTypes": [
+        "vergadering",
+        "buiten",
+        "feest"
+      ],
+      "character": [
+        "groen"
+      ],
+      "line": "Een hotel op de Veluwe in Hulshorst, met de natuur voor de deur.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "sanadome",
+      "greenbookingsSlug": "sanadome-hotel-spa-nijmegen",
+      "order": 20,
+      "label": "HOTEL / BOS & WELLNESS",
+      "eventTypes": [
+        "vergadering",
+        "buiten"
+      ],
+      "character": [
+        "groen"
+      ],
+      "line": "Vergaderen in een bosrijke omgeving bij Nijmegen, met spa en wellness onder één dak.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
+    },
+    {
+      "id": "spaarnwoude",
+      "greenbookingsSlug": "spaarnwoude-park-hotel",
+      "order": 21,
+      "label": "HOTEL / RECREATIEGEBIED",
+      "eventTypes": [
+        "vergadering",
+        "buiten"
+      ],
+      "character": [
+        "groen"
+      ],
+      "line": "Een hotel in het groen bij Velsen-Zuid, tussen Amsterdam en de kust.",
+      "illustrativeImage": null,
+      "editorialCheckedAt": null
     }
   ]
 }

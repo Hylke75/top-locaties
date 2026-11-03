@@ -24,9 +24,11 @@ Je werkt aan **Top Locaties**, het redactionele inspiratieplatform voor eventcon
 - Hergebruik bestaande beeldbestanden `dist/hero-event.webp` en `dist/festival-event.webp` voor ontwerpvergelijking; gebruik later uitsluitend foto’s met gebruiksrecht en echte locatiebeelden. Geen willekeurige foto als feitelijke weergave van een locatie.
 - Beperk animatie tot betekenisvolle overgangen (150–500 ms); respecteer `prefers-reduced-motion`.
 - Denk mobile first qua gedrag, zonder de desktop-signatuur af te zwakken. Richtpunten: 1440, 1024, 768, 390 px.
-- Elke conceptpagina bevat het *waarom*, de gevoelsbeleving, programma, passende **echte** locaties, passende **echte** leveranciers en een samenstellingsactie. Geen alles-overheersende modal.
+- Elke conceptpagina bevat het *waarom*, de gevoelsbeleving, programma, draaiboek, catering en entertainment, passende **echte** locaties, passende **echte** leveranciers, de gids ‘zelf regelen’ en de vragenlijst op maat. Dialogen alleen per programma-onderdeel of voor contact; nooit het hele concept in een modal.
+- Secrets (zoals de Greenbookings-API-sleutel) uitsluitend via omgevingsvariabelen (`GREENBOOKINGS_API_KEY`), nooit in de repository of de gebouwde site.
 - "Kies op gevoel" is een primaire ontdekroute, niet slechts een extra filter: gebruikers kiezen één of twee gewenste gevoelens en zien uitlegbare conceptaanbevelingen.
-- Alle data over locaties, leveranciers, capaciteit, beschikbaarheid en prijs moet brongebonden of expliciet `onbekend` zijn. Sfeerfoto’s en fictieve programma's altijd als illustratief markeren.
+- Alle data over locaties, leveranciers, capaciteit, beschikbaarheid en prijs moet brongebonden of expliciet `onbekend` zijn. Sfeerfoto’s altijd als illustratief markeren. Programma's en draaiboeken zijn het échte programma van het concept (besluit 03-11-2026): compleet, uitgewerkt en direct inzetbaar, maar nooit een boekbaar arrangement.
+- Concepten moeten **compleet** zijn: programma met pop-up per onderdeel, minuut-tot-minuutdraaiboek, aftelplanning, cateringvoorstel, entertainment, bezetting, ruimtes, checklist, varianten, plan B, kostenposten (zonder bedragen), duurzaamheid, evaluatie en uitnodiging. `validate-content.mjs` blokkeert publicatie zonder.
 
 ## Bouwafspraken
 

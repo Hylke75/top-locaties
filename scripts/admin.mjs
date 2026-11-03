@@ -44,7 +44,7 @@ function authenticate({ email, password, token } = {}) {
   return { role: u.role, name: u.name, email: u.email };
 }
 const sessions = new Map(); // sid → { role, name, csrf, expires }
-const FILES = { concepts: 'concepts.json', venues: 'venues.editorial.json', suppliers: 'suppliers.editorial.json', feelings: 'feelings.json', snapshot: 'greenbookings-snapshot.json' };
+const FILES = { playbook: 'playbook.json', concepts: 'concepts.json', venues: 'venues.editorial.json', suppliers: 'suppliers.editorial.json', feelings: 'feelings.json', snapshot: 'greenbookings-snapshot.json' };
 
 const readDoc = (k) => JSON.parse(fs.readFileSync(path.join(CONTENT, FILES[k]), 'utf8'));
 function writeDoc(k, doc, user, action, detail) {
@@ -95,7 +95,7 @@ const serveFile = (res, file) => {
   fs.createReadStream(file).pipe(res);
 };
 
-const CONCEPT_FIELDS = ['title', 'slug', 'number', 'status', 'priority', 'headline', 'category', 'categoryLabel', 'format', 'teaser', 'proposition', 'tags', 'guestCountMin', 'guestCountMax', 'feelings', 'feelingWeights', 'feelingReasons', 'audiences', 'objective', 'idea', 'hero', 'programImage', 'program', 'venueMatches', 'supplierRoles', 'supplierMatches', 'seo'];
+const CONCEPT_FIELDS = ['title', 'slug', 'number', 'status', 'priority', 'headline', 'category', 'categoryLabel', 'format', 'teaser', 'proposition', 'tags', 'guestCountMin', 'guestCountMax', 'feelings', 'feelingWeights', 'feelingReasons', 'audiences', 'objective', 'idea', 'hero', 'programImage', 'program', 'venueMatches', 'supplierRoles', 'supplierMatches', 'seo', 'duration', 'runbook', 'planning', 'catering', 'entertainment', 'crew', 'spaces', 'checklist', 'variations', 'risks', 'budgetItems', 'sustainability', 'evaluation', 'invitation'];
 
 async function api(req, res, user, url) {
   const m = req.method;
@@ -111,7 +111,7 @@ async function api(req, res, user, url) {
     const syncLog = fs.existsSync(path.join(root, '.admin/sync-log.json')) ? JSON.parse(fs.readFileSync(path.join(root, '.admin/sync-log.json'), 'utf8')).slice(0, 10) : [];
     const build = fs.existsSync(path.join(SITE, 'build-info.json')) ? JSON.parse(fs.readFileSync(path.join(SITE, 'build-info.json'), 'utf8')) : null;
     return send(res, 200, {
-      concepts: readDoc('concepts').concepts, venues: readDoc('venues'), suppliers: readDoc('suppliers'), feelings: readDoc('feelings'),
+      concepts: readDoc('concepts').concepts, categories: readDoc('concepts').categories || [], playbook: readDoc('playbook'), venues: readDoc('venues'), suppliers: readDoc('suppliers'), feelings: readDoc('feelings'),
       snapshotMeta: snapshot._meta, partners, supplierSources: snapshot.suppliers, validation: await validate(), syncLog, build,
     });
   }
@@ -204,6 +204,18 @@ async function api(req, res, user, url) {
     if (!f) return send(res, 404, { error: 'Gevoel bestaat niet (de zes gevoelens zijn vast).' });
     for (const k of ['sub', 'explanation']) if (body[k] !== undefined) f[k] = String(body[k]).slice(0, 160);
     writeDoc('feelings', doc, user, 'feeling.edit', { id: f.id });
+    return send(res, 200, { ok: true });
+  }
+
+  if (m === 'PUT' && p === '/playbook') {
+    if (!chief) return send(res, 403, { error: 'Alleen de hoofdredacteur wijzigt de gids.' });
+    const body = await readBody(req);
+    const doc = readDoc('playbook');
+    if (typeof body.intro === 'string') doc.intro = body.intro.slice(0, 600);
+    if (Array.isArray(body.steps) && body.steps.length) doc.steps = body.steps.map((x) => ({ id: String(x.id).replace(/[^a-z0-9-]/g, '').slice(0, 40) || 'stap', when: String(x.when || ''), title: String(x.title || ''), items: (x.items || []).map(String) }));
+    if (Array.isArray(body.agencyVsYou)) doc.agencyVsYou = body.agencyVsYou.filter((x) => x[0]).map(([a, b]) => [String(a), String(b || '')]);
+    if (body.quoteQuestions && typeof body.quoteQuestions === 'object') for (const [k, v] of Object.entries(body.quoteQuestions)) if (doc.quoteQuestions[k] && Array.isArray(v)) doc.quoteQuestions[k] = v.map(String);
+    writeDoc('playbook', doc, user, 'playbook.edit', { steps: doc.steps.length });
     return send(res, 200, { ok: true });
   }
 

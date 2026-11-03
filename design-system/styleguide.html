@@ -180,6 +180,20 @@
       <div class="tl-steps"><div><b>01.</b><p>Ontdek een concept.</p></div><div><b>02.</b><p>Vind de plek.</p></div><div><b>03.</b><p>Betrek de makers.</p></div></div>
       <div class="tl-callout"><span>.tl-callout — één verwijzing met kader.</span><a href="#">BEKIJK GREENBOOKINGS ↗</a></div>
     </section>
+
+    <section class="tl-section" id="v12">
+      <div class="tl-overline"><span>13 / NIEUW IN V1.2 — COMPLETE CONCEPTEN</span><span>DRAAIBOEK / MENU / CHECKLIST / DIALOOG / CONTACT</span></div>
+      <h2 class="tl-display tl-display--md">VAN MINUUT<br>TOT <span class="tl-accent">MINUUT.</span></h2>
+      <div class="tl-runbook" role="table" aria-label="Voorbeeld draaiboek">
+        <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">TIJD</span><span role="columnheader">DUUR</span><span role="columnheader">ONDERDEEL</span><span role="columnheader">WIE</span><span role="columnheader">WAAR</span></div>
+        <div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">09:00</span><span class="tl-runbook__duration" role="cell" data-label="DUUR">30 MIN</span><span role="cell"><strong class="tl-runbook__title">Inloop</strong><span class="tl-runbook__desc">.tl-runbook — dagdraaiboek als redactionele tabel.</span><span class="tl-runbook__needs">NODIG: BADGES · KOFFIE</span></span><span class="tl-runbook__meta" role="cell" data-label="WIE">Catering</span><span class="tl-runbook__meta" role="cell" data-label="WAAR">Foyer</span></div>
+      </div>
+      <div class="tl-menu"><div class="tl-menu__item"><span class="tl-menu__when">12:15 / LUNCH</span><p class="tl-menu__dish">.tl-menu — cateringvoorstel als menukaart per moment.</p><span class="tl-menu__meta">Food-stations · vegan gelabeld</span></div></div>
+      <div class="tl-checklist" style="margin-top:30px"><div class="tl-checklist__group"><strong class="tl-checklist__title">.tl-checklist</strong><ul class="tl-list"><li>Groep per vakgebied</li><li>Afvinkbaar in het plan op maat</li></ul></div><div class="tl-checklist__group"><strong class="tl-checklist__title">.tl-list</strong><ul class="tl-list"><li>Koraal streepje</li><li>DM Sans</li></ul></div></div>
+      <div class="ds-component-line"><button class="tl-button tl-button--outline" type="button" data-open-dialog="ds-dialog" aria-haspopup="dialog">OPEN .TL-DIALOG ↗</button><button class="tl-button tl-button--accent" type="button" data-open-dialog="ds-dialog">NEEM CONTACT OP ↗</button></div>
+      <dialog class="tl-dialog" id="ds-dialog" aria-labelledby="ds-dialog-t"><div class="tl-dialog__head"><span class="tl-mono">01 / 09:30 / .TL-DIALOG</span><button class="tl-dialog__close" type="button" data-close-dialog>SLUITEN ×</button></div><h2 class="tl-display tl-display--md" id="ds-dialog-t">PROGRAMMA-<br>ONDERDEEL.</h2><p class="tl-lead">Native &lt;dialog&gt;: Escape en klik op de achtergrond sluiten, focus gaat terug naar de knop. Gebruikt voor programma-onderdelen en contact met een locatie — nooit voor een heel concept.</p><ol class="tl-steplist"><li>Wat gebeurt er</li><li>Zo pak je het aan</li><li>Wie en wat je nodig hebt</li></ol><p class="tl-dialog__tip"><strong>TIP</strong> Eén praktische tip per onderdeel.</p></dialog>
+      <div class="tl-contact-cta"><div><strong class="tl-mono">.TL-CONTACT-CTA</strong><span class="tl-note">Contactblok op een locatiepagina; opent de contact-pop-up.</span></div><button class="tl-button tl-button--accent" type="button" data-open-dialog="ds-dialog">NEEM CONTACT OP ↗</button></div>
+    </section>
   </main>
 
   <footer class="tl-footer"><div class="tl-overline"><span>TOP LOCATIES / DESIGN MANUAL</span><span>CONSISTENT VAN IDEE TOT ONTWERP</span></div><div class="tl-footer__name">TOP LOCATIES ✳</div><div class="tl-footer__bottom"><span class="tl-mono">ARCHIVO BLACK × DM MONO × DM SANS</span><a class="tl-mono" href="#heroTitle">TERUG NAAR BOVEN ↑</a></div></footer>
@@ -242,5 +256,6 @@
       renderComposer();
     })();
   </script>
+<script>document.addEventListener("click",function(e){var o=e.target.closest("[data-open-dialog]");if(o){var d=document.getElementById(o.dataset.openDialog);d&&d.showModal();return}if(e.target.closest("[data-close-dialog]"))e.target.closest("dialog").close();else if(e.target.matches("dialog.tl-dialog"))e.target.close()});</script>
 </body>
 </html>

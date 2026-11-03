@@ -78,7 +78,28 @@ tests/         rules.test.mjs · sync.test.mjs
 4. Hoofdredacteur: hylke@greenbookings.nl. Het account staat als scrypt-hash in `.admin/users.json` (niet in git); zie README.
 5. Deployment naar het Vercel-project `top-locaties` (productie: top-locaties.vercel.app).
 
+**Complete concepten (03-11-2026):** 6 concepten (o.a. *De vergadering die werkt* en *De teamdag buiten*). Elk concept heeft:
+- het programma met een pop-up per onderdeel;
+- een minuut-tot-minuutdraaiboek en een aftelplanning;
+- een cateringvoorstel en entertainment;
+- bezetting, ruimtes, checklist, varianten en plan B;
+- kostenposten (zonder bedragen), duurzaamheid, evaluatie en een uitnodiging.
+
+Daaronder staat een vragenlijst op maat (12 vragen). Die levert:
+- het draaiboek op de eigen starttijd en een planning met echte data;
+- catering en bezetting voor de groep, met een capaciteitscheck;
+- offerteaanvragen per locatie en maker, een callsheet en een begroting (CSV);
+- een print/PDF-versie.
+
+De gids *Zo regel je het zelf* (`/zelf-organiseren/`) dekt de taken van een eventbureau af (bronnen: gemeenten/Ondernemersplein). Alles is bewerkbaar in het beheer; `validate-content.mjs` blokkeert publicatie van een onvolledig concept.
+
+**Contact met locaties:** de contact-pop-up op elke locatiepagina is gemodelleerd naar `public.contactberichten` (naam, e-mail, datum, aantal, bericht, `bron = 'top-locaties'`). Zolang `src/content/site.json → contact.endpoint` leeg is, kopieert de bezoeker het bericht en rondt hij af in het contactformulier op het Greenbookings-profiel. Rechtstreeks versturen vraagt een bevestigde contactroute van Greenbookings.
+
+**API-sleutel:** ontvangen; alleen te gebruiken via de omgevingsvariabele `GREENBOOKINGS_API_KEY`, nooit in de repository. Getest: de Vercel-firewall van greenbookings.nl stuurt een *challenge* (HTTP 429) vóórdat de sleutel de app bereikt.
+
 **Nog open:**
+- **Firewall-bypass:** een bypass-regel in het Vercel-project `greenbookings` (Firewall) voor `/api/v1/*` maakt de automatische partnersync én het rechtstreeks versturen van contactberichten mogelijk.
+- **Contactroute:** welk endpoint in de Greenbookings-app schrijft naar `contactberichten` (en mailt de locatie)? Dat endpoint vul je in `site.json` in.
 - **API-toegang:** de Vercel-checkpoint blokkeert server-side sync van `/api/v1/*`. Een bypass of een read-only Supabase-view is nodig voor automatische verversing. Tot die tijd wordt de snapshot handmatig ververst.
 - **Eigen domein:** top-locaties.nl is nog niet aan het Vercel-project gekoppeld.
 - **Beheer online:** het beheer draait lokaal of intern (`npm run admin`) en is bewust niet in de publieke deployment opgenomen.

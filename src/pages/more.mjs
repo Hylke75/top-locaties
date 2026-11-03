@@ -2,9 +2,8 @@
 // Uitsluitend gedeelde tl-componenten; geen pagina-eigen styling.
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
-import { header, footer, overline, ext, feelingCompass, compassData, conceptCard, matchCard, catalogCard, venueImage, state, SITE } from '../templates/components.mjs';
+import { header, footer, overline, ext, feelingCompass, compassData, conceptCard, matchCard, catalogCard, venueImage, state, contactButton, contactDialog, SITE } from '../templates/components.mjs';
 
-const CATEGORIES = { inspiratie: 'KENNIS & INSPIRATIE', verbinden: 'SAMEN & VERBINDEN', beleven: 'BELEVEN & VERRASSEN' };
 const crumb = (items, right) => html`<nav class="tl-crumb" aria-label="Kruimelpad"><span>${items.map((it, i) => html`${i ? ' / ' : ''}${it.href ? html`<a href="${it.href}">${it.label}</a>` : html`<span aria-current="page">${it.label}</span>`}`)}</span><span>${right}</span></nav>`;
 
 /* ---------------- /eventconcepten/ ---------------- */
@@ -17,11 +16,11 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'EVENTCONCEPTEN' }], `COLLECTIE 
   ${overline('01 / ALLE EVENTCONCEPTEN', 'IDEEËN WAAR BIJZONDERE BIJEENKOMSTEN MEE BEGINNEN')}
   <div class="tl-section-head tl-section-head--top">
     <h1 class="tl-display" id="ovTitle">ER IS ZÓVEEL<br><span class="tl-accent">MOGELIJK.</span></h1>
-    <p>Blader op type bijeenkomst of op het gevoel dat je wilt achterlaten. Elk concept heeft een verhaal, een voorbeeldprogramma, aangesloten partnerlocaties en de makers die het waarmaken.</p>
+    <p>Blader op type bijeenkomst of op het gevoel dat je wilt achterlaten. Elk concept is compleet: verhaal, programma, minuut-tot-minuutdraaiboek, cateringvoorstel, entertainment, aangesloten partnerlocaties en de makers die het waarmaken — en je maakt het op maat.</p>
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op type">
     <button class="tl-chip-button" type="button" data-ov-category="" aria-pressed="true">ALLE TYPES / ${pad(concepts.length)}</button>
-    ${Object.entries(CATEGORIES).map(([k, l]) => html`<button class="tl-chip-button" type="button" data-ov-category="${k}" aria-pressed="false">${l} / ${pad(concepts.filter((c) => c.category === k).length)}</button>`)}
+    ${data.categories.map(({ id: k, label: l }) => html`<button class="tl-chip-button" type="button" data-ov-category="${k}" aria-pressed="false">${l} / ${pad(concepts.filter((c) => c.category === k).length)}</button>`)}
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op gewenst gevoel (maximaal twee)">
     ${feelings.map((f) => html`<button class="tl-chip-button" type="button" data-ov-feeling="${f.id}" aria-pressed="false">${f.label.toUpperCase()} +</button>`)}
@@ -29,7 +28,7 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'EVENTCONCEPTEN' }], `COLLECTIE 
   <p class="tl-visually-hidden" role="status" aria-live="polite" data-ov-status></p>
   <div class="tl-catalog" data-ov-grid>${concepts.map((c, i) => conceptCard(c, i, feelingLabels))}</div>
   <div data-ov-empty hidden>${state('empty', 'GEEN CONCEPT.', 'Er is (nog) geen concept met deze combinatie. Haal een filter weg of probeer het gevoelskompas: daar zie je altijd alternatieven.', html`<a class="tl-button" href="/eventconcepten/op-gevoel/">NAAR HET GEVOELSKOMPAS ↗</a>`)}</div>
-  <p class="tl-note tl-note--gap">Programma's en groepsgroottes zijn redactionele voorbeelden. Locaties zijn uitsluitend aangesloten Greenbookings-partners.</p>
+  <p class="tl-note tl-note--gap">Groepsgroottes zijn indicatief; met de vragenlijst op elke conceptpagina pas je alles aan op jouw groep. Locaties zijn uitsluitend aangesloten Greenbookings-partners.</p>
 </section>
 ${feelingCompass(data, { number: '02', id: 'gevoel' })}
 </main>
@@ -82,7 +81,7 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/locaties/', label: 'LOCATIES' }
     <div>
       <p class="tl-hero__intro">${v.line}${v.tagline ? html` <span class="tl-visually-hidden">—</span>` : ''}</p>
       <div class="tl-hero__footer">
-        <a class="tl-round-link" href="#concepten">PAST BIJ DEZE IDEEËN <span class="tl-round-link__circle" aria-hidden="true">↓</span></a>
+        ${contactButton(v)}
         <span class="tl-mono">${v.capacity}<br>${v.type || 'TYPE ONBEKEND'}</span>
       </div>
     </div>
@@ -106,6 +105,10 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/locaties/', label: 'LOCATIES' }
         <div><dt>BESCHIKBAARHEID &amp; PRIJS</dt><dd>Niet getoond — vraag dit aan bij de locatie via Greenbookings.</dd></div>
       </dl>
       <p class="tl-note tl-note--gap">Capaciteit is het maximum volgens de bron; per opstelling kan dat anders zijn. Top Locaties bevestigt geen beschikbaarheid of reservering.</p>
+      <div class="tl-contact-cta">
+        <div><strong class="tl-mono">${v.contactPerson?.name ? `VRAGEN? ${v.contactPerson.name.toUpperCase()} HELPT JE VERDER` : 'VRAGEN OVER DEZE PLEK?'}</strong><span class="tl-note">Beschikbaarheid, ruimtes en prijs vraag je rechtstreeks aan de locatie.</span></div>
+        ${contactButton(v)}
+      </div>
     </div>
   </div>
 </section>
@@ -130,12 +133,13 @@ ${nearby.length ? html`<section class="tl-section" aria-labelledby="nearTitle">
 <section class="tl-section tl-section--dark" aria-labelledby="nextTitle">
   ${overline('VOLGENDE STAP', 'VIA DE BRON')}
   <h2 class="tl-display tl-display--gap" id="nextTitle">BENIEUWD WAT<br><span class="tl-accent">HIER KAN?</span></h2>
-  <div class="tl-callout"><span>Ruimtes, opstellingen, foto's en de aanvraagroute staan op het Greenbookings-profiel van ${v.name}.</span>${ext(v.profileUrl, 'NAAR HET PROFIEL ↗')}</div>
+  <div class="tl-callout"><span>Ruimtes, opstellingen, foto's en de aanvraagroute staan op het Greenbookings-profiel van ${v.name}. Of stel je vraag direct.</span><span class="tl-chip-set">${contactButton(v, 'tl-button tl-button--accent')}${ext(v.profileUrl, 'NAAR HET PROFIEL ↗')}</span></div>
 </section>
 </main>
+${contactDialog(v, data.site)}
 ${footer({ left: 'EEN BIJZONDERE PLEK IS PAS HET BEGIN.', right: 'TOP LOCATIES / 2026', links: [{ href: '/locaties/', label: 'ALLE LOCATIES ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/mijn-plan/', label: 'MIJN PLAN ↗' }] })}`;
   const desc = `${v.name} in ${v.city}: ${v.line} Ontdek bij welke eventconcepten deze aangesloten Greenbookings-locatie past.`.slice(0, 300);
-  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, preload: v.image.kind === 'source' ? v.image.src : null });
+  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, scripts: ['contact.js'], preload: v.image.kind === 'source' ? v.image.src : null });
 }
 
 /* ---------------- /leveranciers/ ---------------- */
@@ -260,8 +264,8 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'OVER' }], 'FILOSOFIE / ECOSYSTE
     <p class="tl-intro-label">Waarom beginnen bij een zaal, als je ook kunt beginnen bij het gevoel dat je wilt achterlaten?</p>
     <div>
       <h1 class="tl-display" id="aboutTitle">GEEN<br>LOCATIEGIDS.<br><span class="tl-accent">EEN IDEEËNBOEK.</span></h1>
-      <p class="tl-body tl-body--gap">Top Locaties is een redactioneel inspiratieplatform voor zakelijke evenementen. We beginnen bij de beleving: wat moeten gasten voelen als ze naar huis gaan? Daaruit volgt een eventconcept met een verhaal en een voorbeeldprogramma. Pas dan kijken we naar de plek en de makers.</p>
-      <p class="tl-body">Alle locaties op deze site zijn aangesloten partners van Greenbookings. Praktische gegevens komen uit hun profiel; wat we niet zeker weten, noemen we onbekend. Sfeerbeelden en voorbeeldprogramma's zijn altijd zo gemarkeerd.</p>
+      <p class="tl-body tl-body--gap">Top Locaties is een redactioneel inspiratieplatform voor zakelijke evenementen. We beginnen bij de beleving: wat moeten gasten voelen als ze naar huis gaan? Daaruit volgt een compleet eventconcept: verhaal, programma, draaiboek, catering en entertainment, dat je zelf op maat maakt. Pas dan kijken we naar de plek en de makers.</p>
+      <p class="tl-body">Alle locaties op deze site zijn aangesloten partners van Greenbookings. Praktische gegevens komen uit hun profiel; wat we niet zeker weten, noemen we onbekend. Sfeerbeelden zijn altijd zo gemarkeerd.</p>
     </div>
   </div>
 </section>
@@ -282,7 +286,7 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'OVER' }], 'FILOSOFIE / ECOSYSTE
     <div><dt>LOCATIES</dt><dd>Uitsluitend aangesloten Greenbookings-partners (${data.venues.length} in deze editie).</dd></div>
     <div><dt>MATCHES</dt><dd>Redactioneel gekozen, altijd met reden. Geen scores of percentages.</dd></div>
     <div><dt>BEELD</dt><dd>Profielfoto's van Greenbookings of gemarkeerde sfeerbeelden.</dd></div>
-    <div><dt>PROGRAMMA'S</dt><dd>Voorbeelden ter inspiratie, geen boekbare arrangementen.</dd></div>
+    <div><dt>PROGRAMMA'S</dt><dd>Complete, uitgewerkte programma's en draaiboeken om zelf in te zetten — geen boekbaar arrangement: locatie en makers boek je zelf.</dd></div>
     <div><dt>PRIJS &amp; BESCHIKBAARHEID</dt><dd>Tonen we niet. Vraag die aan bij de locatie.</dd></div>
     <div><dt>JOUW PLAN</dt><dd>Alleen in je eigen browser bewaard; geen account, geen tracking van je keuzes.</dd></div>
   </dl>
@@ -290,4 +294,42 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'OVER' }], 'FILOSOFIE / ECOSYSTE
 </main>
 ${footer({ links: [{ href: '/eventconcepten/op-gevoel/', label: 'KIES OP GEVOEL ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/locaties/', label: 'ZOEK LOCATIES ↗' }] })}`;
   return layout({ title: 'Over Top Locaties — inspiratie voor bijzondere bijeenkomsten', description: 'Top Locaties begint bij het gevoel dat je wilt achterlaten. Een redactioneel platform met eventconcepten, aangesloten Greenbookings-locaties en makers.', path: '/over/', body });
+}
+
+/* ---------------- /zelf-organiseren/ ---------------- */
+export function renderPlaybook(data) {
+  const p = data.playbook;
+  const body = html`${header({ current: '' })}
+${crumb([{ href: '/', label: 'HOME' }, { label: 'ZELF ORGANISEREN' }], 'GEEN EVENTBUREAU NODIG')}
+<main id="main">
+<section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="pbTitle">
+  ${overline('01 / ZO REGEL JE HET ZELF', `${pad(p.steps.length)} STAPPEN VAN BRIEFING TOT EVALUATIE`)}
+  <div class="tl-columns">
+    <p class="tl-intro-label">${p.intro}</p>
+    <div>
+      <h1 class="tl-display" id="pbTitle">GEEN BUREAU.<br><span class="tl-accent">WEL ALLES GEREGELD.</span></h1>
+      <dl class="tl-facts tl-facts--two">${p.agencyVsYou.map(([task, here]) => html`<div><dt>${task}</dt><dd>${here}</dd></div>`)}</dl>
+    </div>
+  </div>
+</section>
+<section class="tl-section" aria-labelledby="stepsTitle">
+  ${overline('02 / DE STAPPEN', 'MET TIMING')}
+  <h2 class="tl-display tl-display--md tl-section-head" id="stepsTitle">STAP VOOR STAP.</h2>
+  <div class="tl-timeline">${p.steps.map((st, i) => html`<div class="tl-timeline__item tl-timeline__item--wide" id="${st.id}"><span class="tl-timeline__time">${pad(i + 1)} / ${st.when.toUpperCase()}</span><div><h3 class="tl-timeline__title">${st.title}</h3><ul class="tl-list">${st.items.map((x) => html`<li>${x}</li>`)}</ul></div></div>`)}</div>
+</section>
+<section class="tl-section tl-section--taupe" aria-labelledby="qTitle">
+  ${overline('03 / DE JUISTE VRAGEN', 'VOOR ELKE OFFERTE')}
+  <h2 class="tl-display tl-display--md tl-section-head" id="qTitle">WAT JE VRAAGT<br><span class="tl-accent">BIJ EEN OFFERTE.</span></h2>
+  <div class="tl-checklist">${Object.entries(p.quoteQuestions).map(([k, qs]) => html`<div class="tl-checklist__group"><strong class="tl-checklist__title">${{ locatie: 'Locatie', catering: 'Catering', techniek: 'AV & techniek', overig: 'Overige makers' }[k] || k}</strong><ul class="tl-list">${qs.map((x) => html`<li>${x}</li>`)}</ul></div>`)}</div>
+  <p class="tl-note tl-note--gap">Op elke conceptpagina schrijven we deze vragen voor je uit in een complete offerteaanvraag, met jouw datum, aantallen en draaiboek.</p>
+</section>
+<section class="tl-section tl-section--dark" aria-labelledby="startTitle">
+  ${overline('04 / BEGIN BIJ EEN CONCEPT', 'KIES, BEANTWOORD, VERSTUUR')}
+  <h2 class="tl-display tl-display--gap" id="startTitle">KLAAR OM<br><span class="tl-accent">TE BEGINNEN?</span></h2>
+  <div class="tl-callout"><span>Kies een concept op gevoel, beantwoord de vragen en je hebt je draaiboek, offerteaanvragen en uitnodiging.</span><a href="/eventconcepten/op-gevoel/">KIES OP GEVOEL ↗</a></div>
+  <p class="tl-note tl-on-dark-note tl-note--gap">Regels voor meldingen, vergunningen en veiligheid verschillen per gemeente en locatie. Bronnen: ${p.sources.map((s, i) => html`${i ? ' · ' : ''}${ext(s.url, s.label)}`)}.</p>
+</section>
+</main>
+${footer({ links: [{ href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/locaties/', label: 'ZOEK LOCATIES ↗' }, { href: '/leveranciers/', label: 'LEVERANCIERS ↗' }] })}`;
+  return layout({ title: 'Zelf een evenement organiseren — zonder eventbureau | Top Locaties', description: 'Alles wat een eventbureau doet, in negen stappen: briefing, offertes, afspraken, deelnemers, logistiek, veiligheid, callsheet, regie en evaluatie. Met de juiste offertevragen.', path: '/zelf-organiseren/', body });
 }

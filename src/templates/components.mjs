@@ -8,6 +8,7 @@ const NAV = [
   { key: 'concepten', href: '/eventconcepten/', label: 'EVENTCONCEPTEN' },
   { key: 'locaties', href: '/locaties/', label: 'LOCATIES' },
   { key: 'leveranciers', href: '/leveranciers/', label: 'LEVERANCIERS' },
+  { key: 'zelf', href: '/zelf-organiseren/', label: 'ZELF ORGANISEREN' },
   { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLAN' },
 ];
 
@@ -190,3 +191,36 @@ export function state(kind, title, text, action = '') {
 }
 
 export { SITE };
+
+/* ---------- Contact-pop-up voor een partnerlocatie ---------- */
+export function contactButton(v, cls = 'tl-button tl-button--accent') {
+  return html`<button class="${cls}" type="button" data-open-dialog="contact-${v.slug}" aria-haspopup="dialog">NEEM CONTACT OP ↗</button>`;
+}
+
+export function contactDialog(v, site) {
+  const p = v.contactPerson;
+  const id = `contact-${v.slug}`;
+  return html`<dialog class="tl-dialog tl-contact" id="${id}" aria-labelledby="${id}-t" data-contact-dialog data-venue-id="${v.id}" data-venue-slug="${v.greenbookingsSlug}" data-venue-name="${v.name}" data-profile="${v.profileUrl}" data-endpoint="${site.contact.endpoint || ''}" data-source="${site.contact.source}">
+  <div class="tl-dialog__head"><span class="tl-mono">CONTACT / ${v.name.toUpperCase()}</span><button class="tl-dialog__close" type="button" data-close-dialog aria-label="Sluiten">SLUITEN ×</button></div>
+  <div class="tl-contact__person">
+    ${p?.photo ? html`<img class="tl-contact__photo" src="${p.photo}" alt="${p.name}" width="72" height="72" loading="lazy">` : html`<span class="tl-contact__photo tl-contact__photo--mark" aria-hidden="true">✳</span>`}
+    <div><strong class="tl-contact__name">${p?.name || v.name}</strong><span class="tl-mono">${p?.name ? `CONTACTPERSOON · ${v.name}` : 'AANGESLOTEN PARTNER VAN GREENBOOKINGS'}</span></div>
+  </div>
+  <h2 class="tl-display tl-display--sm" id="${id}-t">NEEM<br><span class="tl-accent">CONTACT OP.</span></h2>
+  <p class="tl-body">Stel je vraag rechtstreeks aan ${v.name}. Beschikbaarheid, mogelijkheden en prijs hoor je van de locatie zelf.</p>
+  <form class="tl-contact__form" data-contact-form novalidate>
+    <label class="tl-contact__field"><span>NAAM *</span><input name="naam" autocomplete="name" required></label>
+    <label class="tl-contact__field"><span>E-MAILADRES *</span><input name="email" type="email" autocomplete="email" required></label>
+    <div class="tl-contact__two">
+      <label class="tl-contact__field"><span>DATUM VAN JE EVENT (OPTIONEEL)</span><input name="datum" type="date"></label>
+      <label class="tl-contact__field"><span>AANTAL PERSONEN (OPTIONEEL)</span><input name="aantal" type="number" min="1" inputmode="numeric"></label>
+    </div>
+    <label class="tl-contact__field"><span>BERICHT *</span><textarea name="bericht" rows="5" required placeholder="Waarmee kan ${v.name} je helpen?"></textarea></label>
+    <p class="tl-note">Je gegevens worden gedeeld met ${v.name} om je aanvraag te behandelen. Zie het ${ext(site.contact.privacyUrl, 'privacybeleid')}.</p>
+    <p class="tl-warning" data-contact-error hidden></p>
+    <div class="tl-contact__actions"><button class="tl-button tl-button--accent" type="submit" data-contact-submit>VERSTUUR BERICHT ↗</button>${ext(v.profileUrl, 'OF BEKIJK HET PROFIEL OP GREENBOOKINGS ↗', 'tl-text-button')}</div>
+  </form>
+  <div class="tl-contact__done" data-contact-done hidden tabindex="-1"></div>
+  <p class="tl-mono tl-contact__check">✓ RECHTSTREEKS CONTACT MET DE LOCATIE</p>
+</dialog>`;
+}

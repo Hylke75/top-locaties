@@ -1,6 +1,7 @@
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
 import { header, footer, overline, venueCard, supplierCard, timeline, imageFrame, ext, SITE } from '../templates/components.mjs';
+import { completeSections, questionnaire, programTimeline, composerChoices, playbookSection } from '../templates/runbook.mjs';
 
 export function renderConcept(data, concept, index) {
   const { concepts, venueById, supplierById, feelingLabels } = data;
@@ -39,7 +40,7 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
 
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
   <span class="tl-mono">HET CONCEPT / ${concept.number}</span>
-  <div class="tl-section-nav__tabs"><a href="#het-idee">HET IDEE</a><a href="#programma">PROGRAMMA</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">LEVERANCIERS</a><a href="#samenstellen">JOUW PLAN</a></div>
+  <div class="tl-section-nav__tabs"><a href="#het-idee">HET IDEE</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING &amp; ENTERTAINMENT</a><a href="#praktisch">PRAKTISCH</a><a href="#zelf-regelen">ZELF REGELEN</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">LEVERANCIERS</a><a href="#samenstellen">OP MAAT</a></div>
   <a class="tl-button tl-button--accent" href="#samenstellen">SAMENSTELLEN ↗</a>
 </nav>
 
@@ -61,23 +62,24 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
 </section>
 
 <section class="tl-section tl-section--taupe" id="programma" aria-labelledby="programTitle">
-  ${overline('02 / ZO KAN HET ERUITZIEN', 'VOORBEELDPROGRAMMA')}
+  ${overline('02 / HET PROGRAMMA', 'KLIK OP EEN ONDERDEEL VOOR ALLE DETAILS')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="programTitle">VAN EERSTE<br>ONTMOETING<br>TOT <span class="tl-accent">WOW.</span></h2>
-    <p>Zo krijgt het idee vorm. Deze opzet is een inspiratievoorbeeld en wordt aangepast aan locatie, doel en groepsgrootte.</p>
+    <p>Het programma op hoofdlijnen. Open een onderdeel voor wat er gebeurt, hoe je het aanpakt, wie wat doet en wat je nodig hebt. Tijden schuiven mee met jouw starttijd in de vragenlijst.</p>
   </div>
   <div class="tl-program">
     ${imageFrame(concept.programImage, { cls: '', caption: 'SFEERBEELD TER ILLUSTRATIE / PROGRAMMA IN BEELD' })}
     <div>
-      <span class="tl-label">VOORBEELD</span>
-      ${timeline(concept.program)}
-      <p class="tl-note tl-note--gap">* Voorbeeldtijden en onderdelen — geen bestaand, boekbaar arrangement.</p>
+      ${programTimeline(concept)}
+      <p class="tl-note tl-note--gap">Het minuut-tot-minuutdraaiboek staat hieronder. Het programma is geen boekbaar arrangement: locatie en makers boek je zelf, via hun profiel.</p>
     </div>
   </div>
 </section>
+${completeSections(concept, 3)}
+${playbookSection(data.playbook, '07')}
 
 <section class="tl-section" id="locaties" aria-labelledby="venueTitle">
-  ${overline('03 / DE PLEKKEN DIE HET WAAR KUNNEN MAKEN', 'UIT HET GREENBOOKINGS-NETWERK')}
+  ${overline('08 / DE PLEKKEN DIE HET WAAR KUNNEN MAKEN', 'UIT HET GREENBOOKINGS-NETWERK')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="venueTitle">DE JUISTE<br>PLEK VERANDERT<br><span class="tl-accent">ALLES.</span></h2>
     <p>Geen willekeurige locaties: redactionele suggesties op basis van sfeer en gebruik. Kies er één voor jouw plan, of klik door naar het profiel.</p>
@@ -88,7 +90,7 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
 </section>
 
 <section class="tl-section tl-section--mist" id="leveranciers" aria-labelledby="supplierTitle">
-  ${overline('04 / DE MENSEN DIE HET WAARMAKEN', 'PROFESSIONELE LEVERANCIERS')}
+  ${overline('09 / DE MENSEN DIE HET WAARMAKEN', 'PROFESSIONELE LEVERANCIERS')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="supplierTitle">EEN IDEE KOMT<br>TOT LEVEN MET<br><span class="tl-accent">DE JUISTE MAKERS.</span></h2>
     <p>Eerst de rol, dan de partij. Deze leveranciers staan in het Greenbookings-netwerk; voeg toe wie je wilt meenemen in je plan.</p>
@@ -99,23 +101,20 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
 </section>
 
 <section class="tl-section tl-section--dark" id="samenstellen" aria-labelledby="planTitle" data-composer data-concept="${concept.slug}">
-  ${overline('05 / JOUW EIGEN PLAN', 'BEWAAR JE FAVORIETE COMBINATIE')}
+  ${overline('10 / JOUW CONCEPT OP MAAT', 'KIES, BEANTWOORD, NEEM MEE')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="planTitle">MAAK HET<br><span class="tl-accent">VAN JOU.</span></h2>
-    <p>Kies hierboven één locatie en een of meer makers. Je bouwt zo een eerste eventplan — een basis om verder te bespreken. Het is geen boeking of reservering.</p>
+    <p>Kies hierboven één locatie en je makers, beantwoord de vragen en je krijgt het complete draaiboek op maat: tijden, planning met data, catering, bezetting, checklist en uitnodiging. Het is geen boeking of reservering.</p>
   </div>
   <div class="tl-composer tl-composer--bare">
-    <div class="tl-composer__grid tl-composer__grid--three">
-      <div class="tl-composer__column"><span class="tl-mono">01 / GEWENST GEVOEL</span><div class="tl-composer__result" data-plan-feelings>${concept.feelings.map((f) => feelingLabels[f]).join(' · ')}</div></div>
-      <div class="tl-composer__column"><span class="tl-mono">02 / GEKOZEN LOCATIE</span><div class="tl-composer__result" data-plan-venue>Nog geen locatie gekozen.</div></div>
-      <div class="tl-composer__column"><span class="tl-mono">03 / GEKOZEN MAKERS</span><div class="tl-composer__result" data-plan-suppliers>Nog geen makers gekozen.</div></div>
-    </div>
+    ${composerChoices(concept, data)}
     <div class="tl-composer__actions">
       <span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-plan-status>Kies wat bij jouw evenement past. Je keuzes worden alleen in deze browser bewaard.</span>
       <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-plan-reset>WIS KEUZES</button><button class="tl-button tl-button--accent" type="button" data-plan-copy>KOPIEER MIJN CONCEPTPLAN ↗</button></span>
     </div>
     <label class="tl-visually-hidden" for="planFallback">Je conceptplan als tekst</label>
     <textarea class="tl-composer__fallback" id="planFallback" readonly hidden data-plan-fallback></textarea>
+    ${questionnaire(concept)}
   </div>
 </section>
 </main>
@@ -139,10 +138,11 @@ ${footer({
     body,
     scripts: ['concept.js'],
     data: {
-      concept: { slug: concept.slug, title: concept.title, proposition: concept.proposition, feelings: concept.feelings },
+      concept: (({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }) => ({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }))(concept),
       feelings: Object.entries(feelingLabels).map(([id, label]) => ({ id, label })),
-      venues: Object.fromEntries(venueMatches.map((m) => { const v = venueById[m.venueId]; return [v.id, { name: v.name, city: v.city, url: v.profileUrl }]; })),
-      suppliers: Object.fromEntries(supplierMatches.map((m) => { const s = supplierById[m.supplierId]; return [s.id, { name: s.name, role: m.role, url: s.profileUrl }]; })),
+      venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, url: v.profileUrl, page: `/locaties/${v.slug}/`, capacityMin: v.capacityMin, capacityMax: v.capacityMax }])),
+      suppliers: Object.fromEntries(data.suppliers.map((s) => { const m = supplierMatches.find((x) => x.supplierId === s.id); return [s.id, { name: s.name, role: m ? m.role : s.category, url: s.profileUrl }]; })),
+      quoteQuestions: data.playbook?.quoteQuestions || {},
       origin: SITE.origin,
     },
   });

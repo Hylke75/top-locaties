@@ -143,3 +143,18 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 | Plan | `.tl-plan-item`, `.tl-warning` | Per concept; waarschuwing als een locatie geen partner meer is | — |
 
 **Partnerregel in componenten:** `VenueCard`, `catalogCard`, locatiedetail, sitemap en concept-matches krijgen uitsluitend records waarvoor `isPublishablePartner()` (status `gepubliceerd` én `aangesloten === true`) waar is. Er bestaat geen component-variant voor niet-aangesloten locaties.
+
+## H. Uitbreidingen v1.2 — complete concepten (3 november 2026)
+
+| Component | Klasse | Regel |
+|---|---|---|
+| Dagdraaiboek | `.tl-runbook`, `--four`, `--on-dark` | Tijd / duur / onderdeel / wie / waar; op mobiel gestapeld met labels (`data-label`). |
+| Aftelplanning | `.tl-timeline__item--wide` + `.tl-list` | Fase met taken; in het plan op maat met echte data. |
+| Cateringvoorstel | `.tl-menu` | Per moment: tijd, gerechten, serveervorm, dieet. Geen prijzen. |
+| Checklist | `.tl-checklist`, `.tl-check--on-dark` | Groepen per vakgebied; afvinkbaar in het plan op maat (bewaard in de browser). |
+| Dialoog | `.tl-dialog` (native `<dialog>`) | Alleen voor een programma-onderdeel of contact met een locatie; nooit voor een heel concept. Escape/achtergrond sluit, focus terug. |
+| Vragenlijst op maat | `.tl-questionnaire`, `.tl-tailored` | 12 vragen → draaiboek op starttijd, planning met data, catering/bezetting voor de groep, variant, capaciteitscheck, uitnodiging, offerteaanvragen, callsheet, begroting (CSV), print/PDF. |
+| Composerkeuzes | `.tl-composer__select`, `.tl-composer__checks`, `.tl-chip-button--on-dark` | Gevoel, locatie (alle aangesloten partners) en makers (alle leverancierspartners) kiezen in de composer; synchroon met de kaarten. |
+| Contact | `.tl-contact`, `.tl-contact-cta` | Contactpersoon uit het Greenbookings-profiel; versturen via de bevestigde contactroute (`site.json → contact.endpoint`), anders eerlijk afronden op het profiel. Nooit een schijnbevestiging. |
+
+**Programma's zijn het programma van het concept** (besluit opdrachtgever 03-11-2026) en worden niet meer als `VOORBEELD` gelabeld. Sfeerbeelden blijven altijd gelabeld; een programma is geen boekbaar arrangement.
