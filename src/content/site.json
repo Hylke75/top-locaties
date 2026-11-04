@@ -1,7 +1,7 @@
 {
   "_meta": "Site-instellingen. contact.endpoint: /api/contact (Vercel-functie api/contact.mjs) schrijft naar Greenbookings public.contactberichten met bron='top-locaties' zodra GREENBOOKINGS_SUPABASE_URL en GREENBOOKINGS_SUPABASE_SERVICE_KEY in Vercel staan. Zonder die variabelen (503) rondt de bezoeker af op het Greenbookings-profiel.",
   "contact": {
-    "endpoint": "/api/contact",
+    "endpoint": "/api/contact/",
     "source": "top-locaties",
     "privacyUrl": "https://greenbookings.nl/privacy"
   },
