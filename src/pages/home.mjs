@@ -1,6 +1,6 @@
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
-import { footer, overline, ext, wordmark, feelingCompass, compassData, SITE } from '../templates/components.mjs';
+import { footer, overline, ext, wordmark, navItems, PLAN_CTA, feelingCompass, compassData, SITE } from '../templates/components.mjs';
 
 
 function guests(c) {
@@ -41,14 +41,9 @@ export function renderHome(data) {
       <a class="tl-button" href="#gevoel">KIES OP GEVOEL ↗</a>
     </div>
     <nav class="tl-floatpanel__nav" id="panelNav" aria-label="Hoofdnavigatie" hidden>
-      <a href="#gevoel">Kies op gevoel ↗</a>
-      <a href="/eventconcepten/">Eventconcepten ↗</a>
-      <a href="/conceptplan/">Briefing: drie concepten ↗</a>
+      ${navItems().map((n) => html`<a href="${n.href}">${n.label[0] + n.label.slice(1).toLowerCase()} ↗</a>`)}
+      <a class="tl-button tl-button--accent" href="/mijn-plan/">${PLAN_CTA} ↗</a>
       <a href="/en/" hreflang="en" lang="en">English ↗</a>
-      <a href="/locaties/">Zoek locaties ↗</a>
-      <a href="/leveranciers/">Leveranciers ↗</a>
-      <a href="/mijn-plan/">Mijn plan ↗</a>
-      <a href="#verhaal">Het verhaal ↗</a>
     </nav>
   </aside>
   <div class="tl-poster__ruler" aria-hidden="true"><div class="tl-poster__scale"><span>1000</span><span>900</span><span>800</span><span>700</span><span>600</span><span>500</span><span>400</span></div><div class="tl-poster__rule"></div></div>

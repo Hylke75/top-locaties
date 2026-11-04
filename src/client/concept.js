@@ -216,8 +216,7 @@ function renderTailored() {
     <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-quote-status>${plan.quotes?.[plan.venueId] ? `AL VERSTUURD OP ${escT(new Date(plan.quotes[plan.venueId]).toLocaleDateString('nl-NL'))}` : 'Makers hebben nog geen directe route: kopieer hun aanvraag hieronder.'}</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR AANVRAAG ↗</button></div></form>` : ''}<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
   <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
   <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${r.name ? escT(r.name) : '<span class="tl-fill" title="Zelf invullen">naam</span>'}${r.party ? ` · ${escT(r.party)}` : ''} · <span class="tl-fill" title="Zelf invullen">telefoon</span></dd></div>`).join('')}</dl>
-  <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-copy-status>Alles staat ook in de kopie: ook entertainment, ruimtes, risico's, kostenposten en evaluatie.</span>
-    <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><a class="tl-button tl-button--outline tl-button--on-dark" href="/eventconcepten/${escT(concept.slug)}/conceptplan/">CONCEPTPLAN (12 HOOFDSTUKKEN) ↗</a><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-ics>ZET IN AGENDA (.ICS)</button><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT DRAAIBOEK</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
+  <p class="tl-note tl-on-dark-note">Downloads, agenda en kopie vind je hieronder bij ‘Neem je plan mee’.</p>`;
   tOut.hidden = false;
 }
 
@@ -275,10 +274,11 @@ if (tForm) {
     plan.checked = [...set];
     persist();
   });
-  tOut.addEventListener('click', async (e) => {
+  // Acties uit 'Neem je plan mee' werken ook zonder ingevulde vragenlijst (dan met de standaardantwoorden).
+  document.querySelector('[data-composer]').addEventListener('click', async (e) => {
     if (e.target.closest('[data-tailor-print]')) { window.print(); return; }
     if (e.target.closest('[data-tailor-ics]')) {
-      const t = currentTailor(); const a = t.answers; const st = tOut.querySelector('[data-tailor-copy-status]');
+      const t = currentTailor(); const a = t.answers; const st = document.querySelector('[data-takeaway-status]');
       if (!a.datum) { st.textContent = 'Vul eerst een datum in (vraag 02), dan zetten we het event en de planning in je agenda.'; return; }
       const ics = buildIcs({ title: `${concept.title}${a.organisatie ? ` — ${a.organisatie}` : ''}`, date: a.datum, start: a.start, end: t.timing?.end || naturalEnd(t.runbook),
         location: t.venue ? `${t.venue.name}, ${t.venue.city}` : '', uid: `${concept.slug}-${a.datum}@top-locaties.nl`,
@@ -288,7 +288,7 @@ if (tForm) {
       link.href = URL.createObjectURL(blob); link.download = `${concept.slug}.ics`; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000);
       st.textContent = 'Agendabestand gedownload ✓ — met het event en de mijlpalen uit de aftelplanning.'; return;
     }
-    const st0 = tOut.querySelector('[data-tailor-copy-status]');
+    const st0 = document.querySelector('[data-takeaway-status]');
     if (e.target.closest('[data-download-budget]')) {
       const blob = new Blob(['\ufeff' + budgetCsv(concept, currentTailor())], { type: 'text/csv;charset=utf-8' });
       const a = document.createElement('a');
@@ -308,7 +308,7 @@ if (tForm) {
     }
     if (!e.target.closest('[data-tailor-copy]')) return;
     const text = toText(concept, currentTailor(), labels);
-    const st = tOut.querySelector('[data-tailor-copy-status]');
+    const st = document.querySelector('[data-takeaway-status]');
     try { await navigator.clipboard.writeText(text); st.textContent = 'Het complete draaiboek is gekopieerd ✓'; }
     catch { fallback.value = text; fallback.hidden = false; fallback.select(); st.textContent = 'Kopiëren lukt hier niet automatisch; selecteer de tekst in het tekstvak.'; }
   });

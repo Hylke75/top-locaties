@@ -211,7 +211,7 @@ export function questionnaire(concept) {
     <label class="tl-field"><span>13 / AANLEIDING</span><input name="aanleiding" placeholder="${c.occasionText ? 'Bijv. jubileum, nieuwe strategie, klantdag…' : ''}"></label>
     <label class="tl-field"><span>14 / BIJSTELLEN</span><select name="bijstelling"><option value="">Zoals het concept is</option><option value="exclusiever">Exclusiever</option><option value="interactiever">Meer interactie</option><option value="budgetbewust">Budgetbewust</option></select></label>
   </div>
-  <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-status></span><button class="tl-button tl-button--accent" type="submit">MAAK MIJN DRAAIBOEK OP MAAT ↓</button></div>
+  <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-status></span><button class="tl-button tl-button--accent" type="submit">STEL MIJN PLAN SAMEN ↓</button></div>
 </form>
 <div class="tl-tailored" data-tailor-output hidden tabindex="-1" aria-live="polite"></div>`;
 }

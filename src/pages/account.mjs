@@ -8,7 +8,7 @@ const crumb = (items, right) => html`<nav class="tl-crumb" aria-label="Kruimelpa
 const accountData = (data) => ({ accounts: data.site.accounts || null, privacyUrl: data.site.contact?.privacyUrl });
 
 export function renderAccount(data) {
-  const body = html`${header({ current: 'account', cta: { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' } })}
+  const body = html`${header({ current: 'account' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'ACCOUNT' }], 'JOUW EIGEN CONCEPTEN')}
 <main id="main" data-account>
 <section class="tl-section tl-section--dark" aria-labelledby="accTitle">
@@ -61,7 +61,7 @@ ${footer({ links: [{ href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { 
 }
 
 export function renderMaker(data) {
-  const body = html`${header({ current: 'account', cta: { href: '/account/', label: 'MIJN CONCEPTEN ↗' } })}
+  const body = html`${header({ current: 'account' })}
 ${crumb([{ href: '/', label: 'HOME' }, { href: '/account/', label: 'ACCOUNT' }, { label: 'CONCEPTMAKER' }], 'JE EIGEN CONCEPT, OP BASIS VAN EEN STANDAARD')}
 <main id="main" data-maker>
 <section class="tl-section" aria-labelledby="makerTitle">

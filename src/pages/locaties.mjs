@@ -13,7 +13,7 @@ export function renderLocaties(data) {
     <div class="tl-checks">${Object.entries(map).map(([value, label]) => html`<label class="tl-check"><input type="checkbox" name="${name}" value="${value}"> ${label}</label>`)}</div></fieldset>`;
 
   const body = html`
-${header({ current: 'locaties', cta: { href: '/#gevoel', label: 'DE INSPIRATIEWERELD ↗' } })}
+${header({ current: 'locaties' })}
 <main id="main">
 <section class="tl-finder-top" aria-labelledby="finderTitle">
   <div class="tl-finder-top__coord" aria-hidden="true">52° 05′ 22.1″ N<br>HET BEGINT BIJ DE JUISTE PLEK<br>COLLECTIE / NL 2026</div>

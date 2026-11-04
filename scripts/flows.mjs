@@ -40,6 +40,7 @@ await page.click('[data-choose-supplier="localheroes"]');
 check((await page.textContent('[data-plan-suppliers]')).includes('Floris') && (await page.textContent('[data-plan-suppliers]')).includes('Local Heroes'), 'composer toont twee makers');
 check((await page.textContent('[data-plan-venue]')).includes('Euromast'), 'composer toont gekozen locatie');
 check(!(await page.locator('[data-selection-bar]').isHidden()), 'selectiebalk zichtbaar');
+await page.click('.tl-takeaway .tl-more > summary'); // kopiëren staat onder 'Meer opties'
 await page.click('[data-plan-copy]');
 const clip = await page.evaluate(() => navigator.clipboard.readText().catch(() => ''));
 check(clip.includes('Euromast') && clip.includes('geen boeking'), 'kopieer mijn plan: platte tekst met disclaimer');
@@ -183,6 +184,7 @@ const q = await page.evaluate(() => navigator.clipboard.readText());
 check(q.includes('700 gasten') && q.includes('Beeld & Geluid'), 'offerteaanvraag gekopieerd met gegevens');
 const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-download-budget]')]);
 check(dl.suggestedFilename() === 'begroting-festival.csv', 'begroting downloadbaar als CSV');
+await page.evaluate(() => { document.querySelector('.tl-takeaway .tl-more').open = true; });
 await page.click('[data-tailor-copy]');
 const full = await page.evaluate(() => navigator.clipboard.readText());
 check(['DAGDRAAIBOEK', 'CALLSHEET', 'ENTERTAINMENT', 'UITNODIGING', 'Testbedrijf'].every((x) => full.includes(x)), 'compleet draaiboek gekopieerd');

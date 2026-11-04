@@ -258,6 +258,7 @@ html:has(.tl-app) { scroll-padding-top: 80px; }
 .tl-floatpanel__nav { display:flex; flex-direction:column; gap:13px; padding:25px 9px 0; }
 .tl-floatpanel__nav a { font:400 26px/.95 var(--tl-font-display); letter-spacing:-.05em; text-transform:uppercase; border-bottom:1px solid var(--tl-line-soft); padding-bottom:12px; }
 .tl-floatpanel__nav a:hover, .tl-floatpanel__nav a[aria-current="page"] { color:var(--tl-coral); }
+.tl-floatpanel__nav a.tl-button { border-bottom:1px solid var(--tl-coral); padding-bottom:12px; margin-top:4px; letter-spacing:.02em; }
 
 /* Marquee (decoratief, stopt bij reduced motion) */
 .tl-marquee { height:50px; display:flex; align-items:center; overflow:hidden; background:var(--tl-coral); color:var(--tl-ink); }
@@ -1086,3 +1087,16 @@ main p, main li, main dd { overflow-wrap:break-word; hyphens:auto; -webkit-hyphe
 /* Invulveld in het plan op maat: duidelijk zelf in te vullen, nooit in de standaardweergave */
 .tl-fill { display:inline-block; min-width:5.5em; padding:0 6px; border-bottom:2px dashed currentColor; font:400 .85em/1.6 var(--tl-font-mono); text-transform:uppercase; letter-spacing:.02em; }
 .tl-fill::before { content:'✎ '; }
+
+/* v2.0 — Neem je plan mee: alle downloads op één plek, minder gebruikte acties onder 'Meer opties' */
+.tl-takeaway { margin-top:clamp(36px,5vw,64px); padding-top:24px; border-top:1px solid var(--tl-line-dark); }
+.tl-takeaway__intro { max-width:640px; margin:8px 0 18px; font:400 16px/1.6 var(--tl-font-body); }
+.tl-takeaway__grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%,150px), 1fr)); gap:10px; }
+.tl-takeaway__grid .tl-button { min-height:48px; }
+.tl-more { margin-top:18px; }
+.tl-more > summary { display:inline-flex; align-items:center; gap:10px; min-height:44px; cursor:pointer; font:400 12px var(--tl-font-mono); text-transform:uppercase; letter-spacing:.04em; list-style:none; border-bottom:1px solid currentColor; }
+.tl-more > summary::-webkit-details-marker { display:none; }
+.tl-more > summary::after { content:'+'; font-size:16px; }
+.tl-more[open] > summary::after { content:'–'; }
+.tl-more > summary:focus-visible { outline:2px solid var(--tl-coral); outline-offset:3px; }
+.tl-more .tl-chip-set { margin-top:14px; }

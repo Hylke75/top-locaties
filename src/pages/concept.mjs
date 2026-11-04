@@ -1,7 +1,36 @@
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
-import { header, footer, overline, venueCard, supplierCard, timeline, imageFrame, ext, SITE } from '../templates/components.mjs';
+import { header, PLAN_CTA, footer, overline, venueCard, supplierCard, timeline, imageFrame, ext, SITE } from '../templates/components.mjs';
 import { questionnaire, programTimeline, composerChoices, playbookSection, runbookSection, cateringSection, practicalSection, communicationSection, goalsSection, experienceSection, impactSection } from '../templates/runbook.mjs';
+
+/** Eén plek voor alles wat je meeneemt: downloads en (onder 'Meer opties') de minder gebruikte acties. */
+function takeaway(concept, data) {
+  const b = 'tl-button tl-button--outline tl-button--on-dark';
+  return html`<div class="tl-takeaway" data-concept-tools data-slug="${concept.slug}" aria-labelledby="takeawayTitle">
+  <h3 class="tl-mono tl-subhead tl-body--gap" id="takeawayTitle">NEEM JE PLAN MEE</h3>
+  <p class="tl-takeaway__intro">Met jouw keuzes en antwoorden. Nog niets ingevuld? Dan krijg je het complete standaardconcept.</p>
+  <div class="tl-takeaway__grid">
+    <a class="${b}" href="/presentatie/?basis=${concept.slug}">PRESENTATIE (PDF) ↗</a>
+    <button class="${b}" type="button" data-download="pptx">POWERPOINT</button>
+    <button class="${b}" type="button" data-download="docx">WORD</button>
+    <button class="${b}" type="button" data-download="txt">TEKST</button>
+    <button class="${b}" type="button" data-download-budget>BEGROTING (CSV)</button>
+    <button class="${b}" type="button" data-tailor-ics>AGENDA (.ICS)</button>
+    <a class="${b}" href="/eventconcepten/${concept.slug}/conceptplan/">CONCEPTPLAN ↗</a>
+  </div>
+  <p class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tools-status data-takeaway-status></p>
+  <details class="tl-more">
+    <summary>MEER OPTIES</summary>
+    <div class="tl-chip-set">
+      ${data.site.accounts?.enabled ? html`<a class="${b}" href="/maker/?basis=${concept.slug}">PAS AAN IN DE CONCEPTMAKER ↗</a>` : ''}
+      <button class="${b}" type="button" data-plan-copy>KOPIEER MIJN KEUZES</button>
+      <button class="${b}" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK</button>
+      <button class="${b}" type="button" data-tailor-print>PRINT DRAAIBOEK</button>
+      <button class="${b}" type="button" data-plan-reset>WIS KEUZES</button>
+    </div>
+  </details>
+</div>`;
+}
 
 export function renderConcept(data, concept, index) {
   const { concepts, venueById, supplierById, feelingLabels } = data;
@@ -13,7 +42,7 @@ export function renderConcept(data, concept, index) {
   const plain = concept.title;
 
   const body = html`
-${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW PLAN ↗' } })}
+${header({ current: 'concepten', planHref: '#samenstellen' })}
 <nav class="tl-crumb" aria-label="Kruimelpad"><span><a href="/">HOME</a> / <a href="/#concepten">EVENTCONCEPTEN</a> / <span aria-current="page">${plain.toUpperCase()}</span></span><span>CONCEPTENLAB / EDITIE ${concept.number}</span></nav>
 <main id="main">
 <section class="tl-hero" aria-labelledby="conceptTitle">
@@ -38,22 +67,10 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
   <a href="/#gevoel">KIES OPNIEUW OP GEVOEL ↗</a>
 </div>
 
-<div class="tl-concept-tools" data-concept-tools data-slug="${concept.slug}">
-  <span class="tl-mono">GEBRUIK DIT CONCEPT</span>
-  <span class="tl-chip-set">
-    ${data.site.accounts?.enabled ? html`<a class="tl-button tl-button--accent" href="/maker/?basis=${concept.slug}">PAS AAN IN DE CONCEPTMAKER ↗</a>` : ''}
-    <a class="tl-button tl-button--outline" href="/presentatie/?basis=${concept.slug}">PRESENTATIE (PDF) ↗</a>
-    <button class="tl-button tl-button--outline" type="button" data-download="pptx">POWERPOINT</button>
-    <button class="tl-button tl-button--outline" type="button" data-download="docx">DOWNLOAD WORD</button>
-    <button class="tl-button tl-button--outline" type="button" data-download="txt">DOWNLOAD TEKST</button>
-  </span>
-  <span class="tl-mono tl-note" role="status" aria-live="polite" data-tools-status>${data.site.accounts?.enabled ? 'Aanpassen en bewaren met een gratis account.' : 'Presentatie (PDF of PowerPoint), Word en tekst zijn direct te downloaden.'}</span>
-</div>
-
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
   <span class="tl-mono">HET CONCEPT / ${concept.number}</span>
   <div class="tl-section-nav__tabs"><a href="#het-idee">IDEE</a><a href="#doelen">DOELEN</a><a href="#beleving">BELEVING</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">MAKERS</a><a href="#uitnodiging">COMMUNICATIE</a><a href="#praktisch">HAALBAARHEID</a><a href="#impact">IMPACT</a><a href="#samenstellen">OP MAAT</a></div>
-  <a class="tl-button tl-button--accent" href="#samenstellen">SAMENSTELLEN ↗</a>
+  <a class="tl-button tl-button--accent" href="#samenstellen">${PLAN_CTA} ↓</a>
 </nav>
 
 <section class="tl-section" id="het-idee" aria-labelledby="ideaTitle">
@@ -126,17 +143,15 @@ ${playbookSection(data.playbook, '12')}
   </div>
   <div class="tl-composer tl-composer--bare">
     ${composerChoices(concept, data)}
-    <div class="tl-composer__actions">
-      <span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-plan-status>Kies wat bij jouw evenement past. Je keuzes worden alleen in deze browser bewaard.</span>
-      <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-plan-reset>WIS KEUZES</button><button class="tl-button tl-button--accent" type="button" data-plan-copy>KOPIEER MIJN CONCEPTPLAN ↗</button></span>
-    </div>
+    <p class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-plan-status>Kies wat bij jouw evenement past. Je keuzes worden alleen in deze browser bewaard.</p>
     <label class="tl-visually-hidden" for="planFallback">Je conceptplan als tekst</label>
     <textarea class="tl-composer__fallback" id="planFallback" readonly hidden data-plan-fallback></textarea>
     ${questionnaire(concept)}
+    ${takeaway(concept, data)}
   </div>
 </section>
 </main>
-<div class="tl-selection-bar" data-selection-bar hidden><span data-selection-count>0 ONDERDELEN GEKOZEN</span><a href="#samenstellen">BEKIJK JOUW PLAN ↗</a></div>
+<div class="tl-selection-bar" data-selection-bar hidden><span data-selection-count>0 ONDERDELEN GEKOZEN</span><a href="#samenstellen">${PLAN_CTA} ↓</a></div>
 ${footer({
   left: 'GOEDE IDEEËN WERKEN AANSTEKELIJK.',
   right: 'ONTDEK MEER / TOP LOCATIES',

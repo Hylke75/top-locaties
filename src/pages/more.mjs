@@ -49,7 +49,7 @@ ${footer({ links: [{ href: '/eventconcepten/op-gevoel/', label: 'KIES OP GEVOEL 
 
 /* ---------------- /eventconcepten/op-gevoel/ ---------------- */
 export function renderOpGevoel(data) {
-  const body = html`${header({ current: 'concepten', cta: { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' } })}
+  const body = html`${header({ current: 'concepten' })}
 ${crumb([{ href: '/', label: 'HOME' }, { href: '/eventconcepten/', label: 'EVENTCONCEPTEN' }, { label: 'OP GEVOEL' }], 'DE PRIMAIRE ONTDEKROUTE')}
 <main id="main">
 ${feelingCompass(data, { number: '01', id: 'gevoel', headingLevel: 'h1' })}
@@ -78,7 +78,7 @@ export function renderVenueDetail(data, v) {
   const { venues, feelingLabels, syncedDate } = data;
   const nearby = venues.filter((x) => x.id !== v.id && x.province === v.province).slice(0, 2);
   const types = v.bijeenkomstTypes.length ? v.bijeenkomstTypes.slice(0, 10).join(', ') : 'Onbekend in de bron';
-  const body = html`${header({ current: 'locaties', cta: { href: v.profileUrl, label: 'PROFIEL OP GREENBOOKINGS ↗' } })}
+  const body = html`${header({ current: 'locaties' })}
 ${crumb([{ href: '/', label: 'HOME' }, { href: '/locaties/', label: 'LOCATIES' }, { label: v.name.toUpperCase() }], `${v.province.toUpperCase()} / ${v.city.toUpperCase()}`)}
 <main id="main">
 <section class="tl-hero" aria-labelledby="venueTitle">
@@ -241,7 +241,7 @@ ${footer({ links: [{ href: '/leveranciers/', label: 'ALLE MAKERS ↗' }, { href:
 
 /* ---------------- /mijn-plan/ ---------------- */
 export function renderPlan(data) {
-  const body = html`${header({ current: 'plan', cta: { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' } })}
+  const body = html`${header({ current: 'plan' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'MIJN PLAN' }], 'ALLEEN IN DEZE BROWSER BEWAARD')}
 <main id="main">
 <section class="tl-section tl-section--dark" aria-labelledby="planTitle" data-plan-page>
@@ -325,7 +325,7 @@ ${footer({ links: [{ href: '/eventconcepten/op-gevoel/', label: 'KIES OP GEVOEL 
 /* ---------------- /zelf-organiseren/ ---------------- */
 export function renderPlaybook(data) {
   const p = data.playbook;
-  const body = html`${header({ current: '' })}
+  const body = html`${header({ current: 'zelf' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'ZELF ORGANISEREN' }], 'GEEN EVENTBUREAU NODIG')}
 <main id="main">
 <section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="pbTitle">

@@ -24,13 +24,19 @@ export function wordmark({ light = false, href = '/' } = {}) {
   return html`<a class="tl-wordmark${light ? ' tl-wordmark--light' : ''}" href="${href}" aria-label="Top Locaties — naar de homepage">TOP<br>LOCATIES<span class="tl-wordmark__star" aria-hidden="true">✳</span></a>`;
 }
 
-export function header({ current = '', cta = { href: '/#gevoel', label: 'KIES OP GEVOEL ↗' } } = {}) {
+// Eén vaste hoofdactie op alle pagina's. Op een conceptpagina scrolt hij naar het samenstellen (↓), elders opent hij Mijn plan (↗).
+export const PLAN_CTA = 'STEL MIJN PLAN SAMEN';
+export const navItems = () => NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON);
+
+export function header({ current = '', planHref = '/mijn-plan/' } = {}) {
+  if (current === 'plan') planHref = '/eventconcepten/op-gevoel/'; // op Mijn plan zelf: begin een nieuw plan
+  const scroll = planHref.startsWith('#');
   return html`<header class="tl-header">
   ${wordmark()}
   <div class="tl-header__actions">
     <nav class="tl-nav" id="tl-nav" aria-label="Hoofdnavigatie" data-open="false">
-      ${NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON).map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
-      <a class="tl-button" href="${cta.href}">${cta.label}</a>
+      ${navItems().map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
+      <a class="tl-button tl-button--accent" href="${planHref}" data-plan-cta>${PLAN_CTA} ${scroll ? '↓' : '↗'}</a>
     </nav>
     <a class="tl-lang" href="/en/" hreflang="en" lang="en" aria-label="English version">EN</a>
     <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>

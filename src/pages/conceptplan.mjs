@@ -13,7 +13,7 @@ const plain = (s) => String(s || '').replace(/\*/g, '');
 export function renderBriefing(data) {
   const { feelings, occasionTypes, moodDirections } = data;
   const q = (n, label) => html`<span>${pad(n)} / ${label}</span>`;
-  const body = html`${header({ current: 'concepten', cta: { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' } })}
+  const body = html`${header({ current: 'concepten' })}
 ${crumb([{ href: '/', label: 'HOME' }, { href: '/eventconcepten/', label: 'EVENTCONCEPTEN' }, { label: 'CONCEPTPLAN' }], 'BRIEFING IN ACHT VRAGEN')}
 <main id="main">
 <section class="tl-section tl-section--dark" aria-labelledby="briefTitle" data-briefing>
@@ -95,7 +95,7 @@ export function renderPlanDocument(data, c) {
   const moodOn = moodAll.map((m, i) => ((c.moodDirections || []).includes(m.id) ? i : -1)).filter((i) => i >= 0);
   const kp = c.kpis || [];
 
-  const body = html`${header({ current: 'concepten', cta: { href: `/eventconcepten/${c.slug}/#samenstellen`, label: 'NAAR HET CONCEPT ↗' } })}
+  const body = html`${header({ current: 'concepten', planHref: `/eventconcepten/${c.slug}/#samenstellen` })}
 ${crumb([{ href: '/', label: 'HOME' }, { href: '/eventconcepten/', label: 'EVENTCONCEPTEN' }, { href: `/eventconcepten/${c.slug}/`, label: c.title.toUpperCase() }, { label: 'CONCEPTPLAN' }], 'TWAALF HOOFDSTUKKEN / PRINTBAAR')}
 <main id="main" class="tl-doc" data-plan-doc data-concept="${c.slug}">
 <section class="tl-doc__cover" aria-labelledby="docTitle">
