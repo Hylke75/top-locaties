@@ -1,7 +1,7 @@
 import { fitTimes, naturalEnd } from './tailor.js';
 // Eigen concept = standaardconcept als basis + de bewerkingen van de gebruiker.
 // Alleen de velden hieronder zijn bewerkbaar en worden opgeslagen; de rest komt altijd uit de basis.
-export const EDITABLE = ['costs', 'status', 'quotes', 'registration', 'title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
+export const EDITABLE = ['costs', 'status', 'quotes', 'contactName', 'registration', 'title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
   'program', 'runbook', 'catering', 'entertainment', 'communication', 'budgetItems', 'risks', 'kpis', 'venueIds', 'supplierIds', 'notes'];
 
 const clone = (x) => (x === undefined ? undefined : JSON.parse(JSON.stringify(x)));

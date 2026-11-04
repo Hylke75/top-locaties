@@ -170,6 +170,7 @@ ${footer({
       venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, url: v.profileUrl, page: `/locaties/${v.slug}/`, capacityMin: v.capacityMin, capacityMax: v.capacityMax }])),
       suppliers: Object.fromEntries(data.suppliers.map((s) => { const m = supplierMatches.find((x) => x.supplierId === s.id); return [s.id, { name: s.name, role: m ? m.role : s.category, url: s.profileUrl }]; })),
       quoteQuestions: data.playbook?.quoteQuestions || {},
+      contactEndpoint: data.site.contact?.endpoint || null,
       origin: SITE.origin,
     },
   });

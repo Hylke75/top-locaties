@@ -182,6 +182,22 @@ const [dlIcs] = await Promise.all([page.waitForEvent('download'), page.click('[d
 const icsTxt = fs.readFileSync(await dlIcs.path(), 'utf8');
 check(icsTxt.includes('BEGIN:VCALENDAR') && icsTxt.includes('DTSTART;TZID=Europe/Amsterdam:20270305T') && (icsTxt.match(/BEGIN:VEVENT/g) || []).length >= 4, 'agenda-export met event en mijlpalen');
 
+// 4c. Offertes in één keer naar de gekozen locaties (contactroute gesimuleerd)
+const sentQuotes = [];
+await page.route('**/api/contact/', async (route) => { sentQuotes.push(JSON.parse(route.request().postData())); await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }); });
+await page.selectOption('[data-add-venue]', { index: 1 });
+await page.waitForSelector('[data-quote-send]');
+await page.fill('[data-quote-name]', 'Anna Planner');
+await page.check('[data-quote-consent]');
+await page.click('[data-quote-send]');
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('AANVRAGEN VERSTUURD'));
+const nVenues = await page.locator('[data-quote-venue]').count();
+check(sentQuotes.length === nVenues && nVenues >= 2 && sentQuotes.every((q) => q.bron === 'top-locaties' && q.bezoeker_naam === 'Anna Planner' && /Offerteaanvraag/.test(q.onderwerp) && q.locatie_slug), `offertes in één keer naar ${sentQuotes.length} locaties`);
+await page.click('[data-maker-save]');
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('OPGESLAGEN ✓'));
+check(Object.keys(rows[0].data.quotes || {}).length === nVenues && rows[0].data.status.stage === 'offerte', 'verstuurde aanvragen en status vastgelegd');
+await page.unroute('**/api/contact/');
+
 // 5. Downloads: Word (.docx) en tekst
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tl-'));
 const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-maker-bar] [data-export="docx"]')]);

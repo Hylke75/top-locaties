@@ -1049,3 +1049,6 @@ figure.tl-image-frame { margin:0; }
 .tl-venue-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:16px; margin-top:28px; }
 .tl-venue-photos .tl-image-frame { aspect-ratio:4 / 3; margin:0; }
 .tl-venue-photos img { width:100%; height:100%; object-fit:cover; }
+.tl-quote-send { margin:18px 0 24px; padding:18px; border:1px solid var(--tl-line-dark); display:grid; gap:12px; }
+.tl-maker__quotes { margin-top:18px; padding-top:6px; border-top:var(--tl-border); }
+.tl-maker__issues li[data-level="ok"] { border-left-color:var(--tl-ink); }

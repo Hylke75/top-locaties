@@ -145,6 +145,8 @@ paint();
 /* ---------- Concept op maat (vragenlijst → compleet draaiboek) ---------- */
 import { tailor, toText, formatDate, quoteRequests, callsheet, budgetCsv, naturalEnd } from './lib/tailor.js';
 import { buildIcs, ICS_MIME } from './lib/ics.js';
+import { sendQuotes, slugFromProfile, quoteResultText } from './lib/quote-send.js';
+const openedAt = Date.now();
 
 const tForm = document.querySelector('[data-tailor-form]');
 const tOut = document.querySelector('[data-tailor-output]');
@@ -206,7 +208,10 @@ function renderTailored() {
   <h4 class="tl-mono tl-subhead tl-body--gap">JOUW UITNODIGING</h4>
   <div class="tl-invite"><strong>${escT(t.invitation.subject)}</strong><p>${escT(t.invitation.text)}</p><p class="tl-note tl-on-dark-note">Herinnering: ${escT(t.invitation.reminder)}</p></div>
   <h4 class="tl-mono tl-subhead tl-body--gap">OFFERTEAANVRAGEN — KLAAR OM TE VERSTUREN</h4>
-  ${(() => { const qs = quoteRequests(concept, t, data.quoteQuestions); return qs.length ? `<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
+  ${(() => { const qs = quoteRequests(concept, t, data.quoteQuestions); const venueQ = qs.find((q) => q.kind === 'locatie'); return qs.length ? `${venueQ ? `<form class="tl-quote-send" data-quote-send><strong class="tl-mono">VERSTUUR DE AANVRAAG DIRECT AAN ${escT(venueQ.to.toUpperCase())}</strong>
+    <div class="tl-questionnaire__grid tl-questionnaire__grid--two"><label class="tl-field"><span>JOUW NAAM</span><input name="qname" autocomplete="name" value="${escT(a.contact || '')}" required></label><label class="tl-field"><span>JOUW E-MAILADRES</span><input name="qemail" type="email" autocomplete="email" required></label></div>
+    <label class="tl-check tl-check--on-dark"><input type="checkbox" name="qconsent"> Mijn naam, e-mailadres en de aanvraag worden via Greenbookings gedeeld met ${escT(venueQ.to)}.</label>
+    <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-quote-status>${plan.quotes?.[plan.venueId] ? `AL VERSTUURD OP ${escT(new Date(plan.quotes[plan.venueId]).toLocaleDateString('nl-NL'))}` : 'Makers hebben nog geen directe route: kopieer hun aanvraag hieronder.'}</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR AANVRAAG ↗</button></div></form>` : ''}<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
   <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
   <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${escT([r.name, r.party].filter(Boolean).join(' · ') || 'Naam en telefoonnummer invullen')}</dd></div>`).join('')}</dl>
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-copy-status>Alles staat ook in de kopie: ook entertainment, ruimtes, risico's, kostenposten en evaluatie.</span>
@@ -245,6 +250,20 @@ if (tForm) {
     tStatus.textContent = 'Je draaiboek op maat staat hieronder ✓';
     tOut.focus();
     tOut.scrollIntoView({ block: 'start' });
+  });
+  tOut.addEventListener('submit', async (e) => {
+    const f = e.target.closest('[data-quote-send]'); if (!f) return;
+    e.preventDefault();
+    const st = f.querySelector('[data-quote-status]');
+    const name = f.elements.qname.value.trim(); const email = f.elements.qemail.value.trim();
+    if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { st.textContent = 'Vul je naam en een geldig e-mailadres in.'; return; }
+    if (!f.elements.qconsent.checked) { st.textContent = 'Geef toestemming om je gegevens met de locatie te delen.'; return; }
+    const t = currentTailor(); const q = quoteRequests(concept, t, data.quoteQuestions).find((x) => x.kind === 'locatie');
+    const endpoint = document.querySelector('[data-contact-dialog]')?.dataset.endpoint || data.contactEndpoint || '/api/contact/';
+    st.textContent = 'VERSTUREN…';
+    const [r] = await sendQuotes(endpoint, [{ slug: slugFromProfile(t.venue.url), name: t.venue.name, subject: q.subject, body: q.body.replace('[naam]', name) }], { name, email }, { datum: t.answers.datum, guests: t.guests, opened: openedAt });
+    st.textContent = quoteResultText(r);
+    if (r.ok) { plan.quotes = { ...(plan.quotes || {}), [plan.venueId]: new Date().toISOString() }; persist(); import('./lib/track.js').then((m) => m.track('quote', concept.slug)).catch(() => {}); }
   });
   tOut.addEventListener('change', (e) => {
     const c = e.target.closest('[data-check]');

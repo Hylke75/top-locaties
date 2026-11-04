@@ -58,6 +58,7 @@ write('conceptplan/index.html', renderBriefing(data));
 // Conceptdata voor de conceptmaker, de presentatie en de downloads (alleen gepubliceerde concepten, alleen partners).
 data.concepts.forEach((c) => write(`data/concepts/${c.slug}.json`, JSON.stringify(c)));
 write('data/partners.json', JSON.stringify({
+  quoteQuestions: data.playbook?.quoteQuestions || {}, contactEndpoint: data.site.contact?.endpoint || null,
   feelings: Object.fromEntries(data.feelings.map((f) => [f.id, f.label])),
   concepts: data.concepts.map((c) => ({ slug: c.slug, title: c.title, teaser: c.teaser, categoryLabel: c.categoryLabel, dayPartLabel: c.dayPartLabel, duration: c.duration, hero: c.hero.src })),
   venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, capacityMax: v.capacityMax || null, url: v.profileUrl, page: `/locaties/${v.slug}/` }])),

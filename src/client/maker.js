@@ -3,7 +3,9 @@ import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
 import { partners, baseConcept, esc } from './lib/conceptdata.js';
 import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers, costsFrom, costTotals, euro, COST_STATUS, STAGES, setStage } from './lib/userconcept.js';
-import { naturalEnd } from './lib/tailor.js';
+import { naturalEnd, tailor, quoteRequests } from './lib/tailor.js';
+import { sendQuotes, slugFromProfile, quoteResultText } from './lib/quote-send.js';
+const openedAt = Date.now();
 import { load } from './lib/store.js';
 import { exportConcept } from './lib/export-actions.js';
 import { track } from './lib/track.js';
@@ -67,6 +69,17 @@ function costsHtml() {
 const totalsHtml = (t) => `<div><dt>SUBTOTAAL (${t.filled}/${t.count} INGEVULD)</dt><dd>${euro(t.sub)}</dd></div><div><dt>ONVOORZIEN</dt><dd>${euro(t.extra)}</dd></div><div><dt>TOTAAL EXCL. BTW</dt><dd><strong>${euro(t.total)}</strong></dd></div><div><dt>WAARVAN BEVESTIGD</dt><dd>${euro(t.confirmed)}</dd></div>`;
 function syncCosts(mutate) { const c = costsFrom(data); mutate(c); data.costs = c; data.budgetItems = c.items.map((x) => x.label).filter(Boolean); }
 
+function quoteHtml() {
+  const vs = (data.venueIds || []).filter((v) => P.venues[v]);
+  if (!vs.length || !id) return vs.length ? '<p class="tl-note">Sla je concept eerst op; dan vraag je hier in één keer offertes aan bij je gekozen locaties.</p>' : '';
+  return `<div class="tl-maker__quotes" data-quotes><h3 class="tl-mono tl-subhead tl-body--gap">OFFERTES AANVRAGEN — IN ÉÉN KEER</h3>
+    <div class="tl-maker__checks">${vs.map((v) => `<label class="tl-check"><input type="checkbox" data-quote-venue="${esc(v)}" ${data.quotes?.[v] ? '' : 'checked'}> ${esc(P.venues[v].name)} <span class="tl-note">${data.quotes?.[v] ? `/ verstuurd op ${esc(new Date(data.quotes[v]).toLocaleDateString('nl-NL'))}` : '/ nog niet verstuurd'}</span></label>`).join('')}</div>
+    <div class="tl-maker__fields tl-maker__fields--two"><label class="tl-field"><span>JOUW NAAM</span><input data-quote-name autocomplete="name" value="${esc(data.contactName || '')}"></label><label class="tl-field"><span>JOUW E-MAILADRES</span><input data-quote-email type="email" autocomplete="email" value="${esc(me?.email || '')}"></label></div>
+    <label class="tl-check"><input type="checkbox" data-quote-consent> Mijn naam, e-mailadres en de aanvraag worden via Greenbookings gedeeld met de aangevinkte locaties.</label>
+    <div class="tl-chip-set tl-body--gap"><button class="tl-button tl-button--accent" type="button" data-quote-send>VERSTUUR AANVRAGEN ↗</button></div>
+    <ul class="tl-maker__issues" data-quote-results></ul></div>`;
+}
+
 function chooser() {
   const vSel = new Set(data.venueIds || []);
   const sSel = new Set(data.supplierIds || []);
@@ -101,7 +114,7 @@ function render() {
     <div class="tl-maker__fields">${input('catering.concept', 'Cateringconcept', 'area', data.catering?.concept)}</div>${listHtml('catering.moments')}
     <div class="tl-maker__fields tl-maker__fields--two">${input('catering.drinks', 'Dranken', 'area', data.catering?.drinks)}${input('catering.notes', 'Notities voor de cateraar', 'area', data.catering?.notes)}</div></fieldset>
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">05</span> ENTERTAINMENT</legend>${listHtml('entertainment')}</fieldset>
-  <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">06</span> LOCATIE EN MAKERS</legend>${chooser()}<p class="tl-note">Uitsluitend aangesloten Greenbookings-partners. Beschikbaarheid en prijs vraag je op bij de partner.</p></fieldset>
+  <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">06</span> LOCATIE EN MAKERS</legend>${chooser()}<p class="tl-note">Uitsluitend aangesloten Greenbookings-partners. Beschikbaarheid en prijs vraag je op bij de partner.</p>${quoteHtml()}</fieldset>
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">07</span> COMMUNICATIE</legend>${listHtml('communication')}</fieldset>
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">08</span> KOSTEN, RISICO'S EN IMPACT</legend>
     <h3 class="tl-mono tl-subhead">JOUW KOSTENRAMING</h3>
@@ -191,6 +204,26 @@ form.addEventListener('click', (e) => {
   }
   if (b.hasAttribute('data-cost-add')) { syncCosts((c) => c.items.push({ label: '', amount: null, status: 'indicatief', note: '' })); changed(); rerender(`[data-cost="${costsFrom(data).items.length - 1}"][data-f="label"]`); return; }
   if (b.dataset.costRemove) { syncCosts((c) => c.items.splice(Number(b.dataset.costRemove), 1)); changed(); rerender('[data-cost-add]'); return; }
+  if (b.hasAttribute('data-quote-send')) {
+    const box = form.querySelector('[data-quotes]'); const out = box.querySelector('[data-quote-results]');
+    const name = box.querySelector('[data-quote-name]').value.trim(); const email = box.querySelector('[data-quote-email]').value.trim();
+    const chosen = [...box.querySelectorAll('[data-quote-venue]:checked')].map((x) => x.dataset.quoteVenue);
+    if (!chosen.length) { setStatus('VINK MINSTENS ÉÉN LOCATIE AAN'); return; }
+    if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus('VUL JE NAAM EN E-MAILADRES IN'); return; }
+    if (!box.querySelector('[data-quote-consent]').checked) { setStatus('GEEF TOESTEMMING OM JE GEGEVENS TE DELEN'); return; }
+    const c = merge(base, clean(data));
+    const answers = { organisatie: c.organisatie, datum: c.datum, gasten: c.guests, contact: name, start: startTime(c), eind: naturalEnd(c.runbook || []) };
+    const items = chosen.map((v) => { const venue = { ...P.venues[v] }; const t = tailor(c, answers, { venue }); const q = quoteRequests(c, t, P.quoteQuestions || {}).find((x) => x.kind === 'locatie'); return { id: v, slug: slugFromProfile(venue.url), name: venue.name, subject: q.subject, body: q.body }; });
+    b.disabled = true; setStatus(`VERSTUREN NAAR ${items.length} LOCATIE${items.length > 1 ? 'S' : ''}…`);
+    sendQuotes(P.contactEndpoint || '/api/contact/', items, { name, email }, { datum: c.datum, guests: c.guests, opened: openedAt }).then((res) => {
+      b.disabled = false;
+      out.innerHTML = res.map((r) => `<li data-level="${r.ok ? 'ok' : 'error'}">${esc(quoteResultText(r))}</li>`).join('');
+      const sent = res.filter((r) => r.ok);
+      if (sent.length) { data.quotes = { ...(data.quotes || {}), ...Object.fromEntries(sent.map((r) => [r.id, new Date().toISOString()])) }; data.contactName = name; data = setStage(data, data.status?.stage === 'bevestigd' || data.status?.stage === 'afgerond' ? data.status.stage : 'offerte'); changed(); track('quote', base.slug); }
+      setStatus(`${sent.length} VAN ${res.length} AANVRAGEN VERSTUURD${sent.length ? ' — NIET OPGESLAGEN' : ''}`);
+    });
+    return;
+  }
   if (b.dataset.unvenue) { data.venueIds = (data.venueIds || []).filter((v) => v !== b.dataset.unvenue); changed(); rerender('[data-add-venue]'); return; }
   if (b.dataset.add) {
     const key = b.dataset.add; const arr = getPath(data, key) || []; const spec = LISTS[key];
