@@ -92,12 +92,16 @@ export function venueImage(v, { cls = 'tl-venue__photo', lazy = true } = {}) {
 
 /* ---------- Locaties en leveranciers ---------- */
 
+// Namen breken nooit midden in een woord: de lettergrootte schaalt mee met het langste woord (--tl-w) binnen de kaartbreedte.
+const longest = (name = '') => Math.max(...String(name).split(/\s+/).map((w) => w.length), 1);
+export const nameAttrs = (base, name) => raw(` class="${base} tl-fit" style="--tl-w:${longest(name)}"`);
+
 export function venueCard(v, match, i) {
   return html`<article class="tl-venue" data-venue-card="${v.id}" data-selected="false">
   ${venueImage(v)}
   <div class="tl-venue__body">
     <span class="tl-mono">${pad(i + 1)} / ${v.city} — ${v.label}</span>
-    <h3 class="tl-venue__name">${v.name}</h3>
+    <h3${nameAttrs('tl-venue__name', v.name)}>${v.name}</h3>
     <p class="tl-venue__copy">${v.line}</p>
     <div class="tl-venue__why"><b>${match.role ? `${match.role} — ` : ''}WAAROM DEZE PLEK?</b>${match.reason}${match.pro ? html`<span class="tl-venue__pro">+ ${match.pro}</span>` : ''}${match.watch ? html`<span class="tl-venue__watch">! ${match.watch}</span>` : ''}</div>
     <p class="tl-venue__facts"><span>${v.capacity}</span><span>BRON: GREENBOOKINGS ${v.sourceDate}</span></p>
@@ -113,7 +117,7 @@ export function supplierCard(s, match, i) {
   return html`<article class="tl-supplier" data-supplier-card="${s.id}" data-selected="false">
   <span class="tl-supplier__meta"><span>${pad(i + 1)} / ${s.label}</span><span>${s.city || 'NL'}</span></span>
   <span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>
-  <h3 class="tl-supplier__name">${s.name}</h3>
+  <h3${nameAttrs('tl-supplier__name', s.name)}>${s.name}</h3>
   <p class="tl-supplier__desc"><span class="tl-supplier__role">ROL: ${match.role}</span>${match.reason} ${s.tagline}</p>
   <div class="tl-supplier__actions">
     <button class="tl-button tl-supplier__choose" type="button" data-choose-supplier="${s.id}" aria-pressed="false">VOEG TOE <span aria-hidden="true">+</span></button>
@@ -132,7 +136,7 @@ export function catalogCard(v, i, data) {
     <button class="tl-catalog-card__save" type="button" data-save="${v.id}" aria-pressed="false" aria-label="Bewaar ${v.name}">+</button>
   </div>
   <div class="tl-catalog-card__kicker"><span><span data-index>${pad(i + 1)}</span> / ${v.province}</span><span>${v.city}</span></div>
-  <h3 class="tl-catalog-card__title"><a href="/locaties/${v.slug}/">${v.name}</a></h3>
+  <h3${nameAttrs('tl-catalog-card__title', v.name)}><a href="/locaties/${v.slug}/">${v.name}</a></h3>
   <p class="tl-catalog-card__desc">${v.line}</p>
   ${v.concepts.length ? html`<p class="tl-catalog-card__concepts">PAST BIJ: ${v.concepts.map((c, n) => html`${n ? ' / ' : ''}<a href="/eventconcepten/${c.slug}/#locaties">${c.title}</a>`)}</p>` : ''}
   <div class="tl-catalog-card__foot">

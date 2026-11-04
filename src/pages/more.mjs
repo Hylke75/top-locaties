@@ -2,7 +2,7 @@
 // Uitsluitend gedeelde tl-componenten; geen pagina-eigen styling.
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { layout } from '../templates/layout.mjs';
-import { header, footer, overline, ext, feelingCompass, compassData, conceptCard, matchCard, catalogCard, venueImage, state, contactButton, contactDialog, SITE } from '../templates/components.mjs';
+import { nameAttrs, header, footer, overline, ext, feelingCompass, compassData, conceptCard, matchCard, catalogCard, venueImage, state, contactButton, contactDialog, SITE } from '../templates/components.mjs';
 
 const crumb = (items, right) => html`<nav class="tl-crumb" aria-label="Kruimelpad"><span>${items.map((it, i) => html`${i ? ' / ' : ''}${it.href ? html`<a href="${it.href}">${it.label}</a>` : html`<span aria-current="page">${it.label}</span>`}`)}</span><span>${right}</span></nav>`;
 
@@ -169,8 +169,8 @@ function supplierDirCard(s, i) {
   return html`<article class="tl-supplier" data-supplier-dir="${s.id}" data-category="${s.category}">
   <span class="tl-supplier__meta"><span>${pad(i + 1)} / ${s.label}</span><span>${s.city || 'NL'}</span></span>
   <span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>
-  <h3 class="tl-supplier__name"><a href="/leveranciers/${s.slug}/">${s.name}</a></h3>
-  <p class="tl-supplier__desc">${s.tagline}${s.concepts.length ? html`<span class="tl-supplier__role tl-supplier__role--gap">ROL IN: ${s.concepts.map((c) => c.title).filter((t, n, a) => a.indexOf(t) === n).join(' / ')}</span>` : ''}</p>
+  <h3${nameAttrs('tl-supplier__name', s.name)}><a href="/leveranciers/${s.slug}/">${s.name}</a></h3>
+  <p class="tl-supplier__desc">${s.tagline}${s.concepts.length ? html`${(() => { const t = s.concepts.map((c) => c.title).filter((x, n, a) => a.indexOf(x) === n); return html`<span class="tl-supplier__in"><span class="tl-supplier__in-label">ROL IN</span> ${t.slice(0, 3).join(', ')}${t.length > 3 ? html` <span class="tl-supplier__more">+ ${t.length - 3} meer</span>` : ''}</span>`; })()}` : ''}</p>
   <div class="tl-supplier__actions"><a class="tl-button" href="/leveranciers/${s.slug}/">BEKIJK DE MAKER ↗</a></div>
 </article>`;
 }

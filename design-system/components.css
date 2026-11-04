@@ -1100,3 +1100,29 @@ main p, main li, main dd { overflow-wrap:break-word; hyphens:auto; -webkit-hyphe
 .tl-more[open] > summary::after { content:'–'; }
 .tl-more > summary:focus-visible { outline:2px solid var(--tl-coral); outline-offset:3px; }
 .tl-more .tl-chip-set { margin-top:14px; }
+
+/* v2.0 — leesbaarheid: lopende tekst minimaal 16px in DM Sans. Mono en kapitalen alleen nog voor korte labels. */
+main .tl-list li, main .tl-steplist li, main .tl-facts dd, .tl-catalog-card__desc, .tl-runbook__desc, .tl-supplier__desc, .tl-match__reason,
+.tl-venue__copy, .tl-venue__why, .tl-venue__pro, .tl-venue__watch, .tl-menu__dish, .tl-dialog__tip, .tl-piece__text, .tl-feeling-head__question,
+.tl-floatpanel__intro p, .tl-section-head p, .tl-steps p, .tl-values p, .tl-journey__step p, .tl-callout, .tl-state p, .tl-body, .tl-finder-top__title p,
+.tl-ecosystem p, .tl-ecosystem div > div, .tl-note:not(.tl-mono), .tl-invite, .tl-invite p, .tl-takeaway__intro, .tl-search__desc, .tl-intro-label {
+  font-family:var(--tl-font-body); font-size:16px; line-height:1.6; text-transform:none; letter-spacing:normal;
+}
+.tl-hero__intro, .tl-section-head p { font-family:var(--tl-font-body); font-size:clamp(17px,1.35vw,19px); line-height:1.55; text-transform:none; letter-spacing:normal; }
+.tl-venue__why b, .tl-venue__why strong { display:block; margin-bottom:6px; font:500 11px/1.4 var(--tl-font-mono); text-transform:uppercase; letter-spacing:.03em; }
+.tl-supplier__in { display:block; margin-top:12px; font:400 16px/1.55 var(--tl-font-body); }
+.tl-supplier__in-label { display:block; margin-bottom:4px; font:500 11px/1.4 var(--tl-font-mono); text-transform:uppercase; letter-spacing:.03em; }
+.tl-supplier__more { white-space:nowrap; color:var(--tl-muted); }
+/* Tekst boven decoratieve koraalvormen (cirkels, ringen): altijd inkt, nooit grijs (WCAG AA) */
+.tl-hero__copy, .tl-finder-top, .tl-feeling, .tl-piece, .tl-section--ring { --tl-muted: var(--tl-ink); }
+.tl-featured .tl-body, .tl-ecosystem > * { font-family:var(--tl-font-body); font-size:16px; line-height:1.6; }
+.tl-ecosystem strong { font:400 11px/1.4 var(--tl-font-mono); letter-spacing:.03em; }
+/* Lange namen: kleinere maat in plaats van afbreken midden in het woord */
+.tl-venue, .tl-supplier, .tl-catalog-card { container-type:inline-size; }
+/* Naam past altijd: nooit groter dan (kaartbreedte / langste woord). Geen automatische afbreking in namen. */
+.tl-fit { hyphens:manual !important; -webkit-hyphens:manual !important; overflow-wrap:normal !important; }
+.tl-venue__name.tl-fit { font-size:min(clamp(22px,2.3vw,36px), calc(100cqi / (var(--tl-w) * .8))) !important; }
+.tl-supplier__name.tl-fit { font-size:min(clamp(22px,2.2vw,36px), calc(100cqi / (var(--tl-w) * .8))) !important; }
+.tl-catalog-card__title.tl-fit { font-size:min(clamp(30px,3.3vw,52px), calc(100cqi / (var(--tl-w) * .8))) !important; }
+/* Lopende tekst: alleen echt lange woorden afbreken (minder streepjes in smalle kolommen) */
+main p, main li, main dd { hyphenate-limit-chars:12 5 5; }
