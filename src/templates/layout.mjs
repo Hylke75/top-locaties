@@ -4,7 +4,7 @@ import { SITE } from '../lib/data.mjs';
 /**
  * @param {{title:string, description:string, path:string, body:any, scripts?:string[], data?:any, preload?:string, noindex?:boolean}} o
  */
-export function layout({ title, description, path, body, scripts = [], data = null, preload = null, noindex = false }) {
+export function layout({ title, description, path, body, scripts = [], styles = [], data = null, preload = null, noindex = false }) {
   const canonical = SITE.origin + path;
   return `<!doctype html>
 ${html`<html lang="nl">
@@ -29,6 +29,7 @@ ${noindex ? raw('<meta name="robots" content="noindex">') : ''}
 ${preload ? html`<link rel="preload" as="image" href="${preload}">` : ''}
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/components.css">
+${styles.map((st) => html`<link rel="stylesheet" href="/assets/css/${st}">`)}
 </head>
 <body class="tl-app" id="top">
 <a class="tl-skip" href="#main">Ga naar de inhoud</a>

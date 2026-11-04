@@ -176,3 +176,12 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 |---|---|---|
 | Programma-agenda | `.tl-agenda`, `.tl-agenda__item` (native `<details name>`), `__summary`, `__time`, `__title`, `__toggle`, `__panel` | Compacte regel per onderdeel (tijd + titel + plus/min in een vierkant). Klik of Enter opent het onderdeel ter plekke met wat/waarom/resultaat, aanpak, wie, benodigdheden, draaiboekregels en tip; één tegelijk open. Deeplink `#prog-<slug>-<n>`; bij printen staan alle onderdelen open. Vervangt de programma-dialoog. |
 | Pijlen | `.tl-intro-label::before` (`--tl-arrow-se`, SVG-masker in koraal) | De grote pijl is een vector, geen teken. Inline pijlen (`↗ ↘` e.d.) en `✳` krijgen in de build U+FE0E (tekstpresentatie), zodat iOS ze nooit als emoji toont. |
+
+## K. Uitbreidingen v1.6 — account, conceptmaker, presentatie en downloads (4 november 2026)
+
+| Component | Klasse | Regel |
+|---|---|---|
+| Account | `.tl-account__tabs`, `.tl-account__form`, `.tl-account__me`, `.tl-account__list`, `.tl-account__item` | Inloggen / registreren / wachtwoord vergeten op donker; registreren vraagt expliciete toestemming; account (en alle concepten) zelf te verwijderen. |
+| Conceptmaker | `.tl-maker`, `.tl-maker__bar` (sticky), `__part`, `__legend`, `__fields(--two/--three)`, `__list`, `__row`, `__icon`, `__more`, `__chosen`, `__checks`, `__issues` | Basis = standaardconcept; alles bewerkbaar (kern, programma met details, draaiboek, catering, entertainment, partners, communicatie, kosten/risico's/KPI's). Lijsten: toevoegen, verwijderen (met bevestiging), omhoog/omlaag, sorteren op tijd. Eerste keer opslaan expliciet, daarna automatisch. Alleen na inloggen. Alleen aangesloten partners kiesbaar. |
+| Presentatie | `.tl-deck`, `.tl-deck__bar`, `.tl-slide(--cover/--idea/--end)` + `__head`, `__title`, `__display`, `__agenda`, `__journey`, `__table`, `__grid`, `__steps` | 16:9, schaalt met container-eenheden; printen = één dia per liggende pagina van 13,33 × 7,5 inch (`deck-print.css`, alleen op /presentatie/). Sfeerbeelden gelabeld. |
+| Downloads | `.tl-concept-tools` | Word (.docx, echte Office Open XML, in de browser gemaakt) en tekst (.txt) uit dezelfde blokken (`exporters.js`); PDF via de presentatie. |

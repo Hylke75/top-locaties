@@ -1,15 +1,19 @@
+import { readFileSync } from 'node:fs';
 // Gedeelde Top Locaties-componenten (server-render). Uitsluitend tl- klassen
 // uit design-system/components.css. Geen pagina-eigen styling.
 import { html, lines, pad, raw } from '../lib/html.mjs';
 import { SITE } from '../lib/data.mjs';
 import { explainMatch, rankConcepts } from '../client/lib/rank.js';
 
+// Accounts staan site-breed aan/uit via src/content/site.json → accounts.enabled.
+const ACCOUNTS_ON = JSON.parse(readFileSync(new URL('../content/site.json', import.meta.url), 'utf8')).accounts?.enabled === true;
 const NAV = [
   { key: 'concepten', href: '/eventconcepten/', label: 'EVENTCONCEPTEN' },
   { key: 'locaties', href: '/locaties/', label: 'LOCATIES' },
   { key: 'leveranciers', href: '/leveranciers/', label: 'LEVERANCIERS' },
   { key: 'zelf', href: '/zelf-organiseren/', label: 'ZELF ORGANISEREN' },
   { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLAN' },
+  { key: 'account', href: '/account/', label: 'ACCOUNT' },
 ];
 
 export const ext = (href, label, cls = '') =>
@@ -24,7 +28,7 @@ export function header({ current = '', cta = { href: '/#gevoel', label: 'KIES OP
   ${wordmark()}
   <div class="tl-header__actions">
     <nav class="tl-nav" id="tl-nav" aria-label="Hoofdnavigatie" data-open="false">
-      ${NAV.map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
+      ${NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON).map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
       <a class="tl-button" href="${cta.href}">${cta.label}</a>
     </nav>
     <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>

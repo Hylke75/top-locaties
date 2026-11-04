@@ -38,6 +38,17 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
   <a href="/#gevoel">KIES OPNIEUW OP GEVOEL ↗</a>
 </div>
 
+<div class="tl-concept-tools" data-concept-tools data-slug="${concept.slug}">
+  <span class="tl-mono">GEBRUIK DIT CONCEPT</span>
+  <span class="tl-chip-set">
+    ${data.site.accounts?.enabled ? html`<a class="tl-button tl-button--accent" href="/maker/?basis=${concept.slug}">PAS AAN IN DE CONCEPTMAKER ↗</a>` : ''}
+    <a class="tl-button tl-button--outline" href="/presentatie/?basis=${concept.slug}">PRESENTATIE (PDF) ↗</a>
+    <button class="tl-button tl-button--outline" type="button" data-download="docx">DOWNLOAD WORD</button>
+    <button class="tl-button tl-button--outline" type="button" data-download="txt">DOWNLOAD TEKST</button>
+  </span>
+  <span class="tl-mono tl-note" role="status" aria-live="polite" data-tools-status>${data.site.accounts?.enabled ? 'Aanpassen en bewaren met een gratis account.' : 'Presentatie, Word en tekst zijn direct te downloaden.'}</span>
+</div>
+
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
   <span class="tl-mono">HET CONCEPT / ${concept.number}</span>
   <div class="tl-section-nav__tabs"><a href="#het-idee">IDEE</a><a href="#doelen">DOELEN</a><a href="#beleving">BELEVING</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">MAKERS</a><a href="#uitnodiging">COMMUNICATIE</a><a href="#praktisch">HAALBAARHEID</a><a href="#impact">IMPACT</a><a href="#samenstellen">OP MAAT</a></div>
@@ -142,7 +153,7 @@ ${footer({
     path: `/eventconcepten/${concept.slug}/`,
     preload: concept.hero.src,
     body,
-    scripts: ['concept.js'],
+    scripts: ['concept.js', 'concept-tools.js'],
     data: {
       concept: (({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }) => ({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }))(concept),
       feelings: Object.entries(feelingLabels).map(([id, label]) => ({ id, label })),

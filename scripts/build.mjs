@@ -8,6 +8,7 @@ import { loadData } from '../src/lib/data.mjs';
 import { validate } from './validate-content.mjs';
 import { renderHome } from '../src/pages/home.mjs';
 import { renderBriefing, renderPlanDocument } from '../src/pages/conceptplan.mjs';
+import { renderAccount, renderMaker, renderPresentation } from '../src/pages/account.mjs';
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
 import { renderLegacy, renderNotFound } from '../src/pages/legacy.mjs';
@@ -37,6 +38,7 @@ const data = loadData();
 
 copy('design-system/tokens.css', 'assets/css/tokens.css');
 copy('design-system/components.css', 'assets/css/components.css');
+copy('design-system/deck-print.css', 'assets/css/deck-print.css');
 copy('src/client', 'assets/js');
 for (const img of ['hero-event.webp', 'festival-event.webp']) copy(`dist/${img}`, `assets/img/${img}`);
 copy('src/assets/favicon.svg', 'assets/img/favicon.svg');
@@ -53,6 +55,17 @@ write('mijn-plan/index.html', renderPlan(data));
 write('over/index.html', renderAbout(data));
 write('zelf-organiseren/index.html', renderPlaybook(data));
 write('conceptplan/index.html', renderBriefing(data));
+// Conceptdata voor de conceptmaker, de presentatie en de downloads (alleen gepubliceerde concepten, alleen partners).
+data.concepts.forEach((c) => write(`data/concepts/${c.slug}.json`, JSON.stringify(c)));
+write('data/partners.json', JSON.stringify({
+  feelings: Object.fromEntries(data.feelings.map((f) => [f.id, f.label])),
+  concepts: data.concepts.map((c) => ({ slug: c.slug, title: c.title, teaser: c.teaser, categoryLabel: c.categoryLabel, dayPartLabel: c.dayPartLabel, duration: c.duration, hero: c.hero.src })),
+  venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, capacityMax: v.capacityMax || null, url: v.profileUrl, page: `/locaties/${v.slug}/` }])),
+  suppliers: Object.fromEntries(data.suppliers.map((s) => [s.id, { name: s.name, role: s.label || s.category || '', url: s.profileUrl, page: `/leveranciers/${s.slug}/` }])),
+}));
+write('account/index.html', renderAccount(data));
+write('maker/index.html', renderMaker(data));
+write('presentatie/index.html', renderPresentation(data));
 data.concepts.forEach((c) => write(`eventconcepten/${c.slug}/conceptplan/index.html`, renderPlanDocument(data, c)));
 
 // Oude prototype-URL's blijven werken; het prototype zelf staat ter vergelijking onder /prototype/.

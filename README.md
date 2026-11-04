@@ -48,6 +48,14 @@ Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of
 - `/eventconcepten/?dagdeel=ochtend|middag|dag|avond`: concepten per dagdeel.
 - `/eventconcepten/<slug>/conceptplan/`: het printbare conceptplan in twaalf hoofdstukken, vooraf ingevuld met de vragenlijst op maat.
 
+## Accounts en conceptmaker
+
+- Supabase-project `top-locaties` (los van Greenbookings). Tabel en rechten: `supabase/migrations/20261104_user_concepts.sql` (RLS: alleen eigen concepten; max. 100 per account; `delete_my_account()`).
+- Instellingen in `src/content/site.json → accounts` (URL en publishable key zijn bedoeld voor de browser). `enabled: false` toont "binnenkort"; voorvertoning in je eigen browser met `/account/?voorvertoning=aan`.
+- Live zetten: voer de migratie uit, zet in Supabase *Authentication → URL Configuration* de Site URL op `https://top-locaties.nl` en voeg `https://top-locaties.nl/account/` toe als redirect, en zet `enabled` op `true`.
+- Routes: `/account/`, `/maker/?basis=<slug>` of `?id=<uuid>`, `/presentatie/?basis=<slug>` of `?id=<uuid>`.
+- Test: `npm run account-e2e` (gesimuleerde Supabase).
+
 ## Data
 
 - `src/content/greenbookings-snapshot.json`: alle gepubliceerde, **aangesloten** partnerlocaties (read-only bron).
