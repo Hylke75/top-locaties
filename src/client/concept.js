@@ -184,12 +184,14 @@ function renderTailored() {
   <dl class="tl-facts tl-facts--on-dark">
     <div><dt>DOEL</dt><dd>${escT(a.doel || concept.objective)}</dd></div>
     <div><dt>LOCATIE</dt><dd>${escT(t.fit.text)}</dd></div>
+    <div><dt>TIJDEN</dt><dd>${t.timing ? `${escT(t.timing.start)} – ${escT(t.timing.end)} (concept: tot ${escT(t.timing.naturalEnd || '?')})` : `Vanaf ${escT(a.start || '')}`}</dd></div>
     <div><dt>MAKERS</dt><dd>${t.suppliers.length ? t.suppliers.map((s) => `${escT(s.name)} (${escT(s.role.toLowerCase())})`).join(' · ') : 'Nog geen makers gekozen.'}</dd></div>
   </dl>
   ${t.fit.status === 'warn' ? `<p class="tl-warning">${escT(t.fit.text)}</p>` : ''}
+  ${t.timing?.note ? `<p class="tl-warning">${escT(t.timing.note)}</p>` : ''}
   ${t.adjustment ? `<p class="tl-warning">BIJGESTELD — ${escT(t.adjustment.label.toUpperCase())}: ${escT(t.adjustment.text)}</p>` : ''}
   ${t.variations.length ? `<h4 class="tl-mono tl-subhead tl-body--gap">AANBEVOLEN VARIANT</h4><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${t.variations.map((v) => `<div><dt>${escT(v.title)}</dt><dd>${escT(v.text)}</dd></div>`).join('')}</dl>` : ''}
-  <h4 class="tl-mono tl-subhead tl-body--gap">DAGDRAAIBOEK — START ${escT(a.start || '')}</h4>
+  <h4 class="tl-mono tl-subhead tl-body--gap">DAGDRAAIBOEK — ${escT(a.start || '')}${t.timing ? ` TOT ${escT(t.timing.end)}` : ''}</h4>
   <div class="tl-runbook tl-runbook--on-dark">${t.runbook.map((r) => `<div class="tl-runbook__row"><span class="tl-runbook__time">${escT(r.time)}</span><span class="tl-runbook__duration" data-label="DUUR">${escT(r.duration)}</span><span><strong class="tl-runbook__title">${escT(r.title)}</strong><span class="tl-runbook__desc">${escT(r.description)}</span></span><span class="tl-runbook__meta" data-label="WIE">${escT(r.owner)}</span><span class="tl-runbook__meta" data-label="WAAR">${escT(r.space)}</span></div>`).join('')}</div>
   <h4 class="tl-mono tl-subhead tl-body--gap">AFTELPLANNING MET DATA</h4>
   <div class="tl-checklist tl-checklist--on-dark">${t.planning.map((p, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(p.when)}${p.date ? ` — VANAF ${escT(formatDate(p.date).toUpperCase())}` : ''}</strong><span class="tl-runbook__desc">${escT(p.title)}</span>${p.tasks.map((x, j) => check(`p${i}-${j}`, x)).join('')}</div>`).join('')}</div>
@@ -219,7 +221,19 @@ if (fromBrief) {
 }
 
 if (tForm) {
+  // Eindtijd schuift mee met de starttijd zolang de bezoeker de eindtijd niet zelf heeft aangepast.
+  const mins = (v) => { const m = /^(\d{1,2}):(\d{2})$/.exec(v || ''); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
+  const hhmm = (n) => `${String(Math.floor(((n % 1440) + 1440) % 1440 / 60)).padStart(2, '0')}:${String((((n % 1440) + 1440) % 1440) % 60).padStart(2, '0')}`;
+  let lastStart = tForm.elements.start?.value; let endTouched = Boolean(plan.answers?.eindAangepast);
+  tForm.elements.eind?.addEventListener('input', () => { endTouched = true; });
+  tForm.elements.start?.addEventListener('change', () => {
+    const a = mins(lastStart), b = mins(tForm.elements.start.value), e = mins(tForm.elements.eind?.value);
+    if (!endTouched && a != null && b != null && e != null) tForm.elements.eind.value = hhmm(e + (b - a));
+    lastStart = tForm.elements.start.value;
+  });
+  tForm.addEventListener('submit', () => { if (plan.answers) plan.answers.eindAangepast = endTouched; }, true);
   fillForm(plan.answers);
+  lastStart = tForm.elements.start?.value;
   if (plan.answers) renderTailored();
   tForm.addEventListener('submit', (e) => {
     e.preventDefault();

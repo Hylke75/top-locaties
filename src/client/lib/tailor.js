@@ -21,6 +21,50 @@ export function shiftRunbook(runbook, start) {
   return runbook.map((r) => ({ ...r, time: toMin(r.time) == null ? r.time : toTime(toMin(r.time) + d) }));
 }
 
+const isTeardown = (r) => /afbouw|opruimen|retour/i.test(r.title || '');
+const durMin = (d) => { const m = /(\d+)\s*min/i.exec(d || ''); return m ? Number(m[1]) : null; };
+const round5 = (m) => Math.round(m / 5) * 5;
+
+/** Natuurlijke eindtijd van het gastenprogramma: einde van het laatste onderdeel vóór de afbouw. */
+export function naturalEnd(runbook) {
+  const guest = (runbook || []).filter((r) => !isPrep(r) && !isTeardown(r) && toMin(r.time) != null);
+  const last = guest[guest.length - 1];
+  if (!last) return null;
+  return toTime(toMin(last.time) + (durMin(last.duration) || 0));
+}
+
+/**
+ * Past tijden in een nieuw venster: alles tussen `from` en `to` wordt lineair naar `newFrom`–`newTo` geschaald
+ * (afgerond op 5 minuten, duur schaalt mee); daarvóór schuift mee met de start, daarna met het einde.
+ */
+export function fitTimes(items, from, to, newFrom, newTo) {
+  const a = toMin(from), b = toMin(to), A = toMin(newFrom), B = toMin(newTo);
+  if ([a, b, A, B].some((x) => x == null) || b <= a || B <= A) return { items: items.map((x) => ({ ...x })), ratio: 1 };
+  const ratio = (B - A) / (b - a);
+  const out = items.map((it) => {
+    const t = toMin(it.time);
+    if (t == null) return { ...it };
+    let nt; let dur = it.duration;
+    if (t < a) nt = t + (A - a);
+    else if (t >= b) nt = t + (B - b);
+    else { nt = round5(A + (t - a) * ratio); const dm = durMin(it.duration); if (dm != null) dur = `${Math.max(5, round5(dm * ratio))} min`; }
+    return { ...it, time: toTime(nt), ...(it.duration !== undefined ? { duration: dur } : {}) };
+  });
+  return { items: out, ratio };
+}
+
+/** Draaiboek op start- én eindtijd. Geeft ook een eerlijke opmerking als het venster veel korter of langer is. */
+export function fitRunbook(runbook, start, end) {
+  const shifted = shiftRunbook(runbook || [], start);
+  if (!toMin(end)) return { runbook: shifted, timing: null };
+  const from = firstGuestTime(shifted); const to = naturalEnd(shifted);
+  const { items, ratio } = fitTimes(shifted, from, to, from, end);
+  let note = '';
+  if (ratio < 0.75) note = 'Je hebt flink minder tijd dan dit concept vraagt. De onderdelen zijn ingekort; overweeg één onderdeel te schrappen of kies de compacte variant.';
+  else if (ratio > 1.35) note = 'Je hebt meer tijd dan dit concept vraagt. De onderdelen zijn verlengd; gebruik de ruimte voor langere pauzes, netwerken of een extra onderdeel.';
+  return { runbook: items, timing: { start: from, end, naturalEnd: to, ratio, note } };
+}
+
 /** "12–10 WEKEN VOORAF" → datum van het begin van die fase; "DAG ERVOOR"/"DAG ZELF"/"NA AFLOOP" ook. */
 export function phaseDate(when, eventDate) {
   if (!eventDate) return null;
@@ -80,7 +124,7 @@ export function fillInvitation(inv, answers, venue) {
 /** Bouwt het volledige plan op maat. */
 export function tailor(concept, answers, { venue = null, suppliers = [] } = {}) {
   const guests = Number(answers.gasten) || null;
-  const runbook = shiftRunbook(concept.runbook || [], answers.start);
+  const { runbook, timing } = fitRunbook(concept.runbook || [], answers.start, answers.eind);
   const planning = (concept.planning || []).map((p) => ({ ...p, date: phaseDate(p.when, answers.datum) }));
   const crew = (concept.crew || []).map((c) => ({ ...c, count: crewCount(c.count, guests) }));
   const diets = [].concat(answers.dieet || []);
@@ -92,7 +136,7 @@ export function tailor(concept, answers, { venue = null, suppliers = [] } = {}) 
   const adjustment = answers.bijstelling && concept.adjustments?.[answers.bijstelling] ? { key: answers.bijstelling, label: { exclusiever: 'Exclusiever', interactiever: 'Meer interactie', budgetbewust: 'Budgetbewust' }[answers.bijstelling], text: concept.adjustments[answers.bijstelling] } : null;
   return {
     adjustment,
-    answers, guests, venue, suppliers, runbook, planning, crew, diets, extraChecks,
+    answers, guests, venue, suppliers, runbook, timing, planning, crew, diets, extraChecks,
     variations: pickVariation(concept, answers),
     fit: venueFit(venue, guests),
     invitation: fillInvitation(concept.invitation || {}, answers, venue),
@@ -104,7 +148,7 @@ export function toText(concept, t, labels = {}) {
   const L = [];
   const a = t.answers;
   L.push('TOP LOCATIES — DRAAIBOEK OP MAAT', concept.title.toUpperCase(), concept.proposition, '');
-  L.push(`Organisatie: ${a.organisatie || '—'}`, `Datum: ${a.datum ? formatDate(new Date(`${a.datum}T12:00:00`)) : 'nog te bepalen'}`, `Gasten: ${t.guests || 'nog te bepalen'}`, `Doel: ${a.doel || concept.objective}`, `Doelgroep: ${a.doelgroep || (concept.audiences || []).join(', ')}`, `Contactpersoon: ${a.contact || '—'}`, `Gewenst gevoel: ${(a.feelings?.length ? a.feelings : concept.feelings).map((f) => labels[f] || f).join(', ')}`);
+  L.push(`Organisatie: ${a.organisatie || '—'}`, `Datum: ${a.datum ? formatDate(new Date(`${a.datum}T12:00:00`)) : 'nog te bepalen'}`, `Tijden: ${a.start || '—'}${a.eind ? ` – ${a.eind}` : ''}`, `Gasten: ${t.guests || 'nog te bepalen'}`, `Doel: ${a.doel || concept.objective}`, `Doelgroep: ${a.doelgroep || (concept.audiences || []).join(', ')}`, `Contactpersoon: ${a.contact || '—'}`, `Gewenst gevoel: ${(a.feelings?.length ? a.feelings : concept.feelings).map((f) => labels[f] || f).join(', ')}`);
   if (a.budget) L.push(`Eigen budgetindicatie: ${a.budget} (indicatie van de organisator; geen prijsopgave)`);
   L.push('', `LOCATIE: ${t.venue ? `${t.venue.name}, ${t.venue.city} — ${t.venue.url}` : 'nog te kiezen'}`, t.fit.text);
   if (t.suppliers.length) { L.push('', 'MAKERS:'); t.suppliers.forEach((s) => L.push(`- ${s.name} (${s.role}) — ${s.url}`)); }

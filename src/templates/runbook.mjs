@@ -191,7 +191,11 @@ export function questionnaire(concept) {
   <div class="tl-questionnaire__grid">
     <label class="tl-field"><span>01 / ORGANISATIE</span><input name="organisatie" autocomplete="organization" placeholder="Naam van je organisatie"></label>
     <label class="tl-field"><span>02 / DATUM</span><input name="datum" type="date"></label>
-    <label class="tl-field"><span>03 / STARTTIJD</span><input name="start" type="time" value="${(c.runbook || []).find((r) => !/crew|opbouw|briefing|inrichten|generale/i.test(r.title))?.time || '09:00'}"></label>
+    <fieldset class="tl-field tl-field--pair"><legend>03 / START- EN EINDTIJD</legend><div class="tl-field__pair">
+      <label><span class="tl-visually-hidden">Starttijd</span><input name="start" type="time" aria-label="Starttijd" value="${(c.runbook || []).find((r) => !/crew|opbouw|briefing|inrichten|generale/i.test(r.title))?.time || '09:00'}"></label>
+      <span aria-hidden="true">–</span>
+      <label><span class="tl-visually-hidden">Eindtijd</span><input name="eind" type="time" aria-label="Eindtijd" value="${naturalEndOf(c.runbook)}"></label>
+    </div></fieldset>
     <label class="tl-field"><span>04 / AANTAL GASTEN</span><input name="gasten" type="number" min="5" max="5000" inputmode="numeric" placeholder="${c.guestCountMin}–${c.guestCountMax}"></label>
     <label class="tl-field tl-questionnaire__wide"><span>05 / WAT MOET HET OPLEVEREN?</span><input name="doel" placeholder="${c.objective}"></label>
     <label class="tl-field"><span>06 / DOELGROEP</span><input name="doelgroep" placeholder="${(c.audiences || [])[0] || ''}"></label>
@@ -209,6 +213,15 @@ export function questionnaire(concept) {
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-status></span><button class="tl-button tl-button--accent" type="submit">MAAK MIJN DRAAIBOEK OP MAAT ↓</button></div>
 </form>
 <div class="tl-tailored" data-tailor-output hidden tabindex="-1" aria-live="polite"></div>`;
+}
+
+/** Einde van het gastenprogramma (laatste onderdeel vóór de afbouw), voor de standaard-eindtijd. */
+function naturalEndOf(runbook = []) {
+  const m = (t) => { const x = /^(\d{1,2}):(\d{2})$/.exec(t || ''); return x ? Number(x[1]) * 60 + Number(x[2]) : null; };
+  const guest = runbook.filter((r) => !/crew|opbouw|briefing|inrichten|generale|afbouw|opruimen|retour/i.test(r.title) && m(r.time) != null);
+  const last = guest[guest.length - 1]; if (!last) return '';
+  const v = (m(last.time) + (Number(/(\d+)\s*min/i.exec(last.duration || '')?.[1]) || 0)) % 1440;
+  return `${String(Math.floor(v / 60)).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`;
 }
 
 const toMin = (t) => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };

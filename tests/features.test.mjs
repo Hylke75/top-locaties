@@ -72,3 +72,25 @@ test('pptx: geldige ZIP met welgevormde XML en 16:9', () => {
   assert.ok(execFileSync('unzip', ['-p', f, 'ppt/slides/slide2.xml']).toString().includes('Test &amp; &lt;pptx&gt;'));
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+import { fitRunbook, naturalEnd } from '../src/client/lib/tailor.js';
+import { fitTo } from '../src/client/lib/userconcept.js';
+const verg = concepts.find((c) => c.slug === 'vergadering');
+test('eindtijd: natuurlijke eind en gelijk venster laat de duur intact', () => {
+  const end = naturalEnd(verg.runbook);
+  const r = fitRunbook(verg.runbook, '09:00', end);
+  assert.equal(r.timing.ratio, 1); assert.equal(r.timing.note, '');
+});
+test('eindtijd: korter venster comprimeert en waarschuwt, afbouw schuift mee', () => {
+  const end = naturalEnd(verg.runbook);
+  const r = fitRunbook(verg.runbook, '09:00', '11:00');
+  assert.ok(r.timing.ratio < 0.75 && r.timing.note.includes('minder tijd'));
+  const guest = r.runbook.filter((x) => !/crew|opbouw|briefing|inrichten|generale|afbouw/i.test(x.title));
+  assert.ok(guest.every((x) => x.time >= '09:00' && x.time < '11:00'), `alle onderdelen binnen het venster (${end})`);
+});
+test('eindtijd in de maker: programma, draaiboek en catering passen in het venster', () => {
+  const { data, ratio } = fitTo(fromBase(kick), '13:00', '16:00');
+  assert.ok(ratio < 1);
+  assert.ok(data.program.every((p) => p.time >= '13:00' && p.time < '16:00'));
+  assert.equal(data.duration, '13:00–16:00');
+});

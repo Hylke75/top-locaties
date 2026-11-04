@@ -2,7 +2,8 @@
 import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
 import { partners, baseConcept, esc } from './lib/conceptdata.js';
-import { fromBase, merge, check, byTime, startTime, shiftTo, applyAnswers } from './lib/userconcept.js';
+import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers } from './lib/userconcept.js';
+import { naturalEnd } from './lib/tailor.js';
 import { load } from './lib/store.js';
 import { exportConcept } from './lib/export-actions.js';
 
@@ -71,10 +72,11 @@ function render() {
     <div class="tl-maker__fields tl-maker__fields--two">${input('title', 'Titel van jouw concept', '', data.title)}${input('organisatie', 'Organisatie', '', data.organisatie)}</div>
     <div class="tl-maker__fields">${input('proposition', 'Belofte in één zin', 'area', data.proposition)}${input('objective', 'Wat moet het opleveren?', 'area', data.objective)}</div>
     <div class="tl-maker__fields tl-maker__fields--three">${input('datum', 'Datum', 'date', data.datum)}${input('guests', 'Aantal gasten', 'number', data.guests)}${input('duration', 'Duur en tijden', '', data.duration)}</div>
-    <div class="tl-maker__tailor"><label class="tl-field"><span>STARTTIJD PROGRAMMA</span><input data-start inputmode="numeric" placeholder="UU:MM" maxlength="5" value="${esc(startTime(data) || '')}"></label>
-      <button class="tl-button tl-button--outline" type="button" data-shift>SCHUIF ALLE TIJDEN ↓</button>
+    <div class="tl-maker__tailor"><label class="tl-field"><span>STARTTIJD</span><input data-start inputmode="numeric" placeholder="UU:MM" maxlength="5" value="${esc(startTime(data) || '')}"></label>
+      <label class="tl-field"><span>EINDTIJD</span><input data-end inputmode="numeric" placeholder="UU:MM" maxlength="5" value="${esc(naturalEnd(data.runbook || []) || '')}"></label>
+      <button class="tl-button tl-button--outline" type="button" data-shift>PAS TIJDEN AAN ↓</button>
       ${savedPlan()?.answers ? '<button class="tl-text-button" type="button" data-apply-answers>NEEM MIJN ANTWOORDEN UIT DE VRAGENLIJST OVER</button>' : ''}
-      <span class="tl-note">Programma, draaiboek en cateringmomenten schuiven samen mee.</span></div>
+      <span class="tl-note">Programma, draaiboek en cateringmomenten passen zich samen aan: bij een andere eindtijd worden de onderdelen naar verhouding korter of langer.</span></div>
     <div class="tl-field"><span>GEVOEL DAT GASTEN MEENEMEN (MAX. DRIE)</span><div class="tl-chip-set">${Object.entries(P.feelings).map(([f, l]) => `<button class="tl-chip-button" type="button" data-feel="${esc(f)}" aria-pressed="${feel.has(f)}">${esc(l.toUpperCase())} ${feel.has(f) ? '✓' : '+'}</button>`).join('')}</div></div>
     <div class="tl-maker__fields">${input('audiences', 'Voor wie (één doelgroep per regel)', 'lines', data.audiences)}</div>
   </fieldset>
@@ -153,10 +155,12 @@ form.addEventListener('click', (e) => {
     changed(); rerender(`[data-feel="${f}"]`); return;
   }
   if (b.hasAttribute('data-shift')) {
-    const t = form.querySelector('[data-start]').value.trim();
-    if (!/^\d{1,2}:\d{2}$/.test(t)) { setStatus('SCHRIJF DE STARTTIJD ALS UU:MM'); return; }
-    const r = shiftTo(data, t); data = r.data; changed(); rerender('[data-shift]');
-    setStatus(r.delta ? `TIJDEN ${r.delta > 0 ? 'LATER' : 'EERDER'} GEZET (${Math.abs(r.delta)} MIN) — NIET OPGESLAGEN` : 'TIJDEN ONGEWIJZIGD'); return;
+    const t = form.querySelector('[data-start]').value.trim(); const e2 = form.querySelector('[data-end]').value.trim();
+    if (!/^\d{1,2}:\d{2}$/.test(t) || (e2 && !/^\d{1,2}:\d{2}$/.test(e2))) { setStatus('SCHRIJF START- EN EINDTIJD ALS UU:MM'); return; }
+    if (e2 && e2 <= t.padStart(5, '0')) { setStatus('DE EINDTIJD LIGT VÓÓR DE STARTTIJD'); return; }
+    const r = fitTo(data, t, e2); data = r.data; changed(); rerender('[data-shift]');
+    const warn = r.ratio < 0.75 ? ' — FLINK KORTER: OVERWEEG EEN ONDERDEEL TE SCHRAPPEN' : r.ratio > 1.35 ? ' — RUIMER: MEER TIJD VOOR PAUZES OF EEN EXTRA ONDERDEEL' : '';
+    setStatus(`TIJDEN AANGEPAST (${t}${e2 ? `–${e2}` : ''})${warn} — NIET OPGESLAGEN`); return;
   }
   if (b.hasAttribute('data-apply-answers')) {
     const p = savedPlan(); data = applyAnswers(data, p.answers, p); changed(); rerender('[data-apply-answers]');

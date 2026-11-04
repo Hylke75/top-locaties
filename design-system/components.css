@@ -1021,3 +1021,5 @@ figure.tl-image-frame { margin:0; }
   .tl-runbook--four .tl-runbook__row > :nth-child(4) { order:3; }
   .tl-doc .tl-runbook--four .tl-runbook__row > :nth-child(1) { font:inherit; text-transform:none; }
 }
+.tl-field__pair { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:8px; }
+.tl-field__pair input { width:100%; min-width:0; }

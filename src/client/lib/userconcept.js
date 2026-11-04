@@ -1,3 +1,4 @@
+import { fitTimes, naturalEnd } from './tailor.js';
 // Eigen concept = standaardconcept als basis + de bewerkingen van de gebruiker.
 // Alleen de velden hieronder zijn bewerkbaar en worden opgeslagen; de rest komt altijd uit de basis.
 export const EDITABLE = ['title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
@@ -56,6 +57,22 @@ export function shiftTo(data, start) {
   return { delta: d, data: { ...data, program: (data.program || []).map(mv), runbook: (data.runbook || []).map(mv), catering: data.catering ? { ...data.catering, moments: (data.catering.moments || []).map(mv) } : data.catering } };
 }
 
+/** Programma laten lopen van `start` tot `end`: eerst verschuiven, dan programma, draaiboek en catering in dat venster passen. */
+export function fitTo(data, start, end) {
+  const shifted = shiftTo(data, start).data;
+  if (!end) return { data: shifted, ratio: 1 };
+  const from = startTime(shifted);
+  const to = naturalEnd(shifted.runbook || []) || (() => { const ts = (shifted.program || []).map((p) => p.time).filter(Boolean).sort(); return ts[ts.length - 1]; })();
+  if (!from || !to) return { data: shifted, ratio: 1 };
+  const fit = (xs) => fitTimes(xs || [], from, to, from, end);
+  const r = fit(shifted.runbook);
+  const out = { ...shifted, runbook: r.items, program: fit(shifted.program).items };
+  if (shifted.catering) out.catering = { ...shifted.catering, moments: fit(shifted.catering.moments).items };
+  const ending = /^(\d{1,2}):(\d{2})$/.test(end) ? end : null;
+  if (ending && from) out.duration = `${from}–${ending}`;
+  return { data: out, ratio: r.ratio };
+}
+
 /** Antwoorden uit de vragenlijst op maat (conceptpagina) toepassen op een eigen concept. */
 export function applyAnswers(data, a = {}, plan = {}) {
   let out = { ...data };
@@ -69,6 +86,6 @@ export function applyAnswers(data, a = {}, plan = {}) {
   if ((plan.supplierIds || []).length) out.supplierIds = [...new Set([...plan.supplierIds, ...(out.supplierIds || [])])];
   const notes = [a.dieet?.length && `Dieetwensen: ${a.dieet.join(', ')}`, a.toegankelijk && 'Rolstoeltoegankelijk nodig', a.hybride && 'Ook online deelnemers (hybride)', a.budget && `Budgetindicatie: ${a.budget}`].filter(Boolean);
   if (notes.length) out.notes = [out.notes, ...notes].filter(Boolean).join('\n');
-  if (a.start) out = shiftTo(out, a.start).data;
+  if (a.start) out = fitTo(out, a.start, a.eind).data;
   return out;
 }
