@@ -257,6 +257,13 @@ check(dl3.suggestedFilename() === 'het-diner-dat-verbindt.docx', 'standaardconce
 await page.click('[data-concept-tools] a[href^="/presentatie/"]');
 await page.waitForSelector('.tl-slide');
 check(await page.locator('.tl-slide').count() >= 12, 'standaardconcept als presentatie');
+const [dl4] = await Promise.all([page.waitForEvent('download'), page.click('[data-deck-bar] [data-export="pptx"]')]);
+const pptx = path.join(tmp, dl4.suggestedFilename()); await dl4.saveAs(pptx);
+let pptOk = false; try { execFileSync('unzip', ['-tq', pptx]); pptOk = execFileSync('unzip', ['-Z1', pptx]).toString().includes('ppt/media/cover.jpeg'); } catch {}
+check(dl4.suggestedFilename() === 'het-diner-dat-verbindt.pptx' && pptOk, 'PowerPoint-download: geldige .pptx met sfeerbeeld op de cover');
+await page.goto(base + '/zoeken/?q=' + encodeURIComponent('vergaderen den haag 20 personen'));
+await page.waitForSelector('.tl-search__item');
+check((await page.textContent('[data-search-results]')).includes('De vergadering die werkt'), 'zoeken vindt concepten en locaties');
 check(errors.length === 0, `geen JS-fouten (${errors.join(' | ')})`);
 
 await browser.close();

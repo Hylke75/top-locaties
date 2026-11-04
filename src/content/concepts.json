@@ -190,8 +190,8 @@
         {
           "venueId": "fokker",
           "priority": 1,
-          "reason": "De hangar en de kleinere ruimtes eromheen lenen zich voor plenaire momenten én workshops.",
-          "pro": "Eén grote hangar plus kleinere ruimtes: plenair en zones onder één dak.",
+          "reason": "Industrieel erfgoed met een grote hal: ruimte voor plenaire momenten én workshops.",
+          "pro": "Eén grote hal voor plenair en zones; kleinere ruimtes vooraf met de locatie afstemmen.",
           "watch": "Akoestiek en temperatuur in een grote hal vooraf bespreken.",
           "role": "VOORKEUR"
         },
@@ -5320,8 +5320,8 @@
         {
           "venueId": "thcc",
           "priority": 1,
-          "reason": "Naast Den Haag Centraal: gasten komen met de trein tot aan de deur.",
-          "pro": "Bereikbaar met de trein, ideaal voor vroeg beginnen.",
+          "reason": "Een congrescentrum in Den Haag, ingericht op bijeenkomsten die vroeg beginnen.",
+          "pro": "Zalen voor kleine en grote groepen onder één dak.",
           "watch": "Vroege openingstijd vooraf afstemmen.",
           "role": "VOORKEUR"
         },
@@ -7367,7 +7367,7 @@
           "venueId": "tobacco",
           "priority": 2,
           "reason": "Een industrieel theater in Amsterdam.",
-          "pro": "Hoog opgetrokken zalen met energie.",
+          "pro": "Een industrieel theater in het hart van Amsterdam.",
           "watch": "Capaciteit per zaal afstemmen.",
           "role": "ALTERNATIEF"
         },
@@ -8123,7 +8123,7 @@
         {
           "venueId": "fokker",
           "priority": 3,
-          "reason": "Een hangar met kleinere ruimtes eromheen.",
+          "reason": "Industrieel erfgoed met één grote hal waarin labs naast elkaar passen.",
           "pro": "Ruimte voor labs onder één dak.",
           "watch": "Akoestiek tussen labs afstemmen.",
           "role": "ALTERNATIEF"
@@ -8896,6 +8896,3576 @@
         "frictions": "Te lange speeches, gasten die zich niet herkennen in het verhaal, laat vervoer naar huis.",
         "keyMessage": "Vier mee wat we samen hebben gemaakt.",
         "irreplaceable": "Het eerbetoon en de onthulling."
+      }
+    },
+    {
+      "id": "heidag",
+      "slug": "heidag",
+      "number": "013",
+      "status": "published",
+      "priority": 13,
+      "dayPart": "dag",
+      "title": "De heidag",
+      "headline": [
+        "DE",
+        "*HEIDAG.*"
+      ],
+      "category": "vergaderen",
+      "categoryLabel": "BIJZONDER VERGADEREN",
+      "format": "DAG / STRATEGIE",
+      "teaser": "Een dag weg van kantoor met het managementteam of bestuur: terugkijken, vooruitkijken en met drie gedragen keuzes naar huis.",
+      "proposition": "Geen volle agenda in een vergaderzaal, maar een dag op een inspirerende plek waarin je samen de koers voor het komende jaar bepaalt — en weet wie wat doet.",
+      "tags": [
+        "STRATEGIE",
+        "MT",
+        "BESTUUR"
+      ],
+      "guestCountMin": 6,
+      "guestCountMax": 30,
+      "feelings": [
+        "focus",
+        "verbinding",
+        "rust"
+      ],
+      "feelingWeights": {
+        "focus": 5,
+        "verbinding": 4,
+        "rust": 3
+      },
+      "feelingReasons": {
+        "focus": "Een strakke opbouw van verkennen naar kiezen, met een besluitenlijst aan het eind.",
+        "verbinding": "Tijd voor het gesprek dat in de waan van de dag niet gevoerd wordt.",
+        "rust": "Een plek buiten de stad, met pauzes buiten en zonder schermen."
+      },
+      "audiences": [
+        "Managementteams",
+        "Besturen en raden van toezicht",
+        "Directies met hun leidinggevenden"
+      ],
+      "objective": "In één dag tot drie gedragen strategische keuzes komen, met eigenaar en eerste stap.",
+      "idea": {
+        "label": "Strategie ontstaat niet in een overvolle agenda, maar in rust, ruimte en een goed gesprek.",
+        "headline": [
+          "WEG VAN DE WAAN",
+          "*VAN DE DAG.*"
+        ],
+        "body": "De dag begint buiten met een wandeling in tweetallen langs één vraag. Daarna maken we samen een eerlijke foto van waar de organisatie staat, verkennen we drie scenario's en kiezen we. Een externe facilitator houdt het proces bewaakt; de voorzitter neemt de besluiten. Een rustige lunch en een afsluitend diner geven ruimte voor het informele gesprek.",
+        "values": [
+          [
+            "RUST",
+            "Een plek buiten de stad, zonder schermen."
+          ],
+          [
+            "SCHERP",
+            "Van verkennen naar drie keuzes."
+          ],
+          [
+            "SAMEN",
+            "Iedereen draagt de besluiten."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "duration": "1 dag (09:00–17:00), optioneel diner tot 20:30",
+      "modes": [
+        "luisteren",
+        "doen"
+      ],
+      "program": [
+        {
+          "time": "09:00",
+          "title": "Wandelend beginnen",
+          "description": "In tweetallen buiten, langs één vraag.",
+          "details": {
+            "intro": "De dag begint niet aan tafel maar buiten: in tweetallen loop je een korte route langs de vraag 'wat moet er volgend jaar anders?'.",
+            "steps": [
+              "Koffie bij aankomst, jassen aan",
+              "De facilitator geeft één vraag mee",
+              "Tweetallen lopen 30 minuten",
+              "Iedereen schrijft één inzicht op een kaart"
+            ],
+            "roles": [
+              "Facilitatie (dagvoorzitter)"
+            ],
+            "needs": [
+              "Route van 30 minuten",
+              "Kaarten en pennen"
+            ],
+            "tip": "Maak duo's die normaal weinig samenwerken.",
+            "why": "Naast elkaar lopen maakt het gesprek opener dan tegenover elkaar zitten.",
+            "result": "Iedereen begint met een eigen inzicht."
+          }
+        },
+        {
+          "time": "09:45",
+          "title": "De eerlijke foto",
+          "description": "Waar staan we echt?",
+          "details": {
+            "intro": "Op basis van een korte vooraf uitgezette vragenlijst en de inzichten van de wandeling maken we samen een beeld van de huidige situatie.",
+            "steps": [
+              "Facilitator presenteert de uitkomst van de vragenlijst",
+              "Groepjes vullen aan: wat zien we niet?",
+              "Plenair: drie grootste spanningen benoemen"
+            ],
+            "roles": [
+              "Facilitatie (dagvoorzitter)",
+              "AV & techniek"
+            ],
+            "needs": [
+              "Vragenlijst vooraf",
+              "Groot vel of whiteboard"
+            ],
+            "tip": "Laat de uitkomst anoniem presenteren; dat maakt het gesprek eerlijker.",
+            "why": "Zonder gedeeld beeld praat iedereen langs elkaar heen.",
+            "result": "Een gedeeld beeld van de drie grootste spanningen."
+          }
+        },
+        {
+          "time": "11:00",
+          "title": "Drie scenario's",
+          "description": "Verkennen wat er kan.",
+          "details": {
+            "intro": "In drie groepen werken we elk een scenario uit: wat als we kiezen voor groei, voor focus of voor vernieuwing?",
+            "steps": [
+              "Elke groep krijgt een scenario en een werkblad",
+              "45 minuten uitwerken: kansen, risico's, wat het vraagt",
+              "Elke groep presenteert in vijf minuten"
+            ],
+            "roles": [
+              "Facilitatie (dagvoorzitter)"
+            ],
+            "needs": [
+              "Werkbladen per scenario",
+              "Breakoutruimtes"
+            ],
+            "tip": "Wissel de groepen bewust: geen afdelingen bij elkaar.",
+            "why": "Kiezen lukt pas als je alternatieven naast elkaar ziet.",
+            "result": "Drie uitgewerkte scenario's om uit te kiezen."
+          }
+        },
+        {
+          "time": "13:30",
+          "title": "Kiezen",
+          "description": "Van opties naar drie keuzes.",
+          "details": {
+            "intro": "Na de lunch kiezen we. Iedereen weegt de scenario's met een eenvoudige methode; daarna formuleert de voorzitter de drie keuzes.",
+            "steps": [
+              "Stille weging: iedereen verdeelt punten",
+              "Bespreken waar de meningen uiteenlopen",
+              "Voorzitter formuleert drie keuzes",
+              "Check: kan iedereen hiermee verder?"
+            ],
+            "roles": [
+              "Facilitatie (dagvoorzitter)",
+              "Vastleggen & delen"
+            ],
+            "needs": [
+              "Stemkaarten of digitale tool",
+              "Besluitenbord"
+            ],
+            "tip": "Benoem vooraf hoe er besloten wordt: consent, meerderheid of de voorzitter.",
+            "why": "Een heldere besluitvorm voorkomt dat het gesprek na de dag opnieuw begint.",
+            "result": "Drie gedragen keuzes."
+          }
+        },
+        {
+          "time": "15:15",
+          "title": "Eigenaarschap",
+          "description": "Wie doet wat, wanneer?",
+          "details": {
+            "intro": "Per keuze bepalen we een eigenaar, een eerste stap en een moment waarop we terugkijken.",
+            "steps": [
+              "Per keuze een eigenaar",
+              "Eerste stap binnen twee weken",
+              "Datum voor de terugblik (60 dagen)"
+            ],
+            "roles": [
+              "Vastleggen & delen"
+            ],
+            "needs": [
+              "Besluitenlijst"
+            ],
+            "tip": "Laat eigenaren hun eerste stap hardop uitspreken.",
+            "why": "Een besluit zonder eigenaar blijft liggen.",
+            "result": "Besluitenlijst met eigenaren en data."
+          }
+        },
+        {
+          "time": "16:30",
+          "title": "Afsluiting en diner",
+          "description": "Terugkijken en samen eten.",
+          "details": {
+            "intro": "Een korte ronde: wat neem je mee? Daarna een borrel en een diner aan één lange tafel.",
+            "steps": [
+              "Ronde: één zin per persoon",
+              "Borrel",
+              "Diner (optioneel)"
+            ],
+            "roles": [
+              "Catering"
+            ],
+            "needs": [
+              "Lange tafel"
+            ],
+            "tip": "Houd het diner vrij van agenda; dit is het informele deel.",
+            "why": "Een goed einde maakt de dag af en versterkt de band.",
+            "result": "Iedereen gaat met energie en duidelijkheid naar huis."
+          }
+        }
+      ],
+      "runbook": [
+        {
+          "time": "08:00",
+          "duration": "60 min",
+          "title": "Inrichten",
+          "description": "Zaal, breakoutruimtes, besluitenbord, route uitzetten.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "08:45",
+          "duration": "15 min",
+          "title": "Briefing",
+          "description": "Facilitator, voorzitter en locatie lopen de dag door.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "09:00",
+          "duration": "45 min",
+          "title": "Wandeling in tweetallen",
+          "description": "Koffie, jassen, route met één vraag.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Buiten",
+          "needs": []
+        },
+        {
+          "time": "09:45",
+          "duration": "75 min",
+          "title": "De eerlijke foto",
+          "description": "Uitkomst vragenlijst en aanvullingen.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "11:00",
+          "duration": "90 min",
+          "title": "Drie scenario's",
+          "description": "Werken in drie groepen, presenteren.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Breakoutruimtes",
+          "needs": []
+        },
+        {
+          "time": "12:30",
+          "duration": "60 min",
+          "title": "Lunch",
+          "description": "Rustige lunch aan tafel.",
+          "owner": "Catering",
+          "space": "Restaurant",
+          "needs": []
+        },
+        {
+          "time": "13:30",
+          "duration": "90 min",
+          "title": "Kiezen",
+          "description": "Weging en drie keuzes.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "15:00",
+          "duration": "15 min",
+          "title": "Pauze",
+          "description": "Buiten even lopen.",
+          "owner": "Catering",
+          "space": "Terras",
+          "needs": []
+        },
+        {
+          "time": "15:15",
+          "duration": "75 min",
+          "title": "Eigenaarschap",
+          "description": "Eigenaren, eerste stappen, data.",
+          "owner": "Vastleggen & delen",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "16:30",
+          "duration": "30 min",
+          "title": "Afsluitende ronde",
+          "description": "Eén zin per persoon.",
+          "owner": "Facilitatie (dagvoorzitter)",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "17:00",
+          "duration": "210 min",
+          "title": "Borrel en diner",
+          "description": "Optioneel diner aan een lange tafel.",
+          "owner": "Catering",
+          "space": "Restaurant",
+          "needs": []
+        }
+      ],
+      "planning": [
+        {
+          "when": "10–8 WEKEN VOORAF",
+          "title": "Doel en locatie",
+          "tasks": [
+            "Doel van de dag en besluitvorm afspreken",
+            "Locatie buiten de stad kiezen",
+            "Facilitator vragen"
+          ]
+        },
+        {
+          "when": "6–4 WEKEN VOORAF",
+          "title": "Voorbereiding",
+          "tasks": [
+            "Vragenlijst uitzetten",
+            "Scenario's voorbereiden",
+            "Uitnodiging versturen"
+          ]
+        },
+        {
+          "when": "2–1 WEKEN VOORAF",
+          "title": "Inhoud klaar",
+          "tasks": [
+            "Uitkomst vragenlijst verwerken",
+            "Werkbladen drukken",
+            "Dieetwensen doorgeven"
+          ]
+        },
+        {
+          "when": "NA AFLOOP",
+          "title": "Opvolging",
+          "tasks": [
+            "Besluitenlijst binnen twee dagen delen",
+            "Eerste stappen bewaken",
+            "Terugblik na 60 dagen plannen"
+          ]
+        }
+      ],
+      "catering": {
+        "concept": "Rustig en gezond: niets wat inzakt, wel aandacht. Een lunch aan tafel en een diner dat het gesprek ondersteunt.",
+        "moments": [
+          {
+            "moment": "Ontvangst",
+            "time": "09:00",
+            "proposal": "Koffie, thee, vers fruit en iets warms om mee te nemen op de wandeling.",
+            "format": "Meeneembekers",
+            "dietary": "Vegan beschikbaar"
+          },
+          {
+            "moment": "Lunch",
+            "time": "12:30",
+            "proposal": "Soep, salades met seizoensgroente, brood en een warme kleinigheid.",
+            "format": "Aan tafel, gedeelde schalen",
+            "dietary": "Glutenvrij en vegan gelabeld"
+          },
+          {
+            "moment": "Middag",
+            "time": "15:00",
+            "proposal": "Thee, notenmix en iets zoets.",
+            "format": "Buffet op het terras",
+            "dietary": "Notenvrij alternatief"
+          },
+          {
+            "moment": "Diner",
+            "time": "17:30",
+            "proposal": "Drie gangen met lokale producten.",
+            "format": "Aan één lange tafel",
+            "dietary": "Vooraf opgevraagd"
+          }
+        ],
+        "drinks": "Water, koffie en thee de hele dag; bij het diner wijn en alcoholvrije alternatieven.",
+        "notes": "Geen lange buffetrijen; bediening aan tafel houdt de rust."
+      },
+      "entertainment": [
+        {
+          "moment": "Start",
+          "option": "Wandeling met één vraag",
+          "format": "30 minuten in tweetallen",
+          "why": "Opent het gesprek.",
+          "role": "Facilitatie (dagvoorzitter)"
+        },
+        {
+          "moment": "Diner",
+          "option": "Gastspreker of verhaal aan tafel",
+          "format": "15 minuten",
+          "why": "Een frisse blik van buiten.",
+          "role": "Facilitatie (dagvoorzitter)"
+        }
+      ],
+      "crew": [
+        {
+          "role": "Facilitator",
+          "count": "1",
+          "task": "Proces en tijd bewaken"
+        },
+        {
+          "role": "Notulist",
+          "count": "1",
+          "task": "Besluitenlijst vastleggen"
+        },
+        {
+          "role": "Gastheer locatie",
+          "count": "1",
+          "task": "Ruimtes en catering"
+        }
+      ],
+      "spaces": [
+        {
+          "space": "Zaal",
+          "use": "Plenaire delen",
+          "requirements": "Daglicht, U-vorm of carré, whiteboard"
+        },
+        {
+          "space": "Breakoutruimtes (3)",
+          "use": "Scenario's",
+          "requirements": "Voor 4–10 personen"
+        },
+        {
+          "space": "Buiten",
+          "use": "Wandeling en pauzes",
+          "requirements": "Route van 30 minuten"
+        }
+      ],
+      "checklist": [
+        {
+          "group": "Inhoud",
+          "items": [
+            "Doel en besluitvorm vastgelegd",
+            "Vragenlijst uitgezet",
+            "Scenario's voorbereid"
+          ]
+        },
+        {
+          "group": "Locatie",
+          "items": [
+            "Daglicht en breakoutruimtes",
+            "Route voor de wandeling",
+            "Diner gereserveerd"
+          ]
+        },
+        {
+          "group": "Na afloop",
+          "items": [
+            "Besluitenlijst gedeeld",
+            "Terugblik gepland"
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "title": "Compact (halve dag)",
+          "text": "Wandeling, eerlijke foto en kiezen; scenario's vooraf uitgewerkt."
+        },
+        {
+          "title": "Met overnachting",
+          "text": "Diner en avondprogramma, de volgende ochtend eigenaarschap en afsluiting."
+        },
+        {
+          "title": "Groot (tot 30 personen)",
+          "text": "Twee facilitators en zes groepen in plaats van drie."
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Slecht weer voor de wandeling",
+          "mitigation": "Binnenroute of gesprek in tweetallen bij de open haard."
+        },
+        {
+          "risk": "Geen besluit",
+          "mitigation": "Besluitvorm vooraf afspreken; de voorzitter beslist bij twijfel."
+        },
+        {
+          "risk": "Mensen haken af naar hun telefoon",
+          "mitigation": "Telefoons in een bak bij de deur; vaste momenten om mail te checken."
+        }
+      ],
+      "budgetItems": [
+        "Locatiehuur en zalen",
+        "Facilitator",
+        "Catering en diner",
+        "Vervoer",
+        "Materialen en werkbladen"
+      ],
+      "sustainability": [
+        "Locatie bereikbaar met openbaar vervoer of samen reizen",
+        "Seizoensgebonden en lokaal eten",
+        "Geen geprinte presentaties; één besluitenbord"
+      ],
+      "evaluation": [
+        "Drie keuzes met eigenaar vastgelegd",
+        "Korte vragenlijst: hoe gedragen zijn de keuzes?",
+        "Terugblik na 60 dagen"
+      ],
+      "invitation": {
+        "subject": "Heidag [datum]: drie keuzes voor volgend jaar",
+        "text": "Op [datum] gaan we een dag weg van kantoor, naar [locatie] in [plaats]. We beginnen om 09:00 met een wandeling en eindigen met drie keuzes voor het komende jaar. Vul vooraf de korte vragenlijst in: [link].",
+        "reminder": "Morgen is de heidag. Trek schoenen aan waarop je kunt wandelen."
+      },
+      "occasions": [
+        "strategie",
+        "team"
+      ],
+      "occasionText": "Een nieuw jaar, een nieuwe strategie of een kantelpunt: het team moet samen kiezen waar het de komende tijd op inzet.",
+      "goals": {
+        "business": [
+          "Drie gedragen strategische keuzes",
+          "Eigenaarschap per keuze"
+        ],
+        "participant": [
+          "Gehoord worden",
+          "Weten wat er besloten is en waarom"
+        ],
+        "behaviour": [
+          "Eigenaren zetten binnen twee weken een eerste stap",
+          "Besluiten worden niet opnieuw besproken"
+        ]
+      },
+      "audienceInsight": {
+        "why": "Ze willen tijd voor het gesprek dat in de dagelijkse overleggen niet lukt.",
+        "interests": "Richting, eerlijkheid, rust en een goede maaltijd.",
+        "avoid": "Een volle agenda, lange presentaties en geen besluiten.",
+        "approach": "Een uitnodiging die duidelijk maakt wat de dag oplevert.",
+        "mode": "Praten, doen en kiezen."
+      },
+      "mood": "Rustig en scherp: ruimte om te denken, met een duidelijk eindpunt.",
+      "moodDirections": [
+        "natuurlijk",
+        "exclusief"
+      ],
+      "connectionDesign": [
+        "Wandeling in tweetallen die normaal weinig samenwerken",
+        "Gemengde groepen per scenario",
+        "Diner aan één lange tafel"
+      ],
+      "journey": [
+        {
+          "phase": "Vooraf",
+          "title": "Nieuwsgierigheid",
+          "text": "Korte vragenlijst over waar de organisatie staat."
+        },
+        {
+          "phase": "Aankomst",
+          "title": "Rust",
+          "text": "Koffie, jassen aan en naar buiten."
+        },
+        {
+          "phase": "Programma",
+          "title": "Eerlijkheid",
+          "text": "Eerlijke foto en drie scenario's."
+        },
+        {
+          "phase": "Hoogtepunt",
+          "title": "Het besluit",
+          "text": "Drie keuzes op het bord."
+        },
+        {
+          "phase": "Afsluiting",
+          "title": "Eigenaarschap",
+          "text": "Eigenaren en eerste stappen."
+        },
+        {
+          "phase": "Nazorg",
+          "title": "Opvolging",
+          "text": "Besluitenlijst en terugblik na 60 dagen."
+        }
+      ],
+      "communication": [
+        {
+          "when": "8 weken vooraf",
+          "channel": "Save the date",
+          "message": "Datum, plek en doel van de dag."
+        },
+        {
+          "when": "3 weken vooraf",
+          "channel": "Uitnodiging",
+          "message": "Programma en vragenlijst."
+        },
+        {
+          "when": "1 dag vooraf",
+          "channel": "Praktisch",
+          "message": "Route, kleding en starttijd."
+        },
+        {
+          "when": "Binnen 2 dagen na",
+          "channel": "Besluitenlijst",
+          "message": "Keuzes, eigenaren en data."
+        }
+      ],
+      "conditions": [
+        "Een plek met daglicht, breakoutruimtes en een wandelroute",
+        "Een externe facilitator",
+        "Besluitvorm vooraf afgesproken"
+      ],
+      "accessibility": [
+        "Alternatieve route voor de wandeling",
+        "Rolstoeltoegankelijke zalen",
+        "Dieetwensen vooraf opgevraagd"
+      ],
+      "kpis": [
+        {
+          "goal": "Besluiten",
+          "kpi": "Aantal keuzes met eigenaar",
+          "when": "Direct",
+          "how": "Besluitenlijst"
+        },
+        {
+          "goal": "Draagvlak",
+          "kpi": "Aandeel deelnemers dat de keuzes steunt",
+          "when": "Direct en 30 dagen",
+          "how": "Korte peiling"
+        },
+        {
+          "goal": "Uitvoering",
+          "kpi": "Eerste stappen gezet",
+          "when": "60 dagen",
+          "how": "Terugblik"
+        }
+      ],
+      "adjustments": {
+        "exclusiever": "Een landgoed met overnachting, een privéchef en een gastspreker van naam.",
+        "interactiever": "Meer werkvormen: rollenspel per scenario en een 'advocaat van de duivel'.",
+        "budgetbewust": "Een eenvoudige locatie dicht bij huis, interne facilitator en lunch zonder diner."
+      },
+      "plan": {
+        "whyLive": "Strategische keuzes vragen een gesprek van een hele dag, weg van kantoor en schermen; online lukt dat niet.",
+        "scope": "Geen informatiebijeenkomst en geen teamuitje; alleen de koers en de keuzes.",
+        "redThread": "Eén vraag die begint bij de wandeling, wordt uitgewerkt in scenario's en eindigt in drie keuzes met eigenaar.",
+        "moodWords": [
+          "rustig",
+          "eerlijk",
+          "scherp"
+        ],
+        "visual": "Daglicht, natuurlijke materialen, één groot besluitenbord in plaats van slides.",
+        "senses": "Buitenlucht, stilte tijdens het denken, een goede lunch.",
+        "restMoments": "De wandeling, de lunch en de pauze buiten.",
+        "frictions": "Te volle agenda, geen besluitvorm afgesproken, telefoons.",
+        "keyMessage": "Eén dag, drie keuzes, iedereen weet wat er nu gebeurt.",
+        "irreplaceable": "Het moment dat de drie keuzes op het bord staan."
+      },
+      "venueMatches": [
+        {
+          "venueId": "beyaerd",
+          "priority": 1,
+          "role": "VOORKEUR",
+          "reason": "Een hotel op de Veluwe met zalen, bos voor de wandeling en een restaurant voor het diner.",
+          "pro": "Bos direct naast de deur; overnachten kan.",
+          "watch": "Reistijd voor deelnemers uit het westen."
+        },
+        {
+          "venueId": "spaarnwoude",
+          "priority": 2,
+          "role": "ALTERNATIEF",
+          "reason": "Een parkhotel in het groen tussen Amsterdam en Haarlem.",
+          "pro": "Dicht bij de Randstad, toch in het groen.",
+          "watch": "Breakoutruimtes vooraf reserveren."
+        },
+        {
+          "venueId": "court",
+          "priority": 3,
+          "role": "ALTERNATIEF",
+          "reason": "Een monumentale vergaderlocatie in Breda voor kleinere teams.",
+          "pro": "Bijzondere sfeer voor tot 50 personen.",
+          "watch": "Wandelroute in de stad in plaats van de natuur."
+        }
+      ],
+      "supplierRoles": [
+        "Facilitatie (dagvoorzitter)",
+        "Catering",
+        "AV & techniek",
+        "Vastleggen & delen"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "hooge",
+          "role": "Catering",
+          "reason": "Lunch en diner met aandacht voor rust aan tafel."
+        },
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Eenvoudige techniek voor presentaties en stemmen."
+        },
+        {
+          "supplierId": "miceops",
+          "role": "Vastleggen & delen",
+          "reason": "Vragenlijst vooraf en stemmen tijdens de dag."
+        }
+      ],
+      "seo": {
+        "title": "De heidag — strategische dag voor MT en bestuur | Top Locaties",
+        "description": "Een heidag van 09:00 tot 17:00: wandelend beginnen, eerlijke foto, drie scenario's, kiezen en eigenaarschap. Compleet draaiboek, catering en partnerlocaties."
+      }
+    },
+    {
+      "id": "hybride",
+      "slug": "hybride-congres",
+      "number": "014",
+      "status": "published",
+      "priority": 14,
+      "dayPart": "dag",
+      "title": "Het hybride congres",
+      "headline": [
+        "HET HYBRIDE",
+        "*CONGRES.*"
+      ],
+      "category": "inspiratie",
+      "categoryLabel": "KENNIS & INSPIRATIE",
+      "format": "DAG / CONGRES + LIVESTREAM",
+      "teaser": "Een congres dat werkt voor wie er is én voor wie online meekijkt: een strak programma, een eigen presentator voor de stream en interactie die beide groepen verbindt.",
+      "proposition": "Geen camera achterin de zaal, maar een congres dat voor twee publieken is ontworpen: in de zaal en thuis even goed.",
+      "tags": [
+        "CONGRES",
+        "HYBRIDE",
+        "LIVESTREAM"
+      ],
+      "guestCountMin": 80,
+      "guestCountMax": 600,
+      "feelings": [
+        "energie",
+        "focus",
+        "verbinding"
+      ],
+      "feelingWeights": {
+        "energie": 4,
+        "focus": 5,
+        "verbinding": 3
+      },
+      "feelingReasons": {
+        "energie": "Korte blokken, een strakke regie en wisselende sprekers.",
+        "focus": "Elke sessie levert één heldere boodschap op.",
+        "verbinding": "Vragen uit de zaal en van online deelnemers komen samen."
+      },
+      "audiences": [
+        "Brancheorganisaties en verenigingen",
+        "Organisaties met meerdere vestigingen",
+        "Kennisinstellingen"
+      ],
+      "objective": "Kennis delen met een groot publiek, in de zaal en online, met actieve deelname van beide groepen.",
+      "idea": {
+        "label": "Een hybride congres slaagt als het voor twee publieken is ontworpen, niet voor één met een camera erbij.",
+        "headline": [
+          "TWEE PUBLIEKEN.",
+          "*ÉÉN CONGRES.*"
+        ],
+        "body": "Het programma bestaat uit korte blokken van hooguit twintig minuten. Een presentator in de zaal en een studiopresentator voor de stream geven beide publieken een eigen gastheer. Vragen komen via één tool binnen en worden samen beantwoord. In de pauzes krijgt het online publiek een eigen programma met interviews, zodat niemand naar een leeg scherm kijkt.",
+        "values": [
+          [
+            "KORT",
+            "Blokken van hooguit twintig minuten."
+          ],
+          [
+            "GELIJK",
+            "Online en zaal krijgen elk een eigen gastheer."
+          ],
+          [
+            "SAMEN",
+            "Eén vragenstroom voor iedereen."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "duration": "1 dag (09:30–17:00), opbouw de dag ervoor",
+      "modes": [
+        "luisteren",
+        "doen"
+      ],
+      "program": [
+        {
+          "time": "09:30",
+          "title": "Opening in twee studio's",
+          "description": "Zaal en stream starten samen.",
+          "details": {
+            "intro": "De dagvoorzitter opent in de zaal, de studiopresentator heet het online publiek welkom en legt uit hoe je meedoet.",
+            "steps": [
+              "Korte openingsfilm",
+              "Welkom in de zaal en online",
+              "Uitleg van de vragentool",
+              "Eerste peiling: waar kijk je vandaan?"
+            ],
+            "roles": [
+              "Content & livestream",
+              "AV & techniek"
+            ],
+            "needs": [
+              "Twee presentatieplekken",
+              "Vragentool"
+            ],
+            "tip": "Laat de eerste peiling zien: dat maakt beide publieken zichtbaar.",
+            "why": "Wie online kijkt, moet vanaf minuut één voelen dat hij erbij hoort.",
+            "result": "Beide publieken zijn aangehaakt."
+          }
+        },
+        {
+          "time": "09:50",
+          "title": "Keynote",
+          "description": "Het grote verhaal van de dag.",
+          "details": {
+            "intro": "Een keynote van twintig minuten met één kernboodschap, gevolgd door tien minuten vragen uit zaal en stream.",
+            "steps": [
+              "Keynote van 20 minuten",
+              "10 minuten vragen, om en om zaal en online",
+              "Kernboodschap in één zin herhalen"
+            ],
+            "roles": [
+              "AV & techniek",
+              "Content & livestream"
+            ],
+            "needs": [
+              "Confidence monitor",
+              "Vragenmoderator"
+            ],
+            "tip": "Laat de moderator vragen bundelen; dan blijft het tempo hoog.",
+            "why": "Een sterk begin zet de toon voor de hele dag.",
+            "result": "Iedereen kent de kernboodschap."
+          }
+        },
+        {
+          "time": "11:00",
+          "title": "Parallelle sessies",
+          "description": "Kies je eigen verdieping.",
+          "details": {
+            "intro": "Drie sessies tegelijk; één ervan wordt live gestreamd, de andere twee worden opgenomen.",
+            "steps": [
+              "Drie sessies van 45 minuten",
+              "Eén sessie live in de stream",
+              "Twee sessies opgenomen voor later"
+            ],
+            "roles": [
+              "AV & techniek",
+              "Content & livestream"
+            ],
+            "needs": [
+              "Drie zalen",
+              "Opnameapparatuur"
+            ],
+            "tip": "Kies de stream-sessie met het breedste publiek.",
+            "why": "Keuze geeft eigenaarschap over je eigen dag.",
+            "result": "Iedereen heeft een verdieping die bij hem past."
+          }
+        },
+        {
+          "time": "13:30",
+          "title": "Panel met zaal en online",
+          "description": "Het gesprek met iedereen.",
+          "details": {
+            "intro": "Een panel van drie experts, met vragen die live uit beide publieken komen.",
+            "steps": [
+              "Panelleden kort voorstellen",
+              "Stellingen met live peiling",
+              "Vragen om en om uit zaal en online"
+            ],
+            "roles": [
+              "Content & livestream"
+            ],
+            "needs": [
+              "Peilingtool",
+              "Panelopstelling"
+            ],
+            "tip": "Laat een online deelnemer live inbellen met een vraag.",
+            "why": "Interactie maakt het verschil tussen kijken en meedoen.",
+            "result": "Een gesprek waarin beide publieken een stem hebben."
+          }
+        },
+        {
+          "time": "15:00",
+          "title": "Werksessie: wat doe jij morgen?",
+          "description": "Kennis omzetten naar actie.",
+          "details": {
+            "intro": "In de zaal in groepjes aan tafel, online in kleine breakoutrooms: wat pas je morgen toe?",
+            "steps": [
+              "Vraag op het scherm",
+              "15 minuten in groepjes",
+              "Drie voorbeelden plenair delen"
+            ],
+            "roles": [
+              "Content & livestream"
+            ],
+            "needs": [
+              "Breakoutrooms",
+              "Werkbladen"
+            ],
+            "tip": "Zet online begeleiders in de breakoutrooms.",
+            "why": "Toepassing maakt kennis blijvend.",
+            "result": "Iedereen heeft een concrete actie."
+          }
+        },
+        {
+          "time": "16:15",
+          "title": "Afsluiting en borrel",
+          "description": "Samenvatten en proosten.",
+          "details": {
+            "intro": "De dagvoorzitter vat samen in drie inzichten; de stream sluit af met een interview. Daarna een borrel in de zaal.",
+            "steps": [
+              "Drie inzichten van de dag",
+              "Online afsluitend interview",
+              "Borrel in de foyer"
+            ],
+            "roles": [
+              "Catering",
+              "Content & livestream"
+            ],
+            "needs": [
+              "Foyer"
+            ],
+            "tip": "Stuur online deelnemers direct na afloop de opnames.",
+            "why": "Een helder einde maakt de dag af.",
+            "result": "Iedereen weet wat de kern was."
+          }
+        }
+      ],
+      "runbook": [
+        {
+          "time": "07:30",
+          "duration": "90 min",
+          "title": "Techniek en stream testen",
+          "description": "Camera's, geluid, stream en vragentool.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "09:00",
+          "duration": "30 min",
+          "title": "Inloop",
+          "description": "Registratie en koffie; stream toont aftelklok.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "09:30",
+          "duration": "20 min",
+          "title": "Opening",
+          "description": "Dagvoorzitter en studiopresentator.",
+          "owner": "Content & livestream",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "09:50",
+          "duration": "30 min",
+          "title": "Keynote",
+          "description": "Met vragen uit zaal en online.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "10:20",
+          "duration": "40 min",
+          "title": "Pauze",
+          "description": "Online: interviews in de studio.",
+          "owner": "Content & livestream",
+          "space": "Studio",
+          "needs": []
+        },
+        {
+          "time": "11:00",
+          "duration": "45 min",
+          "title": "Parallelle sessies",
+          "description": "Eén live, twee opgenomen.",
+          "owner": "AV & techniek",
+          "space": "Zalen 1–3",
+          "needs": []
+        },
+        {
+          "time": "12:00",
+          "duration": "90 min",
+          "title": "Lunch",
+          "description": "Netwerklunch; online programma.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "13:30",
+          "duration": "60 min",
+          "title": "Panel",
+          "description": "Met live peilingen.",
+          "owner": "Content & livestream",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "14:30",
+          "duration": "30 min",
+          "title": "Pauze",
+          "description": "Koffie en online interviews.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "15:00",
+          "duration": "60 min",
+          "title": "Werksessie",
+          "description": "Groepjes en breakoutrooms.",
+          "owner": "Content & livestream",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "16:15",
+          "duration": "15 min",
+          "title": "Afsluiting",
+          "description": "Drie inzichten.",
+          "owner": "Content & livestream",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "16:30",
+          "duration": "60 min",
+          "title": "Borrel",
+          "description": "In de foyer.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        }
+      ],
+      "planning": [
+        {
+          "when": "16–12 WEKEN VOORAF",
+          "title": "Format en locatie",
+          "tasks": [
+            "Doel en doelgroep",
+            "Locatie met goede verbinding",
+            "Sprekers vragen"
+          ]
+        },
+        {
+          "when": "10–6 WEKEN VOORAF",
+          "title": "Productie",
+          "tasks": [
+            "Streamingpartner en platform",
+            "Registratie openen",
+            "Programma publiceren"
+          ]
+        },
+        {
+          "when": "4–1 WEKEN VOORAF",
+          "title": "Generale",
+          "tasks": [
+            "Sprekers briefen",
+            "Techniektest op locatie",
+            "Online begeleiders inplannen"
+          ]
+        },
+        {
+          "when": "NA AFLOOP",
+          "title": "Nazorg",
+          "tasks": [
+            "Opnames delen",
+            "Evaluatie zaal en online",
+            "Kijkcijfers analyseren"
+          ]
+        }
+      ],
+      "catering": {
+        "concept": "Eten dat het programma niet ophoudt: snel te pakken, gezond en met ruimte om te netwerken.",
+        "moments": [
+          {
+            "moment": "Inloop",
+            "time": "09:00",
+            "proposal": "Koffie, thee en kleine broodjes.",
+            "format": "Buffet in de foyer",
+            "dietary": "Vegan gelabeld"
+          },
+          {
+            "moment": "Lunch",
+            "time": "12:00",
+            "proposal": "Bowls, wraps en soep.",
+            "format": "Walking lunch",
+            "dietary": "Glutenvrij en vegan"
+          },
+          {
+            "moment": "Middagpauze",
+            "time": "14:30",
+            "proposal": "Fruit, koek en iets hartigs.",
+            "format": "Buffet",
+            "dietary": "Notenvrij alternatief"
+          },
+          {
+            "moment": "Borrel",
+            "time": "16:30",
+            "proposal": "Hapjes en drankjes.",
+            "format": "Rondgaand",
+            "dietary": "Vegetarisch en vegan"
+          }
+        ],
+        "drinks": "Koffie, thee en water de hele dag; bij de borrel bier, wijn en alcoholvrij.",
+        "notes": "Lunch binnen 90 minuten, met genoeg uitgiftepunten."
+      },
+      "entertainment": [
+        {
+          "moment": "Pauzes online",
+          "option": "Studio-interviews met sprekers",
+          "format": "10–15 minuten per pauze",
+          "why": "Online publiek kijkt niet naar een leeg scherm.",
+          "role": "Content & livestream"
+        },
+        {
+          "moment": "Opening",
+          "option": "Openingsfilm",
+          "format": "3 minuten",
+          "why": "Zet het thema neer voor beide publieken.",
+          "role": "Content & livestream"
+        }
+      ],
+      "crew": [
+        {
+          "role": "Productieleider",
+          "count": "1",
+          "task": "Draaiboek en regie"
+        },
+        {
+          "role": "Studiopresentator",
+          "count": "1",
+          "task": "Gastheer van het online publiek"
+        },
+        {
+          "role": "Vragenmoderator",
+          "count": "1",
+          "task": "Vragen bundelen uit zaal en online"
+        },
+        {
+          "role": "Online begeleiders",
+          "count": "1 per breakoutroom",
+          "task": "Werksessie online leiden"
+        },
+        {
+          "role": "Technici",
+          "count": "3–5",
+          "task": "Beeld, geluid en stream"
+        }
+      ],
+      "spaces": [
+        {
+          "space": "Plenaire zaal",
+          "use": "Opening, keynote, panel",
+          "requirements": "Theateropstelling, podium, cameraposities"
+        },
+        {
+          "space": "Studio",
+          "use": "Online programma",
+          "requirements": "Kleine set, eigen licht en geluid"
+        },
+        {
+          "space": "Zalen 1–3",
+          "use": "Parallelle sessies",
+          "requirements": "Voor 50–150 personen"
+        },
+        {
+          "space": "Foyer",
+          "use": "Lunch, pauzes, borrel",
+          "requirements": "Voldoende uitgiftepunten"
+        }
+      ],
+      "checklist": [
+        {
+          "group": "Techniek",
+          "items": [
+            "Bekabelde internetverbinding met reserve",
+            "Stream getest",
+            "Vragentool ingericht"
+          ]
+        },
+        {
+          "group": "Programma",
+          "items": [
+            "Sprekers gebriefd op 20 minuten",
+            "Online programma voor de pauzes",
+            "Opnames gepland"
+          ]
+        },
+        {
+          "group": "Deelnemers",
+          "items": [
+            "Registratie zaal en online",
+            "Link en instructie verstuurd",
+            "Toegankelijkheid: ondertiteling"
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "title": "Kleiner (tot 150 gasten)",
+          "text": "Eén zaal, geen parallelle sessies, één presentator die beide publieken bedient."
+        },
+        {
+          "title": "Groot (vanaf 400 gasten)",
+          "text": "Extra camera's, een tweede studio en meer online begeleiders."
+        },
+        {
+          "title": "Volledig online",
+          "text": "Alleen de studio, met een strak programma van drie uur."
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Uitval van internet of stream",
+          "mitigation": "Tweede verbinding en een reservestream; opname loopt altijd mee."
+        },
+        {
+          "risk": "Online publiek haakt af",
+          "mitigation": "Korte blokken, eigen presentator en interactie elk kwartier."
+        },
+        {
+          "risk": "Uitloop van sprekers",
+          "mitigation": "Zichtbare klok en een dagvoorzitter die strak regisseert."
+        }
+      ],
+      "budgetItems": [
+        "Locatiehuur",
+        "AV-techniek en camera's",
+        "Livestream en platform",
+        "Sprekers en dagvoorzitter",
+        "Catering",
+        "Registratie en communicatie"
+      ],
+      "sustainability": [
+        "Online deelname scheelt reizen",
+        "Locatie bereikbaar met openbaar vervoer",
+        "Geen papieren programma; alles in de app"
+      ],
+      "evaluation": [
+        "Waardering zaal en online apart meten",
+        "Kijktijd en afhakers in de stream",
+        "Aantal vragen en deelname aan peilingen"
+      ],
+      "invitation": {
+        "subject": "[Naam congres] op [datum]: in de zaal of online",
+        "text": "Op [datum] organiseren we [naam congres] in [locatie] in [plaats], van 09:30 tot 17:00. Je bent welkom in de zaal of online: je krijgt dan een eigen presentator, live vragen en een werksessie. Meld je aan via [link] en kies hoe je meedoet.",
+        "reminder": "Morgen is het congres. In de zaal: inloop vanaf 09:00. Online: de stream start om 09:25 via [link]."
+      },
+      "occasions": [
+        "kennis",
+        "lancering"
+      ],
+      "occasionText": "Een organisatie wil kennis delen met een groot en verspreid publiek, zonder dat iedereen hoeft te reizen.",
+      "goals": {
+        "business": [
+          "Kennis bij een groot publiek brengen",
+          "Bereik vergroten met online deelname"
+        ],
+        "participant": [
+          "Nieuwe inzichten opdoen",
+          "Vragen kunnen stellen, ook online"
+        ],
+        "behaviour": [
+          "Deelnemers passen één inzicht toe",
+          "Opnames worden later teruggekeken"
+        ]
+      },
+      "audienceInsight": {
+        "why": "Ze willen bijblijven in hun vak zonder een hele dag te reizen.",
+        "interests": "Praktische kennis, sterke sprekers, vakgenoten.",
+        "avoid": "Lange monologen en een stream die niet werkt.",
+        "approach": "Een uitnodiging die online deelname gelijkwaardig maakt.",
+        "mode": "Luisteren, vragen stellen en toepassen."
+      },
+      "mood": "Strak en energiek: een tv-uitzending met een zaal vol mensen.",
+      "moodDirections": [
+        "vernieuwend",
+        "actief"
+      ],
+      "connectionDesign": [
+        "Eén vragenstroom voor zaal en online",
+        "Peilingen die beide publieken zichtbaar maken",
+        "Werksessie in groepjes en breakoutrooms"
+      ],
+      "journey": [
+        {
+          "phase": "Vooraf",
+          "title": "Gemak",
+          "text": "Kies bij aanmelding: zaal of online."
+        },
+        {
+          "phase": "Aankomst",
+          "title": "Welkom",
+          "text": "Twee gastheren: in de zaal en in de stream."
+        },
+        {
+          "phase": "Programma",
+          "title": "Meedoen",
+          "text": "Vragen en peilingen in elke sessie."
+        },
+        {
+          "phase": "Hoogtepunt",
+          "title": "Het gesprek",
+          "text": "Panel met vragen uit beide publieken."
+        },
+        {
+          "phase": "Afsluiting",
+          "title": "Toepassen",
+          "text": "Werksessie: wat doe jij morgen?"
+        },
+        {
+          "phase": "Nazorg",
+          "title": "Terugkijken",
+          "text": "Opnames en samenvatting binnen een dag."
+        }
+      ],
+      "communication": [
+        {
+          "when": "10 weken vooraf",
+          "channel": "Save the date",
+          "message": "Datum en de keuze: zaal of online."
+        },
+        {
+          "when": "6 weken vooraf",
+          "channel": "Programma",
+          "message": "Sprekers en sessies."
+        },
+        {
+          "when": "1 dag vooraf",
+          "channel": "Praktisch",
+          "message": "Route of streamlink."
+        },
+        {
+          "when": "Binnen 1 dag na",
+          "channel": "Opnames",
+          "message": "Video's en drie inzichten."
+        }
+      ],
+      "conditions": [
+        "Een bekabelde internetverbinding met reserve",
+        "Een plenaire zaal en een kleine studio",
+        "Sprekers die zich aan twintig minuten houden"
+      ],
+      "accessibility": [
+        "Live ondertiteling in de stream",
+        "Rolstoeltoegankelijke zalen",
+        "Opnames met ondertiteling"
+      ],
+      "kpis": [
+        {
+          "goal": "Bereik",
+          "kpi": "Deelnemers in de zaal en online",
+          "when": "Direct",
+          "how": "Registratie en kijkcijfers"
+        },
+        {
+          "goal": "Betrokkenheid",
+          "kpi": "Deelname aan vragen en peilingen",
+          "when": "Direct",
+          "how": "Vragentool"
+        },
+        {
+          "goal": "Toepassing",
+          "kpi": "Aandeel deelnemers dat een inzicht toepaste",
+          "when": "30 dagen",
+          "how": "Korte peiling"
+        }
+      ],
+      "adjustments": {
+        "exclusiever": "Een theaterzaal, een bekende presentator en een tv-studio als online set.",
+        "interactiever": "Meer peilingen, online deelnemers live in beeld en een hackathon in de middag.",
+        "budgetbewust": "Eén zaal, één camera met een goede regie en een eigen moderator."
+      },
+      "plan": {
+        "whyLive": "Vakgenoten willen elkaar ontmoeten, maar niet iedereen kan reizen; hybride geeft beide groepen een volwaardige dag.",
+        "scope": "Geen webinar met publiek en geen beurs; een congres met een eigen online programma.",
+        "redThread": "Eén thema dat in de opening wordt neergezet, in de sessies wordt verdiept en in de werksessie wordt toegepast.",
+        "moodWords": [
+          "strak",
+          "energiek",
+          "toegankelijk"
+        ],
+        "visual": "Een podium als tv-set, heldere graphics in huisstijl, een herkenbare studio.",
+        "senses": "Korte jingles tussen de blokken, licht dat wisselt per sessie.",
+        "restMoments": "De lunch en de pauzes, met een eigen online programma.",
+        "frictions": "Slechte verbinding, uitloop, online deelnemers die zich vergeten voelen.",
+        "keyMessage": "Doe mee waar je wilt: in de zaal of online, even goed.",
+        "irreplaceable": "Het panel waarin vragen uit de zaal en van thuis samenkomen."
+      },
+      "venueMatches": [
+        {
+          "venueId": "thcc",
+          "priority": 1,
+          "role": "VOORKEUR",
+          "reason": "Een congrescentrum in Den Haag met plenaire zalen en subzalen.",
+          "pro": "Ingericht op grote congressen, met zalen voor parallelle sessies.",
+          "watch": "Studio en streamingtechniek vooraf afstemmen."
+        },
+        {
+          "venueId": "beeld",
+          "priority": 2,
+          "role": "ALTERNATIEF",
+          "reason": "Een mediainstituut in Hilversum: een passende omgeving voor een congres dat ook een uitzending is.",
+          "pro": "Een plek die over media gaat; versterkt het hybride karakter.",
+          "watch": "Zalen en routes samen met de locatie indelen."
+        },
+        {
+          "venueId": "kunstlinie",
+          "priority": 3,
+          "role": "ALTERNATIEF",
+          "reason": "Een theater in Almere met een grote zaal en foyer.",
+          "pro": "Theaterzaal met professionele podiumtechniek.",
+          "watch": "Subzalen voor parallelle sessies zijn beperkt."
+        }
+      ],
+      "supplierRoles": [
+        "AV & techniek",
+        "Content & livestream",
+        "Catering",
+        "Registratie & eventsoftware"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Podium, beeld en geluid voor zaal en stream."
+        },
+        {
+          "supplierId": "objektiv",
+          "role": "Content & livestream",
+          "reason": "Livestream, studio en opnames."
+        },
+        {
+          "supplierId": "karsten",
+          "role": "Catering",
+          "reason": "Snelle, gezonde catering voor een groot publiek."
+        },
+        {
+          "supplierId": "miceops",
+          "role": "Registratie & eventsoftware",
+          "reason": "Registratie, vragentool en peilingen."
+        }
+      ],
+      "seo": {
+        "title": "Het hybride congres — congres in de zaal én online | Top Locaties",
+        "description": "Een hybride congres van 09:30 tot 17:00 met twee presentatoren, één vragenstroom, parallelle sessies en een werksessie. Compleet draaiboek en partnerlocaties."
+      }
+    },
+    {
+      "id": "personeelsfeest",
+      "slug": "personeelsfeest",
+      "number": "015",
+      "status": "published",
+      "priority": 15,
+      "dayPart": "avond",
+      "title": "Het personeelsfeest",
+      "headline": [
+        "HET",
+        "*PERSONEELSFEEST.*"
+      ],
+      "category": "beleven",
+      "categoryLabel": "BELEVEN & VERRASSEN",
+      "format": "AVOND / FEEST",
+      "teaser": "Een avond waarop iedereen zich gezien voelt: een thema dat verrast, eten dat verbindt, een moment van dank en daarna een echt feest.",
+      "proposition": "Geen borrel met een DJ in de kantine, maar een avond met een eigen verhaal, waarin collega's elkaar van een andere kant leren kennen en het bedrijf zegt: dank je wel.",
+      "tags": [
+        "FEEST",
+        "MEDEWERKERS",
+        "DANK"
+      ],
+      "guestCountMin": 60,
+      "guestCountMax": 800,
+      "feelings": [
+        "trots",
+        "verbinding",
+        "energie"
+      ],
+      "feelingWeights": {
+        "trots": 4,
+        "verbinding": 5,
+        "energie": 4
+      },
+      "feelingReasons": {
+        "trots": "Een moment waarop het werk van mensen zichtbaar wordt gewaardeerd.",
+        "verbinding": "Collega's van verschillende afdelingen ontmoeten elkaar aan tafel en op de dansvloer.",
+        "energie": "Een opbouw van ontvangst naar feest, met live muziek."
+      },
+      "audiences": [
+        "Alle medewerkers",
+        "Medewerkers met partners",
+        "Vestigingen samen"
+      ],
+      "objective": "Medewerkers bedanken en de onderlinge band versterken.",
+      "idea": {
+        "label": "Een personeelsfeest is het moment waarop een organisatie laat zien dat ze haar mensen ziet.",
+        "headline": [
+          "DIT IS",
+          "*VOOR JULLIE.*"
+        ],
+        "body": "De avond heeft een thema dat bij het bedrijf past en dat al in de uitnodiging begint. Bij aankomst wacht een verrassing, daarna eten gasten aan gemengde tafels. Een kort en persoonlijk dankmoment, met collega's in beeld, is het hart van de avond. Daarna neemt een liveband het over en wordt het een feest.",
+        "values": [
+          [
+            "GEZIEN",
+            "Iedereen hoort erbij."
+          ],
+          [
+            "GEMENGD",
+            "Tafels over afdelingen heen."
+          ],
+          [
+            "FEEST",
+            "Een avond om te onthouden."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "duration": "Avond (18:30–00:30), opbouw vanaf 12:00",
+      "modes": [
+        "vieren",
+        "ontmoeten"
+      ],
+      "program": [
+        {
+          "time": "18:30",
+          "title": "Aankomst met een verrassing",
+          "description": "Het thema begint bij de deur.",
+          "details": {
+            "intro": "Gasten komen binnen in een ruimte die het thema meteen voelbaar maakt: aankleding, muziek en een welkomstdrankje.",
+            "steps": [
+              "Ontvangst door hosts",
+              "Welkomstdrankje",
+              "Fotomoment in het thema",
+              "Tafelkaart met een gemengde tafel"
+            ],
+            "roles": [
+              "Inrichting",
+              "Catering",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Decor in thema",
+              "Fotoplek"
+            ],
+            "tip": "Laat de directie zelf bij de deur staan.",
+            "why": "Een sterk begin zet de toon voor de avond.",
+            "result": "Iedereen voelt meteen: dit is voor ons."
+          }
+        },
+        {
+          "time": "19:15",
+          "title": "Eten aan gemengde tafels",
+          "description": "Collega's van overal samen.",
+          "details": {
+            "intro": "Een walking dinner of diner aan gemengde tafels, met gerechten die gedeeld worden.",
+            "steps": [
+              "Gasten aan tafels met collega's van andere afdelingen",
+              "Gedeelde gerechten in rondes",
+              "Een tafelvraag om het gesprek te starten"
+            ],
+            "roles": [
+              "Catering",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Tafelvragen",
+              "Gedeelde schalen"
+            ],
+            "tip": "Een tafelvraag als 'wat weet niemand hier van jou?' breekt het ijs.",
+            "why": "Gemengde tafels zorgen dat collega's elkaar leren kennen.",
+            "result": "Nieuwe gesprekken over afdelingen heen."
+          }
+        },
+        {
+          "time": "20:45",
+          "title": "Het dankmoment",
+          "description": "Kort, persoonlijk en met collega's in beeld.",
+          "details": {
+            "intro": "De directie bedankt in vijf minuten; een film met collega's laat zien wat er dit jaar samen is bereikt.",
+            "steps": [
+              "Film met collega's (5 minuten)",
+              "Kort dankwoord",
+              "Toost met iedereen"
+            ],
+            "roles": [
+              "Content & livestream",
+              "AV & techniek"
+            ],
+            "needs": [
+              "Scherm en geluid",
+              "Film"
+            ],
+            "tip": "Houd het onder de tien minuten; dan blijft het een cadeau.",
+            "why": "Erkenning is de kern van een personeelsfeest.",
+            "result": "Iedereen voelt zich gezien."
+          }
+        },
+        {
+          "time": "21:00",
+          "title": "Liveband en feest",
+          "description": "De dansvloer gaat open.",
+          "details": {
+            "intro": "Een liveband speelt bekende nummers; later neemt een DJ het over.",
+            "steps": [
+              "Liveband in twee sets",
+              "DJ tot het einde",
+              "Bar open"
+            ],
+            "roles": [
+              "Entertainment",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Podium",
+              "Dansvloer"
+            ],
+            "tip": "Kies een band die het publiek kent en vraagt om mee te zingen.",
+            "why": "Samen feesten verbindt meer dan welke speech ook.",
+            "result": "Een echte feestavond."
+          }
+        },
+        {
+          "time": "23:30",
+          "title": "Late snack en afsluiting",
+          "description": "Iets warms voor onderweg.",
+          "details": {
+            "intro": "Een late snack en een rustige afsluiting, met vervoer naar huis geregeld.",
+            "steps": [
+              "Late snack",
+              "Laatste ronde",
+              "Taxi's of pendelbus"
+            ],
+            "roles": [
+              "Catering",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Vervoer"
+            ],
+            "tip": "Regel vervoer vooraf; dat voorkomt problemen.",
+            "why": "Een goed einde zorgt dat iedereen veilig thuiskomt.",
+            "result": "Iedereen gaat met een glimlach naar huis."
+          }
+        }
+      ],
+      "runbook": [
+        {
+          "time": "12:00",
+          "duration": "300 min",
+          "title": "Opbouw",
+          "description": "Decor, podium, licht en geluid.",
+          "owner": "Inrichting",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "17:00",
+          "duration": "60 min",
+          "title": "Soundcheck",
+          "description": "Band en techniek.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "17:45",
+          "duration": "30 min",
+          "title": "Briefing",
+          "description": "Hosts, bar en catering.",
+          "owner": "Productie & begeleiding",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "18:30",
+          "duration": "45 min",
+          "title": "Ontvangst",
+          "description": "Welkomstdrankje en fotomoment.",
+          "owner": "Horecapersoneel",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "19:15",
+          "duration": "90 min",
+          "title": "Diner",
+          "description": "Gemengde tafels.",
+          "owner": "Catering",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "20:45",
+          "duration": "15 min",
+          "title": "Dankmoment",
+          "description": "Film en dankwoord.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "21:00",
+          "duration": "150 min",
+          "title": "Liveband",
+          "description": "Twee sets.",
+          "owner": "Entertainment",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "23:30",
+          "duration": "30 min",
+          "title": "Late snack",
+          "description": "Warm en klein.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "00:00",
+          "duration": "30 min",
+          "title": "Afsluiting",
+          "description": "Laatste ronde en vervoer.",
+          "owner": "Productie & begeleiding",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "00:30",
+          "duration": "120 min",
+          "title": "Afbouw",
+          "description": "Alles retour.",
+          "owner": "Inrichting",
+          "space": "Zaal",
+          "needs": []
+        }
+      ],
+      "planning": [
+        {
+          "when": "16–12 WEKEN VOORAF",
+          "title": "Thema en locatie",
+          "tasks": [
+            "Datum, budget en thema",
+            "Locatie met dansvloer",
+            "Band vastleggen"
+          ]
+        },
+        {
+          "when": "10–6 WEKEN VOORAF",
+          "title": "Uitnodiging",
+          "tasks": [
+            "Save the date",
+            "Uitnodiging in thema",
+            "Aanmelding en dieetwensen"
+          ]
+        },
+        {
+          "when": "4–1 WEKEN VOORAF",
+          "title": "Productie",
+          "tasks": [
+            "Film met collega's maken",
+            "Tafelindeling",
+            "Vervoer regelen"
+          ]
+        },
+        {
+          "when": "NA AFLOOP",
+          "title": "Nazorg",
+          "tasks": [
+            "Foto's delen",
+            "Bedankbericht",
+            "Korte evaluatie"
+          ]
+        }
+      ],
+      "catering": {
+        "concept": "Eten om te delen: gerechten die het gesprek aan tafel op gang brengen, gevolgd door een bar die het feest draagt.",
+        "moments": [
+          {
+            "moment": "Ontvangst",
+            "time": "18:30",
+            "proposal": "Welkomstdrankje en kleine hapjes in het thema.",
+            "format": "Rondgaand",
+            "dietary": "Alcoholvrij en vegan"
+          },
+          {
+            "moment": "Diner",
+            "time": "19:15",
+            "proposal": "Drie rondes gedeelde gerechten.",
+            "format": "Aan tafel, gedeeld",
+            "dietary": "Alle dieetwensen vooraf"
+          },
+          {
+            "moment": "Dessert",
+            "time": "20:30",
+            "proposal": "Dessertbuffet.",
+            "format": "Buffet",
+            "dietary": "Glutenvrij en vegan"
+          },
+          {
+            "moment": "Late snack",
+            "time": "23:30",
+            "proposal": "Iets warms: frites, broodjes of noodles.",
+            "format": "Foodtruck of buffet",
+            "dietary": "Vegetarisch"
+          }
+        ],
+        "drinks": "Arrangement met bier, wijn, fris en alcoholvrije cocktails; bar tot het einde.",
+        "notes": "Alcoholvrije opties net zo aantrekkelijk als de rest."
+      },
+      "entertainment": [
+        {
+          "moment": "Ontvangst",
+          "option": "Fotomoment in het thema",
+          "format": "Doorlopend",
+          "why": "Herinnering en meteen een glimlach.",
+          "role": "Inrichting"
+        },
+        {
+          "moment": "Feest",
+          "option": "Liveband met bekende nummers",
+          "format": "Twee sets van 45 minuten",
+          "why": "Meezingen verbindt.",
+          "role": "Entertainment"
+        },
+        {
+          "moment": "Laat",
+          "option": "DJ",
+          "format": "Tot het einde",
+          "why": "Houdt de dansvloer vol.",
+          "role": "Entertainment"
+        }
+      ],
+      "crew": [
+        {
+          "role": "Productieleider",
+          "count": "1",
+          "task": "Draaiboek en regie"
+        },
+        {
+          "role": "Hosts",
+          "count": "1 per 50 gasten",
+          "task": "Ontvangst en begeleiding"
+        },
+        {
+          "role": "Barpersoneel",
+          "count": "1 per 40 gasten",
+          "task": "Bar"
+        },
+        {
+          "role": "Technici",
+          "count": "2",
+          "task": "Licht en geluid"
+        }
+      ],
+      "spaces": [
+        {
+          "space": "Zaal",
+          "use": "Diner en feest",
+          "requirements": "Ombouw van tafels naar dansvloer"
+        },
+        {
+          "space": "Foyer",
+          "use": "Ontvangst en late snack",
+          "requirements": "Ruimte voor bar en fotoplek"
+        }
+      ],
+      "checklist": [
+        {
+          "group": "Programma",
+          "items": [
+            "Thema uitgewerkt",
+            "Film met collega's",
+            "Band en DJ bevestigd"
+          ]
+        },
+        {
+          "group": "Gasten",
+          "items": [
+            "Aanmeldingen en dieetwensen",
+            "Tafelindeling gemengd",
+            "Vervoer naar huis"
+          ]
+        },
+        {
+          "group": "Veiligheid",
+          "items": [
+            "BHV en EHBO",
+            "Afspraken over alcohol",
+            "Garderobe"
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "title": "Kleiner (tot 100 gasten)",
+          "text": "Diner aan lange tafels en een DJ in plaats van een band."
+        },
+        {
+          "title": "Groot (vanaf 400 gasten)",
+          "text": "Walking dinner met eetstations en meerdere bars."
+        },
+        {
+          "title": "Met partners",
+          "text": "Partners welkom; meer aandacht voor ontvangst en tafelindeling."
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Te veel alcohol",
+          "mitigation": "Aantrekkelijke alcoholvrije opties, eten tot laat en vervoer geregeld."
+        },
+        {
+          "risk": "Mensen blijven in hun eigen groep",
+          "mitigation": "Gemengde tafelindeling en een tafelvraag."
+        },
+        {
+          "risk": "Dankmoment wordt te lang",
+          "mitigation": "Maximaal tien minuten, film vooraf getimed."
+        }
+      ],
+      "budgetItems": [
+        "Locatiehuur",
+        "Catering en drankarrangement",
+        "Band en DJ",
+        "Decor en inrichting",
+        "Licht en geluid",
+        "Vervoer"
+      ],
+      "sustainability": [
+        "Decor dat hergebruikt kan worden",
+        "Plantaardige gerechten als standaard",
+        "Pendelbus vanaf het station"
+      ],
+      "evaluation": [
+        "Korte vragenlijst: hoe was de avond?",
+        "Opkomst ten opzichte van aanmeldingen",
+        "Reacties op het dankmoment"
+      ],
+      "invitation": {
+        "subject": "[Datum]: een avond voor jullie",
+        "text": "Op [datum] nodigen we je uit voor ons personeelsfeest bij [locatie] in [plaats], vanaf 18:30. Het thema is [thema]. We eten samen, zeggen dank je wel en daarna is het feest. Meld je aan en geef je dieetwensen door via [link].",
+        "reminder": "Morgen is het feest. Vanaf 18:30 staat het welkomstdrankje klaar; vervoer naar huis is geregeld."
+      },
+      "occasions": [
+        "vieren",
+        "team"
+      ],
+      "occasionText": "Het einde van het jaar, een mooi resultaat of gewoon tijd om de mensen te bedanken die het werk doen.",
+      "goals": {
+        "business": [
+          "Medewerkers bedanken",
+          "De band tussen afdelingen versterken"
+        ],
+        "participant": [
+          "Zich gezien voelen",
+          "Collega's beter leren kennen",
+          "Een leuke avond"
+        ],
+        "behaviour": [
+          "Medewerkers praten nog weken over de avond",
+          "Meer samenwerking tussen afdelingen"
+        ]
+      },
+      "audienceInsight": {
+        "why": "Ze willen samen vieren en zich gewaardeerd voelen.",
+        "interests": "Goed eten, muziek, collega's, een verrassing.",
+        "avoid": "Lange speeches en een avond die voelt als werk.",
+        "approach": "Een uitnodiging die nieuwsgierig maakt naar het thema.",
+        "mode": "Eten, ontmoeten en dansen."
+      },
+      "mood": "Feestelijk en warm: een avond die van iedereen is.",
+      "moodDirections": [
+        "feestelijk",
+        "warm"
+      ],
+      "connectionDesign": [
+        "Gemengde tafelindeling over afdelingen heen",
+        "Tafelvraag om het gesprek te starten",
+        "Samen meezingen met de band"
+      ],
+      "journey": [
+        {
+          "phase": "Vooraf",
+          "title": "Nieuwsgierigheid",
+          "text": "Uitnodiging in het thema."
+        },
+        {
+          "phase": "Aankomst",
+          "title": "Verrassing",
+          "text": "Een ruimte die het thema laat voelen."
+        },
+        {
+          "phase": "Programma",
+          "title": "Ontmoeten",
+          "text": "Eten aan gemengde tafels."
+        },
+        {
+          "phase": "Hoogtepunt",
+          "title": "Gezien worden",
+          "text": "Het dankmoment met collega's in beeld."
+        },
+        {
+          "phase": "Afsluiting",
+          "title": "Feest",
+          "text": "Liveband en dansvloer."
+        },
+        {
+          "phase": "Nazorg",
+          "title": "Herinnering",
+          "text": "Foto's en een bedankbericht."
+        }
+      ],
+      "communication": [
+        {
+          "when": "12 weken vooraf",
+          "channel": "Save the date",
+          "message": "Datum en een eerste hint van het thema."
+        },
+        {
+          "when": "6 weken vooraf",
+          "channel": "Uitnodiging",
+          "message": "Thema, programma en aanmelding."
+        },
+        {
+          "when": "1 week vooraf",
+          "channel": "Praktisch",
+          "message": "Route, vervoer en kleding."
+        },
+        {
+          "when": "Binnen 1 week na",
+          "channel": "Bedankt",
+          "message": "Foto's en de film."
+        }
+      ],
+      "conditions": [
+        "Een zaal met dansvloer en ombouwmogelijkheid",
+        "Vervoer naar huis geregeld",
+        "Afspraken over alcohol en veiligheid"
+      ],
+      "accessibility": [
+        "Rolstoeltoegankelijke zaal en toiletten",
+        "Rustige plek buiten de dansvloer",
+        "Alle dieetwensen vooraf"
+      ],
+      "kpis": [
+        {
+          "goal": "Waardering",
+          "kpi": "Gemiddelde waardering van de avond",
+          "when": "Direct",
+          "how": "Korte vragenlijst"
+        },
+        {
+          "goal": "Opkomst",
+          "kpi": "Aanwezigen ten opzichte van aanmeldingen",
+          "when": "Direct",
+          "how": "Registratie"
+        },
+        {
+          "goal": "Verbinding",
+          "kpi": "Aandeel dat nieuwe collega's leerde kennen",
+          "when": "30 dagen",
+          "how": "Peiling"
+        }
+      ],
+      "adjustments": {
+        "exclusiever": "Een bijzondere locatie, een act van naam en een diner met bediening aan tafel.",
+        "interactiever": "Een spel of opdracht per tafel en een karaoke-ronde met de band.",
+        "budgetbewust": "Eigen ruimte in thema, foodtrucks en een DJ in plaats van een band."
+      },
+      "plan": {
+        "whyLive": "Dank en verbondenheid voel je samen, in één ruimte, met eten, muziek en elkaar.",
+        "scope": "Geen bedrijfspresentatie en geen formeel gala; een feest met één kort dankmoment.",
+        "redThread": "Een thema dat begint in de uitnodiging, terugkomt in de aankleding en eindigt op de dansvloer.",
+        "moodWords": [
+          "feestelijk",
+          "warm",
+          "verrassend"
+        ],
+        "visual": "Decor in thema, warm licht en een dansvloer als hart van de ruimte.",
+        "senses": "Gedeeld eten, live muziek, een welkomstdrankje bij de deur.",
+        "restMoments": "Het diner en een lounge buiten de dansvloer.",
+        "frictions": "Groepjes die bij elkaar blijven, te lange speeches, vervoer naar huis.",
+        "keyMessage": "Dit is voor jullie: dank je wel.",
+        "irreplaceable": "Het dankmoment met collega's in beeld."
+      },
+      "venueMatches": [
+        {
+          "venueId": "madurodam",
+          "priority": 1,
+          "role": "VOORKEUR",
+          "reason": "Een verrassende locatie in Den Haag die het thema meteen speels maakt.",
+          "pro": "Bijzondere setting voor grote groepen.",
+          "watch": "Ruimte voor dansvloer en band vooraf bespreken."
+        },
+        {
+          "venueId": "pier",
+          "priority": 2,
+          "role": "ALTERNATIEF",
+          "reason": "Een locatie aan zee in Scheveningen met ruimte voor een groot feest.",
+          "pro": "Uitzicht en veel capaciteit.",
+          "watch": "Geluid en eindtijd afstemmen."
+        },
+        {
+          "venueId": "tobacco",
+          "priority": 3,
+          "role": "ALTERNATIEF",
+          "reason": "Een theater in Amsterdam met een zaal die van diner naar feest kan.",
+          "pro": "Centraal in Amsterdam, goed bereikbaar.",
+          "watch": "Ombouwtijd tussen diner en feest."
+        }
+      ],
+      "supplierRoles": [
+        "Catering",
+        "Horecapersoneel",
+        "Entertainment",
+        "AV & techniek",
+        "Inrichting",
+        "Productie & begeleiding"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "vermaat",
+          "role": "Catering",
+          "reason": "Feestelijk diner en bar voor grote groepen."
+        },
+        {
+          "supplierId": "localheroes",
+          "role": "Horecapersoneel",
+          "reason": "Hosts en barpersoneel."
+        },
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Licht en geluid voor band en DJ."
+        },
+        {
+          "supplierId": "vanderkroft",
+          "role": "Inrichting",
+          "reason": "Decor en meubilair in thema."
+        }
+      ],
+      "seo": {
+        "title": "Het personeelsfeest — avondprogramma om medewerkers te bedanken | Top Locaties",
+        "description": "Een personeelsfeest van 18:30 tot 00:30: aankomst in thema, gemengde tafels, een kort dankmoment en een liveband. Compleet draaiboek, catering en partnerlocaties."
+      }
+    },
+    {
+      "id": "klantevent",
+      "slug": "klantevent",
+      "number": "016",
+      "status": "published",
+      "priority": 16,
+      "dayPart": "middag",
+      "title": "Het klantevent",
+      "headline": [
+        "HET",
+        "*KLANTEVENT.*"
+      ],
+      "category": "verbinden",
+      "categoryLabel": "SAMEN & VERBINDEN",
+      "format": "MIDDAG / RELATIES",
+      "teaser": "Een middag op een bijzondere plek waarin je klanten bedankt, iets laat beleven en het gesprek voert dat tot een vervolg leidt.",
+      "proposition": "Geen relatiedag met een rondleiding en een buffet, maar een middag met een eigen verhaal, waarin klanten iets nieuws ontdekken en jij hen echt spreekt.",
+      "tags": [
+        "KLANTEN",
+        "RELATIES",
+        "BEDANKEN"
+      ],
+      "guestCountMin": 30,
+      "guestCountMax": 300,
+      "feelings": [
+        "verbinding",
+        "verwondering",
+        "trots"
+      ],
+      "feelingWeights": {
+        "verbinding": 5,
+        "verwondering": 4,
+        "trots": 3
+      },
+      "feelingReasons": {
+        "verbinding": "Persoonlijke gesprekken aan tafels met een gastheer van je eigen organisatie.",
+        "verwondering": "Een bijzondere plek en een ervaring die klanten zelf nooit zouden boeken.",
+        "trots": "Klanten zien wat jullie samen hebben bereikt."
+      },
+      "audiences": [
+        "Klanten en relaties",
+        "Partners en leveranciers",
+        "Opdrachtgevers"
+      ],
+      "objective": "Klantrelaties verdiepen en tot concrete vervolgafspraken komen.",
+      "idea": {
+        "label": "Klanten onthouden niet wat je vertelde, maar hoe ze zich voelden en met wie ze spraken.",
+        "headline": [
+          "EEN MIDDAG",
+          "*OM TE ONTHOUDEN.*"
+        ],
+        "body": "De middag speelt zich af op een plek die klanten zelf niet zo snel zouden bezoeken. Na een korte, persoonlijke opening volgt een ervaring met een gids of maker. Daarna zitten klanten aan thematafels met een gastheer van je eigen organisatie: geen verkooppraatje, wel een goed gesprek. Een borrel met een verrassend slot rondt af; binnen een week volgt een persoonlijk bericht.",
+        "values": [
+          [
+            "PERSOONLIJK",
+            "Elke tafel een vaste gastheer."
+          ],
+          [
+            "BIJZONDER",
+            "Een plek en ervaring om te onthouden."
+          ],
+          [
+            "VERVOLG",
+            "Elk gesprek krijgt een opvolging."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "duration": "Halve dag (14:00–19:00)",
+      "modes": [
+        "ontmoeten",
+        "beleven"
+      ],
+      "program": [
+        {
+          "time": "14:00",
+          "title": "Persoonlijke ontvangst",
+          "description": "Iedereen wordt bij naam begroet.",
+          "details": {
+            "intro": "Gastheren van je organisatie ontvangen hun eigen klanten bij de deur.",
+            "steps": [
+              "Ontvangst bij naam door de vaste gastheer",
+              "Koffie of welkomstdrankje",
+              "Korte rondgang door de locatie"
+            ],
+            "roles": [
+              "Horecapersoneel",
+              "Productie & begeleiding"
+            ],
+            "needs": [
+              "Gastenlijst per gastheer",
+              "Naambadges"
+            ],
+            "tip": "Geef elke gastheer vooraf een kort profiel van zijn gasten.",
+            "why": "Een persoonlijke ontvangst zet de toon.",
+            "result": "Klanten voelen zich vanaf het begin welkom."
+          }
+        },
+        {
+          "time": "14:30",
+          "title": "Korte opening",
+          "description": "Dank en het verhaal van de middag.",
+          "details": {
+            "intro": "De directeur bedankt in vijf minuten en vertelt waarom deze plek is gekozen.",
+            "steps": [
+              "Welkom en dank",
+              "Waarom deze plek",
+              "Wat er vanmiddag gebeurt"
+            ],
+            "roles": [
+              "AV & techniek"
+            ],
+            "needs": [
+              "Microfoon"
+            ],
+            "tip": "Houd het persoonlijk en kort; geen slides.",
+            "why": "Een korte opening geeft richting zonder te verkopen.",
+            "result": "Iedereen weet waarom hij er is."
+          }
+        },
+        {
+          "time": "14:45",
+          "title": "De ervaring",
+          "description": "Iets wat je zelf nooit zou boeken.",
+          "details": {
+            "intro": "Een rondleiding achter de schermen, een masterclass van een maker of een proeverij: iets dat bij de plek past.",
+            "steps": [
+              "Groepen van 15–20 personen",
+              "Gids of maker per groep",
+              "Iets doen in plaats van alleen kijken"
+            ],
+            "roles": [
+              "Beleving & XR",
+              "Productie & begeleiding"
+            ],
+            "needs": [
+              "Gidsen",
+              "Materialen"
+            ],
+            "tip": "Kies een ervaring die gesprekken oplevert.",
+            "why": "Een gedeelde ervaring is het beste begin van een gesprek.",
+            "result": "Gesprekstof voor de rest van de middag."
+          }
+        },
+        {
+          "time": "16:00",
+          "title": "Thematafels",
+          "description": "Het gesprek dat ertoe doet.",
+          "details": {
+            "intro": "Klanten zitten aan tafels per thema, met een gastheer van je organisatie en iets lekkers.",
+            "steps": [
+              "Tafels per thema van klanten",
+              "Gastheer stelt drie vragen",
+              "Notities voor de opvolging"
+            ],
+            "roles": [
+              "Catering",
+              "Productie & begeleiding"
+            ],
+            "needs": [
+              "Tafelkaarten met thema",
+              "Notitiekaartjes"
+            ],
+            "tip": "Train gastheren: vragen stellen, niet verkopen.",
+            "why": "Echte gesprekken leiden tot echte vervolgafspraken.",
+            "result": "Per tafel minstens één concrete vervolgstap."
+          }
+        },
+        {
+          "time": "17:30",
+          "title": "Borrel met verrassend slot",
+          "description": "Afsluiten met iets dat blijft hangen.",
+          "details": {
+            "intro": "Een borrel met een verrassend slot: een act, een uitzicht of een klein cadeau dat bij de plek past.",
+            "steps": [
+              "Borrel",
+              "Verrassend slot",
+              "Cadeau bij vertrek"
+            ],
+            "roles": [
+              "Catering",
+              "Entertainment",
+              "Duurzame giveaways"
+            ],
+            "needs": [
+              "Cadeaus"
+            ],
+            "tip": "Kies een duurzaam cadeau met een verhaal.",
+            "why": "Het laatste moment bepaalt de herinnering.",
+            "result": "Klanten gaan met een goed gevoel naar huis."
+          }
+        }
+      ],
+      "runbook": [
+        {
+          "time": "11:00",
+          "duration": "150 min",
+          "title": "Opbouw",
+          "description": "Tafels, thema's, aankleding en techniek.",
+          "owner": "Inrichting",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "13:30",
+          "duration": "30 min",
+          "title": "Briefing gastheren",
+          "description": "Profielen, vragen en opvolging.",
+          "owner": "Productie & begeleiding",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "14:00",
+          "duration": "30 min",
+          "title": "Ontvangst",
+          "description": "Bij naam, koffie, rondgang.",
+          "owner": "Horecapersoneel",
+          "space": "Entree",
+          "needs": []
+        },
+        {
+          "time": "14:30",
+          "duration": "15 min",
+          "title": "Opening",
+          "description": "Dank en verhaal.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "14:45",
+          "duration": "75 min",
+          "title": "Ervaring",
+          "description": "In groepen met gids of maker.",
+          "owner": "Beleving & XR",
+          "space": "Locatie",
+          "needs": []
+        },
+        {
+          "time": "16:00",
+          "duration": "90 min",
+          "title": "Thematafels",
+          "description": "Gesprek met gastheren.",
+          "owner": "Catering",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "17:30",
+          "duration": "60 min",
+          "title": "Borrel",
+          "description": "Met verrassend slot.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "18:30",
+          "duration": "30 min",
+          "title": "Vertrek",
+          "description": "Cadeau bij de deur.",
+          "owner": "Productie & begeleiding",
+          "space": "Entree",
+          "needs": []
+        },
+        {
+          "time": "19:00",
+          "duration": "90 min",
+          "title": "Afbouw en notities",
+          "description": "Notities verzamelen voor opvolging.",
+          "owner": "Productie & begeleiding",
+          "space": "Zaal",
+          "needs": []
+        }
+      ],
+      "planning": [
+        {
+          "when": "12–8 WEKEN VOORAF",
+          "title": "Gastenlijst en plek",
+          "tasks": [
+            "Doel en gastenlijst",
+            "Bijzondere locatie",
+            "Ervaring kiezen"
+          ]
+        },
+        {
+          "when": "8–4 WEKEN VOORAF",
+          "title": "Uitnodiging",
+          "tasks": [
+            "Persoonlijke uitnodiging per gastheer",
+            "Aanmeldingen bijhouden",
+            "Thema's per tafel"
+          ]
+        },
+        {
+          "when": "2–1 WEKEN VOORAF",
+          "title": "Gastheren klaar",
+          "tasks": [
+            "Profielen per gast",
+            "Training: vragen stellen",
+            "Cadeaus bestellen"
+          ]
+        },
+        {
+          "when": "NA AFLOOP",
+          "title": "Opvolging",
+          "tasks": [
+            "Persoonlijk bericht binnen een week",
+            "Vervolgafspraken plannen",
+            "Evaluatie"
+          ]
+        }
+      ],
+      "catering": {
+        "concept": "Eten dat het gesprek ondersteunt: makkelijk te eten aan tafel of staand, met een lokaal verhaal.",
+        "moments": [
+          {
+            "moment": "Ontvangst",
+            "time": "14:00",
+            "proposal": "Koffie, thee en iets zoets van een lokale bakker.",
+            "format": "Rondgaand",
+            "dietary": "Vegan beschikbaar"
+          },
+          {
+            "moment": "Thematafels",
+            "time": "16:00",
+            "proposal": "Tafelplanken met lokale producten.",
+            "format": "Aan tafel",
+            "dietary": "Alle dieetwensen vooraf"
+          },
+          {
+            "moment": "Borrel",
+            "time": "17:30",
+            "proposal": "Warme en koude hapjes.",
+            "format": "Rondgaand",
+            "dietary": "Vegetarisch en vegan"
+          }
+        ],
+        "drinks": "Koffie en thee; bij de borrel wijn, bier, fris en een alcoholvrije huiscocktail.",
+        "notes": "Gastheren eten met de tafel mee."
+      },
+      "entertainment": [
+        {
+          "moment": "Middag",
+          "option": "Rondleiding achter de schermen of masterclass",
+          "format": "60–75 minuten in groepen",
+          "why": "Een gedeelde ervaring om over te praten.",
+          "role": "Beleving & XR"
+        },
+        {
+          "moment": "Slot",
+          "option": "Verrassend slot: act of uitzicht",
+          "format": "15 minuten",
+          "why": "Blijft hangen.",
+          "role": "Entertainment"
+        }
+      ],
+      "crew": [
+        {
+          "role": "Productieleider",
+          "count": "1",
+          "task": "Draaiboek en tijd"
+        },
+        {
+          "role": "Gastheren (eigen organisatie)",
+          "count": "1 per tafel van 8",
+          "task": "Ontvangst en gesprek"
+        },
+        {
+          "role": "Gidsen",
+          "count": "1 per groep van 15–20",
+          "task": "Ervaring"
+        },
+        {
+          "role": "Horecapersoneel",
+          "count": "1 per 25 gasten",
+          "task": "Bediening"
+        }
+      ],
+      "spaces": [
+        {
+          "space": "Zaal",
+          "use": "Opening en thematafels",
+          "requirements": "Ronde tafels van 8"
+        },
+        {
+          "space": "Locatie",
+          "use": "Ervaring",
+          "requirements": "Routes voor groepen"
+        },
+        {
+          "space": "Foyer",
+          "use": "Ontvangst en borrel",
+          "requirements": "Ruimte voor staand gesprek"
+        }
+      ],
+      "checklist": [
+        {
+          "group": "Gasten",
+          "items": [
+            "Gastenlijst met vaste gastheer",
+            "Profielen",
+            "Dieetwensen"
+          ]
+        },
+        {
+          "group": "Programma",
+          "items": [
+            "Ervaring bevestigd",
+            "Thema's per tafel",
+            "Verrassend slot"
+          ]
+        },
+        {
+          "group": "Opvolging",
+          "items": [
+            "Notitiekaartjes",
+            "Persoonlijk bericht",
+            "Vervolgafspraken"
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "title": "Klein (tot 40 gasten)",
+          "text": "Eén groep, één lange tafel en een diner na afloop."
+        },
+        {
+          "title": "Groot (vanaf 150 gasten)",
+          "text": "Meer parallelle ervaringen en twee rondes thematafels."
+        },
+        {
+          "title": "Met partners",
+          "text": "Partners welkom; aparte ervaring en gezamenlijke borrel."
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Klanten zeggen last minute af",
+          "mitigation": "Persoonlijke uitnodiging en herinnering door de gastheer."
+        },
+        {
+          "risk": "Gesprekken worden verkooppraatjes",
+          "mitigation": "Gastheren trainen op vragen stellen."
+        },
+        {
+          "risk": "Geen opvolging",
+          "mitigation": "Notities en persoonlijk bericht binnen een week."
+        }
+      ],
+      "budgetItems": [
+        "Locatiehuur",
+        "Ervaring en gidsen",
+        "Catering en drank",
+        "Cadeaus",
+        "Inrichting",
+        "Vervoer"
+      ],
+      "sustainability": [
+        "Lokale producten en makers",
+        "Duurzaam cadeau met een verhaal",
+        "Locatie bereikbaar met openbaar vervoer"
+      ],
+      "evaluation": [
+        "Aantal vervolgafspraken",
+        "Waardering van klanten",
+        "Notities per tafel verwerkt"
+      ],
+      "invitation": {
+        "subject": "[Naam], een middag op een bijzondere plek",
+        "text": "Graag nodig ik je persoonlijk uit voor een middag bij [locatie] in [plaats] op [datum], van 14:00 tot 19:00. We kijken achter de schermen, praten over wat jou bezighoudt en sluiten af met een borrel. Ik zou het mooi vinden als je erbij bent. Meld je aan via [link].",
+        "reminder": "Morgen zie ik je graag bij [locatie]. Om 14:00 sta ik bij de deur."
+      },
+      "occasions": [
+        "relaties",
+        "vieren"
+      ],
+      "occasionText": "Een goed jaar, een jubileum of gewoon tijd om de klanten te bedanken die het mogelijk maken.",
+      "goals": {
+        "business": [
+          "Klantrelaties verdiepen",
+          "Vervolgafspraken"
+        ],
+        "participant": [
+          "Iets bijzonders beleven",
+          "Een goed gesprek",
+          "Zich gewaardeerd voelen"
+        ],
+        "behaviour": [
+          "Klanten maken een vervolgafspraak",
+          "Klanten bevelen aan"
+        ]
+      },
+      "audienceInsight": {
+        "why": "Ze komen voor de plek, de ervaring en de mensen die ze kennen.",
+        "interests": "Iets nieuws zien, vakgenoten spreken, een goede middag.",
+        "avoid": "Verkooppraatjes en een middag die voelt als een presentatie.",
+        "approach": "Een persoonlijke uitnodiging van de eigen contactpersoon.",
+        "mode": "Ontdekken, praten en genieten."
+      },
+      "mood": "Persoonlijk en verrassend: een middag die voelt als een cadeau.",
+      "moodDirections": [
+        "exclusief",
+        "warm"
+      ],
+      "connectionDesign": [
+        "Vaste gastheer per klant",
+        "Thematafels in plaats van vrije borrel",
+        "Gedeelde ervaring in kleine groepen"
+      ],
+      "journey": [
+        {
+          "phase": "Vooraf",
+          "title": "Gewaardeerd",
+          "text": "Persoonlijke uitnodiging van de eigen contactpersoon."
+        },
+        {
+          "phase": "Aankomst",
+          "title": "Welkom",
+          "text": "Bij naam begroet door de gastheer."
+        },
+        {
+          "phase": "Programma",
+          "title": "Ontdekken",
+          "text": "Een ervaring achter de schermen."
+        },
+        {
+          "phase": "Hoogtepunt",
+          "title": "Het gesprek",
+          "text": "Thematafels met de gastheer."
+        },
+        {
+          "phase": "Afsluiting",
+          "title": "Verrassing",
+          "text": "Een verrassend slot en een cadeau."
+        },
+        {
+          "phase": "Nazorg",
+          "title": "Vervolg",
+          "text": "Persoonlijk bericht binnen een week."
+        }
+      ],
+      "communication": [
+        {
+          "when": "8 weken vooraf",
+          "channel": "Persoonlijke uitnodiging",
+          "message": "Van de eigen contactpersoon."
+        },
+        {
+          "when": "2 weken vooraf",
+          "channel": "Programma",
+          "message": "Wat je gaat beleven."
+        },
+        {
+          "when": "1 dag vooraf",
+          "channel": "Herinnering",
+          "message": "Route en starttijd, van de gastheer."
+        },
+        {
+          "when": "Binnen 1 week na",
+          "channel": "Persoonlijk bericht",
+          "message": "Dank en de afgesproken vervolgstap."
+        }
+      ],
+      "conditions": [
+        "Een bijzondere locatie met een ervaring",
+        "Gastheren die getraind zijn",
+        "Een opvolgproces na afloop"
+      ],
+      "accessibility": [
+        "Toegankelijke route voor de ervaring",
+        "Zitplaatsen tijdens de rondleiding",
+        "Dieetwensen vooraf"
+      ],
+      "kpis": [
+        {
+          "goal": "Relatie",
+          "kpi": "Aantal vervolgafspraken",
+          "when": "30 dagen",
+          "how": "CRM"
+        },
+        {
+          "goal": "Waardering",
+          "kpi": "Gemiddelde waardering",
+          "when": "Direct",
+          "how": "Korte vragenlijst"
+        },
+        {
+          "goal": "Aanbeveling",
+          "kpi": "Aandeel dat de middag zou aanbevelen",
+          "when": "Direct",
+          "how": "Vragenlijst"
+        }
+      ],
+      "adjustments": {
+        "exclusiever": "Een privérondleiding, een chef aan tafel en een cadeau op maat.",
+        "interactiever": "Een workshop waarin klanten samen iets maken.",
+        "budgetbewust": "Eigen locatie, een rondleiding door eigen mensen en een eenvoudige borrel."
+      },
+      "plan": {
+        "whyLive": "Vertrouwen groeit in persoonlijke gesprekken op een plek die indruk maakt; dat lukt niet in een mailing.",
+        "scope": "Geen verkoopevent en geen productpresentatie.",
+        "redThread": "Een bijzondere plek die het gesprek opent, van de uitnodiging tot het cadeau bij vertrek.",
+        "moodWords": [
+          "persoonlijk",
+          "verrassend",
+          "gastvrij"
+        ],
+        "visual": "De locatie zelf als decor, tafelkaarten in huisstijl, warm licht.",
+        "senses": "Lokale producten, de geluiden van de plek, een verrassend slot.",
+        "restMoments": "De borrel en een plek om even bij te praten.",
+        "frictions": "Late afmeldingen, verkooppraatjes, geen opvolging.",
+        "keyMessage": "Dank je wel, en we spreken je graag.",
+        "irreplaceable": "De thematafels met een vaste gastheer."
+      },
+      "venueMatches": [
+        {
+          "venueId": "euromast",
+          "priority": 1,
+          "role": "VOORKEUR",
+          "reason": "Een iconische plek in Rotterdam met uitzicht als verrassend slot.",
+          "pro": "Uitzicht en een ervaring die klanten onthouden.",
+          "watch": "Capaciteit per ruimte en vervoer naar boven."
+        },
+        {
+          "venueId": "singer",
+          "priority": 2,
+          "role": "ALTERNATIEF",
+          "reason": "Een museum in Laren met kunst als gedeelde ervaring.",
+          "pro": "Rondleiding door de collectie als ervaring.",
+          "watch": "Rondleidingen vooraf reserveren."
+        },
+        {
+          "venueId": "openlucht",
+          "priority": 3,
+          "role": "ALTERNATIEF",
+          "reason": "Een openluchtmuseum in Arnhem met verhalen van vroeger.",
+          "pro": "Veel ruimte en een unieke omgeving.",
+          "watch": "Afstanden tussen onderdelen en weer."
+        }
+      ],
+      "supplierRoles": [
+        "Catering",
+        "Horecapersoneel",
+        "Beleving & XR",
+        "Entertainment",
+        "Duurzame giveaways",
+        "Productie & begeleiding"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "floris",
+          "role": "Catering",
+          "reason": "Verfijnde catering met lokale producten."
+        },
+        {
+          "supplierId": "localheroes",
+          "role": "Horecapersoneel",
+          "reason": "Gastvrij personeel voor bediening."
+        },
+        {
+          "supplierId": "greenside",
+          "role": "Duurzame giveaways",
+          "reason": "Een duurzaam cadeau met een verhaal."
+        },
+        {
+          "supplierId": "xr",
+          "role": "Beleving & XR",
+          "reason": "Een verrassende ervaring als extra."
+        }
+      ],
+      "seo": {
+        "title": "Het klantevent — middag om klanten te bedanken | Top Locaties",
+        "description": "Een klantevent van 14:00 tot 19:00: persoonlijke ontvangst, een ervaring, thematafels met gastheren en een verrassend slot. Compleet draaiboek en partnerlocaties."
+      }
+    },
+    {
+      "id": "awards",
+      "slug": "prijsuitreiking",
+      "number": "017",
+      "status": "published",
+      "priority": 17,
+      "dayPart": "avond",
+      "title": "De prijsuitreiking",
+      "headline": [
+        "DE",
+        "*PRIJSUITREIKING.*"
+      ],
+      "category": "beleven",
+      "categoryLabel": "BELEVEN & VERRASSEN",
+      "format": "AVOND / AWARDS",
+      "teaser": "Een avond waarop prestaties gevierd worden: een strak gepresenteerde show, winnaars die echt in het licht staan en een diner en feest daarna.",
+      "proposition": "Geen lange rij namen op een scherm, maar een show met spanning en verhalen, waarin elke genomineerde zich gezien voelt — en winnaars een moment krijgen dat ze nooit vergeten.",
+      "tags": [
+        "AWARDS",
+        "GALA",
+        "ERKENNING"
+      ],
+      "guestCountMin": 80,
+      "guestCountMax": 800,
+      "feelings": [
+        "trots",
+        "energie",
+        "verwondering"
+      ],
+      "feelingWeights": {
+        "trots": 5,
+        "energie": 4,
+        "verwondering": 3
+      },
+      "feelingReasons": {
+        "trots": "Genomineerden en winnaars krijgen een moment in de spotlight.",
+        "energie": "Een show met tempo, muziek en spanning.",
+        "verwondering": "Een podium, licht en een onthulling die verrast."
+      },
+      "audiences": [
+        "Branches en verenigingen",
+        "Organisaties met interne awards",
+        "Netwerken en partners"
+      ],
+      "objective": "Prestaties zichtbaar maken en de gemeenschap trots maken.",
+      "idea": {
+        "label": "Een prijsuitreiking werkt als de verhalen achter de prijzen zichtbaar worden, niet alleen de namen.",
+        "headline": [
+          "IEDEREEN",
+          "*IN HET LICHT.*"
+        ],
+        "body": "De avond is een show van hooguit negentig minuten. Elke categorie opent met een korte film over de genomineerden, zodat hun verhaal zichtbaar wordt. Een presentator houdt het tempo hoog en bouwt spanning op. Winnaars komen op het podium voor een kort interview en een foto. Daarna gaan gasten aan tafel en wordt het een feest.",
+        "values": [
+          [
+            "VERHALEN",
+            "Elke genomineerde in beeld."
+          ],
+          [
+            "TEMPO",
+            "Een show van hooguit 90 minuten."
+          ],
+          [
+            "FEEST",
+            "Samen vieren na afloop."
+          ]
+        ]
+      },
+      "hero": {
+        "src": "/assets/img/festival-event.webp",
+        "alt": "Sfeerbeeld van een eventzaal",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "programImage": {
+        "src": "/assets/img/hero-event.webp",
+        "alt": "Sfeerbeeld van een bijeenkomst",
+        "illustrative": true,
+        "credit": "Top Locaties ontwerpstudie"
+      },
+      "duration": "Avond (18:00–00:00), opbouw vanaf 10:00",
+      "modes": [
+        "vieren",
+        "kijken"
+      ],
+      "program": [
+        {
+          "time": "18:00",
+          "title": "Rode loper en ontvangst",
+          "description": "Gasten worden in het licht gezet.",
+          "details": {
+            "intro": "Gasten komen binnen over een loper met een fotomoment; genomineerden krijgen een herkenbaar detail.",
+            "steps": [
+              "Loper met fotowand",
+              "Welkomstdrankje",
+              "Genomineerden krijgen een speld of badge"
+            ],
+            "roles": [
+              "Inrichting",
+              "Catering",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Loper en fotowand",
+              "Badges genomineerden"
+            ],
+            "tip": "Zet een fotograaf bij de loper; die foto's worden later veel gedeeld.",
+            "why": "Het begin laat voelen dat dit een bijzondere avond is.",
+            "result": "Iedereen voelt de spanning van de avond."
+          }
+        },
+        {
+          "time": "19:00",
+          "title": "De show",
+          "description": "Categorieën, films en winnaars.",
+          "details": {
+            "intro": "Een presentator leidt door de categorieën. Per categorie een film over de genomineerden, de onthulling en een kort interview met de winnaar.",
+            "steps": [
+              "Openingsact",
+              "Per categorie: film, onthulling, interview",
+              "Maximaal 90 minuten in totaal"
+            ],
+            "roles": [
+              "AV & techniek",
+              "Content & livestream",
+              "Entertainment"
+            ],
+            "needs": [
+              "Podium, licht, schermen",
+              "Films per categorie"
+            ],
+            "tip": "Repeteer de onthullingen: een omslag met naam werkt nog steeds het best.",
+            "why": "Spanning en verhalen maken een uitreiking memorabel.",
+            "result": "Elke winnaar heeft een eigen moment."
+          }
+        },
+        {
+          "time": "20:30",
+          "title": "Diner",
+          "description": "Samen aan tafel.",
+          "details": {
+            "intro": "Na de show een diner aan ronde tafels, met winnaars verspreid door de zaal.",
+            "steps": [
+              "Drie gangen",
+              "Winnaars aan verschillende tafels",
+              "Felicitaties aan tafel"
+            ],
+            "roles": [
+              "Catering",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Ronde tafels"
+            ],
+            "tip": "Plaats winnaars bij gasten die ze nog niet kennen.",
+            "why": "Aan tafel worden de verhalen gedeeld.",
+            "result": "Gesprekken over de winnaars en hun werk."
+          }
+        },
+        {
+          "time": "22:00",
+          "title": "Feest",
+          "description": "De dansvloer gaat open.",
+          "details": {
+            "intro": "Een DJ of band; winnaars openen de dansvloer.",
+            "steps": [
+              "Winnaars openen de dansvloer",
+              "DJ of band",
+              "Bar open"
+            ],
+            "roles": [
+              "Entertainment",
+              "Horecapersoneel"
+            ],
+            "needs": [
+              "Dansvloer"
+            ],
+            "tip": "Laat de presentator de dansvloer aankondigen.",
+            "why": "Een feest maakt de avond compleet.",
+            "result": "Een avond om te onthouden."
+          }
+        },
+        {
+          "time": "23:30",
+          "title": "Afsluiting",
+          "description": "Iets warms en vervoer.",
+          "details": {
+            "intro": "Een late snack en vervoer naar huis.",
+            "steps": [
+              "Late snack",
+              "Laatste ronde",
+              "Vervoer"
+            ],
+            "roles": [
+              "Catering"
+            ],
+            "needs": [
+              "Vervoer"
+            ],
+            "tip": "Geef winnaars hun prijs en foto mee in een tas.",
+            "why": "Een rustig einde zorgt voor een goede herinnering.",
+            "result": "Iedereen gaat veilig en trots naar huis."
+          }
+        }
+      ],
+      "runbook": [
+        {
+          "time": "10:00",
+          "duration": "360 min",
+          "title": "Opbouw",
+          "description": "Podium, licht, schermen, tafels.",
+          "owner": "Inrichting",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "16:00",
+          "duration": "90 min",
+          "title": "Repetitie",
+          "description": "Presentator, films, onthullingen.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "17:30",
+          "duration": "30 min",
+          "title": "Briefing",
+          "description": "Hosts, bar, catering.",
+          "owner": "Productie & begeleiding",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "18:00",
+          "duration": "60 min",
+          "title": "Ontvangst",
+          "description": "Loper, foto's, drankje.",
+          "owner": "Horecapersoneel",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "19:00",
+          "duration": "90 min",
+          "title": "De show",
+          "description": "Categorieën en winnaars.",
+          "owner": "AV & techniek",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "20:30",
+          "duration": "90 min",
+          "title": "Diner",
+          "description": "Drie gangen.",
+          "owner": "Catering",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "22:00",
+          "duration": "90 min",
+          "title": "Feest",
+          "description": "DJ of band.",
+          "owner": "Entertainment",
+          "space": "Zaal",
+          "needs": []
+        },
+        {
+          "time": "23:30",
+          "duration": "30 min",
+          "title": "Afsluiting",
+          "description": "Snack en vervoer.",
+          "owner": "Catering",
+          "space": "Foyer",
+          "needs": []
+        },
+        {
+          "time": "00:00",
+          "duration": "120 min",
+          "title": "Afbouw",
+          "description": "Alles retour.",
+          "owner": "Inrichting",
+          "space": "Zaal",
+          "needs": []
+        }
+      ],
+      "planning": [
+        {
+          "when": "20–12 WEKEN VOORAF",
+          "title": "Categorieën en jury",
+          "tasks": [
+            "Categorieën en criteria",
+            "Jury samenstellen",
+            "Inzending openen"
+          ]
+        },
+        {
+          "when": "12–6 WEKEN VOORAF",
+          "title": "Productie",
+          "tasks": [
+            "Locatie en presentator",
+            "Films over genomineerden",
+            "Uitnodiging"
+          ]
+        },
+        {
+          "when": "6–1 WEKEN VOORAF",
+          "title": "Show",
+          "tasks": [
+            "Draaiboek van de show",
+            "Prijzen bestellen",
+            "Repetitie plannen"
+          ]
+        },
+        {
+          "when": "NA AFLOOP",
+          "title": "Nazorg",
+          "tasks": [
+            "Foto's en films delen",
+            "Persbericht",
+            "Evaluatie"
+          ]
+        }
+      ],
+      "catering": {
+        "concept": "Een feestelijk diner dat na de show begint, zodat niemand tijdens de uitreiking hoeft te eten.",
+        "moments": [
+          {
+            "moment": "Ontvangst",
+            "time": "18:00",
+            "proposal": "Bubbels en kleine hapjes.",
+            "format": "Rondgaand",
+            "dietary": "Alcoholvrij en vegan"
+          },
+          {
+            "moment": "Diner",
+            "time": "20:30",
+            "proposal": "Drie gangen met een feestelijk hoofdgerecht.",
+            "format": "Aan tafel",
+            "dietary": "Alle dieetwensen vooraf"
+          },
+          {
+            "moment": "Late snack",
+            "time": "23:30",
+            "proposal": "Iets warms.",
+            "format": "Buffet",
+            "dietary": "Vegetarisch"
+          }
+        ],
+        "drinks": "Bubbels bij ontvangst, wijnarrangement bij het diner, bar tijdens het feest.",
+        "notes": "Geen bediening tijdens de show."
+      },
+      "entertainment": [
+        {
+          "moment": "Opening show",
+          "option": "Openingsact",
+          "format": "5 minuten",
+          "why": "Zet de toon en de energie.",
+          "role": "Entertainment"
+        },
+        {
+          "moment": "Show",
+          "option": "Presentator",
+          "format": "90 minuten",
+          "why": "Tempo en spanning.",
+          "role": "Entertainment"
+        },
+        {
+          "moment": "Feest",
+          "option": "DJ of band",
+          "format": "90 minuten",
+          "why": "Samen vieren.",
+          "role": "Entertainment"
+        }
+      ],
+      "crew": [
+        {
+          "role": "Showregisseur",
+          "count": "1",
+          "task": "Draaiboek van de show"
+        },
+        {
+          "role": "Presentator",
+          "count": "1",
+          "task": "Door de avond leiden"
+        },
+        {
+          "role": "Stagemanager",
+          "count": "1",
+          "task": "Winnaars naar het podium"
+        },
+        {
+          "role": "Hosts",
+          "count": "1 per 50 gasten",
+          "task": "Ontvangst en begeleiding"
+        },
+        {
+          "role": "Technici",
+          "count": "3–4",
+          "task": "Licht, beeld, geluid"
+        }
+      ],
+      "spaces": [
+        {
+          "space": "Zaal",
+          "use": "Show, diner en feest",
+          "requirements": "Podium, schermen, ronde tafels"
+        },
+        {
+          "space": "Foyer",
+          "use": "Ontvangst en loper",
+          "requirements": "Ruimte voor fotowand"
+        },
+        {
+          "space": "Backstage",
+          "use": "Winnaars en presentator",
+          "requirements": "Dicht bij het podium"
+        }
+      ],
+      "checklist": [
+        {
+          "group": "Show",
+          "items": [
+            "Films per categorie",
+            "Onthullingen gerepeteerd",
+            "Prijzen op volgorde"
+          ]
+        },
+        {
+          "group": "Gasten",
+          "items": [
+            "Genomineerden geïnformeerd",
+            "Tafelindeling",
+            "Fotograaf"
+          ]
+        },
+        {
+          "group": "Nazorg",
+          "items": [
+            "Foto's per winnaar",
+            "Persbericht klaar",
+            "Films online"
+          ]
+        }
+      ],
+      "variations": [
+        {
+          "title": "Kleiner (tot 120 gasten)",
+          "text": "Show van 45 minuten tijdens het diner, tussen de gangen."
+        },
+        {
+          "title": "Groot (vanaf 500 gasten)",
+          "text": "Theaterzaal voor de show, diner in een tweede ruimte."
+        },
+        {
+          "title": "Met livestream",
+          "text": "De show live voor wie er niet bij is."
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Show loopt uit",
+          "mitigation": "Strak draaiboek, films getimed, presentator bewaakt de tijd."
+        },
+        {
+          "risk": "Winnaar is niet aanwezig",
+          "mitigation": "Vooraf bevestigen; anders een video-dankwoord."
+        },
+        {
+          "risk": "Verkeerde naam onthuld",
+          "mitigation": "Dubbele controle van enveloppen en volgorde."
+        }
+      ],
+      "budgetItems": [
+        "Locatiehuur",
+        "Podium, licht en schermen",
+        "Presentator en acts",
+        "Films over genomineerden",
+        "Catering en drank",
+        "Prijzen en fotograaf"
+      ],
+      "sustainability": [
+        "Prijzen van duurzaam materiaal",
+        "Herbruikbaar decor",
+        "Plantaardige gerechten als standaard"
+      ],
+      "evaluation": [
+        "Waardering van de avond",
+        "Bereik van foto's en films",
+        "Reacties van genomineerden"
+      ],
+      "invitation": {
+        "subject": "[Naam awards] [jaar]: je bent uitgenodigd",
+        "text": "Op [datum] maken we bij [locatie] in [plaats] de winnaars van [naam awards] bekend. Vanaf 18:00 ontvangen we je op de rode loper; om 19:00 begint de show, daarna diner en feest. Meld je aan via [link].",
+        "reminder": "Morgen zijn de awards. Vanaf 18:00 staat de loper klaar; de show begint om 19:00."
+      },
+      "occasions": [
+        "vieren",
+        "relaties"
+      ],
+      "occasionText": "Een jaar vol prestaties, een branche die zichzelf wil laten zien of een organisatie die haar mensen wil erkennen.",
+      "goals": {
+        "business": [
+          "Prestaties zichtbaar maken",
+          "De gemeenschap versterken"
+        ],
+        "participant": [
+          "Erkenning",
+          "Een feestelijke avond",
+          "Inspiratie door andermans verhalen"
+        ],
+        "behaviour": [
+          "Winnaars en genomineerden delen hun verhaal",
+          "Meer inzendingen volgend jaar"
+        ]
+      },
+      "audienceInsight": {
+        "why": "Ze willen erkenning en samen vieren.",
+        "interests": "Verhalen, spanning, elkaar ontmoeten, een mooi diner.",
+        "avoid": "Een lange rij namen en speeches zonder einde.",
+        "approach": "Een uitnodiging die voelt als een première.",
+        "mode": "Kijken, vieren en ontmoeten."
+      },
+      "mood": "Feestelijk en spannend: een première waarin iedereen meetelt.",
+      "moodDirections": [
+        "feestelijk",
+        "exclusief"
+      ],
+      "connectionDesign": [
+        "Winnaars verspreid aan tafels",
+        "Rode loper met fotomoment",
+        "Winnaars openen de dansvloer"
+      ],
+      "journey": [
+        {
+          "phase": "Vooraf",
+          "title": "Spanning",
+          "text": "Nominaties en uitnodiging als première."
+        },
+        {
+          "phase": "Aankomst",
+          "title": "In het licht",
+          "text": "Rode loper en fotomoment."
+        },
+        {
+          "phase": "Programma",
+          "title": "Verhalen",
+          "text": "Films over de genomineerden."
+        },
+        {
+          "phase": "Hoogtepunt",
+          "title": "De onthulling",
+          "text": "Winnaar op het podium."
+        },
+        {
+          "phase": "Afsluiting",
+          "title": "Feest",
+          "text": "Diner en dansvloer."
+        },
+        {
+          "phase": "Nazorg",
+          "title": "Trots delen",
+          "text": "Foto's, films en persbericht."
+        }
+      ],
+      "communication": [
+        {
+          "when": "16 weken vooraf",
+          "channel": "Oproep",
+          "message": "Inzendingen en categorieën."
+        },
+        {
+          "when": "6 weken vooraf",
+          "channel": "Nominaties en uitnodiging",
+          "message": "Genomineerden bekend; aanmelden."
+        },
+        {
+          "when": "1 dag vooraf",
+          "channel": "Praktisch",
+          "message": "Route, kleding en tijden."
+        },
+        {
+          "when": "Binnen 2 dagen na",
+          "channel": "Winnaars",
+          "message": "Foto's, films en persbericht."
+        }
+      ],
+      "conditions": [
+        "Een zaal met podium en ruimte voor diner",
+        "Films over alle genomineerden",
+        "Een strak draaiboek en repetitie"
+      ],
+      "accessibility": [
+        "Toegankelijk podium voor winnaars",
+        "Ondertiteling bij films",
+        "Rolstoeltoegankelijke zaal"
+      ],
+      "kpis": [
+        {
+          "goal": "Erkenning",
+          "kpi": "Waardering door genomineerden",
+          "when": "Direct",
+          "how": "Korte vragenlijst"
+        },
+        {
+          "goal": "Zichtbaarheid",
+          "kpi": "Bereik van foto's en films",
+          "when": "30 dagen",
+          "how": "Socialemedia-statistieken"
+        },
+        {
+          "goal": "Gemeenschap",
+          "kpi": "Aantal inzendingen volgend jaar",
+          "when": "90 dagen en later",
+          "how": "Inzendingen"
+        }
+      ],
+      "adjustments": {
+        "exclusiever": "Een theater, een bekende presentator en een diner met bediening.",
+        "interactiever": "Een publieksprijs met live stemmen tijdens de show.",
+        "budgetbewust": "Eigen locatie, presentator uit eigen kring en een walking dinner."
+      },
+      "plan": {
+        "whyLive": "Erkenning voel je pas echt als die in het bijzijn van collega's en vakgenoten wordt uitgesproken.",
+        "scope": "Geen jaarvergadering en geen lange speeches; een show met een feest.",
+        "redThread": "De verhalen van de genomineerden, van de nominatie tot de foto op het podium.",
+        "moodWords": [
+          "feestelijk",
+          "spannend",
+          "trots"
+        ],
+        "visual": "Podium met licht, films in huisstijl, een loper bij de entree.",
+        "senses": "Muziek bij elke onthulling, bubbels bij ontvangst, een feestelijk diner.",
+        "restMoments": "Het diner na de show en een lounge naast de dansvloer.",
+        "frictions": "Uitloop, afwezige winnaars, een te lange show.",
+        "keyMessage": "Vanavond staan jullie in het licht.",
+        "irreplaceable": "Het moment van de onthulling met de film over de genomineerden."
+      },
+      "venueMatches": [
+        {
+          "venueId": "diligentia",
+          "priority": 1,
+          "role": "VOORKEUR",
+          "reason": "Een theater in Den Haag met een podium dat een uitreiking groots maakt.",
+          "pro": "Professioneel podium en theaterlicht.",
+          "watch": "Diner in een andere ruimte of met ombouw."
+        },
+        {
+          "venueId": "kunstlinie",
+          "priority": 2,
+          "role": "ALTERNATIEF",
+          "reason": "Een theater in Almere met grote zaal en foyer.",
+          "pro": "Ruimte voor show en feest.",
+          "watch": "Ombouw van show naar diner plannen."
+        },
+        {
+          "venueId": "tobacco",
+          "priority": 3,
+          "role": "ALTERNATIEF",
+          "reason": "Een theater in Amsterdam met een zaal voor show en feest.",
+          "pro": "Centraal en sfeervol.",
+          "watch": "Capaciteit voor diner aan tafels."
+        }
+      ],
+      "supplierRoles": [
+        "AV & techniek",
+        "Content & livestream",
+        "Entertainment",
+        "Catering",
+        "Inrichting",
+        "Productie & begeleiding"
+      ],
+      "supplierMatches": [
+        {
+          "supplierId": "bourgonje",
+          "role": "AV & techniek",
+          "reason": "Podium, licht en beeld voor de show."
+        },
+        {
+          "supplierId": "objektiv",
+          "role": "Content & livestream",
+          "reason": "Films over de genomineerden en een eventuele livestream."
+        },
+        {
+          "supplierId": "vermaat",
+          "role": "Catering",
+          "reason": "Feestelijk diner voor grote groepen."
+        },
+        {
+          "supplierId": "vanderkroft",
+          "role": "Inrichting",
+          "reason": "Loper, fotowand en tafels."
+        }
+      ],
+      "seo": {
+        "title": "De prijsuitreiking — awardshow, diner en feest | Top Locaties",
+        "description": "Een prijsuitreiking van 18:00 tot 00:00: rode loper, een show met films en onthullingen, diner en feest. Compleet draaiboek, catering, entertainment en partnerlocaties."
       }
     }
   ],

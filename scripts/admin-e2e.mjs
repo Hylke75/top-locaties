@@ -42,7 +42,7 @@ try {
   // Redacteur
   const ed = await login('e2e-redacteur');
   check((await ed.textContent('[data-userbar]')).includes('REDACTEUR'), 'redacteur ingelogd');
-  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '12', 'overzicht toont 12 live concepten');
+  check((await ed.locator('.ad-tile b').first().textContent()).trim() === '17', 'overzicht toont 17 live concepten');
   await ed.goto(base + '/admin/#concept/festival');
   await ed.waitForSelector('[data-concept-form]');
   check(await ed.locator('[data-concept-form] fieldset[disabled]').count() > 0, 'redacteur kan live concept niet bewerken');

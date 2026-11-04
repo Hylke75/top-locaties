@@ -185,3 +185,12 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 | Conceptmaker | `.tl-maker`, `.tl-maker__bar` (sticky), `__part`, `__legend`, `__fields(--two/--three)`, `__list`, `__row`, `__icon`, `__more`, `__chosen`, `__checks`, `__issues` | Basis = standaardconcept; alles bewerkbaar (kern, programma met details, draaiboek, catering, entertainment, partners, communicatie, kosten/risico's/KPI's). Lijsten: toevoegen, verwijderen (met bevestiging), omhoog/omlaag, sorteren op tijd. Eerste keer opslaan expliciet, daarna automatisch. Alleen na inloggen. Alleen aangesloten partners kiesbaar. |
 | Presentatie | `.tl-deck`, `.tl-deck__bar`, `.tl-slide(--cover/--idea/--end)` + `__head`, `__title`, `__display`, `__agenda`, `__journey`, `__table`, `__grid`, `__steps` | 16:9, schaalt met container-eenheden; printen = één dia per liggende pagina van 13,33 × 7,5 inch (`deck-print.css`, alleen op /presentatie/). Sfeerbeelden gelabeld. |
 | Downloads | `.tl-concept-tools` | Word (.docx, echte Office Open XML, in de browser gemaakt) en tekst (.txt) uit dezelfde blokken (`exporters.js`); PDF via de presentatie. |
+
+## L. Uitbreidingen v1.7 — zoeken, samenwerken en exports (4 november 2026)
+
+| Component | Klasse | Regel |
+|---|---|---|
+| Zoeken | `.tl-search`, `.tl-search__input`, `.tl-search__results`, `.tl-search__item` | Eén veld over concepten, locaties en makers; begrijpt "20 personen" en plaatsnamen (plaats filtert alleen locaties). Uitleg in de statusregel; capaciteit altijd "volgens Greenbookings". |
+| Samenwerken | `.tl-maker__collab`, `.tl-maker__share`, `.tl-maker__invite` | Deellink (alleen lezen, ook zonder account) en leden met rol redacteur/lezer beheert alleen de eigenaar. Gelijktijdig opslaan geeft een conflictmelding, nooit stil overschrijven. Versies: automatisch, herstellen met bevestiging. |
+| Op maat in de maker | `.tl-maker__tailor` | Starttijd schuift programma, draaiboek en cateringmomenten samen; antwoorden uit de vragenlijst op maat overnemen. |
+| Exports | knoppen `data-export` / `data-download` | PDF (presentatie), PowerPoint (.pptx, bewerkbaar, sfeerbeeld gelabeld), Word (.docx) en tekst; één bron (`export-actions.js`). |

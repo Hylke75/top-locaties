@@ -1008,3 +1008,5 @@ figure.tl-image-frame { margin:0; }
 .tl-maker__share { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin:10px 0; }
 .tl-maker__invite { display:grid; gap:10px; margin:12px 0 8px; }
 @media (max-width: 1000px) { .tl-maker__collab { grid-template-columns:1fr; } }
+.tl-search + .tl-chip-row { margin-top:20px; }
+.tl-search { box-shadow:none; }

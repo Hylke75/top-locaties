@@ -54,7 +54,18 @@ Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of
 - Instellingen in `src/content/site.json → accounts` (URL en publishable key zijn bedoeld voor de browser). `enabled: false` toont "binnenkort"; voorvertoning in je eigen browser met `/account/?voorvertoning=aan`.
 - Live zetten: voer de migratie uit, zet in Supabase *Authentication → URL Configuration* de Site URL op `https://top-locaties.nl` en voeg `https://top-locaties.nl/account/` toe als redirect, en zet `enabled` op `true`.
 - Routes: `/account/`, `/maker/?basis=<slug>` of `?id=<uuid>`, `/presentatie/?basis=<slug>` of `?id=<uuid>`.
+- Delen, samenwerken (redacteur/lezer) en versies zitten in dezelfde migratie. Rechten getest met `supabase/tests/rls_test.sql` (lokale PostgreSQL met auth-stub).
 - Test: `npm run account-e2e` (gesimuleerde Supabase).
+
+## Contactformulier
+
+- `api/contact.mjs` (Vercel-functie) schrijft berichten naar Greenbookings `contactberichten` met `bron = 'top-locaties'`, alleen voor gepubliceerde én aangesloten locaties, met honeypot en snelheidslimiet.
+- Zet in Vercel de omgevingsvariabele `GREENBOOKINGS_SUPABASE_SERVICE_KEY` (type *Sensitive*). Zonder die sleutel rondt de bezoeker af op het Greenbookings-profiel.
+- Optioneel: `RESEND_API_KEY` en `CONTACT_FROM` (bv. `Top Locaties <hallo@top-locaties.nl>`) voor een bevestigingsmail aan de bezoeker.
+
+## E-mail (Resend)
+
+- Domein `top-locaties.nl` staat in Resend (EU). Na de DNS-records bij TransIP: verifiëren, een SMTP-sleutel maken en in Supabase *Authentication → SMTP Settings* invullen (host `smtp.resend.com`, poort 465, gebruiker `resend`, wachtwoord = de sleutel, afzender bv. `account@top-locaties.nl`).
 
 ## Data
 
