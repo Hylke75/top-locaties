@@ -2,7 +2,7 @@
 import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
 import { partners, baseConcept, esc } from './lib/conceptdata.js';
-import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers, costsFrom, costTotals, euro, COST_STATUS, STAGES, setStage } from './lib/userconcept.js';
+import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers, applyVariation, costsFrom, costTotals, euro, COST_STATUS, STAGES, setStage } from './lib/userconcept.js';
 import { naturalEnd, tailor, quoteRequests } from './lib/tailor.js';
 import { sendQuotes, slugFromProfile, quoteResultText } from './lib/quote-send.js';
 const openedAt = Date.now();
@@ -279,7 +279,8 @@ async function renderCollab() {
   </div>
   <div><h3 class="tl-mono tl-subhead">VERSIES</h3>
     <ul class="tl-maker__chosen">${versions.map((v) => `<li><span>${esc(when(v.created_at))} <span class="tl-note">${esc(v.saved_by_email || '')}</span></span>${role !== 'viewer' ? `<button class="tl-text-button" type="button" data-restore="${v.id}">HERSTEL</button>` : ''}</li>`).join('') || '<li class="tl-note">Nog geen eerdere versies. Bij het bewaren houden we automatisch een versie bij (hooguit één per 10 minuten, maximaal 50).</li>'}</ul>
-    <button class="tl-button tl-button--outline" type="button" data-duplicate>DUPLICEER ALS VARIANT</button>
+    <button class="tl-button tl-button--outline" type="button" data-duplicate>DUPLICEER</button>
+    ${(base.variations || []).length && role !== 'viewer' ? `<h3 class="tl-mono tl-subhead tl-body--gap">KANT-EN-KLARE VARIANTEN</h3><ul class="tl-maker__chosen">${base.variations.map((v, i) => `<li><span><strong>${esc(v.title)}</strong> <span class="tl-note">${esc(v.text)}</span></span><button class="tl-text-button" type="button" data-variant="${i}">MAAK ↗</button></li>`).join('')}</ul>` : ''}
   </div>
   <div><h3 class="tl-mono tl-subhead">AANMELDEN</h3>
     ${owner ? (regLink ? `<div class="tl-maker__share"><input readonly value="${esc(regLink)}" aria-label="Aanmeldlink" data-reg-link><button class="tl-button" type="button" data-copy-reg>KOPIEER</button></div>
@@ -321,6 +322,12 @@ collab?.addEventListener('click', async (e) => {
       if (!confirm('Deze versie terugzetten? De huidige stand wordt eerst als versie bewaard.')) return;
       const v = await A.getVersion(b.dataset.restore);
       data = { ...fromBase(base), ...v.data }; dirty = true; render(); await save(); setStatus('VERSIE HERSTELD ✓');
+    } else if (b.dataset.variant) {
+      const v = base.variations[Number(b.dataset.variant)];
+      const { data: vd, changes } = applyVariation(clean(data), base, v);
+      const copy = await A.createConcept({ base_slug: base.slug, title: vd.title, data: vd });
+      setStatus(`VARIANT GEMAAKT: ${changes.join(', ').toUpperCase() || 'NOTITIE TOEGEVOEGD'}`);
+      dirty = false; location.href = `/maker/?id=${encodeURIComponent(copy.id)}`; return;
     } else if (b.hasAttribute('data-duplicate')) {
       const copy = await A.createConcept({ base_slug: base.slug, title: `${data.title} (variant)`.slice(0, 160), data: { ...clean(data), title: `${data.title} (variant)`.slice(0, 160) } });
       dirty = false; location.href = `/maker/?id=${encodeURIComponent(copy.id)}`; return;

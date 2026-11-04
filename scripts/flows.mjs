@@ -80,18 +80,18 @@ check(await count() === 3, 'deeplink ?concept=diner → 3 locaties');
 
 // 4. Nieuwe pagina's
 await page.goto(base + '/eventconcepten/');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 17, 'conceptoverzicht toont 17 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 22, 'conceptoverzicht toont 22 concepten');
 await page.click('[data-ov-feeling="rust"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 4, 'filter Rust → 4 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 5, 'filter Rust → 5 concepten');
 await page.click('[data-ov-feeling="focus"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 3, 'Rust + Focus → vergadering, walk & talk en heidag');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 4, 'Rust + Focus → 4 concepten');
 await page.click('[data-ov-feeling="rust"]');
 await page.click('[data-ov-feeling="trots"]');
 check(await page.isVisible('[data-ov-empty]'), 'Focus + Trots → lege staat met alternatief');
 await page.goto(base + '/eventconcepten/?dagdeel=avond');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 6 && await page.getAttribute('[data-ov-daypart="avond"]', 'aria-pressed') === 'true', 'deeplink ?dagdeel=avond → 6 avondconcepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 8 && await page.getAttribute('[data-ov-daypart="avond"]', 'aria-pressed') === 'true', 'deeplink ?dagdeel=avond → 8 avondconcepten');
 await page.click('[data-ov-daypart="ochtend"]');
-check(await page.locator('[data-concept-card]:not([hidden])').count() === 3, 'dagdeel ochtend → 3 concepten');
+check(await page.locator('[data-concept-card]:not([hidden])').count() === 4, 'dagdeel ochtend → 4 concepten');
 
 // Briefing → drie concepten → concept met vooringevulde vragenlijst → conceptplan (sjabloon, 12 hoofdstukken)
 await page.goto(base + '/conceptplan/');

@@ -134,3 +134,14 @@ test('partnerprofiel: alleen https en beelden met gebruiksrecht', () => {
   assert.equal(p.spaces[0].capacity, 120); assert.equal(p.photos.length, 1); assert.equal(p.video, null);
   assert.equal(sanitizeProfile({}), null);
 });
+
+import { applyVariation } from '../src/client/lib/userconcept.js';
+test('varianten veranderen het concept echt', () => {
+  const hyb = applyVariation(fromBase(kick), kick, { title: 'Hybride', text: 'Met livestream voor wie er niet bij kan zijn.' });
+  assert.ok(hyb.data.runbook.some((r) => /livestream/i.test(r.title)) && hyb.data.risks.some((r) => /livestream/i.test(r.risk)));
+  const klein = applyVariation(fromBase(kick), kick, { title: 'Kleiner (tot 60 gasten)', text: 'Eén zaal.' });
+  assert.equal(klein.data.guests, kick.guestCountMin);
+  const half = applyVariation(fromBase(verg), verg, { title: 'Halve dag', text: 'Compacter.' });
+  assert.ok(half.changes.some((c) => /halve dag/.test(c)));
+  assert.match(half.data.title, /Halve dag/);
+});

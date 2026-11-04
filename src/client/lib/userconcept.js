@@ -1,7 +1,7 @@
 import { fitTimes, naturalEnd } from './tailor.js';
 // Eigen concept = standaardconcept als basis + de bewerkingen van de gebruiker.
 // Alleen de velden hieronder zijn bewerkbaar en worden opgeslagen; de rest komt altijd uit de basis.
-export const EDITABLE = ['costs', 'status', 'quotes', 'contactName', 'registration', 'title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
+export const EDITABLE = ['variant', 'costs', 'status', 'quotes', 'contactName', 'registration', 'title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
   'program', 'runbook', 'catering', 'entertainment', 'communication', 'budgetItems', 'risks', 'kpis', 'venueIds', 'supplierIds', 'notes'];
 
 const clone = (x) => (x === undefined ? undefined : JSON.parse(JSON.stringify(x)));
@@ -113,4 +113,32 @@ export function setStage(data, stage) {
   const cur = data.status?.stage || 'idee';
   if (cur === stage) return data;
   return { ...data, status: { stage, log: [...(data.status?.log || []), { stage, at: new Date().toISOString() }].slice(-30) } };
+}
+
+/* ---------- Varianten als kant-en-klaar concept ---------- */
+const hm = (t) => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
+const tm = (n) => `${String(Math.floor(((n % 1440) + 1440) % 1440 / 60)).padStart(2, '0')}:${String((((n % 1440) + 1440) % 1440) % 60).padStart(2, '0')}`;
+/** Past een variant (titel + tekst uit het standaardconcept) toe op een eigen concept, met regels die echt iets veranderen. */
+export function applyVariation(data, base, v) {
+  const key = `${v.title} ${v.text}`.toLowerCase();
+  let d = JSON.parse(JSON.stringify(data));
+  const changes = [];
+  if (/klein|intiem|compact/.test(key) && !/halve dag|dagdeel/.test(key)) { d.guests = base.guestCountMin; changes.push(`aantal gasten naar ${base.guestCountMin}`); }
+  if (/groot|vanaf \d{3}/.test(key)) { d.guests = base.guestCountMax; changes.push(`aantal gasten naar ${base.guestCountMax}`); }
+  if (/halve dag|dagdeel|compact \(/.test(key)) {
+    const s = startTime(d); const e = naturalEnd(d.runbook || []);
+    if (s && e && hm(e) > hm(s)) { const half = tm(hm(s) + Math.round((hm(e) - hm(s)) / 2 / 5) * 5); d = fitTo(d, s, half).data; changes.push(`programma in een halve dag (${s}–${half})`); }
+  }
+  if (/hybride|online|livestream|stream/.test(key)) {
+    const s = startTime(d) || '09:00';
+    d.runbook = [...(d.runbook || []), { time: tm(hm(s) - 45), duration: '30 min', title: 'Techniekcheck livestream', description: 'Beeld, geluid, verbinding en de online moderator testen.', owner: 'AV & techniek', space: 'Zaal', needs: ['Stabiele verbinding', 'Camera', 'Moderator'] }].sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    d.communication = [...(d.communication || []), { when: '1 dag vooraf', channel: 'Online deelnemers', message: 'Streamlink, starttijd en hoe je vragen stelt.' }];
+    d.risks = [...(d.risks || []), { risk: 'Uitval van de livestream', mitigation: 'Tweede verbinding en een opname die altijd meeloopt.' }];
+    changes.push('livestream, online communicatie en plan B toegevoegd');
+  }
+  if (/overnacht|meerdaags|twee dagen|2 dagen/.test(key)) { d.duration = `${d.duration || base.duration} + overnachting`; d.budgetItems = [...new Set([...(d.budgetItems || []), 'Overnachting'])]; changes.push('overnachting in duur en kosten'); }
+  d.title = `${base.title} — ${v.title}`.slice(0, 160);
+  d.variant = { title: v.title, text: v.text };
+  d.notes = [`Variant: ${v.title}. ${v.text}`, d.notes].filter(Boolean).join('\n');
+  return { data: d, changes };
 }
