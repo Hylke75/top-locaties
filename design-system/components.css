@@ -496,12 +496,17 @@ html:has(.tl-app) { scroll-padding-top: 80px; }
   .tl-composer__grid--three .tl-composer__column:first-child { grid-column:1 / -1; border-bottom:1px solid var(--tl-line-dark); }
   .tl-composer__grid--three .tl-composer__column:nth-child(2) { border-left:0; }
 }
-@media (max-width: 800px) {
+/* Menu als uitklapper zodra de volledige navigatie niet meer op één regel past. */
+@media (max-width: 1180px) {
   .tl-menu-toggle { display:inline-flex; }
-  .tl-header .tl-nav { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:stretch; gap:0; padding:12px var(--tl-gutter) 26px; background:var(--tl-paper); border-bottom:2px solid var(--tl-ink); }
+  .tl-header { position:relative; }
+  .tl-header__actions { display:flex; align-items:center; gap:10px; }
+  .tl-header .tl-nav { display:none; position:absolute; z-index:30; top:100%; left:0; right:0; flex-direction:column; align-items:stretch; gap:0; padding:12px var(--tl-gutter) 26px; background:var(--tl-paper); border-bottom:2px solid var(--tl-ink); }
   .tl-header .tl-nav[data-open="true"] { display:flex; }
   .tl-header .tl-nav a:not(.tl-button) { display:block; padding:16px 0; border-bottom:var(--tl-border); font:400 26px/.95 var(--tl-font-display); letter-spacing:-.05em; }
-  .tl-header .tl-nav .tl-button { margin-top:18px; }
+  .tl-header .tl-nav .tl-button { margin-top:18px; align-self:flex-start; }
+}
+@media (max-width: 800px) {
   .tl-poster { height:830px; min-height:660px; }
   .tl-poster__img { object-position:47% center; }
   .tl-poster__brand { top:22px; }
@@ -1052,3 +1057,5 @@ figure.tl-image-frame { margin:0; }
 .tl-quote-send { margin:18px 0 24px; padding:18px; border:1px solid var(--tl-line-dark); display:grid; gap:12px; }
 .tl-maker__quotes { margin-top:18px; padding-top:6px; border-top:var(--tl-border); }
 .tl-maker__issues li[data-level="ok"] { border-left-color:var(--tl-ink); }
+.tl-lang { display:inline-grid; place-items:center; min-width:44px; min-height:44px; border:1px solid var(--tl-ink); font:400 11px var(--tl-font-mono); letter-spacing:.04em; }
+.tl-lang:hover, .tl-lang:focus-visible { background:var(--tl-ink); color:var(--tl-white); }

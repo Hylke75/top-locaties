@@ -41,6 +41,7 @@ ${footer({ links: [{ href: '/eventconcepten/op-gevoel/', label: 'KIES OP GEVOEL 
     title: 'Eventconcepten — originele ideeën voor zakelijke events | Top Locaties',
     description: 'Alle eventconcepten van Top Locaties: van kennisfestival tot verbindend diner. Filter op type of op het gevoel dat je gasten mee naar huis nemen.',
     path: '/eventconcepten/', body, scripts: ['compass.js', 'overview.js'], data: compassData(data),
+    alternates: [{ lang: 'nl', path: '/eventconcepten/' }, { lang: 'en', path: '/en/concepts/' }],
     crumbs: [{ name: 'Home', path: '/' }, { name: 'Eventconcepten', path: '/eventconcepten/' }],
     jsonld: { '@type': 'ItemList', name: 'Eventconcepten', itemListElement: concepts.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.origin}/eventconcepten/${c.slug}/`, name: c.title })) },
   });

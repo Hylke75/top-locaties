@@ -8,6 +8,7 @@ import { loadData } from '../src/lib/data.mjs';
 import { validate } from './validate-content.mjs';
 import { renderHome } from '../src/pages/home.mjs';
 import { renderBriefing, renderPlanDocument } from '../src/pages/conceptplan.mjs';
+import { renderEnHome, renderEnConcepts } from '../src/pages/en.mjs';
 import { renderAccount, renderMaker, renderPresentation, renderSearch, renderRegister } from '../src/pages/account.mjs';
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
@@ -79,6 +80,8 @@ write('data/search.json', JSON.stringify([
 ]));
 write('zoeken/index.html', renderSearch(data));
 write('aanmelden/index.html', renderRegister(data));
+write('en/index.html', renderEnHome(data));
+write('en/concepts/index.html', renderEnConcepts(data));
 write('maker/index.html', renderMaker(data));
 write('presentatie/index.html', renderPresentation(data));
 data.concepts.forEach((c) => write(`eventconcepten/${c.slug}/conceptplan/index.html`, renderPlanDocument(data, c)));
@@ -105,7 +108,7 @@ write('styleguide/index.html', guide);
 copy('design-system/STYLE-GUIDE.md', 'styleguide/STYLE-GUIDE.md');
 
 // Sitemap: uitsluitend gepubliceerde concepten en AANGESLOTEN partnerlocaties (data.venues is al partner-only).
-const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/', '/zoeken/',
+const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/', '/zoeken/', '/en/', '/en/concepts/',
   ...data.concepts.map((c) => `/eventconcepten/${c.slug}/`),
   ...data.venues.map((v) => `/locaties/${v.slug}/`),
   ...data.suppliers.map((s) => `/leveranciers/${s.slug}/`)];

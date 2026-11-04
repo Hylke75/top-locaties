@@ -32,6 +32,7 @@ export function header({ current = '', cta = { href: '/#gevoel', label: 'KIES OP
       ${NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON).map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
       <a class="tl-button" href="${cta.href}">${cta.label}</a>
     </nav>
+    <a class="tl-lang" href="/en/" hreflang="en" lang="en" aria-label="English version">EN</a>
     <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>
   </div>
 </header>`;
@@ -39,15 +40,15 @@ export function header({ current = '', cta = { href: '/#gevoel', label: 'KIES OP
 
 export const overline = (left, right) => html`<div class="tl-overline"><span>${left}</span><span>${right}</span></div>`;
 
-export function footer({ left = 'HET BEGINT MET EEN IDEE.', right = 'WAT GA JIJ MAKEN?', title = null, links = [] } = {}) {
+export function footer({ left = 'HET BEGINT MET EEN IDEE.', right = 'WAT GA JIJ MAKEN?', title = null, links = [], lang = 'nl' } = {}) {
   return html`<footer class="tl-footer" id="footer">
   ${overline(left, right)}
   <div class="tl-footer__name">${title ? lines(title) : raw('TOP LOCATIES <span aria-hidden="true">✳</span>')}</div>
   ${links.length ? html`<nav class="tl-footer__links" aria-label="Verder ontdekken">${links.map((l) => (l.external ? ext(l.href, l.label) : html`<a href="${l.href}">${l.label}</a>`))}</nav>` : ''}
   <div class="tl-footer__bottom">
-    <span class="tl-mono">© TOP LOCATIES — ONDERDEEL VAN HET GREENBOOKINGS-NETWERK</span>
-    <span class="tl-mono">CONCEPT × LOCATIE × MAKER</span>
-    <a class="tl-mono" href="#top">TERUG NAAR BOVEN ↑</a>
+    <span class="tl-mono">${lang === 'en' ? '© TOP LOCATIES — PART OF THE GREENBOOKINGS NETWORK' : '© TOP LOCATIES — ONDERDEEL VAN HET GREENBOOKINGS-NETWERK'}</span>
+    <span class="tl-mono">${lang === 'en' ? 'CONCEPT × VENUE × MAKER' : 'CONCEPT × LOCATIE × MAKER'}</span>
+    <a class="tl-mono" href="#top">${lang === 'en' ? 'BACK TO TOP ↑' : 'TERUG NAAR BOVEN ↑'}</a>
   </div>
 </footer>`;
 }

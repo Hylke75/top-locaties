@@ -44,6 +44,7 @@ export function renderHome(data) {
       <a href="#gevoel">Kies op gevoel ↗</a>
       <a href="/eventconcepten/">Eventconcepten ↗</a>
       <a href="/conceptplan/">Briefing: drie concepten ↗</a>
+      <a href="/en/" hreflang="en" lang="en">English ↗</a>
       <a href="/locaties/">Zoek locaties ↗</a>
       <a href="/leveranciers/">Leveranciers ↗</a>
       <a href="/mijn-plan/">Mijn plan ↗</a>
@@ -139,6 +140,7 @@ ${footer({ links: [{ href: '#gevoel', label: 'KIES OP GEVOEL ↗' }, { href: '/e
     body,
     scripts: ['compass.js', 'home.js'],
     data: compassData(data),
+    alternates: [{ lang: 'nl', path: '/' }, { lang: 'en', path: '/en/' }],
     jsonld: [
       { '@type': 'WebSite', '@id': `${SITE.origin}/#website`, name: 'Top Locaties', url: `${SITE.origin}/`, inLanguage: 'nl-NL', publisher: { '@id': `${SITE.origin}/#org` },
         potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: `${SITE.origin}/zoeken/?q={search_term_string}` }, 'query-input': 'required name=search_term_string' } },
