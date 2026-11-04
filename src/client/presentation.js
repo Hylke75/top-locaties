@@ -4,6 +4,7 @@ import { readData } from './lib/store.js';
 import { partners, baseConcept, esc } from './lib/conceptdata.js';
 import { merge } from './lib/userconcept.js';
 import { exportConcept } from './lib/export-actions.js';
+import { track } from './lib/track.js';
 
 const cfg = readData();
 A.configure(cfg.accounts);
@@ -112,6 +113,7 @@ function fail(msg, loginNeeded) {
       const row = await A.getShared(t);
       const base = await baseConcept(row.base_slug);
       C = merge(base, row.data);
+      track('share_view', row.base_slug);
       back.href = '/'; back.textContent = '← TOP LOCATIES';
     } else if (id) {
       if (!A.enabled() || !(await A.session())) { fail('Eigen concepten zijn privé. Log in om de presentatie te maken.', true); return; }

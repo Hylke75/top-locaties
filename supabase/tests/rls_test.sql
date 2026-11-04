@@ -57,3 +57,26 @@ select pg_temp.as_user('00000000-0000-0000-0000-00000000000a', 'anna@x.nl');
 select public.delete_my_account();
 reset role;
 select pg_temp.ok((select count(*) from public.user_concepts) = 0 and (select count(*) from public.user_concept_versions) = 0, 'account verwijderen wist concepten en versies');
+
+-- Aanmelden en statistiek
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000b', 'bob@x.nl');
+insert into public.user_concepts (id, base_slug, title, data, registration_token, registration_open, registration_limit) values ('22222222-2222-2222-2222-222222222222', 'diner', 'Diner Bob', '{"datum":"2027-05-01"}', 'regtokenregtokenregtoken1234', true, 2);
+reset role;
+set role anon;
+select pg_temp.ok((select open from public.registration_info('regtokenregtokenregtoken1234')) = true, 'anon ziet aanmeldinfo via token');
+select public.register_for_event('regtokenregtokenregtoken1234', 'Carla', 'Carla@X.nl', 'Bureau', array['vegan'], null);
+select public.register_for_event('regtokenregtokenregtoken1234', 'Carla C.', 'carla@x.nl', 'Bureau', array['vegan'], null);
+select public.register_for_event('regtokenregtokenregtoken1234', 'Dirk', 'dirk@x.nl', null, '{}', null);
+select pg_temp.fails($$select public.register_for_event('regtokenregtokenregtoken1234', 'Eva', 'eva@x.nl', null, '{}', null)$$, 'aanmelden stopt bij de limiet');
+select pg_temp.fails($$select * from public.event_registrations$$, 'anon kan de deelnemerslijst niet lezen');
+select public.track('view_concept', 'diner'); select public.track('view_concept', 'diner'); select public.track('onzin', 'diner');
+select pg_temp.fails($$select * from public.site_stats$$, 'statistiek is niet publiek leesbaar');
+reset role;
+select pg_temp.ok((select count(*) from public.event_registrations where concept_id = '22222222-2222-2222-2222-222222222222') = 2, 'dubbele aanmelding wordt bijgewerkt, niet verdubbeld');
+select pg_temp.ok((select n from public.site_stats where event = 'view_concept' and slug = 'diner') = 2 and (select count(*) from public.site_stats) = 1, 'statistiek telt alleen bekende gebeurtenissen');
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000c', 'carla@x.nl');
+select pg_temp.ok((select count(*) from public.event_registrations) = 0, 'buitenstaander ziet geen aanmeldingen');
+reset role;
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000b', 'bob@x.nl');
+select pg_temp.ok((select count(*) from public.event_registrations) = 2, 'eigenaar ziet de aanmeldingen');
+reset role;

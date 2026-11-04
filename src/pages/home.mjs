@@ -60,6 +60,14 @@ export function renderHome(data) {
 
 <div class="tl-marquee" aria-hidden="true"><div class="tl-marquee__track">${[0, 1].map(() => raw('MEER DAN EEN LOCATIE <b>✳</b> MEER DAN EEN IDEE <b>✳</b> MEER DAN EEN EVENEMENT <b>✳</b> '))}</div></div>
 
+<nav class="tl-quickstart" aria-labelledby="qsTitle">
+  <h2 class="tl-mono" id="qsTitle">WAT ORGANISEER JE?</h2>
+  <a class="tl-quickstart__item" href="/eventconcepten/?type=vergaderen"><span class="tl-mono">01 / OCHTEND OF DAGDEEL</span><strong>EEN VERGADERING</strong><span class="tl-quickstart__arrow" aria-hidden="true">↗</span></a>
+  <a class="tl-quickstart__item" href="/eventconcepten/?dagdeel=dag"><span class="tl-mono">02 / HELE DAG</span><strong>EEN DAGEVENT</strong><span class="tl-quickstart__arrow" aria-hidden="true">↗</span></a>
+  <a class="tl-quickstart__item" href="/eventconcepten/?dagdeel=avond"><span class="tl-mono">03 / AVOND</span><strong>EEN AVOND</strong><span class="tl-quickstart__arrow" aria-hidden="true">↗</span></a>
+  <a class="tl-quickstart__item tl-quickstart__item--accent" href="/conceptplan/"><span class="tl-mono">04 / WEET JE HET NOG NIET?</span><strong>ACHT VRAGEN</strong><span class="tl-quickstart__arrow" aria-hidden="true">↗</span></a>
+</nav>
+
 <section class="tl-section" id="intro" aria-labelledby="introTitle">
   ${overline('01 / HET BEGIN', 'WE DENKEN GRAAG VERDER')}
   <div class="tl-columns">

@@ -134,3 +134,30 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'ZOEKEN' }], 'CONCEPTEN, LOCATIE
 ${footer({ links: [{ href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/locaties/', label: 'LOCATIEZOEKER ↗' }, { href: '/leveranciers/', label: 'LEVERANCIERS ↗' }] })}`;
   return layout({ title: 'Zoeken — concepten, locaties en makers | Top Locaties', description: 'Zoek in alle eventconcepten, aangesloten partnerlocaties en makers van Top Locaties, op plaats, soort bijeenkomst of aantal personen.', path: '/zoeken/', body, scripts: ['search.js'], noindex: true });
 }
+
+/* ---------------- /aanmelden/?t=… (gasten melden zich aan voor een eigen event) ---------------- */
+export function renderRegister(data) {
+  const diets = ['vegetarisch', 'vegan', 'glutenvrij', 'lactosevrij', 'halal', 'notenallergie'];
+  const body = html`${header({ current: '' })}
+<main id="main" data-register>
+<section class="tl-section tl-section--dark" aria-labelledby="regTitle">
+  ${overline('AANMELDEN', 'VIA TOP LOCATIES')}
+  <h1 class="tl-display" id="regTitle" data-reg-title>MELD JE<br><span class="tl-accent">AAN.</span></h1>
+  <p class="tl-mono tl-on-dark-note" data-reg-meta></p>
+  <form class="tl-questionnaire" data-reg-form hidden novalidate>
+    <div class="tl-questionnaire__grid tl-questionnaire__grid--two">
+      <label class="tl-field"><span>NAAM *</span><input name="name" autocomplete="name" required></label>
+      <label class="tl-field"><span>E-MAILADRES *</span><input name="email" type="email" autocomplete="email" required></label>
+      <label class="tl-field"><span>ORGANISATIE</span><input name="organisation" autocomplete="organization"></label>
+      <fieldset class="tl-field"><legend>DIEETWENSEN</legend><div class="tl-chip-set">${diets.map((d) => html`<label class="tl-check tl-check--on-dark"><input type="checkbox" name="diet" value="${d}"> ${d}</label>`)}</div></fieldset>
+      <label class="tl-field tl-questionnaire__wide"><span>OPMERKING (OPTIONEEL)</span><input name="remarks" maxlength="500"></label>
+    </div>
+    <label class="tl-check tl-check--on-dark tl-body--gap"><input type="checkbox" name="consent"> Ik geef toestemming dat de organisator mijn naam, e-mailadres en dieetwensen gebruikt voor dit event. Ze worden verwijderd zodra de organisator het concept verwijdert.</label>
+    <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-reg-status></span><button class="tl-button tl-button--accent" type="submit">MELD MIJ AAN ↗</button></div>
+  </form>
+  <div data-reg-done hidden tabindex="-1"></div>
+</section>
+</main>
+${footer({ links: [{ href: '/', label: 'TOP LOCATIES ↗' }] })}`;
+  return layout({ title: 'Aanmelden | Top Locaties', description: 'Meld je aan voor een event dat met Top Locaties is georganiseerd.', path: '/aanmelden/', body, scripts: ['register.js'], data: { accounts: { ...(data.site.accounts || {}), enabled: true } }, noindex: true });
+}

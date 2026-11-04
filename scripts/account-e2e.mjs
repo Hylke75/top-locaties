@@ -19,6 +19,7 @@ const tokens = new Map(); // token -> userId
 const rows = []; // { id, user_id, base_slug, title, data, updated_at, share_token }
 const members = []; // { concept_id, email, role }
 const versions = []; // { id, concept_id, title, data, saved_by_email, created_at }
+const regs = []; // { id, concept_id, name, email, organisation, diet, remarks, created_at }
 let n = 0;
 const json = (route, status, body) => route.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
 const issue = (u) => { const t = `tok-${++n}`; tokens.set(t, u.id); return { access_token: t, refresh_token: `ref-${t}`, expires_in: 3600, user: { id: u.id, email: u.email } }; };
@@ -46,7 +47,25 @@ async function supabase(route) {
     const r = rows.find((x) => x.share_token && x.share_token === body?.token);
     return json(route, 200, r ? [{ title: r.title, base_slug: r.base_slug, data: r.data, updated_at: r.updated_at }] : []);
   }
+  if (url.pathname === '/rest/v1/rpc/registration_info') {
+    const r = rows.find((x) => x.registration_token && x.registration_token === body?.token);
+    return json(route, 200, r ? [{ title: r.title, datum: r.data?.datum || null, organisatie: r.data?.organisatie || null, open: Boolean(r.registration_open), full_: false }] : []);
+  }
+  if (url.pathname === '/rest/v1/rpc/register_for_event') {
+    const r = rows.find((x) => x.registration_token && x.registration_token === body?.token);
+    if (!r) return json(route, 400, { message: 'Deze aanmeldlink bestaat niet (meer).' });
+    if (!r.registration_open) return json(route, 400, { message: 'Aanmelden is gesloten.' });
+    const email = body.p_email.toLowerCase(); const ex = regs.find((x) => x.concept_id === r.id && x.email === email);
+    const rec = { concept_id: r.id, name: body.p_name, email, organisation: body.p_organisation, diet: body.p_diet || [], remarks: body.p_remarks, created_at: new Date().toISOString() };
+    if (ex) Object.assign(ex, rec); else regs.push({ id: regs.length + 1, ...rec });
+    return json(route, 200, 'ok');
+  }
   if (!uid) return json(route, 401, { message: 'JWT required' });
+  if (url.pathname === '/rest/v1/event_registrations') {
+    const cid = url.searchParams.get('concept_id')?.replace('eq.', '');
+    const r = rows.find((x) => x.id === cid);
+    return json(route, 200, r && roleOf(r) ? regs.filter((x) => x.concept_id === cid) : []);
+  }
   if (url.pathname === '/rest/v1/concept_members') {
     const cid = url.searchParams.get('concept_id')?.replace('eq.', '');
     if (req.method() === 'GET') {
@@ -75,7 +94,7 @@ async function supabase(route) {
       if (!r || !['owner', 'editor'].includes(roleOf(r))) return json(route, 200, []);
       const guard = url.searchParams.get('updated_at')?.replace('eq.', '');
       if (guard && guard !== r.updated_at) return json(route, 200, []); // conflict: 0 rijen
-      if ('share_token' in body && body.share_token !== r.share_token && r.user_id !== uid) return json(route, 400, { message: 'Alleen de eigenaar kan de deellink wijzigen.' });
+      if (['share_token', 'registration_token', 'registration_open', 'registration_limit'].some((k) => k in body && body[k] !== r[k]) && r.user_id !== uid) return json(route, 400, { message: 'Alleen de eigenaar kan de deellink en de aanmelding wijzigen.' });
       if (body.data && JSON.stringify(body.data) !== JSON.stringify(r.data)) versions.push({ id: versions.length + 1, concept_id: r.id, title: r.title, data: JSON.parse(JSON.stringify(r.data)), saved_by_email: email, created_at: new Date().toISOString() });
       Object.assign(r, body, { updated_at: new Date(Date.now() + versions.length + 1).toISOString() });
       return json(route, 200, [r]);
@@ -205,6 +224,27 @@ await anon.goto(base + '/presentatie/?t=bestaat-niet-bestaat-niet-12345');
 await anon.waitForSelector('.tl-state');
 check((await anon.textContent('.tl-state')).includes('bestaat niet'), 'onjuiste deellink geeft een nette melding');
 await anonCtx.close();
+// Aanmelden: link maken, gast meldt zich aan zonder account, organisator neemt aantal en dieet over
+await page.click('[data-reg-on]');
+await page.waitForSelector('[data-reg-link]');
+const regUrl = (await page.inputValue('[data-reg-link]')).replace(/^https?:\/\/[^/]+/, base);
+const guestCtx = await browser.newContext(); await guestCtx.route(`${SB}/**`, supabase);
+const guest = await guestCtx.newPage();
+await guest.goto(regUrl);
+await guest.waitForSelector('[data-reg-form]:not([hidden])');
+await guest.fill('[name=name]', 'Gast Een'); await guest.fill('[name=email]', 'gast@voorbeeld.nl'); await guest.check('[name=diet][value=vegan]');
+await guest.click('[data-reg-form] button[type=submit]');
+check((await guest.textContent('[data-reg-status]')).includes('toestemming'), 'aanmelden vraagt toestemming');
+await guest.check('[name=consent]'); await guest.click('[data-reg-form] button[type=submit]');
+await guest.waitForSelector('[data-reg-done]:not([hidden])');
+check(regs.length === 1 && regs[0].diet.includes('vegan'), 'gast meldt zich aan zonder account');
+await guestCtx.close();
+await page.reload(); await page.waitForSelector('[data-reg-apply]');
+check((await page.textContent('[data-maker-collab]')).includes('1 AANMELDING / 1× VEGAN'), 'organisator ziet aanmelding en dieetwensen');
+await page.click('[data-reg-apply]');
+check(await page.inputValue('[data-path="guests"]') === '1' && (await page.inputValue('[data-path="notes"]')).includes('1× vegan'), 'aantal en dieetwensen overgenomen in het concept');
+await page.click('[data-maker-save]');
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('OPGESLAGEN ✓'));
 await page.fill('[data-invite] [name=email]', 'collega@voorbeeld.nl');
 await page.selectOption('[data-invite] [name=role]', 'editor');
 await page.click('[data-invite] button[type=submit]');

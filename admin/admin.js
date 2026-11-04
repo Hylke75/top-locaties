@@ -49,9 +49,27 @@ async function reload() { content = await call('GET', '/api/content'); }
 function route() {
   const [name, arg] = (location.hash.slice(1) || 'dashboard').split('/');
   document.querySelectorAll('[data-admin-nav] a').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === `#${name === 'concept' ? 'concepten' : name}`));
-  const views = { gids: guideView, dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView };
+  const views = { gids: guideView, dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView, statistiek: statsView };
   (views[name] || dashboard)();
   window.scrollTo(0, 0);
+}
+
+/* ---------- Statistiek (anonieme tellers; geen personen) ---------- */
+async function statsView() {
+  view.innerHTML = `<section class="tl-section">${overline('STATISTIEK', 'LAATSTE 30 DAGEN / ANONIEM')}<h1 class="tl-display tl-display--md">WAT<br><span class="tl-accent">WERKT.</span></h1><p class="tl-mono" data-stats-status>LADEN…</p><div data-stats></div></section>`;
+  const st = $('[data-stats-status]');
+  let r; try { r = await call('GET', '/api/stats'); } catch (e) { st.textContent = e.message; return; }
+  if (!r.configured) { st.textContent = 'Nog niet ingesteld: start het beheer met TL_SUPABASE_SERVICE_KEY (service key van het Supabase-project top-locaties) in de omgeving.'; return; }
+  if (r.error) { st.textContent = `Niet geladen: ${r.error}. Is de migratie uitgevoerd?`; return; }
+  const sum = (ev, slug) => r.rows.filter((x) => x.event === ev && (slug === undefined || x.slug === slug)).reduce((n, x) => n + x.n, 0);
+  const funnel = [['view_concept', 'Concept bekeken'], ['briefing', 'Briefing ingevuld'], ['start_maker', 'Maker gestart'], ['save_concept', 'Concept bewaard'], ['download', 'Download'], ['quote', 'Offerteaanvraag gekopieerd'], ['contact', 'Contactbericht verstuurd'], ['share_view', 'Deellink bekeken'], ['register', 'Aanmelding']];
+  const titles = Object.fromEntries(content.concepts.map((c) => [c.slug, c.title]));
+  const slugs = [...new Set(r.rows.filter((x) => x.slug && titles[x.slug]).map((x) => x.slug))].sort((a, b) => sum('view_concept', b) - sum('view_concept', a));
+  const pct = (a, b) => (b ? `${Math.round((a / b) * 100)}%` : '—');
+  st.textContent = `VANAF ${r.since}. Alleen tellers per dag; geen cookies, geen IP-adressen, geen personen.`;
+  $('[data-stats]').innerHTML = `<div class="ad-grid">${funnel.map(([k, l]) => `<div class="ad-tile"><span class="tl-mono">${esc(l.toUpperCase())}</span><b>${sum(k)}</b></div>`).join('')}</div>
+    <table class="ad-table"><thead><tr><th>Concept</th><th>Bekeken</th><th>Maker gestart</th><th>Bewaard</th><th>Downloads</th><th>Offertes</th><th>Van bekijken naar maker</th></tr></thead><tbody>
+    ${slugs.map((sl) => `<tr><td>${esc(titles[sl])}</td><td>${sum('view_concept', sl)}</td><td>${sum('start_maker', sl)}</td><td>${sum('save_concept', sl)}</td><td>${sum('download', sl)}</td><td>${sum('quote', sl)}</td><td>${pct(sum('start_maker', sl), sum('view_concept', sl))}</td></tr>`).join('') || '<tr><td colspan="7">Nog geen gegevens.</td></tr>'}</tbody></table>`;
 }
 
 /* ---------- Overzicht ---------- */
@@ -368,12 +386,28 @@ function venueEditor(slug) {
       <div class="ad-two"><div class="ad-field"><span>Soort bijeenkomst</span>${checks('eventTypes', tax.eventTypes, ed.eventTypes || [])}</div><div class="ad-field"><span>Karakter van de plek</span>${checks('character', tax.character, ed.character || [])}</div></div>
       <label class="tl-check"><input type="checkbox" name="checked"> Tekst is nagelezen en klopt met het Greenbookings-profiel</label>
     </fieldset>
+    <fieldset><legend>EXTRA PROFIEL VOOR TOP LOCATIES (OPTIONEEL)</legend>
+      ${field('Introductie (alleen controleerbare feiten)', 'pr_intro', ed.profile?.intro || '', { area: true, max: 600 })}
+      ${field('Ruimtes — één per regel: Naam | capaciteit | opstelling | opmerking', 'pr_spaces', (ed.profile?.spaces || []).map((x) => [x.name, x.capacity || '', x.setup || '', x.note || ''].join(' | ')).join('\n'), { area: true })}
+      ${field('Foto\'s — één per regel: https-URL | alt-tekst | credit | recht (greenbookings, locatie of eigen)', 'pr_photos', (ed.profile?.photos || []).map((x) => [x.url, x.alt, x.credit, x.rights].join(' | ')).join('\n'), { area: true, help: 'Alleen beelden met gebruiksrecht; zonder recht worden ze niet getoond.' })}
+      <div class="ad-two">${field('Video (YouTube of Vimeo, https)', 'pr_video', ed.profile?.video?.url || '')}${field('Videotitel', 'pr_video_title', ed.profile?.video?.title || '')}</div>
+      ${field('Bron van deze informatie (bv. "aangeleverd door de locatie, 4 nov 2026")', 'pr_source', ed.profile?.source || '')}
+    </fieldset>
     <div class="ad-actions"><button class="tl-button" type="submit">OPSLAAN ✓</button><a class="tl-button tl-button--outline" href="/preview/locaties/${esc(slug)}/" target="_blank" rel="noopener">BEKIJK ↗</a><span class="tl-mono" data-save-status></span></div>
     <ul class="ad-issues" data-errors></ul></form></section>`;
   $('[data-venue-form]').onsubmit = async (e) => {
     e.preventDefault();
     const f = e.target;
     const body = { label: f.elements.label.value.trim(), line: f.elements.line.value.trim(), eventTypes: [...f.querySelectorAll('[name=eventTypes]:checked')].map((x) => x.value), character: [...f.querySelectorAll('[name=character]:checked')].map((x) => x.value), checked: f.elements.checked.checked };
+    const rows = (v) => v.split('\n').map((l) => l.split('|').map((x) => x.trim())).filter((r) => r[0]);
+    const prof = {
+      intro: f.elements.pr_intro.value.trim(),
+      spaces: rows(f.elements.pr_spaces.value).map(([name, capacity, setup, note]) => ({ name, capacity: Number(capacity) || null, setup: setup || '', note: note || '' })),
+      photos: rows(f.elements.pr_photos.value).map(([url, alt, credit, rights]) => ({ url, alt: alt || '', credit: credit || '', rights: (rights || '').toLowerCase() })),
+      video: f.elements.pr_video.value.trim() ? { url: f.elements.pr_video.value.trim(), title: f.elements.pr_video_title.value.trim() } : null,
+      source: f.elements.pr_source.value.trim(),
+    };
+    body.profile = prof.intro || prof.spaces.length || prof.photos.length || prof.video ? prof : null;
     try { await call('PUT', `/api/venues/${slug}`, body); await reload(); $('[data-save-status]').textContent = 'OPGESLAGEN ✓'; toast('Opgeslagen'); }
     catch (err) { $('[data-errors]').innerHTML = issues(err.data?.errors || [err.message], 'error'); }
   };

@@ -171,3 +171,83 @@ begin
 end; $$;
 revoke execute on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;
+
+-- 4. Aanmelden voor een event (deelnemerslijst) ---------------------------------------------------
+alter table public.user_concepts add column if not exists registration_token text unique check (registration_token is null or registration_token ~ '^[A-Za-z0-9_-]{24,64}$');
+alter table public.user_concepts add column if not exists registration_open boolean not null default false;
+alter table public.user_concepts add column if not exists registration_limit integer check (registration_limit is null or registration_limit between 1 and 5000);
+
+create table if not exists public.event_registrations (
+  id bigint generated always as identity primary key,
+  concept_id uuid not null references public.user_concepts(id) on delete cascade,
+  name text not null check (char_length(name) between 2 and 120),
+  email text not null check (email = lower(email) and email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
+  organisation text check (organisation is null or char_length(organisation) <= 120),
+  diet text[] not null default '{}' check (cardinality(diet) <= 8),
+  remarks text check (remarks is null or char_length(remarks) <= 500),
+  created_at timestamptz not null default now(),
+  unique (concept_id, email)
+);
+alter table public.event_registrations enable row level security;
+revoke all on public.event_registrations from anon;
+grant select, delete on public.event_registrations to authenticated;
+drop policy if exists "aanmeldingen lezen" on public.event_registrations;
+drop policy if exists "aanmeldingen verwijderen" on public.event_registrations;
+create policy "aanmeldingen lezen" on public.event_registrations for select to authenticated
+  using (public.tl_is_owner(concept_id) or public.tl_member_role(concept_id) is not null);
+create policy "aanmeldingen verwijderen" on public.event_registrations for delete to authenticated
+  using (public.tl_is_owner(concept_id) or public.tl_member_role(concept_id) = 'editor');
+
+-- Alleen de eigenaar beheert de aanmeldlink (net als de deellink).
+create or replace function public.tl_guard_concept() returns trigger
+language plpgsql set search_path = '' as $$
+begin
+  if new.user_id is distinct from old.user_id then raise exception 'De eigenaar van een concept kan niet worden gewijzigd.'; end if;
+  if (new.share_token is distinct from old.share_token or new.registration_token is distinct from old.registration_token
+      or new.registration_open is distinct from old.registration_open or new.registration_limit is distinct from old.registration_limit)
+     and old.user_id <> auth.uid() then raise exception 'Alleen de eigenaar kan de deellink en de aanmelding wijzigen.'; end if;
+  return new;
+end; $$;
+
+create or replace function public.registration_info(token text) returns table (title text, datum text, organisatie text, open boolean, full_ boolean)
+language sql stable security definer set search_path = '' as $$
+  select c.title, c.data ->> 'datum', c.data ->> 'organisatie', c.registration_open,
+         (c.registration_limit is not null and (select count(*) from public.event_registrations r where r.concept_id = c.id) >= c.registration_limit)
+  from public.user_concepts c where token is not null and length(token) >= 24 and c.registration_token = token $$;
+
+create or replace function public.register_for_event(token text, p_name text, p_email text, p_organisation text default null, p_diet text[] default '{}', p_remarks text default null)
+returns text language plpgsql security definer set search_path = '' as $$
+declare c record;
+begin
+  select id, registration_open, registration_limit into c from public.user_concepts where token is not null and length(token) >= 24 and registration_token = token;
+  if c.id is null then raise exception 'Deze aanmeldlink bestaat niet (meer).'; end if;
+  if not c.registration_open then raise exception 'Aanmelden is gesloten.'; end if;
+  if c.registration_limit is not null and (select count(*) from public.event_registrations r where r.concept_id = c.id) >= c.registration_limit then raise exception 'Het event is vol.'; end if;
+  insert into public.event_registrations (concept_id, name, email, organisation, diet, remarks)
+  values (c.id, trim(p_name), lower(trim(p_email)), nullif(trim(coalesce(p_organisation, '')), ''), coalesce(p_diet, '{}'), nullif(trim(coalesce(p_remarks, '')), ''))
+  on conflict (concept_id, email) do update set name = excluded.name, organisation = excluded.organisation, diet = excluded.diet, remarks = excluded.remarks;
+  return 'ok';
+end; $$;
+revoke execute on function public.registration_info(text), public.register_for_event(text, text, text, text, text[], text) from public;
+grant execute on function public.registration_info(text), public.register_for_event(text, text, text, text, text[], text) to anon, authenticated;
+
+-- 5. Anonieme gebruiksstatistiek (alleen tellers per dag; geen personen, geen IP, geen cookies) -----
+create table if not exists public.site_stats (
+  day date not null default current_date,
+  event text not null check (event in ('view_concept', 'briefing', 'start_maker', 'save_concept', 'download', 'quote', 'share_view', 'register', 'contact')),
+  slug text not null default '' check (slug ~ '^[a-z0-9-]{0,60}$'),
+  n integer not null default 0,
+  primary key (day, event, slug)
+);
+alter table public.site_stats enable row level security;
+revoke all on public.site_stats from anon, authenticated; -- alleen leesbaar met de service key (beheer)
+
+create or replace function public.track(p_event text, p_slug text default '') returns void
+language plpgsql security definer set search_path = '' as $$
+begin
+  insert into public.site_stats (day, event, slug, n) values (current_date, p_event, coalesce(p_slug, ''), 1)
+  on conflict (day, event, slug) do update set n = public.site_stats.n + 1;
+exception when check_violation then null; -- onbekende gebeurtenis of slug: stil negeren
+end; $$;
+revoke execute on function public.track(text, text) from public;
+grant execute on function public.track(text, text) to anon, authenticated;

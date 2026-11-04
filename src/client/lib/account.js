@@ -29,6 +29,9 @@ const MESSAGES = [
   [/relation .* does not exist|could not find the table/i, 'Opslaan is nog niet beschikbaar: de database wordt ingericht.'],
   [/failed to fetch|networkerror|load failed/i, 'Geen verbinding. Controleer je internet en probeer het opnieuw.'],
   [/^conflict$/, 'Iemand anders heeft dit concept intussen opgeslagen. Laad de nieuwste versie voordat je verder werkt.'],
+  [/event is vol/i, 'Dit event is vol. Neem contact op met de organisator.'],
+  [/aanmelden is gesloten/i, 'Aanmelden is gesloten.'],
+  [/aanmeldlink bestaat niet/i, 'Deze aanmeldlink bestaat niet (meer).'],
   [/maximaal 20 samenwerkers/i, 'Maximaal 20 samenwerkers per concept.'],
   [/alleen de eigenaar/i, 'Alleen de eigenaar kan dit wijzigen.'],
   [/duplicate key|already exists/i, 'Deze persoon is al uitgenodigd.'],
@@ -145,3 +148,15 @@ export const listVersions = (cid) => authed(`/rest/v1/user_concept_versions?conc
 export const getVersion = (vid) => authed(`/rest/v1/user_concept_versions?id=eq.${encodeURIComponent(vid)}&select=*`, { headers: { Accept: 'application/vnd.pgrst.object+json' } });
 export const deleteConcept = (id) => authed(`${T}?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
 export async function deleteAccount() { await authed('/rest/v1/rpc/delete_my_account', { method: 'POST', body: {} }); writeSession(null); }
+
+/* Aanmelden (deelnemerslijst) */
+export const registrationOn = (id, limit = null) => updateConcept(id, { registration_token: token(), registration_open: true, registration_limit: limit });
+export const registrationSet = (id, patch) => updateConcept(id, patch);
+export const listRegistrations = (cid) => authed(`/rest/v1/event_registrations?concept_id=eq.${encodeURIComponent(cid)}&select=id,name,email,organisation,diet,remarks,created_at&order=created_at`);
+export const deleteRegistration = (rid) => authed(`/rest/v1/event_registrations?id=eq.${encodeURIComponent(rid)}`, { method: 'DELETE' });
+export async function registrationInfo(t) {
+  const r = await call('/rest/v1/rpc/registration_info', { method: 'POST', body: { token: t } });
+  if (!Array.isArray(r) || !r.length) throw new Error('Deze aanmeldlink bestaat niet (meer).');
+  return r[0];
+}
+export const register = (t, f) => call('/rest/v1/rpc/register_for_event', { method: 'POST', body: { token: t, p_name: f.name, p_email: f.email, p_organisation: f.organisation || null, p_diet: f.diet || [], p_remarks: f.remarks || null } });

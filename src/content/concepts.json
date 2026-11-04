@@ -4681,7 +4681,8 @@
         "frictions": "Weer, activiteiten die niet voor iedereen haalbaar zijn, te volle planning.",
         "keyMessage": "Een dag waarin je je collega’s anders leert kennen.",
         "irreplaceable": "De lange lunch buiten en de presentaties."
-      }
+      },
+      "outdoor": true
     },
     {
       "id": "kennisontbijt",
@@ -6048,7 +6049,8 @@
         "frictions": "Weer, te lange route, duo’s die niet bij de vraag blijven, slecht toegankelijke paden.",
         "keyMessage": "Een vergadering met frisse lucht en een helder besluit.",
         "irreplaceable": "Het besluit dat uit de voorstellen ontstaat."
-      }
+      },
+      "outdoor": true
     },
     {
       "id": "boardroomdiner",
@@ -9616,7 +9618,8 @@
       "seo": {
         "title": "De heidag — strategische dag voor MT en bestuur | Top Locaties",
         "description": "Een heidag van 09:00 tot 17:00: wandelend beginnen, eerlijke foto, drie scenario's, kiezen en eigenaarschap. Compleet draaiboek, catering en partnerlocaties."
-      }
+      },
+      "outdoor": true
     },
     {
       "id": "hybride",

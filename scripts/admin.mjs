@@ -44,7 +44,7 @@ function authenticate({ email, password, token } = {}) {
   return { role: u.role, name: u.name, email: u.email };
 }
 const sessions = new Map(); // sid → { role, name, csrf, expires }
-const FILES = { playbook: 'playbook.json', concepts: 'concepts.json', venues: 'venues.editorial.json', suppliers: 'suppliers.editorial.json', feelings: 'feelings.json', snapshot: 'greenbookings-snapshot.json' };
+const FILES = { playbook: 'playbook.json', concepts: 'concepts.json', venues: 'venues.editorial.json', suppliers: 'suppliers.editorial.json', feelings: 'feelings.json', snapshot: 'greenbookings-snapshot.json', site: 'site.json' };
 
 const readDoc = (k) => JSON.parse(fs.readFileSync(path.join(CONTENT, FILES[k]), 'utf8'));
 function writeDoc(k, doc, user, action, detail) {
@@ -116,6 +116,18 @@ async function api(req, res, user, url) {
       snapshotMeta: snapshot._meta, partners, supplierSources: snapshot.suppliers, validation: await validate(), syncLog, build,
     });
   }
+  if (m === 'GET' && p === '/stats') {
+    // Anonieme tellers uit Supabase (site_stats). Sleutel alleen via omgeving: TL_SUPABASE_SERVICE_KEY.
+    const key = process.env.TL_SUPABASE_SERVICE_KEY;
+    const sbUrl = readDoc('site').accounts?.url;
+    if (!key || !sbUrl) return send(res, 200, { configured: false });
+    const since = new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
+    try {
+      const r = await fetch(`${sbUrl}/rest/v1/site_stats?day=gte.${since}&select=day,event,slug,n&order=day.desc&limit=5000`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+      if (!r.ok) return send(res, 200, { configured: true, error: `Supabase ${r.status}` });
+      return send(res, 200, { configured: true, since, rows: await r.json() });
+    } catch (e) { return send(res, 200, { configured: true, error: String(e.message || e) }); }
+  }
   if (m === 'GET' && p === '/audit') {
     const lines = fs.existsSync(AUDIT) ? fs.readFileSync(AUDIT, 'utf8').trim().split('\n').filter(Boolean).slice(-200).reverse().map((l) => JSON.parse(l)) : [];
     return send(res, 200, lines);
@@ -183,6 +195,7 @@ async function api(req, res, user, url) {
     let ed = doc.venues.find((v) => v.greenbookingsSlug === vm[1]);
     if (!ed) { ed = { id: body.id || vm[1], greenbookingsSlug: vm[1], order: doc.venues.length + 1, label: [src.type, src.sfeer].filter(Boolean).join(' / ').toUpperCase().slice(0, 40) || 'LOCATIE', eventTypes: [], character: [], line: src.tagline || `${src.type || 'Locatie'} in ${src.city}.`, illustrativeImage: null, editorialCheckedAt: null }; doc.venues.push(ed); }
     for (const f of ['label', 'line', 'eventTypes', 'character', 'order']) if (body[f] !== undefined) ed[f] = body[f];
+    if (body.profile !== undefined) ed.profile = body.profile ? { ...body.profile, updatedAt: new Date().toISOString().slice(0, 10) } : null;
     if (body.checked) ed.editorialCheckedAt = new Date().toISOString();
     const { errors } = await validateCandidate('venues', doc);
     if (errors.length) return send(res, 422, { error: 'Validatie mislukt', errors });

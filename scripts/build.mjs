@@ -8,7 +8,7 @@ import { loadData } from '../src/lib/data.mjs';
 import { validate } from './validate-content.mjs';
 import { renderHome } from '../src/pages/home.mjs';
 import { renderBriefing, renderPlanDocument } from '../src/pages/conceptplan.mjs';
-import { renderAccount, renderMaker, renderPresentation, renderSearch } from '../src/pages/account.mjs';
+import { renderAccount, renderMaker, renderPresentation, renderSearch, renderRegister } from '../src/pages/account.mjs';
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
 import { renderLegacy, renderNotFound } from '../src/pages/legacy.mjs';
@@ -73,6 +73,7 @@ write('data/search.json', JSON.stringify([
   ...data.suppliers.map((s) => ({ t: 'maker', title: s.name, url: `/leveranciers/${s.slug}/`, sub: s.label || s.category, place: s.city || '', text: [s.label, s.category, s.tagline].join(' ') })),
 ]));
 write('zoeken/index.html', renderSearch(data));
+write('aanmelden/index.html', renderRegister(data));
 write('maker/index.html', renderMaker(data));
 write('presentatie/index.html', renderPresentation(data));
 data.concepts.forEach((c) => write(`eventconcepten/${c.slug}/conceptplan/index.html`, renderPlanDocument(data, c)));

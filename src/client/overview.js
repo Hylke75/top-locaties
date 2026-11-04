@@ -2,7 +2,7 @@
 const root = document.querySelector('[data-concept-overview]');
 const cards = [...root.querySelectorAll('[data-concept-card]')];
 const status = root.querySelector('[data-ov-status]');
-let category = '';
+let category = new URLSearchParams(location.search).get('type') || '';
 let daypart = new URLSearchParams(location.search).get('dagdeel') || '';
 let feelings = [];
 
@@ -36,4 +36,4 @@ root.addEventListener('click', (e) => {
   } else return;
   paint();
 });
-if (daypart) paint();
+if (daypart || category) paint();

@@ -119,6 +119,14 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/locaties/', label: 'LOCATIES' }
   </div>
 </section>
 
+${v.profile ? html`<section class="tl-section" id="profiel" aria-labelledby="profTitle">
+  ${overline('01B / DE PLEK VAN DICHTBIJ', v.profile.source ? `BRON: ${v.profile.source.toUpperCase()}` : 'AANVULLING OP HET GREENBOOKINGS-PROFIEL')}
+  <div class="tl-section-head tl-section-head--top"><h2 class="tl-display tl-display--md" id="profTitle">RUIMTES EN<br><span class="tl-accent">BEELD.</span></h2>${v.profile.intro ? html`<p>${v.profile.intro}</p>` : ''}</div>
+  ${v.profile.spaces.length ? html`<div class="tl-runbook tl-runbook--four" role="table" aria-label="Ruimtes"><div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">RUIMTE</span><span role="columnheader">CAPACITEIT</span><span role="columnheader">OPSTELLING</span><span role="columnheader">OPMERKING</span></div>${v.profile.spaces.map((x) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${x.name}</span><span class="tl-runbook__duration" role="cell" data-label="CAPACITEIT">${x.capacity ? `tot ${x.capacity}` : 'onbekend'}</span><span role="cell"><strong class="tl-runbook__title">${x.setup || '—'}</strong></span><span class="tl-runbook__meta" role="cell" data-label="OPMERKING">${x.note}</span></div>`)}</div>` : ''}
+  ${v.profile.photos.length ? html`<div class="tl-venue-photos">${v.profile.photos.map((ph) => html`<figure class="tl-image-frame"><img src="${ph.url}" alt="${ph.alt || v.name}" loading="lazy" decoding="async"><figcaption class="tl-image-caption">${ph.credit ? `FOTO: ${ph.credit.toUpperCase()}` : 'FOTO VAN DE LOCATIE'}</figcaption></figure>`)}</div>` : ''}
+  ${v.profile.video ? html`<p class="tl-body--gap">${ext(v.profile.video.url, `${v.profile.video.title.toUpperCase()} — BEKIJK DE VIDEO ↗`, 'tl-button tl-button--outline')}</p>` : ''}
+</section>` : ''}
+
 <section class="tl-section tl-section--mist" id="concepten" aria-labelledby="fitTitle">
   ${overline('02 / WAT HIER KAN', 'REDACTIONELE KOPPELING')}
   <div class="tl-section-head tl-section-head--top">

@@ -40,6 +40,7 @@ if (dlg) {
       try { res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); } catch {}
       btn.disabled = false; btn.textContent = 'VERSTUUR BERICHT ↗';
       if (res?.ok) {
+        import('./lib/track.js').then((m) => m.track('contact', venueSlug)).catch(() => {});
         form.hidden = true;
         done.innerHTML = `<h3 class="tl-display tl-display--sm">BERICHT<br><span class="tl-accent">VERSTUURD ✓</span></h3><p class="tl-body">${esc(venueName)} heeft je vraag ontvangen en neemt contact met je op via ${esc(payload.bezoeker_email)}.</p>`;
         done.hidden = false; done.focus();

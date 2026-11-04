@@ -85,6 +85,7 @@ try {
   await chief.goto(base + '/admin/#concept/nacht');
   await chief.waitForSelector('[data-concept-form]');
   for (const [k, v] of [['doelen', 22], ['doelgroep', 17], ['originaliteit', 14], ['betrokkenheid', 13], ['haalbaarheid', 12], ['duurzaamheid', 7]]) await chief.fill(`[name=q_${k}]`, String(v));
+  await chief.evaluate(() => { document.querySelector('[data-save-status]').textContent = ''; });
   await chief.click('[data-concept-form] button[type=submit]');
   await chief.waitForFunction(() => document.querySelector('[data-save-status]').textContent.includes('OPGESLAGEN'));
   const q = JSON.parse(fs.readFileSync(path.join(content, 'concepts.json'), 'utf8')).concepts.find((c) => c.slug === 'nacht').quality;

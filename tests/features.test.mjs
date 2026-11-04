@@ -119,3 +119,18 @@ test('ics: geldig agendabestand met event en mijlpalen', () => {
   assert.throws(() => buildIcs({ title: 'x', date: '' }), /datum/);
   assert.match(buildIcs({ title: 'Nacht', date: '2027-03-05', start: '22:00', end: '01:00' }), /DTEND;TZID=Europe\/Amsterdam:20270306T010000/);
 });
+
+import { seasonAdvice } from '../src/client/lib/tailor.js';
+test('seizoensadvies alleen voor buitenconcepten', () => {
+  const team = concepts.find((c) => c.slug === 'teamdag');
+  assert.equal(seasonAdvice(team, '2027-01-15').season, 'winter');
+  assert.equal(seasonAdvice(team, '2027-07-15').season, 'zomer');
+  assert.equal(seasonAdvice(concepts.find((c) => c.slug === 'diner'), '2027-01-15'), null);
+});
+
+import { sanitizeProfile } from '../src/lib/data.mjs';
+test('partnerprofiel: alleen https en beelden met gebruiksrecht', () => {
+  const p = sanitizeProfile({ intro: 'Twee zalen.', spaces: [{ name: 'Zaal 1', capacity: '120', setup: 'theater' }], photos: [{ url: 'https://x.nl/a.jpg', rights: 'locatie' }, { url: 'http://x.nl/b.jpg', rights: 'locatie' }, { url: 'https://x.nl/c.jpg' }], video: { url: 'https://evil.example/v' } });
+  assert.equal(p.spaces[0].capacity, 120); assert.equal(p.photos.length, 1); assert.equal(p.video, null);
+  assert.equal(sanitizeProfile({}), null);
+});

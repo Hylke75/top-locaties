@@ -1,5 +1,7 @@
 import { html, raw } from '../lib/html.mjs';
 import { SITE } from '../lib/data.mjs';
+import { readFileSync } from 'node:fs';
+const ACC = JSON.parse(readFileSync(new URL('../content/site.json', import.meta.url), 'utf8')).accounts || {};
 
 /**
  * @param {{title:string, description:string, path:string, body:any, scripts?:string[], data?:any, preload?:string, noindex?:boolean}} o
@@ -37,7 +39,7 @@ ${(() => {
 })()}
 ${styles.map((st) => html`<link rel="stylesheet" href="/assets/css/${st}">`)}
 </head>
-<body class="tl-app" id="top">
+<body class="tl-app" id="top" data-sb-url="${ACC.url || ''}" data-sb-key="${ACC.publishableKey || ''}">
 <a class="tl-skip" href="#main">Ga naar de inhoud</a>
 ${body}
 ${data ? html`<script type="application/json" id="tl-data">${raw(JSON.stringify(data).replace(/</g, '\\u003c'))}</script>` : ''}

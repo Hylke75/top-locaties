@@ -190,6 +190,7 @@ function renderTailored() {
   </dl>
   ${t.fit.status === 'warn' ? `<p class="tl-warning">${escT(t.fit.text)}</p>` : ''}
   ${t.timing?.note ? `<p class="tl-warning">${escT(t.timing.note)}</p>` : ''}
+  ${t.season ? `<p class="tl-warning">BUITEN / ${escT(t.season.season.toUpperCase())}: ${escT(t.season.text)}${t.season.risks.length ? ` Plan B: ${t.season.risks.map((r) => escT(r.mitigation)).join(' ')}` : ''}</p>` : ''}
   ${t.adjustment ? `<p class="tl-warning">BIJGESTELD — ${escT(t.adjustment.label.toUpperCase())}: ${escT(t.adjustment.text)}</p>` : ''}
   ${t.variations.length ? `<h4 class="tl-mono tl-subhead tl-body--gap">AANBEVOLEN VARIANT</h4><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${t.variations.map((v) => `<div><dt>${escT(v.title)}</dt><dd>${escT(v.text)}</dd></div>`).join('')}</dl>` : ''}
   <h4 class="tl-mono tl-subhead tl-body--gap">DAGDRAAIBOEK — ${escT(a.start || '')}${t.timing ? ` TOT ${escT(t.timing.end)}` : ''}</h4>
@@ -279,6 +280,7 @@ if (tForm) {
     if (cq) {
       const q = quoteRequests(concept, currentTailor(), data.quoteQuestions)[Number(cq.dataset.copyQuote)];
       const text = `Onderwerp: ${q.subject}\n\n${q.body}`;
+      import('./lib/track.js').then((m) => m.track('quote', concept.slug)).catch(() => {});
       try { await navigator.clipboard.writeText(text); st0.textContent = `Offerteaanvraag voor ${q.to} gekopieerd ✓`; }
       catch { fallback.value = text; fallback.hidden = false; fallback.select(); st0.textContent = 'Kopiëren lukt hier niet automatisch; selecteer de tekst in het tekstvak.'; }
       return;

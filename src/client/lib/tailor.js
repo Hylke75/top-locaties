@@ -121,6 +121,16 @@ export function fillInvitation(inv, answers, venue) {
   return { subject: rep(inv.subject), text: rep(inv.text), reminder: rep(inv.reminder) };
 }
 
+/** Seizoensadvies voor buitenconcepten (op basis van de datum). Geen weersvoorspelling, wel gezond verstand. */
+export function seasonAdvice(concept, date) {
+  if (!concept.outdoor || !/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return null;
+  const m = Number(date.slice(5, 7));
+  const weatherRisks = (concept.risks || []).filter((r) => /weer|regen|koud|buiten|wind/i.test(`${r.risk} ${r.mitigation}`));
+  if ([11, 12, 1, 2, 3].includes(m)) return { season: 'winter', text: 'Je event valt in de wintermaanden: het wordt vroeg donker en het weer is wisselend. Plan de buitenonderdelen vóór 15:00, regel een binnenruimte als vast alternatief en vraag gasten om warme kleding en goede schoenen.', risks: weatherRisks };
+  if ([6, 7, 8].includes(m)) return { season: 'zomer', text: 'Je event valt in de zomer: zorg voor schaduw, voldoende water en zonnebrand, en plan inspannende onderdelen in de ochtend.', risks: weatherRisks };
+  return { season: 'tussenseizoen', text: 'Lente of herfst: houd rekening met regen en een binnenruimte als plan B.', risks: weatherRisks };
+}
+
 /** Bouwt het volledige plan op maat. */
 export function tailor(concept, answers, { venue = null, suppliers = [] } = {}) {
   const guests = Number(answers.gasten) || null;
@@ -138,6 +148,7 @@ export function tailor(concept, answers, { venue = null, suppliers = [] } = {}) 
     adjustment,
     answers, guests, venue, suppliers, runbook, timing, planning, crew, diets, extraChecks,
     variations: pickVariation(concept, answers),
+    season: seasonAdvice(concept, answers.datum),
     fit: venueFit(venue, guests),
     invitation: fillInvitation(concept.invitation || {}, answers, venue),
   };

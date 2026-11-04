@@ -42,6 +42,21 @@ export function isPublishableSupplier(src) {
 
 export const slugify = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' en ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+/** Extra partnerprofiel (redactie): alleen https-links en beelden met expliciet gebruiksrecht. */
+export function sanitizeProfile(p) {
+  if (!p || typeof p !== 'object') return null;
+  const https = (u) => (typeof u === 'string' && /^https:\/\//.test(u) ? u : null);
+  const out = {
+    intro: typeof p.intro === 'string' ? p.intro.slice(0, 600) : '',
+    spaces: (Array.isArray(p.spaces) ? p.spaces : []).filter((x) => x && x.name).slice(0, 12).map((x) => ({ name: String(x.name).slice(0, 80), capacity: Number(x.capacity) || null, setup: String(x.setup || '').slice(0, 120), note: String(x.note || '').slice(0, 200) })),
+    photos: (Array.isArray(p.photos) ? p.photos : []).filter((x) => https(x?.url) && ['greenbookings', 'locatie', 'eigen'].includes(x.rights)).slice(0, 8).map((x) => ({ url: x.url, alt: String(x.alt || '').slice(0, 160), credit: String(x.credit || '').slice(0, 80), rights: x.rights })),
+    video: https(p.video?.url) && /^(https:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/)/.test(p.video.url) ? { url: p.video.url, title: String(p.video.title || 'Video').slice(0, 120) } : null,
+    source: String(p.source || '').slice(0, 160),
+    updatedAt: String(p.updatedAt || '').slice(0, 10),
+  };
+  return out.intro || out.spaces.length || out.photos.length || out.video ? out : null;
+}
+
 export function loadData() {
   const snapshot = read('greenbookings-snapshot.json');
   const feelingsDoc = read('feelings.json');
@@ -116,6 +131,7 @@ export function loadData() {
         concepts: conceptLinks,
         curated: Boolean(curated),
         contactPerson: src.contactPerson || null,
+        profile: sanitizeProfile(ed.profile),
       };
     })
     .filter(Boolean)

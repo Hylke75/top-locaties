@@ -1,6 +1,7 @@
 // /conceptplan/: briefing in acht vragen → drie wezenlijk verschillende concepten met uitleg.
 import { recommend, conceptLink } from './lib/brief.js';
 import { readData } from './lib/store.js';
+import { track } from './lib/track.js';
 
 const data = readData();
 const form = document.querySelector('[data-brief-form]');
@@ -68,6 +69,7 @@ form.addEventListener('submit', (e) => {
   try { localStorage.setItem(KEY, JSON.stringify(brief)); } catch {}
   try { if (brief.gevoel.length) sessionStorage.setItem('tl-feelings', JSON.stringify(brief.gevoel)); } catch {}
   render(brief);
+  track('briefing', '');
   status.textContent = 'Je drie concepten staan hieronder ✓';
   results.focus();
   results.scrollIntoView({ block: 'start' });

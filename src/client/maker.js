@@ -6,6 +6,7 @@ import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers, costsFr
 import { naturalEnd } from './lib/tailor.js';
 import { load } from './lib/store.js';
 import { exportConcept } from './lib/export-actions.js';
+import { track } from './lib/track.js';
 
 const cfg = readData();
 A.configure(cfg.accounts);
@@ -130,6 +131,7 @@ async function save() {
     else {
       row = await A.createConcept({ base_slug: base.slug, ...body });
       id = row.id;
+      track('save_concept', base.slug);
       renderCollab();
       history.replaceState(null, '', `/maker/?id=${encodeURIComponent(id)}`);
       $('[data-maker-deck]').href = `/presentatie/?id=${encodeURIComponent(id)}`;
@@ -213,7 +215,7 @@ window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault()
 $('[data-maker-deck]').addEventListener('click', (e) => { if (!id) { e.preventDefault(); setStatus('SLA JE CONCEPT EERST OP; DAN MAAK JE ER EEN PRESENTATIE VAN.'); } else if (dirty) { e.preventDefault(); save().then(() => { location.href = `/presentatie/?id=${encodeURIComponent(id)}`; }); } });
 document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', async () => {
   const c = merge(base, clean(data));
-  try { setStatus((await exportConcept(b.dataset.export, c, P)).toUpperCase()); } catch (err) { setStatus(String(err.message || err).toUpperCase()); }
+  try { setStatus((await exportConcept(b.dataset.export, c, P)).toUpperCase()); track('download', base.slug); } catch (err) { setStatus(String(err.message || err).toUpperCase()); }
 }));
 
 /* ---------- Delen, samenwerken, versies, dupliceren ---------- */
@@ -226,7 +228,10 @@ async function renderCollab() {
   const owner = role === 'owner';
   const link = row?.share_token ? `${location.origin}/presentatie/?t=${row.share_token}` : '';
   let members = []; let versions = [];
-  try { [members, versions] = await Promise.all([A.listMembers(id), A.listVersions(id)]); } catch {}
+  let regs = [];
+  try { [members, versions, regs] = await Promise.all([A.listMembers(id), A.listVersions(id), A.listRegistrations(id).catch(() => [])]); } catch {}
+  const regLink = row?.registration_token ? `${location.origin}/aanmelden/?t=${row.registration_token}` : '';
+  const dietTally = Object.entries(regs.flatMap((r) => r.diet || []).reduce((m, d) => ({ ...m, [d]: (m[d] || 0) + 1 }), {}));
   collab.innerHTML = `<div class="tl-maker__collab">
   <div><h3 class="tl-mono tl-subhead">DELEN (ALLEEN LEZEN)</h3>
     ${owner ? (link ? `<p class="tl-note">Iedereen met deze link ziet de presentatie en kan downloaden, zonder account.</p><div class="tl-maker__share"><input readonly value="${esc(link)}" aria-label="Deellink" data-share-link><button class="tl-button" type="button" data-copy-share>KOPIEER LINK</button></div><button class="tl-text-button" type="button" data-share-off>STOP MET DELEN</button>`
@@ -243,13 +248,40 @@ async function renderCollab() {
     <ul class="tl-maker__chosen">${versions.map((v) => `<li><span>${esc(when(v.created_at))} <span class="tl-note">${esc(v.saved_by_email || '')}</span></span>${role !== 'viewer' ? `<button class="tl-text-button" type="button" data-restore="${v.id}">HERSTEL</button>` : ''}</li>`).join('') || '<li class="tl-note">Nog geen eerdere versies. Bij het bewaren houden we automatisch een versie bij (hooguit één per 10 minuten, maximaal 50).</li>'}</ul>
     <button class="tl-button tl-button--outline" type="button" data-duplicate>DUPLICEER ALS VARIANT</button>
   </div>
+  <div><h3 class="tl-mono tl-subhead">AANMELDEN</h3>
+    ${owner ? (regLink ? `<div class="tl-maker__share"><input readonly value="${esc(regLink)}" aria-label="Aanmeldlink" data-reg-link><button class="tl-button" type="button" data-copy-reg>KOPIEER</button></div>
+      <p class="tl-note">${row.registration_open ? 'Aanmelden staat open.' : 'Aanmelden is gesloten.'}${row.registration_limit ? ` Maximaal ${row.registration_limit} gasten.` : ''}</p>
+      <span class="tl-chip-set"><button class="tl-text-button" type="button" data-reg-toggle>${row.registration_open ? 'SLUIT AANMELDEN' : 'OPEN AANMELDEN'}</button></span>`
+      : `<p class="tl-note">Deel een aanmeldlink met je gasten: naam, e-mail, organisatie en dieetwensen komen hier binnen.</p><label class="tl-field"><span>MAXIMUM (OPTIONEEL)</span><input type="number" min="1" max="5000" data-reg-limit value="${esc(data.guests || '')}"></label><button class="tl-button tl-button--outline" type="button" data-reg-on>MAAK AANMELDLINK ↗</button>`)
+      : `<p class="tl-note">${regLink ? 'De eigenaar beheert de aanmeldlink.' : 'De eigenaar kan een aanmeldlink maken.'}</p>`}
+    <p class="tl-mono tl-body--gap">${regs.length} AANMELDING${regs.length === 1 ? '' : 'EN'}${dietTally.length ? ` / ${dietTally.map(([d, n]) => `${n}× ${d}`).join(', ').toUpperCase()}` : ''}</p>
+    ${regs.length ? `<ul class="tl-maker__chosen">${regs.slice(0, 12).map((r) => `<li><span>${esc(r.name)} <span class="tl-note">${esc(r.organisation || '')}${r.diet?.length ? ` / ${esc(r.diet.join(', '))}` : ''}</span></span></li>`).join('')}${regs.length > 12 ? `<li class="tl-note">en nog ${regs.length - 12}…</li>` : ''}</ul>
+      <span class="tl-chip-set"><button class="tl-button tl-button--outline" type="button" data-reg-apply>NEEM AANTAL EN DIEETWENSEN OVER</button><button class="tl-text-button" type="button" data-reg-csv>DOWNLOAD LIJST (CSV)</button></span>` : ''}
+  </div>
 </div>`;
+  collab._regs = regs;
 }
 collab?.addEventListener('click', async (e) => {
   const b = e.target.closest('button'); if (!b) return;
   try {
     if (b.hasAttribute('data-share-on')) { row = await A.shareOn(id); setStatus('DEELLINK GEMAAKT ✓'); }
     else if (b.hasAttribute('data-share-off')) { if (!confirm('De deellink werkt daarna niet meer. Doorgaan?')) return; row = await A.shareOff(id); setStatus('DELEN GESTOPT'); }
+    else if (b.hasAttribute('data-reg-on')) { const lim = Number(collab.querySelector('[data-reg-limit]')?.value) || null; row = await A.registrationOn(id, lim); setStatus('AANMELDLINK GEMAAKT ✓'); }
+    else if (b.hasAttribute('data-reg-toggle')) { row = await A.registrationSet(id, { registration_open: !row.registration_open }); setStatus(row.registration_open ? 'AANMELDEN STAAT OPEN' : 'AANMELDEN GESLOTEN'); }
+    else if (b.hasAttribute('data-copy-reg')) { const v = collab.querySelector('[data-reg-link]'); try { await navigator.clipboard.writeText(v.value); setStatus('AANMELDLINK GEKOPIEERD ✓'); } catch { v.select(); } return; }
+    else if (b.hasAttribute('data-reg-apply')) {
+      const regs = collab._regs || []; const tally = regs.flatMap((r) => r.diet || []).reduce((m, d) => ({ ...m, [d]: (m[d] || 0) + 1 }), {});
+      data.guests = regs.length;
+      const line = `Aanmeldingen (${new Date().toLocaleDateString('nl-NL')}): ${regs.length} gasten${Object.keys(tally).length ? `; dieet: ${Object.entries(tally).map(([d, n]) => `${n}× ${d}`).join(', ')}` : ''}.`;
+      data.notes = [String(data.notes || '').split('\n').filter((l) => !l.startsWith('Aanmeldingen (')).join('\n').trim(), line].filter(Boolean).join('\n');
+      changed(); render(); setStatus(`${regs.length} GASTEN EN DIEETWENSEN OVERGENOMEN — NIET OPGESLAGEN`); return;
+    }
+    else if (b.hasAttribute('data-reg-csv')) {
+      const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const csv = ['Naam;E-mail;Organisatie;Dieetwensen;Opmerking;Aangemeld op', ...(collab._regs || []).map((r) => [r.name, r.email, r.organisation, (r.diet || []).join(', '), r.remarks, new Date(r.created_at).toLocaleString('nl-NL')].map(q).join(';'))].join('\r\n');
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }); const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'aanmeldingen.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); return;
+    }
     else if (b.hasAttribute('data-copy-share')) { const v = collab.querySelector('[data-share-link]'); try { await navigator.clipboard.writeText(v.value); setStatus('DEELLINK GEKOPIEERD ✓'); } catch { v.select(); } return; }
     else if (b.dataset.removeMember) { if (!confirm(`${b.dataset.removeMember} verwijderen uit dit concept?`)) return; await A.removeMember(id, b.dataset.removeMember); if (b.dataset.removeMember === (me?.email || '').toLowerCase() && role !== 'owner') { location.href = '/account/'; return; } }
     else if (b.dataset.restore) {
@@ -306,6 +338,7 @@ function fail(msg) { const el = $('[data-maker-gate]'); el.hidden = false; el.in
     $('[data-maker-heading]').textContent = data.title;
     $('[data-maker-base]').innerHTML = `Basis: <a href="/eventconcepten/${esc(base.slug)}/">${esc(base.title)}</a>. Alles wat je hier wijzigt, geldt alleen voor jouw versie. Opslaan gebeurt automatisch zodra je concept één keer is bewaard.`;
     $('[data-maker-bar]').hidden = false;
+    if (!id) track('start_maker', base.slug);
     const stageSel = $('[data-maker-stage]');
     stageSel.innerHTML = STAGES.map(([k, l]) => `<option value="${k}">${l}</option>`).join('');
     stageSel.value = data.status?.stage || 'idee';
