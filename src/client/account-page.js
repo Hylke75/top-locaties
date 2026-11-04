@@ -50,7 +50,7 @@ async function loadList() {
     list.innerHTML = rows.length ? rows.map((r, i) => `<article class="tl-account__item" data-my-item="${esc(r.id)}">
       <span class="tl-mono">${String(i + 1).padStart(2, '0')} / BASIS: ${esc((title[r.base_slug] || r.base_slug).toUpperCase())}${r.user_id !== s?.user?.id ? ` / GEDEELD MET JOU (${roles[r.id] === 'editor' ? 'REDACTEUR' : 'LEZER'})` : ''}</span>
       <h3 class="tl-account__title"><a href="/maker/?id=${esc(r.id)}">${esc(r.title)}</a></h3>
-      <span class="tl-mono tl-note">LAATST BEWAARD ${esc(when(r.updated_at).toUpperCase())}</span>
+      <span class="tl-mono tl-note"><span class="tl-account__stage" data-stage="${esc(r.stage || 'idee')}">${esc(({ idee: 'IDEE', offerte: 'OFFERTES OPGEVRAAGD', bevestigd: 'BEVESTIGD', afgerond: 'AFGEROND' })[r.stage || 'idee'] || 'IDEE')}</span> LAATST BEWAARD ${esc(when(r.updated_at).toUpperCase())}</span>
       <span class="tl-chip-set"><a class="tl-button" href="/maker/?id=${esc(r.id)}">BEWERK ↗</a><a class="tl-button tl-button--outline" href="/presentatie/?id=${esc(r.id)}">PRESENTATIE (PDF) ↗</a>${r.user_id === s?.user?.id ? `<button class="tl-text-button" type="button" data-delete="${esc(r.id)}">VERWIJDER</button>` : ''}</span>
     </article>`).join('')
       : '<div class="tl-state tl-state--empty"><h3 class="tl-state__title">NOG GEEN CONCEPTEN.</h3><p>Kies hierboven een standaardconcept en maak het in de maker helemaal van jou.</p></div>';

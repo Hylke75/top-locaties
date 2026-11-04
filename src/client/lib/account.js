@@ -105,7 +105,7 @@ async function authed(path, opts = {}) {
   return call(path, { ...opts, token: s.access_token });
 }
 const T = '/rest/v1/user_concepts';
-export const listConcepts = () => authed(`${T}?select=id,title,base_slug,updated_at,user_id&order=updated_at.desc`);
+export const listConcepts = () => authed(`${T}?select=id,title,base_slug,updated_at,user_id,stage:data->status->>stage&order=updated_at.desc`);
 export async function myRoles() {
   const s = await session();
   const rows = await authed(`/rest/v1/concept_members?select=concept_id,role&email=eq.${encodeURIComponent((s?.user?.email || '').toLowerCase())}`);

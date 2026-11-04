@@ -94,3 +94,28 @@ test('eindtijd in de maker: programma, draaiboek en catering passen in het venst
   assert.ok(data.program.every((p) => p.time >= '13:00' && p.time < '16:00'));
   assert.equal(data.duration, '13:00–16:00');
 });
+
+import { costsFrom, costTotals, setStage, euro } from '../src/client/lib/userconcept.js';
+import { buildIcs } from '../src/client/lib/ics.js';
+test('kostenraming: posten uit de basis, totaal met onvoorzien', () => {
+  const c = costsFrom({ budgetItems: ['Locatie', 'Catering'] });
+  assert.equal(c.items.length, 2); assert.equal(c.contingency, 10);
+  c.items[0].amount = 2000; c.items[1].amount = 1000; c.items[1].status = 'bevestigd';
+  const t = costTotals(c);
+  assert.equal(t.sub, 3000); assert.equal(t.extra, 300); assert.equal(t.total, 3300); assert.equal(t.confirmed, 1000);
+  assert.match(euro(3300), /3\.300/);
+});
+test('status: overgang wordt gelogd, onbekende status genegeerd', () => {
+  const d = setStage(setStage({}, 'offerte'), 'bevestigd');
+  assert.equal(d.status.stage, 'bevestigd'); assert.equal(d.status.log.length, 2);
+  assert.equal(setStage(d, 'onzin'), d);
+});
+test('ics: geldig agendabestand met event en mijlpalen', () => {
+  const ics = buildIcs({ title: 'Kick-off, Noord', date: '2027-03-05', start: '13:00', end: '18:00', location: 'Euromast, Rotterdam', description: 'regel 1\nregel 2', milestones: [{ date: new Date('2027-01-08T12:00:00'), title: 'Uitnodiging' }] });
+  assert.match(ics, /^BEGIN:VCALENDAR\r\n/); assert.match(ics, /DTSTART;TZID=Europe\/Amsterdam:20270305T130000/);
+  assert.match(ics, /DTEND;TZID=Europe\/Amsterdam:20270305T180000/); assert.match(ics, /SUMMARY:Kick-off\\, Noord/);
+  assert.match(ics, /DTSTART;VALUE=DATE:20270108/); assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 2);
+  assert.ok(ics.split('\r\n').every((l) => l.length <= 75));
+  assert.throws(() => buildIcs({ title: 'x', date: '' }), /datum/);
+  assert.match(buildIcs({ title: 'Nacht', date: '2027-03-05', start: '22:00', end: '01:00' }), /DTEND;TZID=Europe\/Amsterdam:20270306T010000/);
+});

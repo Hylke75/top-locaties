@@ -67,7 +67,7 @@ async function supabase(route) {
     const visible = rows.filter((r) => roleOf(r)); // RLS: eigenaar of lid
     if (req.method() === 'GET') {
       if (idEq) { const r = visible.find((x) => x.id === idEq); return r ? json(route, 200, r) : json(route, 406, { message: 'not found' }); }
-      return json(route, 200, visible.map(({ id, title, base_slug, updated_at, user_id }) => ({ id, title, base_slug, updated_at, user_id })));
+      return json(route, 200, visible.map(({ id, title, base_slug, updated_at, user_id, data }) => ({ id, title, base_slug, updated_at, user_id, stage: data?.status?.stage || null })));
     }
     if (req.method() === 'POST') { const r = { id: `c${rows.length + 1}`, user_id: uid, share_token: null, ...body, updated_at: new Date(Date.now() + rows.length).toISOString() }; rows.push(r); return json(route, 201, [r]); }
     const r = visible.find((x) => x.id === idEq);
@@ -149,6 +149,20 @@ await page.fill('[data-path="notes"]', 'Bel de locatie over parkeren.');
 await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('OPGESLAGEN ✓'), null, { timeout: 8000 });
 check(rows[0].data.notes === 'Bel de locatie over parkeren.', 'wijzigingen worden automatisch opgeslagen');
 
+// 4b. Kostenraming, status en agenda
+await page.fill('[data-cost="0"][data-f="amount"]', '2500');
+await page.fill('[data-cost="1"][data-f="amount"]', '1500');
+await page.selectOption('[data-cost="1"][data-f="status"]', 'bevestigd');
+check((await page.textContent('[data-cost-totals]')).includes('4.400'), 'kostenraming: totaal met 10% onvoorzien');
+await page.selectOption('[data-maker-stage]', 'offerte');
+await page.fill('[data-path="datum"]', '2027-03-05');
+await page.click('[data-maker-save]');
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('OPGESLAGEN ✓'));
+check(rows[0].data.costs.items[0].amount === 2500 && rows[0].data.status.stage === 'offerte', 'kosten en status opgeslagen');
+const [dlIcs] = await Promise.all([page.waitForEvent('download'), page.click('[data-maker-bar] [data-export="ics"]')]);
+const icsTxt = fs.readFileSync(await dlIcs.path(), 'utf8');
+check(icsTxt.includes('BEGIN:VCALENDAR') && icsTxt.includes('DTSTART;TZID=Europe/Amsterdam:20270305T') && (icsTxt.match(/BEGIN:VEVENT/g) || []).length >= 4, 'agenda-export met event en mijlpalen');
+
 // 5. Downloads: Word (.docx) en tekst
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tl-'));
 const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-maker-bar] [data-export="docx"]')]);
@@ -218,6 +232,7 @@ page.removeAllListeners('dialog'); page.on('dialog', (d) => d.accept());
 await page.goto(base + '/account/');
 await page.waitForSelector('[data-my-item]');
 check(await page.locator('[data-my-item]').count() === 2, 'Mijn concepten toont het concept en de variant');
+check(await page.locator('[data-my-item] .tl-account__stage').count() === 2, 'Mijn concepten toont per concept de status');
 await page.click('[data-sign-out]');
 await page.goto(base + '/presentatie/?id=c1');
 await page.waitForSelector('.tl-state');

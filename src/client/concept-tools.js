@@ -14,6 +14,6 @@ if (root) {
       const [P, base] = await Promise.all([partners(), baseConcept(root.dataset.slug)]);
       const c = merge(base, { venueIds: base.venueMatches.map((m) => m.venueId), supplierIds: base.supplierMatches.map((m) => m.supplierId) });
       st.textContent = await exportConcept(b.dataset.download, c, P);
-    } catch { st.textContent = 'Downloaden lukte niet. Probeer het opnieuw.'; }
+    } catch (err) { st.textContent = err?.message || 'Downloaden lukte niet. Probeer het opnieuw.'; }
   });
 }

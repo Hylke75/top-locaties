@@ -1,7 +1,7 @@
 import { fitTimes, naturalEnd } from './tailor.js';
 // Eigen concept = standaardconcept als basis + de bewerkingen van de gebruiker.
 // Alleen de velden hieronder zijn bewerkbaar en worden opgeslagen; de rest komt altijd uit de basis.
-export const EDITABLE = ['title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
+export const EDITABLE = ['costs', 'status', 'quotes', 'registration', 'title', 'proposition', 'objective', 'organisatie', 'datum', 'guests', 'duration', 'feelings', 'audiences',
   'program', 'runbook', 'catering', 'entertainment', 'communication', 'budgetItems', 'risks', 'kpis', 'venueIds', 'supplierIds', 'notes'];
 
 const clone = (x) => (x === undefined ? undefined : JSON.parse(JSON.stringify(x)));
@@ -88,4 +88,29 @@ export function applyAnswers(data, a = {}, plan = {}) {
   if (notes.length) out.notes = [out.notes, ...notes].filter(Boolean).join('\n');
   if (a.start) out = fitTo(out, a.start, a.eind).data;
   return out;
+}
+
+/* ---------- Eigen kostenraming (bedragen van de gebruiker zelf; wij noemen geen prijzen) ---------- */
+export const COST_STATUS = { indicatief: 'Eigen inschatting', offerte: 'Offerte ontvangen', bevestigd: 'Bevestigd' };
+export function costsFrom(data) {
+  const c = data.costs || {};
+  const items = c.items?.length ? c.items : (data.budgetItems || []).map((label) => ({ label, amount: null, status: 'indicatief', note: '' }));
+  return { items, contingency: Number.isFinite(c.contingency) ? c.contingency : 10 };
+}
+export function costTotals(costs) {
+  const sub = (costs.items || []).reduce((n, it) => n + (Number(it.amount) || 0), 0);
+  const extra = Math.round(sub * (Number(costs.contingency) || 0)) / 100;
+  const confirmed = (costs.items || []).filter((it) => it.status === 'bevestigd').reduce((n, it) => n + (Number(it.amount) || 0), 0);
+  const filled = (costs.items || []).filter((it) => Number(it.amount) > 0).length;
+  return { sub, extra, total: sub + extra, confirmed, filled, count: (costs.items || []).length };
+}
+export const euro = (n) => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
+
+/* ---------- Status van het event ---------- */
+export const STAGES = [['idee', 'Idee'], ['offerte', 'Offertes opgevraagd'], ['bevestigd', 'Bevestigd'], ['afgerond', 'Afgerond']];
+export function setStage(data, stage) {
+  if (!STAGES.some(([k]) => k === stage)) return data;
+  const cur = data.status?.stage || 'idee';
+  if (cur === stage) return data;
+  return { ...data, status: { stage, log: [...(data.status?.log || []), { stage, at: new Date().toISOString() }].slice(-30) } };
 }

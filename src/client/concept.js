@@ -143,7 +143,8 @@ persist();
 paint();
 
 /* ---------- Concept op maat (vragenlijst → compleet draaiboek) ---------- */
-import { tailor, toText, formatDate, quoteRequests, callsheet, budgetCsv } from './lib/tailor.js';
+import { tailor, toText, formatDate, quoteRequests, callsheet, budgetCsv, naturalEnd } from './lib/tailor.js';
+import { buildIcs, ICS_MIME } from './lib/ics.js';
 
 const tForm = document.querySelector('[data-tailor-form]');
 const tOut = document.querySelector('[data-tailor-output]');
@@ -208,7 +209,7 @@ function renderTailored() {
   <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
   <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${escT([r.name, r.party].filter(Boolean).join(' · ') || 'Naam en telefoonnummer invullen')}</dd></div>`).join('')}</dl>
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-copy-status>Alles staat ook in de kopie: ook entertainment, ruimtes, risico's, kostenposten en evaluatie.</span>
-    <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><a class="tl-button tl-button--outline tl-button--on-dark" href="/eventconcepten/${escT(concept.slug)}/conceptplan/">CONCEPTPLAN (12 HOOFDSTUKKEN) ↗</a><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT DRAAIBOEK</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
+    <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><a class="tl-button tl-button--outline tl-button--on-dark" href="/eventconcepten/${escT(concept.slug)}/conceptplan/">CONCEPTPLAN (12 HOOFDSTUKKEN) ↗</a><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-ics>ZET IN AGENDA (.ICS)</button><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT DRAAIBOEK</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
   tOut.hidden = false;
 }
 
@@ -254,6 +255,17 @@ if (tForm) {
   });
   tOut.addEventListener('click', async (e) => {
     if (e.target.closest('[data-tailor-print]')) { window.print(); return; }
+    if (e.target.closest('[data-tailor-ics]')) {
+      const t = currentTailor(); const a = t.answers; const st = tOut.querySelector('[data-tailor-copy-status]');
+      if (!a.datum) { st.textContent = 'Vul eerst een datum in (vraag 02), dan zetten we het event en de planning in je agenda.'; return; }
+      const ics = buildIcs({ title: `${concept.title}${a.organisatie ? ` — ${a.organisatie}` : ''}`, date: a.datum, start: a.start, end: t.timing?.end || naturalEnd(t.runbook),
+        location: t.venue ? `${t.venue.name}, ${t.venue.city}` : '', uid: `${concept.slug}-${a.datum}@top-locaties.nl`,
+        description: ['DRAAIBOEK', ...t.runbook.map((r) => `${r.time} ${r.title}${r.owner ? ` (${r.owner})` : ''}`), '', `Draaiboek op maat: ${location.origin}/eventconcepten/${concept.slug}/`].join('\n'),
+        milestones: t.planning.filter((p) => p.date).map((p) => ({ date: p.date, title: p.title, description: (p.tasks || []).map((x) => `- ${x}`).join('\n') })) });
+      const blob = new Blob([ics], { type: ICS_MIME }); const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob); link.download = `${concept.slug}.ics`; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      st.textContent = 'Agendabestand gedownload ✓ — met het event en de mijlpalen uit de aftelplanning.'; return;
+    }
     const st0 = tOut.querySelector('[data-tailor-copy-status]');
     if (e.target.closest('[data-download-budget]')) {
       const blob = new Blob(['\ufeff' + budgetCsv(concept, currentTailor())], { type: 'text/csv;charset=utf-8' });

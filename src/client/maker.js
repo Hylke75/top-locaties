@@ -2,7 +2,7 @@
 import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
 import { partners, baseConcept, esc } from './lib/conceptdata.js';
-import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers } from './lib/userconcept.js';
+import { fromBase, merge, check, byTime, startTime, fitTo, applyAnswers, costsFrom, costTotals, euro, COST_STATUS, STAGES, setStage } from './lib/userconcept.js';
 import { naturalEnd } from './lib/tailor.js';
 import { load } from './lib/store.js';
 import { exportConcept } from './lib/export-actions.js';
@@ -52,6 +52,20 @@ function listHtml(key) {
   <div class="tl-chip-set"><button class="tl-button tl-button--outline" type="button" data-add="${key}">${spec.add}</button>${spec.sortable ? `<button class="tl-text-button" type="button" data-sort="${key}">SORTEER OP TIJD</button>` : ''}</div>`;
 }
 
+function costsHtml() {
+  const c = costsFrom(data); const t = costTotals(c);
+  return `<div class="tl-maker__costs" data-costs>${c.items.map((it, i) => `<div class="tl-maker__cost">
+      <label class="tl-field"><span>KOSTENPOST</span><input data-cost="${i}" data-f="label" value="${esc(it.label)}"></label>
+      <label class="tl-field"><span>BEDRAG (EXCL. BTW)</span><input data-cost="${i}" data-f="amount" type="number" min="0" step="50" inputmode="numeric" value="${it.amount ?? ''}"></label>
+      <label class="tl-field"><span>STATUS</span><select data-cost="${i}" data-f="status">${Object.entries(COST_STATUS).map(([k, l]) => `<option value="${k}" ${it.status === k ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      <button class="tl-maker__icon" type="button" data-cost-remove="${i}" aria-label="${esc(it.label || 'Kostenpost')} verwijderen">×</button></div>`).join('')}
+    <div class="tl-chip-set"><button class="tl-button tl-button--outline" type="button" data-cost-add>KOSTENPOST TOEVOEGEN +</button>
+      <label class="tl-field tl-maker__contingency"><span>ONVOORZIEN (%)</span><input data-cost-contingency type="number" min="0" max="50" value="${c.contingency}"></label></div>
+    <dl class="tl-facts tl-facts--two" data-cost-totals>${totalsHtml(t)}</dl></div>`;
+}
+const totalsHtml = (t) => `<div><dt>SUBTOTAAL (${t.filled}/${t.count} INGEVULD)</dt><dd>${euro(t.sub)}</dd></div><div><dt>ONVOORZIEN</dt><dd>${euro(t.extra)}</dd></div><div><dt>TOTAAL EXCL. BTW</dt><dd><strong>${euro(t.total)}</strong></dd></div><div><dt>WAARVAN BEVESTIGD</dt><dd>${euro(t.confirmed)}</dd></div>`;
+function syncCosts(mutate) { const c = costsFrom(data); mutate(c); data.costs = c; data.budgetItems = c.items.map((x) => x.label).filter(Boolean); }
+
 function chooser() {
   const vSel = new Set(data.venueIds || []);
   const sSel = new Set(data.supplierIds || []);
@@ -89,7 +103,9 @@ function render() {
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">06</span> LOCATIE EN MAKERS</legend>${chooser()}<p class="tl-note">Uitsluitend aangesloten Greenbookings-partners. Beschikbaarheid en prijs vraag je op bij de partner.</p></fieldset>
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">07</span> COMMUNICATIE</legend>${listHtml('communication')}</fieldset>
   <fieldset class="tl-maker__part"><legend class="tl-maker__legend"><span class="tl-mono">08</span> KOSTEN, RISICO'S EN IMPACT</legend>
-    <div class="tl-maker__fields">${input('budgetItems', 'Kostenposten (één per regel; bedragen uit je offertes)', 'lines', data.budgetItems)}</div>
+    <h3 class="tl-mono tl-subhead">JOUW KOSTENRAMING</h3>
+    <p class="tl-note">Vul bedragen in uit je eigen offertes. Top Locaties noemt geen prijzen; dit is jouw eigen overzicht.</p>
+    ${costsHtml()}
     <h3 class="tl-mono tl-subhead">RISICO'S EN PLAN B</h3>${listHtml('risks')}
     <h3 class="tl-mono tl-subhead tl-body--gap">KPI'S</h3>${listHtml('kpis')}
     <div class="tl-maker__fields">${input('notes', 'Eigen notities', 'area', data.notes)}</div></fieldset>`;
@@ -131,6 +147,11 @@ document.addEventListener('click', (e) => { if (e.target.closest('[data-reload]'
 
 /* ---------- Interactie ---------- */
 form.addEventListener('input', (e) => {
+  const ce = e.target.closest('[data-cost],[data-cost-contingency]');
+  if (ce) {
+    syncCosts((c) => { if (ce.hasAttribute('data-cost-contingency')) c.contingency = Math.max(0, Math.min(50, Number(ce.value) || 0)); else { const it = c.items[Number(ce.dataset.cost)]; it[ce.dataset.f] = ce.dataset.f === 'amount' ? (ce.value === '' ? null : Math.max(0, Number(ce.value))) : ce.value; } });
+    form.querySelector('[data-cost-totals]').innerHTML = totalsHtml(costTotals(costsFrom(data))); changed(); return;
+  }
   const el = e.target.closest('[data-path]');
   if (!el) return;
   setPath(data, el.dataset.path, fromVal(el.dataset.kind, el.value));
@@ -166,6 +187,8 @@ form.addEventListener('click', (e) => {
     const p = savedPlan(); data = applyAnswers(data, p.answers, p); changed(); rerender('[data-apply-answers]');
     setStatus('ANTWOORDEN OVERGENOMEN — NIET OPGESLAGEN'); return;
   }
+  if (b.hasAttribute('data-cost-add')) { syncCosts((c) => c.items.push({ label: '', amount: null, status: 'indicatief', note: '' })); changed(); rerender(`[data-cost="${costsFrom(data).items.length - 1}"][data-f="label"]`); return; }
+  if (b.dataset.costRemove) { syncCosts((c) => c.items.splice(Number(b.dataset.costRemove), 1)); changed(); rerender('[data-cost-add]'); return; }
   if (b.dataset.unvenue) { data.venueIds = (data.venueIds || []).filter((v) => v !== b.dataset.unvenue); changed(); rerender('[data-add-venue]'); return; }
   if (b.dataset.add) {
     const key = b.dataset.add; const arr = getPath(data, key) || []; const spec = LISTS[key];
@@ -190,7 +213,7 @@ window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault()
 $('[data-maker-deck]').addEventListener('click', (e) => { if (!id) { e.preventDefault(); setStatus('SLA JE CONCEPT EERST OP; DAN MAAK JE ER EEN PRESENTATIE VAN.'); } else if (dirty) { e.preventDefault(); save().then(() => { location.href = `/presentatie/?id=${encodeURIComponent(id)}`; }); } });
 document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', async () => {
   const c = merge(base, clean(data));
-  setStatus((await exportConcept(b.dataset.export, c, P)).toUpperCase());
+  try { setStatus((await exportConcept(b.dataset.export, c, P)).toUpperCase()); } catch (err) { setStatus(String(err.message || err).toUpperCase()); }
 }));
 
 /* ---------- Delen, samenwerken, versies, dupliceren ---------- */
@@ -283,6 +306,10 @@ function fail(msg) { const el = $('[data-maker-gate]'); el.hidden = false; el.in
     $('[data-maker-heading]').textContent = data.title;
     $('[data-maker-base]').innerHTML = `Basis: <a href="/eventconcepten/${esc(base.slug)}/">${esc(base.title)}</a>. Alles wat je hier wijzigt, geldt alleen voor jouw versie. Opslaan gebeurt automatisch zodra je concept één keer is bewaard.`;
     $('[data-maker-bar]').hidden = false;
+    const stageSel = $('[data-maker-stage]');
+    stageSel.innerHTML = STAGES.map(([k, l]) => `<option value="${k}">${l}</option>`).join('');
+    stageSel.value = data.status?.stage || 'idee';
+    stageSel.addEventListener('change', () => { data = setStage(data, stageSel.value); changed(); setStatus(`STATUS: ${stageSel.selectedOptions[0].textContent.toUpperCase()} — NIET OPGESLAGEN`); });
     me = me || s.user;
     render();
     if (role === 'viewer') { form.querySelectorAll('input,textarea,select,button').forEach((el) => { el.disabled = true; }); $('[data-maker-save]').hidden = true; setStatus('ALLEEN LEZEN — JE BENT LEZER VAN DIT CONCEPT'); }

@@ -71,7 +71,15 @@ export function conceptBlocks(c, ctx = {}) {
   if (c.invitation?.text) { h3('Uitnodiging'); p(c.invitation.subject); p(c.invitation.text); }
 
   h2('12 Haalbaarheid, kosten en impact');
-  if (has(c.budgetItems)) { h3('Kostenposten (offertes opvragen)'); list(c.budgetItems); }
+  const filled = (c.costs?.items || []).filter((it) => Number(it.amount) > 0);
+  if (filled.length) {
+    const fmt = (n) => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+    const sub = c.costs.items.reduce((n, it) => n + (Number(it.amount) || 0), 0); const extra = Math.round(sub * (Number(c.costs.contingency) || 0)) / 100;
+    const ST = { indicatief: 'eigen inschatting', offerte: 'offerte ontvangen', bevestigd: 'bevestigd' };
+    h3('Kostenraming (eigen bedragen, excl. btw)');
+    table(['Kostenpost', 'Bedrag', 'Status'], [...c.costs.items.map((it) => [it.label, Number(it.amount) > 0 ? fmt(Number(it.amount)) : 'nog in te vullen', ST[it.status] || '']), [`Onvoorzien (${c.costs.contingency || 0}%)`, fmt(extra), ''], ['Totaal', fmt(sub + extra), 'excl. btw']]);
+  } else if (has(c.budgetItems)) { h3('Kostenposten (offertes opvragen)'); list(c.budgetItems); }
+  if (c.status?.stage) p(`Status: ${{ idee: 'idee', offerte: 'offertes opgevraagd', bevestigd: 'bevestigd', afgerond: 'afgerond' }[c.status.stage] || c.status.stage}.`);
   if (has(c.risks)) { h3("Risico's en plan B"); table(['Risico', 'Plan B'], c.risks.map((r) => [r.risk, r.mitigation])); }
   if (has(c.checklist)) { h3('Checklist'); for (const g of c.checklist) { p(g.group); list(g.items); } }
   if (has(c.kpis)) { h3('KPI’s'); table(['Doel', 'KPI', 'Wanneer', 'Meten'], c.kpis.map((k) => [k.goal, k.kpi, k.when, k.how])); }

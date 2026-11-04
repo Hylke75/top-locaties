@@ -54,7 +54,13 @@ function slides(c) {
 
   if ((c.communication || []).length) add('text', '10', 'COMMUNICATIE', `<table class="tl-slide__table"><thead><tr><th>WANNEER</th><th>KANAAL</th><th>BOODSCHAP</th></tr></thead><tbody>${c.communication.map((x) => `<tr><td>${esc(x.when)}</td><td>${esc(x.channel)}</td><td>${esc(x.message)}</td></tr>`).join('')}</tbody></table>`);
 
-  add('text', '11', 'KOSTEN EN RISICO’S', `<div class="tl-slide__split"><div><h3 class="tl-slide__h3">KOSTENPOSTEN</h3>${list(c.budgetItems)}<p class="tl-slide__note">Bedragen uit de offertes van locatie en makers.</p></div>
+  const filled = (c.costs?.items || []).filter((it) => Number(it.amount) > 0);
+  const eur = (n) => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const sub = (c.costs?.items || []).reduce((n, it) => n + (Number(it.amount) || 0), 0); const extra = Math.round(sub * (Number(c.costs?.contingency) || 0)) / 100;
+  const costBlock = filled.length
+    ? `<h3 class="tl-slide__h3">KOSTENRAMING (EIGEN BEDRAGEN)</h3><table class="tl-slide__table"><tbody>${c.costs.items.map((it) => `<tr><td>${esc(it.label)}</td><td>${Number(it.amount) > 0 ? eur(Number(it.amount)) : '—'}</td></tr>`).join('')}<tr><td>Onvoorzien (${esc(c.costs.contingency || 0)}%)</td><td>${eur(extra)}</td></tr><tr><td><strong>Totaal excl. btw</strong></td><td><strong>${eur(sub + extra)}</strong></td></tr></tbody></table>`
+    : `<h3 class="tl-slide__h3">KOSTENPOSTEN</h3>${list(c.budgetItems)}<p class="tl-slide__note">Bedragen uit de offertes van locatie en makers.</p>`;
+  add('text', '11', 'KOSTEN EN RISICO’S', `<div class="tl-slide__split"><div>${costBlock}</div>
     <div><h3 class="tl-slide__h3">RISICO’S EN PLAN B</h3><ul class="tl-slide__list">${(c.risks || []).slice(0, 5).map((r) => `<li><strong>${esc(r.risk)}</strong> — ${esc(r.mitigation)}</li>`).join('')}</ul></div></div>`);
 
   if ((c.kpis || []).length) add('text', '12', 'WAT HET OPLEVERT', `<table class="tl-slide__table"><thead><tr><th>DOEL</th><th>KPI</th><th>WANNEER</th><th>METEN</th></tr></thead><tbody>${c.kpis.map((k) => `<tr><td><strong>${esc(k.goal)}</strong></td><td>${esc(k.kpi)}</td><td>${esc(k.when)}</td><td>${esc(k.how)}</td></tr>`).join('')}</tbody></table>`);
@@ -85,7 +91,7 @@ async function printPdf() {
 document.querySelector('[data-deck-pdf]').addEventListener('click', printPdf);
 document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', async () => {
   if (!C) return;
-  status.textContent = (await exportConcept(b.dataset.export, C, P)).toUpperCase();
+  try { status.textContent = (await exportConcept(b.dataset.export, C, P)).toUpperCase(); } catch (err) { status.textContent = String(err.message || err).toUpperCase(); }
 }));
 
 function fail(msg, loginNeeded) {

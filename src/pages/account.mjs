@@ -72,13 +72,15 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/account/', label: 'ACCOUNT' }, 
   </div>
   <div data-maker-gate hidden></div>
   <div class="tl-maker__bar" data-maker-bar hidden>
-    <span class="tl-mono" role="status" aria-live="polite" data-maker-status>NOG NIET OPGESLAGEN</span>
+    <span class="tl-maker__barleft"><label class="tl-maker__stage"><span class="tl-mono">STATUS</span><select data-maker-stage aria-label="Status van het event"></select></label>
+    <span class="tl-mono" role="status" aria-live="polite" data-maker-status>NOG NIET OPGESLAGEN</span></span>
     <span class="tl-chip-set">
       <button class="tl-button tl-button--accent" type="button" data-maker-save>OPSLAAN ✓</button>
       <a class="tl-button tl-button--outline" href="/presentatie/" data-maker-deck>PRESENTATIE (PDF) ↗</a>
       <button class="tl-button tl-button--outline" type="button" data-export="pptx">POWERPOINT</button>
       <button class="tl-button tl-button--outline" type="button" data-export="docx">WORD</button>
       <button class="tl-button tl-button--outline" type="button" data-export="txt">TEKST</button>
+      <button class="tl-button tl-button--outline" type="button" data-export="ics">AGENDA</button>
     </span>
   </div>
   <ul class="tl-maker__issues" data-maker-errors></ul>
