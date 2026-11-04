@@ -38,15 +38,19 @@ create table if not exists public.user_concept_versions (
 );
 create index if not exists user_concept_versions_idx on public.user_concept_versions (concept_id, created_at desc);
 
--- Hulpfuncties (security definer, zodat RLS-regels elkaar niet recursief aanroepen) --------------
-create or replace function public.tl_my_email() returns text language sql stable set search_path = '' as $$
+-- Hulpfuncties (security definer, zodat RLS-regels elkaar niet recursief aanroepen).
+-- In een eigen schema dat niet via de API bereikbaar is (Supabase-advies). --------------------------
+create schema if not exists tl_private;
+revoke all on schema tl_private from public, anon;
+grant usage on schema tl_private to authenticated;
+create or replace function tl_private.tl_my_email() returns text language sql stable set search_path = '' as $$
   select lower(coalesce(auth.jwt() ->> 'email', '')) $$;
-create or replace function public.tl_is_owner(cid uuid) returns boolean language sql stable security definer set search_path = '' as $$
+create or replace function tl_private.tl_is_owner(cid uuid) returns boolean language sql stable security definer set search_path = '' as $$
   select exists (select 1 from public.user_concepts c where c.id = cid and c.user_id = auth.uid()) $$;
-create or replace function public.tl_member_role(cid uuid) returns text language sql stable security definer set search_path = '' as $$
-  select m.role from public.concept_members m where m.concept_id = cid and m.email = public.tl_my_email() $$;
-revoke execute on function public.tl_is_owner(uuid), public.tl_member_role(uuid) from public, anon;
-grant execute on function public.tl_is_owner(uuid), public.tl_member_role(uuid), public.tl_my_email() to authenticated;
+create or replace function tl_private.tl_member_role(cid uuid) returns text language sql stable security definer set search_path = '' as $$
+  select m.role from public.concept_members m where m.concept_id = cid and m.email = tl_private.tl_my_email() $$;
+revoke execute on function tl_private.tl_is_owner(uuid), tl_private.tl_member_role(uuid) from public, anon;
+grant execute on function tl_private.tl_is_owner(uuid), tl_private.tl_member_role(uuid), tl_private.tl_my_email() to authenticated;
 
 -- Triggers ---------------------------------------------------------------------------------------
 create or replace function public.tl_touch_updated_at() returns trigger
@@ -86,7 +90,7 @@ language plpgsql security definer set search_path = '' as $$
 begin
   if old.data is distinct from new.data or old.title is distinct from new.title then
     if not exists (select 1 from public.user_concept_versions v where v.concept_id = old.id and v.created_at > now() - interval '10 minutes') then
-      insert into public.user_concept_versions (concept_id, title, data, saved_by_email) values (old.id, old.title, old.data, public.tl_my_email());
+      insert into public.user_concept_versions (concept_id, title, data, saved_by_email) values (old.id, old.title, old.data, tl_private.tl_my_email());
       delete from public.user_concept_versions v where v.concept_id = old.id and v.id not in (
         select id from public.user_concept_versions where concept_id = old.id order by created_at desc limit 50);
     end if;
@@ -127,12 +131,12 @@ drop policy if exists "eigen concepten verwijderen" on public.user_concepts;
 drop policy if exists "concepten lezen" on public.user_concepts;
 drop policy if exists "concepten wijzigen" on public.user_concepts;
 create policy "concepten lezen" on public.user_concepts for select to authenticated
-  using (user_id = (select auth.uid()) or public.tl_member_role(id) is not null);
+  using (user_id = (select auth.uid()) or tl_private.tl_member_role(id) is not null);
 create policy "eigen concepten maken" on public.user_concepts for insert to authenticated
   with check (user_id = (select auth.uid()));
 create policy "concepten wijzigen" on public.user_concepts for update to authenticated
-  using (user_id = (select auth.uid()) or public.tl_member_role(id) = 'editor')
-  with check (user_id = (select auth.uid()) or public.tl_member_role(id) = 'editor');
+  using (user_id = (select auth.uid()) or tl_private.tl_member_role(id) = 'editor')
+  with check (user_id = (select auth.uid()) or tl_private.tl_member_role(id) = 'editor');
 create policy "eigen concepten verwijderen" on public.user_concepts for delete to authenticated
   using (user_id = (select auth.uid()));
 
@@ -141,17 +145,17 @@ drop policy if exists "leden beheren" on public.concept_members;
 drop policy if exists "leden wijzigen" on public.concept_members;
 drop policy if exists "leden verwijderen" on public.concept_members;
 create policy "leden lezen" on public.concept_members for select to authenticated
-  using (public.tl_is_owner(concept_id) or email = public.tl_my_email() or public.tl_member_role(concept_id) is not null);
+  using (tl_private.tl_is_owner(concept_id) or email = tl_private.tl_my_email() or tl_private.tl_member_role(concept_id) is not null);
 create policy "leden beheren" on public.concept_members for insert to authenticated
-  with check (public.tl_is_owner(concept_id));
+  with check (tl_private.tl_is_owner(concept_id));
 create policy "leden wijzigen" on public.concept_members for update to authenticated
-  using (public.tl_is_owner(concept_id)) with check (public.tl_is_owner(concept_id));
+  using (tl_private.tl_is_owner(concept_id)) with check (tl_private.tl_is_owner(concept_id));
 create policy "leden verwijderen" on public.concept_members for delete to authenticated
-  using (public.tl_is_owner(concept_id) or email = public.tl_my_email());
+  using (tl_private.tl_is_owner(concept_id) or email = tl_private.tl_my_email());
 
 drop policy if exists "versies lezen" on public.user_concept_versions;
 create policy "versies lezen" on public.user_concept_versions for select to authenticated
-  using (public.tl_is_owner(concept_id) or public.tl_member_role(concept_id) is not null);
+  using (tl_private.tl_is_owner(concept_id) or tl_private.tl_member_role(concept_id) is not null);
 
 -- Delen: alleen-lezen via een geheime link (ook zonder account) ---------------------------------
 create or replace function public.shared_concept(token text) returns table (title text, base_slug text, data jsonb, updated_at timestamptz)
@@ -166,7 +170,7 @@ create or replace function public.delete_my_account() returns void
 language plpgsql security definer set search_path = '' as $$
 begin
   if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
-  delete from public.concept_members where email = public.tl_my_email();
+  delete from public.concept_members where email = tl_private.tl_my_email();
   delete from auth.users where id = auth.uid();
 end; $$;
 revoke execute on function public.delete_my_account() from public, anon;
@@ -194,9 +198,9 @@ grant select, delete on public.event_registrations to authenticated;
 drop policy if exists "aanmeldingen lezen" on public.event_registrations;
 drop policy if exists "aanmeldingen verwijderen" on public.event_registrations;
 create policy "aanmeldingen lezen" on public.event_registrations for select to authenticated
-  using (public.tl_is_owner(concept_id) or public.tl_member_role(concept_id) is not null);
+  using (tl_private.tl_is_owner(concept_id) or tl_private.tl_member_role(concept_id) is not null);
 create policy "aanmeldingen verwijderen" on public.event_registrations for delete to authenticated
-  using (public.tl_is_owner(concept_id) or public.tl_member_role(concept_id) = 'editor');
+  using (tl_private.tl_is_owner(concept_id) or tl_private.tl_member_role(concept_id) = 'editor');
 
 -- Alleen de eigenaar beheert de aanmeldlink (net als de deellink).
 create or replace function public.tl_guard_concept() returns trigger
@@ -251,3 +255,12 @@ exception when check_violation then null; -- onbekende gebeurtenis of slug: stil
 end; $$;
 revoke execute on function public.track(text, text) from public;
 grant execute on function public.track(text, text) to anon, authenticated;
+
+-- 6. Bestaande databases: oude kopieën in public opruimen (de regels hierboven gebruiken tl_private) ---
+do $$ begin
+  begin drop function if exists public.tl_member_role(uuid); exception when dependent_objects_still_exist then raise notice 'public.tl_member_role nog in gebruik'; end;
+  begin drop function if exists public.tl_is_owner(uuid); exception when dependent_objects_still_exist then raise notice 'public.tl_is_owner nog in gebruik'; end;
+  begin drop function if exists public.tl_my_email(); exception when dependent_objects_still_exist then raise notice 'public.tl_my_email nog in gebruik'; end;
+end $$;
+revoke execute on all functions in schema tl_private from public, anon;
+grant execute on all functions in schema tl_private to authenticated;
