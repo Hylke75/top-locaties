@@ -95,6 +95,7 @@ ${footer({ left: 'EEN BIJZONDERE PLEK IS PAS HET BEGIN.', right: 'TOP LOCATIES /
     path: '/locaties/',
     body,
     scripts: ['finder.js'],
+    crumbs: [{ name: 'Home', path: '/' }, { name: 'Locaties', path: '/locaties/' }],
     data: { labels: { type: taxonomy.eventTypes, karakter: taxonomy.character, concept: Object.fromEntries(concepts.map((c) => [c.slug, c.title])) } },
   });
 }

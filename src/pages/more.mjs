@@ -41,6 +41,8 @@ ${footer({ links: [{ href: '/eventconcepten/op-gevoel/', label: 'KIES OP GEVOEL 
     title: 'Eventconcepten — originele ideeën voor zakelijke events | Top Locaties',
     description: 'Alle eventconcepten van Top Locaties: van kennisfestival tot verbindend diner. Filter op type of op het gevoel dat je gasten mee naar huis nemen.',
     path: '/eventconcepten/', body, scripts: ['compass.js', 'overview.js'], data: compassData(data),
+    crumbs: [{ name: 'Home', path: '/' }, { name: 'Eventconcepten', path: '/eventconcepten/' }],
+    jsonld: { '@type': 'ItemList', name: 'Eventconcepten', itemListElement: concepts.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.origin}/eventconcepten/${c.slug}/`, name: c.title })) },
   });
 }
 
@@ -143,7 +145,14 @@ ${nearby.length ? html`<section class="tl-section" aria-labelledby="nearTitle">
 ${contactDialog(v, data.site)}
 ${footer({ left: 'EEN BIJZONDERE PLEK IS PAS HET BEGIN.', right: 'TOP LOCATIES / 2026', links: [{ href: '/locaties/', label: 'ALLE LOCATIES ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/mijn-plan/', label: 'MIJN PLAN ↗' }] })}`;
   const desc = `${v.name} in ${v.city}: ${v.line} Ontdek bij welke eventconcepten deze aangesloten Greenbookings-locatie past.`.slice(0, 300);
-  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, scripts: ['contact.js'], preload: v.image.kind === 'source' ? v.image.src : null });
+  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, scripts: ['contact.js'], preload: v.image.kind === 'source' ? v.image.src : null,
+    crumbs: [{ name: 'Home', path: '/' }, { name: 'Locaties', path: '/locaties/' }, { name: v.name, path: `/locaties/${v.slug}/` }],
+    jsonld: {
+      '@type': 'EventVenue', name: v.name, description: v.line, url: `${SITE.origin}/locaties/${v.slug}/`, sameAs: v.profileUrl,
+      address: { '@type': 'PostalAddress', addressLocality: v.city, addressRegion: v.province || undefined, addressCountry: 'NL' },
+      ...(v.capacityMax ? { maximumAttendeeCapacity: v.capacityMax } : {}),
+      ...(v.image.kind === 'source' ? { image: v.image.src } : {}),
+    } });
 }
 
 /* ---------------- /leveranciers/ ---------------- */
@@ -216,7 +225,9 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/leveranciers/', label: 'LEVERAN
 </section>
 </main>
 ${footer({ links: [{ href: '/leveranciers/', label: 'ALLE MAKERS ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/mijn-plan/', label: 'MIJN PLAN ↗' }] })}`;
-  return layout({ title: `${s.name} — ${s.category.toLowerCase()} voor events | Top Locaties`, description: `${s.name}: ${s.tagline} Bekijk in welke eventconcepten deze maker een rol speelt.`.slice(0, 300), path: `/leveranciers/${s.slug}/`, body });
+  return layout({ title: `${s.name} — ${s.category.toLowerCase()} voor events | Top Locaties`, description: `${s.name}: ${s.tagline} Bekijk in welke eventconcepten deze maker een rol speelt.`.slice(0, 300), path: `/leveranciers/${s.slug}/`, body,
+    crumbs: [{ name: 'Home', path: '/' }, { name: 'Leveranciers', path: '/leveranciers/' }, { name: s.name, path: `/leveranciers/${s.slug}/` }],
+    jsonld: { '@type': 'Organization', name: s.name, description: s.tagline, url: `${SITE.origin}/leveranciers/${s.slug}/`, sameAs: [s.profileUrl, s.website].filter(Boolean), ...(s.city ? { address: { '@type': 'PostalAddress', addressLocality: s.city, addressCountry: 'NL' } } : {}) } });
 }
 
 /* ---------------- /mijn-plan/ ---------------- */
@@ -292,7 +303,9 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'OVER' }], 'FILOSOFIE / ECOSYSTE
     <div><dt>BEELD</dt><dd>Profielfoto's van Greenbookings of gemarkeerde sfeerbeelden.</dd></div>
     <div><dt>PROGRAMMA'S</dt><dd>Complete, uitgewerkte programma's en draaiboeken om zelf in te zetten — geen boekbaar arrangement: locatie en makers boek je zelf.</dd></div>
     <div><dt>PRIJS &amp; BESCHIKBAARHEID</dt><dd>Tonen we niet. Vraag die aan bij de locatie.</dd></div>
-    <div><dt>JOUW PLAN</dt><dd>Alleen in je eigen browser bewaard; geen account, geen tracking van je keuzes.</dd></div>
+    <div><dt>JOUW PLAN</dt><dd>Zonder account alleen in je eigen browser bewaard. Met een account bewaren we je e-mailadres en je eigen concepten; je kunt je account en alles erin zelf verwijderen.</dd></div>
+    <div><dt>STATISTIEKEN</dt><dd>We tellen bezoeken anoniem met Vercel Web Analytics: zonder cookies, zonder profielen en zonder je IP-adres op te slaan. Staat "Do Not Track" aan in je browser, dan tellen we niet.</dd></div>
+    <div><dt>CONTACT</dt><dd>Een bericht aan een locatie gaat via Greenbookings rechtstreeks naar die locatie. Zie het ${ext(data.site.contact.privacyUrl, 'privacybeleid')}.</dd></div>
   </dl>
 </section>
 </main>

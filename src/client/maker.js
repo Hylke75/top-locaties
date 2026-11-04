@@ -1,9 +1,10 @@
 // /maker/: eventconceptmaker. Basis = een standaardconcept; alles aan te passen; bewaard in het account.
 import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
-import { partners, baseConcept, exportCtx, esc } from './lib/conceptdata.js';
-import { fromBase, merge, check, byTime } from './lib/userconcept.js';
-import { conceptBlocks, blocksToDocx, blocksToText, download, fileSlug, MIME } from './lib/exporters.js';
+import { partners, baseConcept, esc } from './lib/conceptdata.js';
+import { fromBase, merge, check, byTime, startTime, shiftTo, applyAnswers } from './lib/userconcept.js';
+import { load } from './lib/store.js';
+import { exportConcept } from './lib/export-actions.js';
 
 const cfg = readData();
 A.configure(cfg.accounts);
@@ -12,6 +13,7 @@ const form = $('[data-maker-form]');
 const statusEl = $('[data-maker-status]');
 const params = new URLSearchParams(location.search);
 let P = null; let base = null; let data = null; let id = params.get('id'); let dirty = false; let saving = false; let timer = null;
+let row = null; let me = null; let role = 'owner'; // owner | editor | viewer
 
 /* ---------- Velddefinities ---------- */
 const LISTS = {
@@ -69,6 +71,10 @@ function render() {
     <div class="tl-maker__fields tl-maker__fields--two">${input('title', 'Titel van jouw concept', '', data.title)}${input('organisatie', 'Organisatie', '', data.organisatie)}</div>
     <div class="tl-maker__fields">${input('proposition', 'Belofte in één zin', 'area', data.proposition)}${input('objective', 'Wat moet het opleveren?', 'area', data.objective)}</div>
     <div class="tl-maker__fields tl-maker__fields--three">${input('datum', 'Datum', 'date', data.datum)}${input('guests', 'Aantal gasten', 'number', data.guests)}${input('duration', 'Duur en tijden', '', data.duration)}</div>
+    <div class="tl-maker__tailor"><label class="tl-field"><span>STARTTIJD PROGRAMMA</span><input data-start inputmode="numeric" placeholder="UU:MM" maxlength="5" value="${esc(startTime(data) || '')}"></label>
+      <button class="tl-button tl-button--outline" type="button" data-shift>SCHUIF ALLE TIJDEN ↓</button>
+      ${savedPlan()?.answers ? '<button class="tl-text-button" type="button" data-apply-answers>NEEM MIJN ANTWOORDEN UIT DE VRAGENLIJST OVER</button>' : ''}
+      <span class="tl-note">Programma, draaiboek en cateringmomenten schuiven samen mee.</span></div>
     <div class="tl-field"><span>GEVOEL DAT GASTEN MEENEMEN (MAX. DRIE)</span><div class="tl-chip-set">${Object.entries(P.feelings).map(([f, l]) => `<button class="tl-chip-button" type="button" data-feel="${esc(f)}" aria-pressed="${feel.has(f)}">${esc(l.toUpperCase())} ${feel.has(f) ? '✓' : '+'}</button>`).join('')}</div></div>
     <div class="tl-maker__fields">${input('audiences', 'Voor wie (één doelgroep per regel)', 'lines', data.audiences)}</div>
   </fieldset>
@@ -88,10 +94,12 @@ function render() {
   form.hidden = false;
 }
 
+const savedPlan = () => (base ? load('tl-plans-v1', {})[base.slug] : null);
+
 /* ---------- Opslaan ---------- */
 const clean = (d) => JSON.parse(JSON.stringify(d, (k, v) => (k === '__open' ? undefined : v)));
 function setStatus(t) { statusEl.textContent = t; }
-function changed() { dirty = true; setStatus('NIET OPGESLAGEN'); if (id) { clearTimeout(timer); timer = setTimeout(save, 2500); } }
+function changed() { if (role === 'viewer') return; dirty = true; setStatus('NIET OPGESLAGEN'); if (id) { clearTimeout(timer); timer = setTimeout(save, 2500); } }
 async function save() {
   if (saving) return;
   const errs = check(data);
@@ -100,19 +108,24 @@ async function save() {
   saving = true; setStatus('OPSLAAN…');
   try {
     const body = { title: data.title.trim().slice(0, 160), data: clean(data) };
-    if (id) await A.updateConcept(id, body);
+    if (id) row = await A.updateConcept(id, body, row?.updated_at);
     else {
-      const row = await A.createConcept({ base_slug: base.slug, ...body });
+      row = await A.createConcept({ base_slug: base.slug, ...body });
       id = row.id;
+      renderCollab();
       history.replaceState(null, '', `/maker/?id=${encodeURIComponent(id)}`);
       $('[data-maker-deck]').href = `/presentatie/?id=${encodeURIComponent(id)}`;
       $('[data-maker-deck]').removeAttribute('aria-disabled');
     }
     dirty = false;
     setStatus(`OPGESLAGEN ✓ ${new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}`);
-  } catch (e) { setStatus(A.message(e).toUpperCase()); }
+  } catch (e) {
+    setStatus(A.message(e).toUpperCase());
+    if (e.conflict) { clearTimeout(timer); $('[data-maker-errors]').innerHTML = `<li data-level="error">${esc(A.message(e))} <button class="tl-text-button" type="button" data-reload>LAAD DE NIEUWSTE VERSIE</button></li>`; }
+  }
   saving = false;
 }
+document.addEventListener('click', (e) => { if (e.target.closest('[data-reload]')) { dirty = false; location.reload(); } });
 
 /* ---------- Interactie ---------- */
 form.addEventListener('input', (e) => {
@@ -139,6 +152,16 @@ form.addEventListener('click', (e) => {
     data.feelings = s.includes(f) ? s.filter((x) => x !== f) : [...s, f].slice(-3);
     changed(); rerender(`[data-feel="${f}"]`); return;
   }
+  if (b.hasAttribute('data-shift')) {
+    const t = form.querySelector('[data-start]').value.trim();
+    if (!/^\d{1,2}:\d{2}$/.test(t)) { setStatus('SCHRIJF DE STARTTIJD ALS UU:MM'); return; }
+    const r = shiftTo(data, t); data = r.data; changed(); rerender('[data-shift]');
+    setStatus(r.delta ? `TIJDEN ${r.delta > 0 ? 'LATER' : 'EERDER'} GEZET (${Math.abs(r.delta)} MIN) — NIET OPGESLAGEN` : 'TIJDEN ONGEWIJZIGD'); return;
+  }
+  if (b.hasAttribute('data-apply-answers')) {
+    const p = savedPlan(); data = applyAnswers(data, p.answers, p); changed(); rerender('[data-apply-answers]');
+    setStatus('ANTWOORDEN OVERGENOMEN — NIET OPGESLAGEN'); return;
+  }
   if (b.dataset.unvenue) { data.venueIds = (data.venueIds || []).filter((v) => v !== b.dataset.unvenue); changed(); rerender('[data-add-venue]'); return; }
   if (b.dataset.add) {
     const key = b.dataset.add; const arr = getPath(data, key) || []; const spec = LISTS[key];
@@ -161,14 +184,65 @@ $('[data-maker-save]').addEventListener('click', save);
 document.addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); save(); } });
 window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 $('[data-maker-deck]').addEventListener('click', (e) => { if (!id) { e.preventDefault(); setStatus('SLA JE CONCEPT EERST OP; DAN MAAK JE ER EEN PRESENTATIE VAN.'); } else if (dirty) { e.preventDefault(); save().then(() => { location.href = `/presentatie/?id=${encodeURIComponent(id)}`; }); } });
-document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', () => {
+document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', async () => {
   const c = merge(base, clean(data));
-  const blocks = conceptBlocks(c, exportCtx(P));
-  const name = fileSlug(c.title);
-  if (b.dataset.export === 'docx') download(`${name}.docx`, blocksToDocx(blocks, { title: c.title }), MIME.docx);
-  else download(`${name}.txt`, blocksToText(blocks), MIME.txt);
-  setStatus(b.dataset.export === 'docx' ? 'WORD-BESTAND GEDOWNLOAD ✓' : 'TEKSTBESTAND GEDOWNLOAD ✓');
+  setStatus((await exportConcept(b.dataset.export, c, P)).toUpperCase());
 }));
+
+/* ---------- Delen, samenwerken, versies, dupliceren ---------- */
+const collab = $('[data-maker-collab]');
+const when = (iso) => new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+async function renderCollab() {
+  if (!collab) return;
+  if (!id) { collab.hidden = true; return; }
+  collab.hidden = false;
+  const owner = role === 'owner';
+  const link = row?.share_token ? `${location.origin}/presentatie/?t=${row.share_token}` : '';
+  let members = []; let versions = [];
+  try { [members, versions] = await Promise.all([A.listMembers(id), A.listVersions(id)]); } catch {}
+  collab.innerHTML = `<div class="tl-maker__collab">
+  <div><h3 class="tl-mono tl-subhead">DELEN (ALLEEN LEZEN)</h3>
+    ${owner ? (link ? `<p class="tl-note">Iedereen met deze link ziet de presentatie en kan downloaden, zonder account.</p><div class="tl-maker__share"><input readonly value="${esc(link)}" aria-label="Deellink" data-share-link><button class="tl-button" type="button" data-copy-share>KOPIEER LINK</button></div><button class="tl-text-button" type="button" data-share-off>STOP MET DELEN</button>`
+      : '<p class="tl-note">Maak een geheime link om de presentatie te laten zien aan een opdrachtgever of collega, zonder dat die een account nodig heeft.</p><button class="tl-button tl-button--outline" type="button" data-share-on>MAAK DEELLINK ↗</button>')
+      : `<p class="tl-note">${link ? 'Dit concept heeft een deellink; de eigenaar beheert die.' : 'Alleen de eigenaar kan een deellink maken.'}</p>`}
+  </div>
+  <div><h3 class="tl-mono tl-subhead">SAMENWERKEN</h3>
+    ${owner ? '' : `<p class="tl-note">Gedeeld met jou als <strong>${role === 'editor' ? 'redacteur' : 'lezer'}</strong>.</p>`}
+    <ul class="tl-maker__chosen">${members.map((m) => `<li><span>${esc(m.email)} <span class="tl-note">${m.role === 'editor' ? 'redacteur' : 'lezer'}</span></span>${owner || m.email === (me?.email || '').toLowerCase() ? `<button class="tl-maker__icon" type="button" data-remove-member="${esc(m.email)}" aria-label="${esc(m.email)} verwijderen">×</button>` : ''}</li>`).join('') || '<li class="tl-note">Nog niemand uitgenodigd.</li>'}</ul>
+    ${owner ? `<form class="tl-maker__invite" data-invite><label class="tl-field"><span>E-MAILADRES</span><input name="email" type="email" required></label><label class="tl-field"><span>ROL</span><select name="role"><option value="editor">Redacteur (mag bewerken)</option><option value="viewer">Lezer</option></select></label><button class="tl-button tl-button--outline" type="submit">NODIG UIT +</button></form>
+      <p class="tl-note">De uitgenodigde maakt een account aan met dít e-mailadres en vindt het concept dan bij Mijn concepten.</p>` : ''}
+  </div>
+  <div><h3 class="tl-mono tl-subhead">VERSIES</h3>
+    <ul class="tl-maker__chosen">${versions.map((v) => `<li><span>${esc(when(v.created_at))} <span class="tl-note">${esc(v.saved_by_email || '')}</span></span>${role !== 'viewer' ? `<button class="tl-text-button" type="button" data-restore="${v.id}">HERSTEL</button>` : ''}</li>`).join('') || '<li class="tl-note">Nog geen eerdere versies. Bij het bewaren houden we automatisch een versie bij (hooguit één per 10 minuten, maximaal 50).</li>'}</ul>
+    <button class="tl-button tl-button--outline" type="button" data-duplicate>DUPLICEER ALS VARIANT</button>
+  </div>
+</div>`;
+}
+collab?.addEventListener('click', async (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  try {
+    if (b.hasAttribute('data-share-on')) { row = await A.shareOn(id); setStatus('DEELLINK GEMAAKT ✓'); }
+    else if (b.hasAttribute('data-share-off')) { if (!confirm('De deellink werkt daarna niet meer. Doorgaan?')) return; row = await A.shareOff(id); setStatus('DELEN GESTOPT'); }
+    else if (b.hasAttribute('data-copy-share')) { const v = collab.querySelector('[data-share-link]'); try { await navigator.clipboard.writeText(v.value); setStatus('DEELLINK GEKOPIEERD ✓'); } catch { v.select(); } return; }
+    else if (b.dataset.removeMember) { if (!confirm(`${b.dataset.removeMember} verwijderen uit dit concept?`)) return; await A.removeMember(id, b.dataset.removeMember); if (b.dataset.removeMember === (me?.email || '').toLowerCase() && role !== 'owner') { location.href = '/account/'; return; } }
+    else if (b.dataset.restore) {
+      if (!confirm('Deze versie terugzetten? De huidige stand wordt eerst als versie bewaard.')) return;
+      const v = await A.getVersion(b.dataset.restore);
+      data = { ...fromBase(base), ...v.data }; dirty = true; render(); await save(); setStatus('VERSIE HERSTELD ✓');
+    } else if (b.hasAttribute('data-duplicate')) {
+      const copy = await A.createConcept({ base_slug: base.slug, title: `${data.title} (variant)`.slice(0, 160), data: { ...clean(data), title: `${data.title} (variant)`.slice(0, 160) } });
+      dirty = false; location.href = `/maker/?id=${encodeURIComponent(copy.id)}`; return;
+    }
+    renderCollab();
+  } catch (err) { setStatus(A.message(err).toUpperCase()); }
+});
+collab?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target; const email = f.elements.email.value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setStatus('VUL EEN GELDIG E-MAILADRES IN'); return; }
+  if (email.toLowerCase() === (me?.email || '').toLowerCase()) { setStatus('JE BENT AL EIGENAAR VAN DIT CONCEPT'); return; }
+  try { await A.addMember(id, email, f.elements.role.value); setStatus(`${email.toUpperCase()} UITGENODIGD ✓`); renderCollab(); } catch (err) { setStatus(A.message(err).toUpperCase()); }
+});
 
 /* ---------- Start ---------- */
 function gate(slug) {
@@ -188,7 +262,9 @@ function fail(msg) { const el = $('[data-maker-gate]'); el.hidden = false; el.in
     const s = await A.session();
     if (!s) { gate(slug); return; }
     if (id) {
-      const row = await A.getConcept(id);
+      row = await A.getConcept(id);
+      me = s.user;
+      if (row.user_id !== me?.id) role = (await A.myRoles())[id] || 'viewer';
       base = await baseConcept(row.base_slug);
       data = { ...fromBase(base), ...row.data };
       $('[data-maker-deck]').href = `/presentatie/?id=${encodeURIComponent(id)}`;
@@ -196,11 +272,16 @@ function fail(msg) { const el = $('[data-maker-gate]'); el.hidden = false; el.in
     } else if (slug) {
       base = await baseConcept(slug);
       data = fromBase(base);
+      const p = savedPlan();
+      if (p?.answers || p?.venueId) data = applyAnswers(data, p.answers || {}, p);
       $('[data-maker-deck]').setAttribute('aria-disabled', 'true');
     } else { location.replace('/account/'); return; }
     $('[data-maker-heading]').textContent = data.title;
     $('[data-maker-base]').innerHTML = `Basis: <a href="/eventconcepten/${esc(base.slug)}/">${esc(base.title)}</a>. Alles wat je hier wijzigt, geldt alleen voor jouw versie. Opslaan gebeurt automatisch zodra je concept één keer is bewaard.`;
     $('[data-maker-bar]').hidden = false;
+    me = me || s.user;
     render();
+    if (role === 'viewer') { form.querySelectorAll('input,textarea,select,button').forEach((el) => { el.disabled = true; }); $('[data-maker-save]').hidden = true; setStatus('ALLEEN LEZEN — JE BENT LEZER VAN DIT CONCEPT'); }
+    renderCollab();
   } catch (e) { fail(A.message(e)); }
 })();

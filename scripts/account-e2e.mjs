@@ -16,7 +16,9 @@ const check = (ok, label) => { console.log(`${ok ? 'OK  ' : 'FOUT'} ${label}`); 
 // ---- Gesimuleerde Supabase ----
 const users = new Map(); // email -> { id, password }
 const tokens = new Map(); // token -> userId
-const rows = []; // { id, user_id, base_slug, title, data, updated_at }
+const rows = []; // { id, user_id, base_slug, title, data, updated_at, share_token }
+const members = []; // { concept_id, email, role }
+const versions = []; // { id, concept_id, title, data, saved_by_email, created_at }
 let n = 0;
 const json = (route, status, body) => route.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
 const issue = (u) => { const t = `tok-${++n}`; tokens.set(t, u.id); return { access_token: t, refresh_token: `ref-${t}`, expires_in: 3600, user: { id: u.id, email: u.email } }; };
@@ -38,19 +40,47 @@ async function supabase(route) {
     return json(route, 200, issue(u));
   }
   if (url.pathname === '/auth/v1/logout') return json(route, 204, {});
-  if (url.pathname.startsWith('/rest/v1/user_concepts')) {
-    if (!uid) return json(route, 401, { message: 'JWT required' });
-    const idEq = url.searchParams.get('id')?.replace('eq.', '');
-    const mine = rows.filter((r) => r.user_id === uid); // RLS
+  const email = [...users.values()].find((u) => u.id === uid)?.email;
+  const roleOf = (r) => (r.user_id === uid ? 'owner' : members.find((m) => m.concept_id === r.id && m.email === email)?.role);
+  if (url.pathname === '/rest/v1/rpc/shared_concept') {
+    const r = rows.find((x) => x.share_token && x.share_token === body?.token);
+    return json(route, 200, r ? [{ title: r.title, base_slug: r.base_slug, data: r.data, updated_at: r.updated_at }] : []);
+  }
+  if (!uid) return json(route, 401, { message: 'JWT required' });
+  if (url.pathname === '/rest/v1/concept_members') {
+    const cid = url.searchParams.get('concept_id')?.replace('eq.', '');
     if (req.method() === 'GET') {
-      if (idEq) { const r = mine.find((x) => x.id === idEq); return r ? json(route, 200, r) : json(route, 406, { message: 'not found' }); }
-      return json(route, 200, mine.map(({ id, title, base_slug, updated_at }) => ({ id, title, base_slug, updated_at })));
+      const em = url.searchParams.get('email')?.replace('eq.', '');
+      return json(route, 200, members.filter((m) => (!cid || m.concept_id === cid) && (!em || m.email === em) && (roleOf(rows.find((r) => r.id === m.concept_id) || {}) || m.email === email)));
     }
-    if (req.method() === 'POST') { const r = { id: `c${rows.length + 1}`, user_id: uid, ...body, updated_at: new Date().toISOString() }; rows.push(r); return json(route, 201, [r]); }
-    const r = mine.find((x) => x.id === idEq);
-    if (!r) return json(route, 404, { message: 'not found' });
-    if (req.method() === 'PATCH') { Object.assign(r, body, { updated_at: new Date().toISOString() }); return json(route, 200, [r]); }
-    if (req.method() === 'DELETE') { rows.splice(rows.indexOf(r), 1); return json(route, 204, {}); }
+    if (req.method() === 'POST') { const r = rows.find((x) => x.id === body.concept_id); if (!r || r.user_id !== uid) return json(route, 403, { message: 'new row violates row-level security policy' }); members.push({ ...body, created_at: new Date().toISOString() }); return json(route, 201, {}); }
+    if (req.method() === 'DELETE') { const em = url.searchParams.get('email')?.replace('eq.', ''); const i = members.findIndex((m) => m.concept_id === cid && m.email === em); if (i >= 0) members.splice(i, 1); return json(route, 204, {}); }
+  }
+  if (url.pathname === '/rest/v1/user_concept_versions') {
+    const vid = url.searchParams.get('id')?.replace('eq.', '');
+    if (vid) { const v = versions.find((x) => String(x.id) === vid); return v && roleOf(rows.find((r) => r.id === v.concept_id)) ? json(route, 200, v) : json(route, 406, {}); }
+    const cid = url.searchParams.get('concept_id')?.replace('eq.', '');
+    return json(route, 200, versions.filter((v) => v.concept_id === cid && roleOf(rows.find((r) => r.id === cid))).slice().reverse());
+  }
+  if (url.pathname.startsWith('/rest/v1/user_concepts')) {
+    const idEq = url.searchParams.get('id')?.replace('eq.', '');
+    const visible = rows.filter((r) => roleOf(r)); // RLS: eigenaar of lid
+    if (req.method() === 'GET') {
+      if (idEq) { const r = visible.find((x) => x.id === idEq); return r ? json(route, 200, r) : json(route, 406, { message: 'not found' }); }
+      return json(route, 200, visible.map(({ id, title, base_slug, updated_at, user_id }) => ({ id, title, base_slug, updated_at, user_id })));
+    }
+    if (req.method() === 'POST') { const r = { id: `c${rows.length + 1}`, user_id: uid, share_token: null, ...body, updated_at: new Date(Date.now() + rows.length).toISOString() }; rows.push(r); return json(route, 201, [r]); }
+    const r = visible.find((x) => x.id === idEq);
+    if (req.method() === 'PATCH') {
+      if (!r || !['owner', 'editor'].includes(roleOf(r))) return json(route, 200, []);
+      const guard = url.searchParams.get('updated_at')?.replace('eq.', '');
+      if (guard && guard !== r.updated_at) return json(route, 200, []); // conflict: 0 rijen
+      if ('share_token' in body && body.share_token !== r.share_token && r.user_id !== uid) return json(route, 400, { message: 'Alleen de eigenaar kan de deellink wijzigen.' });
+      if (body.data && JSON.stringify(body.data) !== JSON.stringify(r.data)) versions.push({ id: versions.length + 1, concept_id: r.id, title: r.title, data: JSON.parse(JSON.stringify(r.data)), saved_by_email: email, created_at: new Date().toISOString() });
+      Object.assign(r, body, { updated_at: new Date(Date.now() + versions.length + 1).toISOString() });
+      return json(route, 200, [r]);
+    }
+    if (req.method() === 'DELETE') { if (r && r.user_id === uid) rows.splice(rows.indexOf(r), 1); return json(route, 204, {}); }
   }
   return json(route, 404, { message: 'unknown' });
 }
@@ -145,10 +175,49 @@ const pages = Number(/Pages:\s+(\d+)/.exec(info)?.[1]);
 const size = /Page size:\s+([\d.]+) x ([\d.]+)/.exec(info);
 check(pages === slides && size && Number(size[1]) > Number(size[2]), `PDF: ${pages} liggende pagina's (${size?.[1]}×${size?.[2]} pt)`);
 
+// 6b. Delen, samenwerken, versies en dupliceren
+await page.goto(base + '/maker/?id=c1');
+await page.waitForSelector('[data-maker-collab]:not([hidden]) [data-share-on]');
+await page.click('[data-share-on]');
+await page.waitForSelector('[data-share-link]');
+const shareUrl = await page.inputValue('[data-share-link]');
+check(/\/presentatie\/\?t=[A-Za-z0-9_-]{24,}$/.test(shareUrl), 'deellink gemaakt');
+const anonCtx = await browser.newContext(); await anonCtx.route(`${SB}/**`, supabase);
+const anon = await anonCtx.newPage();
+await anon.goto(shareUrl.replace(/^https?:\/\/[^/]+/, base));
+await anon.waitForSelector('.tl-slide');
+check((await anon.textContent('.tl-slide--cover')).includes('Kick-off Bureau Noord 2027'), 'deellink werkt zonder account (alleen lezen)');
+await anon.goto(base + '/presentatie/?t=bestaat-niet-bestaat-niet-12345');
+await anon.waitForSelector('.tl-state');
+check((await anon.textContent('.tl-state')).includes('bestaat niet'), 'onjuiste deellink geeft een nette melding');
+await anonCtx.close();
+await page.fill('[data-invite] [name=email]', 'collega@voorbeeld.nl');
+await page.selectOption('[data-invite] [name=role]', 'editor');
+await page.click('[data-invite] button[type=submit]');
+await page.waitForFunction(() => document.querySelector('[data-maker-collab]').textContent.includes('collega@voorbeeld.nl'));
+check(members.length === 1 && members[0].role === 'editor', 'collega uitgenodigd als redacteur');
+check(await page.locator('[data-restore]').count() >= 1, 'versiegeschiedenis toont eerdere versies');
+await page.locator('[data-restore]').last().click();
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('HERSTELD'));
+check(rows[0].data.notes !== 'Bel de locatie over parkeren.', 'oudere versie hersteld');
+await page.click('[data-duplicate]');
+await page.waitForURL('**/maker/?id=c2');
+await page.waitForSelector('[data-maker-form]:not([hidden])');
+check(rows.length === 2 && rows[1].title.endsWith('(variant)'), 'concept gedupliceerd als variant');
+// conflict: iemand anders slaat intussen op
+await page.goto(base + '/maker/?id=c1');
+await page.waitForSelector('[data-maker-form]:not([hidden])');
+rows[0].updated_at = new Date(Date.now() + 99999).toISOString();
+await page.fill('[data-path="organisatie"]', 'Bureau Noord');
+await page.click('[data-maker-save]');
+await page.waitForSelector('[data-reload]');
+check((await page.textContent('[data-maker-errors]')).includes('intussen opgeslagen'), 'conflict bij gelijktijdig bewerken wordt gemeld (niets overschreven)');
+page.removeAllListeners('dialog'); page.on('dialog', (d) => d.accept());
+
 // 7. Mijn concepten, uitloggen, privé
 await page.goto(base + '/account/');
 await page.waitForSelector('[data-my-item]');
-check(await page.locator('[data-my-item]').count() === 1, 'Mijn concepten toont het bewaarde concept');
+check(await page.locator('[data-my-item]').count() === 2, 'Mijn concepten toont het concept en de variant');
 await page.click('[data-sign-out]');
 await page.goto(base + '/presentatie/?id=c1');
 await page.waitForSelector('.tl-state');
@@ -163,6 +232,23 @@ check(true, 'andere gebruiker ziet geen concepten van een ander');
 await page.goto(base + '/maker/?id=c1');
 await page.waitForSelector('[data-maker-gate]:not([hidden])');
 check((await page.textContent('[data-maker-gate]')).includes('NIET GELADEN'), 'concept van een ander openen faalt netjes');
+
+// 8b. Uitgenodigde collega registreert met hetzelfde e-mailadres en bewerkt mee
+await page.goto(base + '/account/');
+await page.click('[data-sign-out]');
+await page.goto(base + '/account/?stap=registreren');
+await page.fill('[name=email]', 'collega@voorbeeld.nl'); await page.fill('[name=password]', 'collega-wachtwoord'); await page.check('[name=consent]');
+await page.click('[data-auth-submit]');
+await page.waitForSelector('[data-my-item]');
+check((await page.textContent('[data-my-list]')).includes('GEDEELD MET JOU (REDACTEUR)'), 'collega ziet het gedeelde concept');
+check(await page.locator('[data-my-item] [data-delete]').count() === 0, 'collega kan het concept niet verwijderen');
+await page.goto(base + '/maker/?id=c1');
+await page.waitForSelector('[data-maker-form]:not([hidden])');
+await page.fill('[data-path="notes"]', 'Aangevuld door collega.');
+await page.click('[data-maker-save]');
+await page.waitForFunction(() => document.querySelector('[data-maker-status]').textContent.includes('OPGESLAGEN ✓'));
+check(rows[0].data.notes === 'Aangevuld door collega.', 'redacteur kan meebewerken');
+check(await page.locator('[data-share-on]').count() === 0 && await page.locator('[data-invite]').count() === 0, 'redacteur beheert geen deellink en leden');
 
 // 9. Standaardconcept: presentatie en downloads zonder account
 await page.goto(base + '/eventconcepten/diner/');

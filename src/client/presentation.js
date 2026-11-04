@@ -1,9 +1,9 @@
 // /presentatie/: liggende presentatie (16:9) van een standaard- of eigen concept; PDF via "Bewaar als PDF".
 import * as A from './lib/account.js';
 import { readData } from './lib/store.js';
-import { partners, baseConcept, exportCtx, esc } from './lib/conceptdata.js';
+import { partners, baseConcept, esc } from './lib/conceptdata.js';
 import { merge } from './lib/userconcept.js';
-import { conceptBlocks, blocksToDocx, blocksToText, download, fileSlug, MIME } from './lib/exporters.js';
+import { exportConcept } from './lib/export-actions.js';
 
 const cfg = readData();
 A.configure(cfg.accounts);
@@ -83,12 +83,9 @@ async function printPdf() {
   window.print();
 }
 document.querySelector('[data-deck-pdf]').addEventListener('click', printPdf);
-document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', () => {
+document.querySelectorAll('[data-export]').forEach((b) => b.addEventListener('click', async () => {
   if (!C) return;
-  const blocks = conceptBlocks(C, exportCtx(P));
-  const name = fileSlug(C.title);
-  if (b.dataset.export === 'docx') download(`${name}.docx`, blocksToDocx(blocks, { title: C.title }), MIME.docx);
-  else download(`${name}.txt`, blocksToText(blocks), MIME.txt);
+  status.textContent = (await exportConcept(b.dataset.export, C, P)).toUpperCase();
 }));
 
 function fail(msg, loginNeeded) {
@@ -102,8 +99,15 @@ function fail(msg, loginNeeded) {
   try {
     P = await partners();
     const id = params.get('id');
+    const t = params.get('t');
     const back = document.querySelector('[data-deck-back]');
-    if (id) {
+    if (t) {
+      A.configure({ ...cfg.accounts, enabled: true }); // deellinks werken ook als accounts site-breed nog uit staan
+      const row = await A.getShared(t);
+      const base = await baseConcept(row.base_slug);
+      C = merge(base, row.data);
+      back.href = '/'; back.textContent = '← TOP LOCATIES';
+    } else if (id) {
       if (!A.enabled() || !(await A.session())) { fail('Eigen concepten zijn privé. Log in om de presentatie te maken.', true); return; }
       const row = await A.getConcept(id);
       const base = await baseConcept(row.base_slug);

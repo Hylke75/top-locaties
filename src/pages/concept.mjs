@@ -43,10 +43,11 @@ ${header({ current: 'concepten', cta: { href: '#samenstellen', label: 'MAAK JOUW
   <span class="tl-chip-set">
     ${data.site.accounts?.enabled ? html`<a class="tl-button tl-button--accent" href="/maker/?basis=${concept.slug}">PAS AAN IN DE CONCEPTMAKER ↗</a>` : ''}
     <a class="tl-button tl-button--outline" href="/presentatie/?basis=${concept.slug}">PRESENTATIE (PDF) ↗</a>
+    <button class="tl-button tl-button--outline" type="button" data-download="pptx">POWERPOINT</button>
     <button class="tl-button tl-button--outline" type="button" data-download="docx">DOWNLOAD WORD</button>
     <button class="tl-button tl-button--outline" type="button" data-download="txt">DOWNLOAD TEKST</button>
   </span>
-  <span class="tl-mono tl-note" role="status" aria-live="polite" data-tools-status>${data.site.accounts?.enabled ? 'Aanpassen en bewaren met een gratis account.' : 'Presentatie, Word en tekst zijn direct te downloaden.'}</span>
+  <span class="tl-mono tl-note" role="status" aria-live="polite" data-tools-status>${data.site.accounts?.enabled ? 'Aanpassen en bewaren met een gratis account.' : 'Presentatie (PDF of PowerPoint), Word en tekst zijn direct te downloaden.'}</span>
 </div>
 
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
@@ -154,6 +155,15 @@ ${footer({
     preload: concept.hero.src,
     body,
     scripts: ['concept.js', 'concept-tools.js'],
+    crumbs: [{ name: 'Home', path: '/' }, { name: 'Eventconcepten', path: '/eventconcepten/' }, { name: concept.title, path: `/eventconcepten/${concept.slug}/` }],
+    jsonld: {
+      // Een concept is geen gepland evenement (geen Event-schema): het is een uitgewerkte aanpak.
+      '@type': 'HowTo', name: concept.title, description: concept.seo.description, inLanguage: 'nl-NL',
+      url: `${SITE.origin}/eventconcepten/${concept.slug}/`, image: SITE.origin + concept.hero.src,
+      totalTime: undefined, about: concept.categoryLabel, audience: { '@type': 'BusinessAudience', audienceType: (concept.audiences || []).join(', ') },
+      step: (concept.program || []).map((p, i) => ({ '@type': 'HowToStep', position: i + 1, name: `${p.time} ${p.title}`, text: p.description, url: `${SITE.origin}/eventconcepten/${concept.slug}/#prog-${concept.slug}-${i + 1}` })),
+      publisher: { '@type': 'Organization', name: 'Top Locaties', url: `${SITE.origin}/` },
+    },
     data: {
       concept: (({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }) => ({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }))(concept),
       feelings: Object.entries(feelingLabels).map(([id, label]) => ({ id, label })),

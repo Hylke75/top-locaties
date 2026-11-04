@@ -41,17 +41,17 @@ async function loadList() {
   const list = $('[data-my-list]');
   list.innerHTML = '<div class="tl-state tl-state--loading"><p class="tl-mono">CONCEPTEN LADEN…</p></div>';
   try {
-    const [rows, p] = await Promise.all([A.listConcepts(), partners()]);
+    const [rows, p, roles, s] = await Promise.all([A.listConcepts(), partners(), A.myRoles().catch(() => ({})), A.session()]);
     const title = Object.fromEntries(p.concepts.map((c) => [c.slug, c.title]));
     $('[data-basis-select]').innerHTML = p.concepts.map((c) => `<option value="${esc(c.slug)}">${esc(c.title)} — ${esc(c.dayPartLabel)}</option>`).join('');
     const pre = new URLSearchParams(location.search).get('basis');
     if (pre && title[pre]) $('[data-basis-select]').value = pre;
     $('[data-my-status]').textContent = `${rows.length} ${rows.length === 1 ? 'concept' : 'concepten'}.`;
     list.innerHTML = rows.length ? rows.map((r, i) => `<article class="tl-account__item" data-my-item="${esc(r.id)}">
-      <span class="tl-mono">${String(i + 1).padStart(2, '0')} / BASIS: ${esc((title[r.base_slug] || r.base_slug).toUpperCase())}</span>
+      <span class="tl-mono">${String(i + 1).padStart(2, '0')} / BASIS: ${esc((title[r.base_slug] || r.base_slug).toUpperCase())}${r.user_id !== s?.user?.id ? ` / GEDEELD MET JOU (${roles[r.id] === 'editor' ? 'REDACTEUR' : 'LEZER'})` : ''}</span>
       <h3 class="tl-account__title"><a href="/maker/?id=${esc(r.id)}">${esc(r.title)}</a></h3>
       <span class="tl-mono tl-note">LAATST BEWAARD ${esc(when(r.updated_at).toUpperCase())}</span>
-      <span class="tl-chip-set"><a class="tl-button" href="/maker/?id=${esc(r.id)}">BEWERK ↗</a><a class="tl-button tl-button--outline" href="/presentatie/?id=${esc(r.id)}">PRESENTATIE (PDF) ↗</a><button class="tl-text-button" type="button" data-delete="${esc(r.id)}">VERWIJDER</button></span>
+      <span class="tl-chip-set"><a class="tl-button" href="/maker/?id=${esc(r.id)}">BEWERK ↗</a><a class="tl-button tl-button--outline" href="/presentatie/?id=${esc(r.id)}">PRESENTATIE (PDF) ↗</a>${r.user_id === s?.user?.id ? `<button class="tl-text-button" type="button" data-delete="${esc(r.id)}">VERWIJDER</button>` : ''}</span>
     </article>`).join('')
       : '<div class="tl-state tl-state--empty"><h3 class="tl-state__title">NOG GEEN CONCEPTEN.</h3><p>Kies hierboven een standaardconcept en maak het in de maker helemaal van jou.</p></div>';
   } catch (e) {

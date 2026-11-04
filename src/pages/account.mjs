@@ -76,12 +76,14 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/account/', label: 'ACCOUNT' }, 
     <span class="tl-chip-set">
       <button class="tl-button tl-button--accent" type="button" data-maker-save>OPSLAAN ✓</button>
       <a class="tl-button tl-button--outline" href="/presentatie/" data-maker-deck>PRESENTATIE (PDF) ↗</a>
+      <button class="tl-button tl-button--outline" type="button" data-export="pptx">POWERPOINT</button>
       <button class="tl-button tl-button--outline" type="button" data-export="docx">WORD</button>
       <button class="tl-button tl-button--outline" type="button" data-export="txt">TEKST</button>
     </span>
   </div>
   <ul class="tl-maker__issues" data-maker-errors></ul>
   <form class="tl-maker" data-maker-form hidden novalidate></form>
+  <section class="tl-maker tl-maker__part" aria-label="Delen, samenwerken en versies" data-maker-collab hidden></section>
 </section>
 </main>
 ${footer({ links: [{ href: '/account/', label: 'MIJN CONCEPTEN ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/zelf-organiseren/', label: 'ZELF ORGANISEREN ↗' }] })}`;
@@ -94,10 +96,39 @@ export function renderPresentation(data) {
   <span class="tl-mono" role="status" aria-live="polite" data-deck-status>PRESENTATIE WORDT GEMAAKT…</span>
   <span class="tl-chip-set">
     <button class="tl-button tl-button--accent" type="button" data-deck-pdf>DOWNLOAD ALS PDF</button>
+    <button class="tl-button tl-button--outline" type="button" data-export="pptx">POWERPOINT</button>
     <button class="tl-button tl-button--outline" type="button" data-export="docx">WORD</button>
     <button class="tl-button tl-button--outline" type="button" data-export="txt">TEKST</button>
   </span>
 </div>
 <main id="main" class="tl-deck" data-deck aria-label="Presentatie"></main>`;
   return layout({ title: 'Presentatie — eventconcept | Top Locaties', description: 'Liggende presentatie van een eventconcept, te downloaden als PDF.', path: '/presentatie/', body, scripts: ['presentation.js'], styles: ['deck-print.css'], data: accountData(data), noindex: true });
+}
+
+/* ---------------- /zoeken/ ---------------- */
+export function renderSearch(data) {
+  const body = html`${header({ current: 'zoeken' })}
+${crumb([{ href: '/', label: 'HOME' }, { label: 'ZOEKEN' }], 'CONCEPTEN, LOCATIES EN MAKERS')}
+<main id="main" data-search>
+<section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="searchTitle">
+  ${overline('01 / ZOEKEN', `${data.concepts.length} CONCEPTEN / ${data.venues.length} LOCATIES / ${data.suppliers.length} MAKERS`)}
+  <h1 class="tl-display" id="searchTitle">WAT ZOEK<br><span class="tl-accent">JE?</span></h1>
+  <form class="tl-search" role="search" data-search-form action="/zoeken/">
+    <label class="tl-visually-hidden" for="q">Zoek op concept, plaats, soort bijeenkomst of aantal personen</label>
+    <input class="tl-search__input" id="q" name="q" type="search" autocomplete="off" placeholder="Bijv. vergaderen utrecht 20 personen" data-search-input>
+    <button class="tl-button tl-button--accent" type="submit">ZOEK ↓</button>
+  </form>
+  <div class="tl-chip-row" role="group" aria-label="Soort resultaat">
+    ${[['', 'ALLES'], ['concept', 'CONCEPTEN'], ['locatie', 'LOCATIES'], ['maker', 'MAKERS']].map(([k, l]) => html`<button class="tl-chip-button" type="button" data-search-type="${k}" aria-pressed="${k === '' ? 'true' : 'false'}">${l}</button>`)}
+  </div>
+  <p class="tl-mono tl-search__hint">PROBEER: ${['vergaderen utrecht 20 personen', 'diner avond', 'teamdag buiten', 'congres 300 gasten', 'catering'].map((x, i) => html`${i ? ' / ' : ''}<a href="/zoeken/?q=${encodeURIComponent(x)}" data-search-example>${x}</a>`)}</p>
+</section>
+<section class="tl-section" aria-labelledby="resTitle">
+  <h2 class="tl-visually-hidden" id="resTitle">Resultaten</h2>
+  <p class="tl-mono" role="status" aria-live="polite" data-search-status>Typ een zoekvraag.</p>
+  <ol class="tl-search__results" data-search-results></ol>
+</section>
+</main>
+${footer({ links: [{ href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/locaties/', label: 'LOCATIEZOEKER ↗' }, { href: '/leveranciers/', label: 'LEVERANCIERS ↗' }] })}`;
+  return layout({ title: 'Zoeken — concepten, locaties en makers | Top Locaties', description: 'Zoek in alle eventconcepten, aangesloten partnerlocaties en makers van Top Locaties, op plaats, soort bijeenkomst of aantal personen.', path: '/zoeken/', body, scripts: ['search.js'], noindex: true });
 }

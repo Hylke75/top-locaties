@@ -987,3 +987,24 @@ figure.tl-image-frame { margin:0; }
 .tl-maker__chosen li > span { min-width:0; overflow-wrap:break-word; }
 .tl-maker .tl-field { border:0; padding:0; background:none; }
 .tl-maker__fields { gap:14px 18px; }
+.tl-contact__hp { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+
+/* v1.7 — zoeken */
+.tl-search { display:grid; grid-template-columns:minmax(0,1fr) auto; margin-top:clamp(28px,4vw,48px); border:2px solid var(--tl-ink); background:var(--tl-white); }
+.tl-search__input { min-width:0; min-height:64px; border:0; padding:0 20px; background:transparent; color:var(--tl-ink); font:400 clamp(17px,2vw,24px) var(--tl-font-body); border-radius:0; }
+.tl-search__input:focus-visible { outline:3px solid var(--tl-cobalt); outline-offset:-3px; }
+.tl-search .tl-button { min-height:64px; }
+.tl-search__hint { margin-top:16px; }
+.tl-search__hint a { text-decoration:underline; text-underline-offset:3px; }
+.tl-search__results { margin:18px 0 0; padding:0; list-style:none; border-top:2px solid var(--tl-ink); }
+.tl-search__item { display:grid; grid-template-columns:130px minmax(0,1fr) minmax(0,260px); gap:8px 20px; align-items:baseline; padding:16px 0; border-bottom:var(--tl-border); }
+.tl-search__title { font:400 clamp(20px,2.2vw,30px)/1 var(--tl-font-display); letter-spacing:-.05em; text-transform:uppercase; }
+.tl-search__title:hover { color:var(--tl-coral); }
+@media (max-width: 800px) { .tl-search__item { grid-template-columns:1fr; gap:4px; } }
+.tl-maker__tailor { display:flex; flex-wrap:wrap; align-items:end; gap:12px 18px; margin:6px 0 16px; padding:16px; background:var(--tl-mist); }
+.tl-maker__tailor .tl-field { width:140px; }
+.tl-maker__tailor .tl-note { flex-basis:100%; margin:0; }
+.tl-maker__collab { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; border-top:2px solid var(--tl-ink); padding-top:20px; }
+.tl-maker__share { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin:10px 0; }
+.tl-maker__invite { display:grid; gap:10px; margin:12px 0 8px; }
+@media (max-width: 1000px) { .tl-maker__collab { grid-template-columns:1fr; } }

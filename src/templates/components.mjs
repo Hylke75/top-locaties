@@ -14,6 +14,7 @@ const NAV = [
   { key: 'zelf', href: '/zelf-organiseren/', label: 'ZELF ORGANISEREN' },
   { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLAN' },
   { key: 'account', href: '/account/', label: 'ACCOUNT' },
+  { key: 'zoeken', href: '/zoeken/', label: 'ZOEKEN' },
 ];
 
 export const ext = (href, label, cls = '') =>
@@ -220,6 +221,7 @@ export function contactDialog(v, site) {
       <label class="tl-contact__field"><span>AANTAL PERSONEN (OPTIONEEL)</span><input name="aantal" type="number" min="1" inputmode="numeric"></label>
     </div>
     <label class="tl-contact__field"><span>BERICHT *</span><textarea name="bericht" rows="5" required placeholder="Waarmee kan ${v.name} je helpen?"></textarea></label>
+    <label class="tl-contact__hp" aria-hidden="true">Laat dit veld leeg<input name="website" tabindex="-1" autocomplete="off"></label>
     <p class="tl-note">Je gegevens worden gedeeld met ${v.name} om je aanvraag te behandelen. Zie het ${ext(site.contact.privacyUrl, 'privacybeleid')}.</p>
     <p class="tl-warning" data-contact-error hidden></p>
     <div class="tl-contact__actions"><button class="tl-button tl-button--accent" type="submit" data-contact-submit>VERSTUUR BERICHT ↗</button>${ext(v.profileUrl, 'OF BEKIJK HET PROFIEL OP GREENBOOKINGS ↗', 'tl-text-button')}</div>

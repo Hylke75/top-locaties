@@ -25,27 +25,29 @@ if (dlg) {
     form.elements.bericht.value = `Beste ${venueName},\n\nWe organiseren een evenement${a.organisatie ? ` voor ${a.organisatie}` : ''}${a.datum ? ` op ${new Date(`${a.datum}T12:00:00`).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''}${a.gasten ? ` voor ongeveer ${a.gasten} gasten` : ''}. Is jullie locatie dan beschikbaar, en welke ruimtes passen erbij?\n\nIk ontvang graag een voorstel.`;
   }
 
+  const opened = Date.now();
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     err.hidden = true;
     const f = form.elements;
     const missing = [!f.naam.value.trim() && 'naam', !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value.trim()) && 'een geldig e-mailadres', !f.bericht.value.trim() && 'je bericht'].filter(Boolean);
     if (missing.length) { err.textContent = `Vul nog in: ${missing.join(', ')}.`; err.hidden = false; return; }
-    const payload = { locatie_slug: venueSlug, bezoeker_naam: f.naam.value.trim(), bezoeker_email: f.email.value.trim(), event_datum: f.datum.value || null, aantal_personen: f.aantal.value ? Number(f.aantal.value) : null, bericht: f.bericht.value.trim(), onderwerp: `Aanvraag via Top Locaties — ${venueName}`, bron: source || 'top-locaties' };
+    const payload = { locatie_slug: venueSlug, bezoeker_naam: f.naam.value.trim(), bezoeker_email: f.email.value.trim(), event_datum: f.datum.value || null, aantal_personen: f.aantal.value ? Number(f.aantal.value) : null, bericht: f.bericht.value.trim(), onderwerp: `Aanvraag via Top Locaties — ${venueName}`, bron: source || 'top-locaties', website: f.website?.value || '', t: Date.now() - opened };
     const btn = dlg.querySelector('[data-contact-submit]');
     if (endpoint) {
       btn.disabled = true; btn.textContent = 'VERSTUREN…';
-      try {
-        const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (!res.ok) throw new Error(String(res.status));
+      let res = null;
+      try { res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); } catch {}
+      btn.disabled = false; btn.textContent = 'VERSTUUR BERICHT ↗';
+      if (res?.ok) {
         form.hidden = true;
         done.innerHTML = `<h3 class="tl-display tl-display--sm">BERICHT<br><span class="tl-accent">VERSTUURD ✓</span></h3><p class="tl-body">${esc(venueName)} heeft je vraag ontvangen en neemt contact met je op via ${esc(payload.bezoeker_email)}.</p>`;
         done.hidden = false; done.focus();
-      } catch {
-        err.textContent = 'Versturen lukte niet. Probeer het opnieuw, of gebruik het contactformulier op het Greenbookings-profiel.';
-        err.hidden = false; btn.disabled = false; btn.textContent = 'VERSTUUR BERICHT ↗';
+        return;
       }
-      return;
+      if (res?.status === 422) { err.textContent = 'Controleer je naam, e-mailadres en bericht (minstens 10 tekens).'; err.hidden = false; return; }
+      if (res?.status === 429) { err.textContent = 'Je hebt net al een paar berichten verstuurd. Probeer het over een paar minuten opnieuw.'; err.hidden = false; return; }
+      // Niet geconfigureerd, locatie onbekend of storing: eerlijk terugvallen op het Greenbookings-profiel.
     }
     // Zonder bevestigde endpoint: eerlijk doorsturen naar het profiel, met het bericht op het klembord.
     const text = `${payload.bericht}\n\n${payload.bezoeker_naam} — ${payload.bezoeker_email}${payload.event_datum ? `\nDatum: ${payload.event_datum}` : ''}${payload.aantal_personen ? `\nAantal personen: ${payload.aantal_personen}` : ''}`;

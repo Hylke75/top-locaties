@@ -4,7 +4,7 @@ import { SITE } from '../lib/data.mjs';
 /**
  * @param {{title:string, description:string, path:string, body:any, scripts?:string[], data?:any, preload?:string, noindex?:boolean}} o
  */
-export function layout({ title, description, path, body, scripts = [], styles = [], data = null, preload = null, noindex = false }) {
+export function layout({ title, description, path, body, scripts = [], styles = [], data = null, preload = null, noindex = false, jsonld = null, crumbs = null }) {
   const canonical = SITE.origin + path;
   return `<!doctype html>
 ${html`<html lang="nl">
@@ -29,6 +29,12 @@ ${noindex ? raw('<meta name="robots" content="noindex">') : ''}
 ${preload ? html`<link rel="preload" as="image" href="${preload}">` : ''}
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/components.css">
+${(() => {
+  // Gestructureerde data (schema.org): broodkruimel + paginaspecifiek. Alleen feiten uit bron of redactie.
+  const graph = [...(Array.isArray(jsonld) ? jsonld : jsonld ? [jsonld] : [])];
+  if (crumbs?.length) graph.push({ '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: SITE.origin + c.path })) });
+  return graph.length ? raw(`<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`) : '';
+})()}
 ${styles.map((st) => html`<link rel="stylesheet" href="/assets/css/${st}">`)}
 </head>
 <body class="tl-app" id="top">
@@ -36,6 +42,8 @@ ${styles.map((st) => html`<link rel="stylesheet" href="/assets/css/${st}">`)}
 ${body}
 ${data ? html`<script type="application/json" id="tl-data">${raw(JSON.stringify(data).replace(/</g, '\\u003c'))}</script>` : ''}
 <script type="module" src="/assets/js/nav.js"></script>
+<script>/* Vercel Web Analytics: cookieloos, geen persoonsgegevens; alleen op het productiedomein. */
+if (/(^|\.)top-locaties\.nl$/.test(location.hostname) && !navigator.doNotTrack?.startsWith('1')) { window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); }; const s = document.createElement('script'); s.defer = true; s.src = '/_vercel/insights/script.js'; document.head.append(s); }</script>
 ${scripts.map((s) => html`<script type="module" src="/assets/js/${s}"></script>`)}
 </body>
 </html>`}`;

@@ -8,7 +8,7 @@ import { loadData } from '../src/lib/data.mjs';
 import { validate } from './validate-content.mjs';
 import { renderHome } from '../src/pages/home.mjs';
 import { renderBriefing, renderPlanDocument } from '../src/pages/conceptplan.mjs';
-import { renderAccount, renderMaker, renderPresentation } from '../src/pages/account.mjs';
+import { renderAccount, renderMaker, renderPresentation, renderSearch } from '../src/pages/account.mjs';
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
 import { renderLegacy, renderNotFound } from '../src/pages/legacy.mjs';
@@ -64,6 +64,15 @@ write('data/partners.json', JSON.stringify({
   suppliers: Object.fromEntries(data.suppliers.map((s) => [s.id, { name: s.name, role: s.label || s.category || '', url: s.profileUrl, page: `/leveranciers/${s.slug}/` }])),
 }));
 write('account/index.html', renderAccount(data));
+// Zoekindex (alleen gepubliceerde concepten en aangesloten partners).
+write('data/search.json', JSON.stringify([
+  ...data.concepts.map((c) => ({ t: 'concept', title: c.title, url: `/eventconcepten/${c.slug}/`, sub: `${c.categoryLabel} / ${c.dayPartLabel}`, min: c.guestCountMin, max: c.guestCountMax,
+    text: [c.teaser, c.format, c.categoryLabel, c.dayPartLabel, c.duration, ...(c.tags || []), ...(c.audiences || []), ...c.feelings.map((f) => data.feelingLabels[f]), ...(c.occasions || []), c.category, c.dayPart].join(' ') })),
+  ...data.venues.map((v) => ({ t: 'locatie', title: v.name, url: `/locaties/${v.slug}/`, sub: `${v.city}${v.capacityMax ? ` / tot ${v.capacityMax} gasten` : ''}`, place: `${v.city} ${v.province || ''}`, min: v.capacityMin || null, max: v.capacityMax || null,
+    text: [v.label, v.type, v.sfeer, v.line, v.tagline, ...(v.sfeerTags || []), ...(v.bijeenkomstTypes || []), ...(v.eventTypes || []), ...(v.character || []), ...(v.concepts || []).map((c) => c.title || c)].join(' ') })),
+  ...data.suppliers.map((s) => ({ t: 'maker', title: s.name, url: `/leveranciers/${s.slug}/`, sub: s.label || s.category, place: s.city || '', text: [s.label, s.category, s.tagline].join(' ') })),
+]));
+write('zoeken/index.html', renderSearch(data));
 write('maker/index.html', renderMaker(data));
 write('presentatie/index.html', renderPresentation(data));
 data.concepts.forEach((c) => write(`eventconcepten/${c.slug}/conceptplan/index.html`, renderPlanDocument(data, c)));
@@ -90,7 +99,7 @@ write('styleguide/index.html', guide);
 copy('design-system/STYLE-GUIDE.md', 'styleguide/STYLE-GUIDE.md');
 
 // Sitemap: uitsluitend gepubliceerde concepten en AANGESLOTEN partnerlocaties (data.venues is al partner-only).
-const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/',
+const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/', '/zoeken/',
   ...data.concepts.map((c) => `/eventconcepten/${c.slug}/`),
   ...data.venues.map((v) => `/locaties/${v.slug}/`),
   ...data.suppliers.map((s) => `/leveranciers/${s.slug}/`)];

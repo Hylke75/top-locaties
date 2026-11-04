@@ -131,5 +131,10 @@ ${footer({ links: [{ href: '#gevoel', label: 'KIES OP GEVOEL ↗' }, { href: '/e
     body,
     scripts: ['compass.js', 'home.js'],
     data: compassData(data),
+    jsonld: [
+      { '@type': 'WebSite', '@id': `${SITE.origin}/#website`, name: 'Top Locaties', url: `${SITE.origin}/`, inLanguage: 'nl-NL', publisher: { '@id': `${SITE.origin}/#org` },
+        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: `${SITE.origin}/zoeken/?q={search_term_string}` }, 'query-input': 'required name=search_term_string' } },
+      { '@type': 'Organization', '@id': `${SITE.origin}/#org`, name: 'Top Locaties', url: `${SITE.origin}/`, logo: `${SITE.origin}/assets/img/favicon.svg`, parentOrganization: { '@type': 'Organization', name: 'Greenbookings', url: SITE.greenbookings } },
+    ],
   });
 }
