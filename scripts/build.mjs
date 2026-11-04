@@ -39,8 +39,12 @@ const data = loadData();
 copy('design-system/tokens.css', 'assets/css/tokens.css');
 copy('design-system/components.css', 'assets/css/components.css');
 copy('design-system/deck-print.css', 'assets/css/deck-print.css');
+copy('design-system/fonts.css', 'assets/css/fonts.css');
+copy('src/assets/fonts', 'assets/fonts');
+copy('src/assets/og', 'assets/og');
 copy('src/client', 'assets/js');
 for (const img of ['hero-event.webp', 'festival-event.webp']) copy(`dist/${img}`, `assets/img/${img}`);
+for (const img of ['hero-event-800.webp', 'festival-event-640.webp']) copy(`src/assets/img/${img}`, `assets/img/${img}`);
 copy('src/assets/favicon.svg', 'assets/img/favicon.svg');
 
 write('index.html', renderHome(data));
@@ -117,7 +121,9 @@ const TEXT_GLYPHS = /([↖↗↘↙↔↕✳▶])(?!︎)/g;
     if (e.isDirectory()) { if (f !== path.join(out, 'prototype')) textGlyphs(f); continue; }
     if (!/\.(html|js|css)$/.test(e.name)) continue;
     const src = fs.readFileSync(f, 'utf8');
-    const next = src.replace(TEXT_GLYPHS, '$1︎');
+    let next = src.replace(TEXT_GLYPHS, '$1︎');
+    // Kleinere varianten van de twee sfeerbeelden voor mobiel (srcset), alleen in HTML.
+    if (e.name.endsWith('.html')) next = next.replace(/<img((?:(?!srcset)[^>])*?) src="\/assets\/img\/(hero-event|festival-event)\.webp"/g, (m, attrs, n) => { const w = n === 'hero-event' ? [800, 1672] : [640, 1122]; return `<img${attrs} src="/assets/img/${n}.webp" srcset="/assets/img/${n}-${w[0]}.webp ${w[0]}w, /assets/img/${n}.webp ${w[1]}w" sizes="(max-width: 800px) 100vw, 50vw"`; });
     if (next !== src) fs.writeFileSync(f, next);
   }
 })(out);

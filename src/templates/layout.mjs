@@ -6,7 +6,7 @@ const ACC = JSON.parse(readFileSync(new URL('../content/site.json', import.meta.
 /**
  * @param {{title:string, description:string, path:string, body:any, scripts?:string[], data?:any, preload?:string, noindex?:boolean}} o
  */
-export function layout({ title, description, path, body, scripts = [], styles = [], data = null, preload = null, noindex = false, jsonld = null, crumbs = null }) {
+export function layout({ title, description, path, body, scripts = [], styles = [], data = null, preload = null, noindex = false, jsonld = null, crumbs = null, ogImage = null }) {
   const canonical = SITE.origin + path;
   return `<!doctype html>
 ${html`<html lang="nl">
@@ -23,11 +23,15 @@ ${noindex ? raw('<meta name="robots" content="noindex">') : ''}
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${description}">
 <meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${/^https?:/.test(ogImage || '') ? ogImage : SITE.origin + (ogImage || '/assets/og/default.jpg')}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#292a2c">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/archivo-black-latin-45f5d4.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/dm-sans-latin-002a94.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts.css">
 ${preload ? html`<link rel="preload" as="image" href="${preload}">` : ''}
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/components.css">

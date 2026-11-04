@@ -122,6 +122,7 @@ export function validate() {
     // Concepten in draft blokkeren de build niet (ze worden niet gepubliceerd): fouten worden aandachtspunten.
     if (c.status === 'draft') warnings.push(...errors.splice(outer).map((e) => `[draft] ${e}`));
   }
+  for (const c of concepts.filter((x) => x.status === 'published')) if (!fs.existsSync(new URL(`../src/assets/og/${c.slug}.jpg`, import.meta.url))) warnings.push(`concept ${c.slug}: geen og-afbeelding — draai node scripts/og-images.mjs.`);
   if (unscored.length) warnings.push(`kwaliteitstoets (100 punten) nog niet ingevuld voor ${unscored.length} gepubliceerde concepten (${unscored.join(", ")}) — hoofdredacteur, beheer → concept → 19.`);
   return { errors, warnings };
 }

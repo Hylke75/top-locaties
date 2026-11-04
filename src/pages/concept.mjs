@@ -155,6 +155,7 @@ ${footer({
     preload: concept.hero.src,
     body,
     scripts: ['concept.js', 'concept-tools.js'],
+    ogImage: `/assets/og/${concept.slug}.jpg`,
     crumbs: [{ name: 'Home', path: '/' }, { name: 'Eventconcepten', path: '/eventconcepten/' }, { name: concept.title, path: `/eventconcepten/${concept.slug}/` }],
     jsonld: {
       // Een concept is geen gepland evenement (geen Event-schema): het is een uitgewerkte aanpak.

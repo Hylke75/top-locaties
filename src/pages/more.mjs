@@ -153,7 +153,7 @@ ${nearby.length ? html`<section class="tl-section" aria-labelledby="nearTitle">
 ${contactDialog(v, data.site)}
 ${footer({ left: 'EEN BIJZONDERE PLEK IS PAS HET BEGIN.', right: 'TOP LOCATIES / 2026', links: [{ href: '/locaties/', label: 'ALLE LOCATIES ↗' }, { href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/mijn-plan/', label: 'MIJN PLAN ↗' }] })}`;
   const desc = `${v.name} in ${v.city}: ${v.line} Ontdek bij welke eventconcepten deze aangesloten Greenbookings-locatie past.`.slice(0, 300);
-  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, scripts: ['contact.js'], preload: v.image.kind === 'source' ? v.image.src : null,
+  return layout({ title: `${v.name} (${v.city}) — eventlocatie | Top Locaties`, description: desc, path: `/locaties/${v.slug}/`, body, scripts: ['contact.js'], preload: v.image.kind === 'source' ? v.image.src : null, ogImage: v.image.kind === 'source' && /\.(jpe?g|png)(\?|$)/i.test(v.image.src) ? v.image.src : null,
     crumbs: [{ name: 'Home', path: '/' }, { name: 'Locaties', path: '/locaties/' }, { name: v.name, path: `/locaties/${v.slug}/` }],
     jsonld: {
       '@type': 'EventVenue', name: v.name, description: v.line, url: `${SITE.origin}/locaties/${v.slug}/`, sameAs: v.profileUrl,
