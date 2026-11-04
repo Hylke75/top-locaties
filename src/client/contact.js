@@ -42,7 +42,7 @@ if (dlg) {
       if (res?.ok) {
         import('./lib/track.js').then((m) => m.track('contact', venueSlug)).catch(() => {});
         form.hidden = true;
-        done.innerHTML = `<h3 class="tl-display tl-display--sm">BERICHT<br><span class="tl-accent">VERSTUURD ✓</span></h3><p class="tl-body">${esc(venueName)} heeft je vraag ontvangen en neemt contact met je op via ${esc(payload.bezoeker_email)}.</p>`;
+        done.innerHTML = `<h3 class="tl-display tl-display--sm">BERICHT <br><span class="tl-accent">VERSTUURD ✓</span></h3><p class="tl-body">${esc(venueName)} heeft je vraag ontvangen en neemt contact met je op via ${esc(payload.bezoeker_email)}.</p>`;
         done.hidden = false; done.focus();
         return;
       }
@@ -55,7 +55,7 @@ if (dlg) {
     let copied = false;
     try { await navigator.clipboard.writeText(text); copied = true; } catch {}
     form.hidden = true;
-    done.innerHTML = `<h3 class="tl-display tl-display--sm">NOG ÉÉN<br><span class="tl-accent">STAP.</span></h3><p class="tl-body">${copied ? 'Je bericht staat op je klembord.' : 'Kopieer je bericht hieronder.'} Rond je aanvraag af in het contactformulier op het Greenbookings-profiel van ${esc(venueName)}: plak je bericht en verstuur.</p>${copied ? '' : `<textarea class="tl-composer__fallback tl-contact__copy" readonly>${esc(text)}</textarea>`}<p><a class="tl-button tl-button--accent" href="${esc(profile)}" target="_blank" rel="noopener noreferrer">OPEN HET CONTACTFORMULIER ↗</a></p><button class="tl-text-button" type="button" data-contact-back>← BERICHT AANPASSEN</button>`;
+    done.innerHTML = `<h3 class="tl-display tl-display--sm">NOG ÉÉN <br><span class="tl-accent">STAP.</span></h3><p class="tl-body">${copied ? 'Je bericht staat op je klembord.' : 'Kopieer je bericht hieronder.'} Rond je aanvraag af in het contactformulier op het Greenbookings-profiel van ${esc(venueName)}: plak je bericht en verstuur.</p>${copied ? '' : `<textarea class="tl-composer__fallback tl-contact__copy" readonly>${esc(text)}</textarea>`}<p><a class="tl-button tl-button--accent" href="${esc(profile)}" target="_blank" rel="noopener noreferrer">OPEN HET CONTACTFORMULIER ↗</a></p><button class="tl-text-button" type="button" data-contact-back>← BERICHT AANPASSEN</button>`;
     done.hidden = false; done.focus();
   });
   done.addEventListener('click', (e) => { if (e.target.closest('[data-contact-back]')) { done.hidden = true; form.hidden = false; } });

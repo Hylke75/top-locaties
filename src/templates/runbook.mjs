@@ -2,6 +2,7 @@
 // De bezoeker maakt dit met de vragenlijst op maat (src/client/lib/tailor.js).
 import { html, pad, raw } from '../lib/html.mjs';
 import { overline } from './components.mjs';
+import { neutral } from '../lib/placeholders.mjs';
 
 const list = (items) => html`<ul class="tl-list">${items.map((x) => html`<li>${x}</li>`)}</ul>`;
 
@@ -108,15 +109,15 @@ export const communicationSection = (c, n) => html`
   <div class="tl-columns">
     <p class="tl-intro-label">Vul de vragenlijst onderaan in en de tekst wordt automatisch aangevuld met jouw datum en locatie.</p>
     <div>
-      <h2 class="tl-display tl-display--md" id="invTitle">${c.invitation?.subject || ''}</h2>
-      <p class="tl-body tl-body--gap">${c.invitation?.text || ''}</p>
-      <p class="tl-note"><strong>HERINNERING:</strong> ${c.invitation?.reminder || ''}</p>
+      <h2 class="tl-display tl-display--md" id="invTitle">${neutral(c.invitation?.subject)}</h2>
+      <p class="tl-body tl-body--gap">${neutral(c.invitation?.text)}</p>
+      <p class="tl-note"><strong>HERINNERING:</strong> ${neutral(c.invitation?.reminder)}</p>
     </div>
   </div>
   <h3 class="tl-mono tl-subhead tl-body--gap">COMMUNICATIEPLAN</h3>
   <div class="tl-runbook tl-runbook--four" role="table" aria-label="Communicatieplan">
     <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">WANNEER</span><span role="columnheader">KANAAL</span><span role="columnheader">BOODSCHAP</span><span role="columnheader"></span></div>
-    ${(c.communication || []).map((x) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${x.when}</span><span class="tl-runbook__duration" role="cell">${x.channel}</span><span role="cell"><span class="tl-runbook__desc">${x.message}</span></span><span role="cell"></span></div>`)}
+    ${(c.communication || []).map((x) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${x.when}</span><span class="tl-runbook__duration" role="cell">${x.channel}</span><span role="cell"><span class="tl-runbook__desc">${neutral(x.message)}</span></span><span role="cell"></span></div>`)}
   </div>
 </section>`;
 

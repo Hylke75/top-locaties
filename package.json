@@ -2,7 +2,7 @@
   "name": "top-locaties",
   "private": true,
   "version": "0.2.0",
-  "description": "Top Locaties \u2014 redactioneel inspiratieplatform voor eventconcepten, locaties en leveranciers (Greenbookings-netwerk).",
+  "description": "Top Locaties — redactioneel inspiratieplatform voor eventconcepten, locaties en leveranciers (Greenbookings-netwerk).",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -20,6 +20,7 @@
     "sync:dry": "node scripts/sync/greenbookings.mjs --dry-run",
     "test": "node --test tests/*.test.mjs",
     "qa": "node scripts/build.mjs && node --test tests/*.test.mjs && node scripts/flows.mjs && node scripts/account-e2e.mjs && node design-system/check-design.mjs src scripts admin",
-    "account-e2e": "node scripts/account-e2e.mjs"
+    "account-e2e": "node scripts/account-e2e.mjs",
+    "check:sitemap": "node scripts/sitemap-check.mjs"
   }
 }

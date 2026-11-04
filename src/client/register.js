@@ -12,7 +12,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 (async () => {
   try {
     const info = await A.registrationInfo(t);
-    $('[data-reg-title]').innerHTML = `${esc(info.title).toUpperCase()}<br><span class="tl-accent">MELD JE AAN.</span>`;
+    $('[data-reg-title]').innerHTML = `${esc(info.title).toUpperCase()} <br><span class="tl-accent">MELD JE AAN.</span>`;
     meta.textContent = [info.organisatie, info.datum && new Date(`${info.datum}T12:00:00`).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })].filter(Boolean).join(' / ').toUpperCase();
     if (!info.open) { meta.textContent += ' — AANMELDEN IS GESLOTEN'; return; }
     if (info.full_) { meta.textContent += ' — DIT EVENT IS VOL'; return; }
@@ -33,7 +33,7 @@ form.addEventListener('submit', async (e) => {
     track('register', '');
     form.hidden = true;
     const done = $('[data-reg-done]');
-    done.innerHTML = `<h2 class="tl-display tl-display--md">JE BENT<br><span class="tl-accent">AANGEMELD ✓</span></h2><p class="tl-body">Bedankt, ${esc(v.name)}. De organisator heeft je aanmelding ontvangen. Wil je iets wijzigen? Vul het formulier opnieuw in met hetzelfde e-mailadres.</p>`;
+    done.innerHTML = `<h2 class="tl-display tl-display--md">JE BENT <br><span class="tl-accent">AANGEMELD ✓</span></h2><p class="tl-body">Bedankt, ${esc(v.name)}. De organisator heeft je aanmelding ontvangen. Wil je iets wijzigen? Vul het formulier opnieuw in met hetzelfde e-mailadres.</p>`;
     done.hidden = false; done.focus();
   } catch (err) { status.textContent = A.message(err); }
 });

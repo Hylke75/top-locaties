@@ -117,6 +117,7 @@ write('robots.txt', 'User-agent: *\nDisallow: /prototype/\nDisallow: /styleguide
 
 // Pijlen en sterretjes altijd als tekstteken, nooit als emoji (iOS valt anders terug op het emojifont).
 // U+FE0E = tekstpresentatie. Het prototype in /prototype/ blijft ongemoeid.
+const htmlProblems = [];
 const TEXT_GLYPHS = /([↖↗↘↙↔↕✳▶])(?!︎)/g;
 (function textGlyphs(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -127,9 +128,16 @@ const TEXT_GLYPHS = /([↖↗↘↙↔↕✳▶])(?!︎)/g;
     let next = src.replace(TEXT_GLYPHS, '$1︎');
     // Kleinere varianten van de twee sfeerbeelden voor mobiel (srcset), alleen in HTML.
     if (e.name.endsWith('.html')) next = next.replace(/<img((?:(?!srcset)[^>])*?) src="\/assets\/img\/(hero-event|festival-event)\.webp"/g, (m, attrs, n) => { const w = n === 'hero-event' ? [800, 1672] : [640, 1122]; return `<img${attrs} src="/assets/img/${n}.webp" srcset="/assets/img/${n}-${w[0]}.webp ${w[0]}w, /assets/img/${n}.webp ${w[1]}w" sizes="(max-width: 800px) 100vw, 50vw"`; });
+    if (e.name.endsWith('.html')) {
+      // Spatie vóór elke regelafbreking: koppen als "NEEM<br>CONTACT OP" lezen anders als "NEEMCONTACT OP" (schermlezers, zoekmachines, kopiëren).
+      next = next.replace(/(\S)<br>/g, '$1 <br>');
+      // Lege koppen zijn nooit toegestaan (toegankelijkheid en SEO).
+      if (/<h[1-6][^>]*>\s*<\/h[1-6]>/.test(next)) htmlProblems.push(`Lege kop in ${path.relative(out, f)}`);
+    }
     if (next !== src) fs.writeFileSync(f, next);
   }
 })(out);
+if (htmlProblems.length) { console.error(htmlProblems.join("\n")); process.exit(1); }
 
 fs.writeFileSync(path.join(out, 'build-info.json'), JSON.stringify({ builtAt: new Date().toISOString(), pages: urls.length, partnerVenues: data.venues.length, suppliers: data.suppliers.length, concepts: data.concepts.length, syncedAt: data.snapshotMeta.syncedAt }, null, 2));
 console.log(`TOP LOCATIES BUILD / ${urls.length} pagina's → site/ (bronstand Greenbookings ${data.syncedDate})`);

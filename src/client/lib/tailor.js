@@ -159,7 +159,7 @@ export function toText(concept, t, labels = {}) {
   const L = [];
   const a = t.answers;
   L.push('TOP LOCATIES — DRAAIBOEK OP MAAT', concept.title.toUpperCase(), concept.proposition, '');
-  L.push(`Organisatie: ${a.organisatie || '—'}`, `Datum: ${a.datum ? formatDate(new Date(`${a.datum}T12:00:00`)) : 'nog te bepalen'}`, `Tijden: ${a.start || '—'}${a.eind ? ` – ${a.eind}` : ''}`, `Gasten: ${t.guests || 'nog te bepalen'}`, `Doel: ${a.doel || concept.objective}`, `Doelgroep: ${a.doelgroep || (concept.audiences || []).join(', ')}`, `Contactpersoon: ${a.contact || '—'}`, `Gewenst gevoel: ${(a.feelings?.length ? a.feelings : concept.feelings).map((f) => labels[f] || f).join(', ')}`);
+  L.push(`Organisatie: ${a.organisatie || '—'}`, `Datum: ${a.datum ? formatDate(new Date(`${a.datum}T12:00:00`)) : '[datum]'}`, `Tijden: ${a.start || '—'}${a.eind ? ` – ${a.eind}` : ''}`, `Gasten: ${t.guests || '[datum]'}`, `Doel: ${a.doel || concept.objective}`, `Doelgroep: ${a.doelgroep || (concept.audiences || []).join(', ')}`, `Contactpersoon: ${a.contact || '—'}`, `Gewenst gevoel: ${(a.feelings?.length ? a.feelings : concept.feelings).map((f) => labels[f] || f).join(', ')}`);
   if (a.budget) L.push(`Eigen budgetindicatie: ${a.budget} (indicatie van de organisator; geen prijsopgave)`);
   L.push('', `LOCATIE: ${t.venue ? `${t.venue.name}, ${t.venue.city} — ${t.venue.url}` : 'nog te kiezen'}`, t.fit.text);
   if (t.suppliers.length) { L.push('', 'MAKERS:'); t.suppliers.forEach((s) => L.push(`- ${s.name} (${s.role}) — ${s.url}`)); }
@@ -208,7 +208,7 @@ export function toText(concept, t, labels = {}) {
 /* ---------- Zelf regelen: callsheet, offerteaanvragen, begroting ---------- */
 
 const quoteKind = (role) => (/catering|bediening|gastvrijheid/i.test(role) ? 'catering' : /av|techniek|licht|geluid|livestream/i.test(role) ? 'techniek' : 'overig');
-const dateText = (a) => (a.datum ? new Date(`${a.datum}T12:00:00`).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '[datum nog te bepalen]');
+const dateText = (a) => (a.datum ? new Date(`${a.datum}T12:00:00`).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '[datum]');
 
 /** Callsheet: wie is wie op de dag zelf. Telefoonnummers vult de organisator zelf in. */
 export function callsheet(concept, t) {

@@ -13,7 +13,7 @@ const status = document.querySelector('[data-deck-status]');
 const params = new URLSearchParams(location.search);
 let C = null; let P = null;
 
-const lines = (arr) => (arr || []).map((l) => esc(l).replace(/\*(.+?)\*/g, '<span class="tl-accent">$1</span>')).join('<br>');
+const lines = (arr) => (arr || []).map((l) => esc(l).replace(/\*(.+?)\*/g, '<span class="tl-accent">$1</span>')).join(' <br>');
 const chunk = (xs, n) => { const out = []; for (let i = 0; i < (xs || []).length; i += n) out.push(xs.slice(i, i + n)); return out.length ? out : [[]]; };
 const list = (xs) => `<ul class="tl-slide__list">${(xs || []).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
 
@@ -66,7 +66,7 @@ function slides(c) {
 
   if ((c.kpis || []).length) add('text', '12', 'WAT HET OPLEVERT', `<table class="tl-slide__table"><thead><tr><th>DOEL</th><th>KPI</th><th>WANNEER</th><th>METEN</th></tr></thead><tbody>${c.kpis.map((k) => `<tr><td><strong>${esc(k.goal)}</strong></td><td>${esc(k.kpi)}</td><td>${esc(k.when)}</td><td>${esc(k.how)}</td></tr>`).join('')}</tbody></table>`);
 
-  add('end', '', '', `<span class="tl-slide__kicker">VOLGENDE STAP</span><h2 class="tl-slide__display">LATEN WE HET<br><span class="tl-accent">WAARMAKEN.</span></h2>
+  add('end', '', '', `<span class="tl-slide__kicker">VOLGENDE STAP</span><h2 class="tl-slide__display">LATEN WE HET <br><span class="tl-accent">WAARMAKEN.</span></h2>
     <ol class="tl-slide__steps"><li>Datum en aantallen bevestigen</li><li>Offertes bij locatie en makers</li><li>Draaiboek en callsheet delen</li></ol>`);
   return S;
 }
@@ -121,6 +121,12 @@ function fail(msg, loginNeeded) {
       const base = await baseConcept(row.base_slug);
       C = merge(base, row.data);
       back.href = `/maker/?id=${encodeURIComponent(id)}`; back.textContent = '← TERUG NAAR DE MAKER';
+    } else if (!params.get('basis')) {
+      // Rechtstreeks geopend: leg uit hoe je bij een presentatie komt, in plaats van eeuwig te laden.
+      deck.innerHTML = `<section class="tl-section"><div class="tl-state tl-state--empty"><h1 class="tl-state__title">KIES EERST <br><span class="tl-accent">EEN CONCEPT.</span></h1><p>Een presentatie maak je vanuit een concept of vanuit je eigen plan. Open een concept en kies daar ‘Neem je plan mee’ → Presentatie, of ga naar Mijn plan.</p><span class="tl-chip-set"><a class="tl-button tl-button--accent" href="/mijn-plan/">NAAR MIJN PLAN ↗</a><a class="tl-button tl-button--outline" href="/eventconcepten/">ALLE CONCEPTEN ↗</a></span></div></section>`;
+      status.textContent = '';
+      document.querySelectorAll('[data-deck-pdf],[data-export]').forEach((b) => { b.disabled = true; });
+      return;
     } else {
       const base = await baseConcept(params.get('basis'));
       C = merge(base, { venueIds: base.venueMatches.map((m) => m.venueId), supplierIds: base.supplierMatches.map((m) => m.supplierId) });

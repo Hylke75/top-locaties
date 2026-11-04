@@ -78,10 +78,10 @@ export function matchCard(entry, i, labels, selected = []) {
 /* ---------- Beeld ---------- */
 
 export function venueImage(v, { cls = 'tl-venue__photo', lazy = true } = {}) {
-  if (v.image.kind === 'none') {
-    return html`<div class="${cls}"><div class="tl-placeholder" role="img" aria-label="Nog geen foto van ${v.name} beschikbaar"><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__text">${v.image.label}<br>${v.city}</span></div></div>`;
-  }
-  return html`<div class="${cls}"><img src="${v.image.src}" alt="${v.image.alt}"${lazy ? raw(' loading="lazy"') : ''} decoding="async" width="900" height="675"><span class="tl-image-caption">${v.image.label}</span></div>`;
+  // Terugval staat altijd onder de foto: tijdens het laden of als de foto ontbreekt zie je de plaats, nooit een leeg vlak.
+  const fallback = html`<div class="tl-placeholder"${v.image.kind === 'none' ? raw(` role="img" aria-label="Nog geen foto van ${v.name.replace(/"/g, '&quot;')} beschikbaar"`) : raw(' aria-hidden="true"')}><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__place">${v.city}</span><span class="tl-placeholder__text">${v.image.kind === 'none' ? 'Nog geen foto in het Greenbookings-profiel' : v.name}</span></div>`;
+  if (v.image.kind === 'none') return html`<div class="${cls}">${fallback}</div>`;
+  return html`<div class="${cls}">${fallback}<img src="${v.image.src}" alt="${v.image.alt}"${lazy ? raw(' loading="lazy"') : ''} decoding="async" width="900" height="675" onerror="this.nextElementSibling?.remove();this.remove()"><span class="tl-image-caption">${v.image.label}</span></div>`;
 }
 
 /* ---------- Locaties en leveranciers ---------- */
@@ -122,7 +122,7 @@ export function catalogCard(v, i, data) {
   <div class="tl-catalog-card__image">
     ${v.image.kind === 'none'
       ? html`<div class="tl-placeholder" role="img" aria-label="Nog geen foto van ${v.name} beschikbaar"><span class="tl-placeholder__mark" aria-hidden="true">✳</span><span class="tl-placeholder__text">${v.image.label}</span></div>`
-      : html`<img src="${v.image.src}" alt="${v.image.alt}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" width="900" height="600"><span class="tl-catalog-card__badge">${v.image.kind === 'source' ? 'BEELD: GREENBOOKINGS' : 'SFEERBEELD'} • ${v.label}</span>`}
+      : html`<div class="tl-placeholder" aria-hidden="true"><span class="tl-placeholder__mark">✳</span><span class="tl-placeholder__place">${v.city}</span></div><img src="${v.image.src}" alt="${v.image.alt}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" width="900" height="600" onerror="this.nextElementSibling?.remove();this.remove()"><span class="tl-catalog-card__badge">${v.image.kind === 'source' ? 'BEELD: GREENBOOKINGS' : 'SFEERBEELD'} • ${v.label}</span>`}
     <button class="tl-catalog-card__save" type="button" data-save="${v.id}" aria-pressed="false" aria-label="Bewaar ${v.name}">+</button>
   </div>
   <div class="tl-catalog-card__kicker"><span><span data-index>${pad(i + 1)}</span> / ${v.province}</span><span>${v.city}</span></div>

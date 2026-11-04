@@ -152,6 +152,8 @@ const tForm = document.querySelector('[data-tailor-form]');
 const tOut = document.querySelector('[data-tailor-output]');
 const tStatus = document.querySelector('[data-tailor-status]');
 const escT = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+// In het plan op maat zijn overgebleven invulplekken zichtbaar als duidelijk invulveld.
+const fillT = (s) => escT(s).replace(/\[([^\]]{1,40})\]/g, (_, w) => `<span class="tl-fill" title="Zelf invullen">${w}</span>`);
 
 function readAnswers() {
   const f = new FormData(tForm);
@@ -183,7 +185,7 @@ function renderTailored() {
   const check = (id, text) => `<label class="tl-check tl-check--on-dark"><input type="checkbox" data-check="${escT(id)}" ${done.has(id) ? 'checked' : ''}> ${escT(text)}</label>`;
   tOut.innerHTML = `
   <div class="tl-overline"><span>JOUW DRAAIBOEK OP MAAT</span><span>${escT(a.organisatie || 'TOP LOCATIES')} / ${a.datum ? escT(formatDate(new Date(`${a.datum}T12:00:00`)).toUpperCase()) : 'DATUM NOG OPEN'}</span></div>
-  <h3 class="tl-display tl-display--md">${escT(concept.title)}<br><span class="tl-accent">VOOR ${t.guests ? `${t.guests} GASTEN` : 'JOUW GROEP'}.</span></h3>
+  <h3 class="tl-display tl-display--md">${escT(concept.title)} <br><span class="tl-accent">VOOR ${t.guests ? `${t.guests} GASTEN` : 'JOUW GROEP'}.</span></h3>
   <dl class="tl-facts tl-facts--on-dark">
     <div><dt>DOEL</dt><dd>${escT(a.doel || concept.objective)}</dd></div>
     <div><dt>LOCATIE</dt><dd>${escT(t.fit.text)}</dd></div>
@@ -206,14 +208,14 @@ function renderTailored() {
   <h4 class="tl-mono tl-subhead tl-body--gap">CHECKLIST</h4>
   <div class="tl-checklist tl-checklist--on-dark">${(concept.checklist || []).map((g, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(g.group)}</strong>${g.items.map((x, j) => check(`c${i}-${j}`, x)).join('')}</div>`).join('')}${t.extraChecks.length ? `<div class="tl-checklist__group"><strong class="tl-checklist__title">Op maat</strong>${t.extraChecks.map((x, j) => check(`x${j}`, x)).join('')}</div>` : ''}</div>
   <h4 class="tl-mono tl-subhead tl-body--gap">JOUW UITNODIGING</h4>
-  <div class="tl-invite"><strong>${escT(t.invitation.subject)}</strong><p>${escT(t.invitation.text)}</p><p class="tl-note tl-on-dark-note">Herinnering: ${escT(t.invitation.reminder)}</p></div>
+  <div class="tl-invite"><strong>${fillT(t.invitation.subject)}</strong><p>${fillT(t.invitation.text)}</p><p class="tl-note tl-on-dark-note">Herinnering: ${fillT(t.invitation.reminder)}</p><p class="tl-note tl-on-dark-note"><span class="tl-fill">gemarkeerd</span> = zelf invullen.</p></div>
   <h4 class="tl-mono tl-subhead tl-body--gap">OFFERTEAANVRAGEN — KLAAR OM TE VERSTUREN</h4>
   ${(() => { const qs = quoteRequests(concept, t, data.quoteQuestions); const venueQ = qs.find((q) => q.kind === 'locatie'); return qs.length ? `${venueQ ? `<form class="tl-quote-send" data-quote-send><strong class="tl-mono">VERSTUUR DE AANVRAAG DIRECT AAN ${escT(venueQ.to.toUpperCase())}</strong>
     <div class="tl-questionnaire__grid tl-questionnaire__grid--two"><label class="tl-field"><span>JOUW NAAM</span><input name="qname" autocomplete="name" value="${escT(a.contact || '')}" required></label><label class="tl-field"><span>JOUW E-MAILADRES</span><input name="qemail" type="email" autocomplete="email" required></label></div>
     <label class="tl-check tl-check--on-dark"><input type="checkbox" name="qconsent"> Mijn naam, e-mailadres en de aanvraag worden via Greenbookings gedeeld met ${escT(venueQ.to)}.</label>
     <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-quote-status>${plan.quotes?.[plan.venueId] ? `AL VERSTUURD OP ${escT(new Date(plan.quotes[plan.venueId]).toLocaleDateString('nl-NL'))}` : 'Makers hebben nog geen directe route: kopieer hun aanvraag hieronder.'}</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR AANVRAAG ↗</button></div></form>` : ''}<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
   <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
-  <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${escT([r.name, r.party].filter(Boolean).join(' · ') || 'Naam en telefoonnummer invullen')}</dd></div>`).join('')}</dl>
+  <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${r.name ? escT(r.name) : '<span class="tl-fill" title="Zelf invullen">naam</span>'}${r.party ? ` · ${escT(r.party)}` : ''} · <span class="tl-fill" title="Zelf invullen">telefoon</span></dd></div>`).join('')}</dl>
   <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tailor-copy-status>Alles staat ook in de kopie: ook entertainment, ruimtes, risico's, kostenposten en evaluatie.</span>
     <span class="tl-chip-set"><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-download-budget>DOWNLOAD BEGROTING (CSV)</button><a class="tl-button tl-button--outline tl-button--on-dark" href="/eventconcepten/${escT(concept.slug)}/conceptplan/">CONCEPTPLAN (12 HOOFDSTUKKEN) ↗</a><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-ics>ZET IN AGENDA (.ICS)</button><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-tailor-print>PRINT DRAAIBOEK</button><button class="tl-button tl-button--accent" type="button" data-tailor-copy>KOPIEER HET COMPLETE DRAAIBOEK ↗</button></span></div>`;
   tOut.hidden = false;
