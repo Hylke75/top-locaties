@@ -194,3 +194,16 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 | Samenwerken | `.tl-maker__collab`, `.tl-maker__share`, `.tl-maker__invite` | Deellink (alleen lezen, ook zonder account) en leden met rol redacteur/lezer beheert alleen de eigenaar. Gelijktijdig opslaan geeft een conflictmelding, nooit stil overschrijven. Versies: automatisch, herstellen met bevestiging. |
 | Op maat in de maker | `.tl-maker__tailor` | Starttijd schuift programma, draaiboek en cateringmomenten samen; antwoorden uit de vragenlijst op maat overnemen. |
 | Exports | knoppen `data-export` / `data-download` | PDF (presentatie), PowerPoint (.pptx, bewerkbaar, sfeerbeeld gelabeld), Word (.docx) en tekst; één bron (`export-actions.js`). |
+
+## M. Uitbreidingen v1.8–v1.9 (4 november 2026)
+
+| Onderdeel | Klasse | Regel |
+|---|---|---|
+| Snelle start | `.tl-quickstart`, `__item(--accent)` | Vier directe routes op de homepage (vergadering, dagevent, avond, briefing). |
+| Kostenraming | `.tl-maker__costs`, `.tl-maker__cost`, `.tl-maker__contingency` | Bedragen zijn van de gebruiker zelf (eigen inschatting / offerte / bevestigd) met onvoorzien en totaal; Top Locaties noemt geen prijzen. |
+| Status | `.tl-maker__stage`, `.tl-account__stage[data-stage]` | Idee → offertes → bevestigd → afgerond; zichtbaar in Mijn concepten. |
+| Offertes in één keer | `.tl-maker__quotes`, `.tl-quote-send` | Naar alle gekozen partnerlocaties via de contactroute, met toestemming; eerlijke melding per locatie als de route niet beschikbaar is. |
+| Aanmelden | `/aanmelden/`, maker-paneel AANMELDEN | Geheime aanmeldlink, toestemming, maximum, lijst, dieet en aantal overnemen, CSV. |
+| Partnerprofiel | `.tl-venue-photos` + ruimtetabel | Alleen https en beelden met gebruiksrecht (greenbookings, locatie, eigen); bron vermeld. |
+| Taal | `.tl-lang` | NL/EN-wissel; `/en/` en `/en/concepts/` met hreflang. Volledige conceptpagina's nog in het Nederlands, duidelijk gelabeld. |
+| Toegankelijkheid | v1.9 | Kleine tekst op taupe/mist in inkt; actieve navigatie met onderstreping in koraal; invoervelden op mobiel ≥ 16px; tabs met `aria-selected`. Open ontwerpbesluit: kleine inkt-tekst op koraal (4,28:1) en koraal accentwoorden op taupe/mist. |

@@ -63,6 +63,21 @@ Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of
 - Zet in Vercel de omgevingsvariabele `GREENBOOKINGS_SUPABASE_SERVICE_KEY` (type *Sensitive*). Zonder die sleutel rondt de bezoeker af op het Greenbookings-profiel.
 - Optioneel: `RESEND_API_KEY` en `CONTACT_FROM` (bv. `Top Locaties <hallo@top-locaties.nl>`) voor een bevestigingsmail aan de bezoeker.
 
+## Statistiek
+
+- Anonieme tellers per dag in Supabase (`site_stats`, RPC `track`): geen cookies, geen IP, respecteert Do Not Track, alleen op het productiedomein.
+- Bekijken in het beheer (STATISTIEK): start het beheer met `TL_SUPABASE_SERVICE_KEY` (service key van het project top-locaties).
+- Daarnaast Vercel Web Analytics (paginaweergaven), zodra die in Vercel aan staat.
+
+## Deelafbeeldingen en prestaties
+
+- `node scripts/og-images.mjs` (met de lokale server aan) maakt per concept een deelafbeelding in `src/assets/og/`; de validator waarschuwt als er een ontbreekt.
+- Lettertypes staan in `src/assets/fonts` (OFL); geen Google Fonts.
+
+## Automatisch testen
+
+- `.github/workflows/qa.yml`: build, unit-tests, designaudit, flows, account-e2e en de RLS-test bij elke push.
+
 ## E-mail (Resend)
 
 - Domein `top-locaties.nl` staat in Resend (EU). Na de DNS-records bij TransIP: verifiëren, een SMTP-sleutel maken en in Supabase *Authentication → SMTP Settings* invullen (host `smtp.resend.com`, poort 465, gebruiker `resend`, wachtwoord = de sleutel, afzender bv. `account@top-locaties.nl`).

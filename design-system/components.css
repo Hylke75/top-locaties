@@ -1073,3 +1073,7 @@ figure.tl-image-frame { margin:0; }
 .tl-section--taupe, .tl-section--mist { --tl-muted: var(--tl-ink); }
 .tl-finder-top { --tl-muted: var(--tl-ink); }
 .tl-finder-top [data-saved-count] { color:var(--tl-ink); border-bottom:2px solid var(--tl-coral); }
+/* iOS zoomt in bij invoervelden kleiner dan 16px: op mobiel minimaal 16px. */
+@media (max-width: 800px) { .tl-app input:not([type="checkbox"]):not([type="radio"]), .tl-app select, .tl-app textarea { font-size:16px; } }
+/* Eigen titels (conceptmaker) zijn gebruikerstekst: schalen met de breedte, desnoods afbreken in plaats van overlopen. */
+[data-maker-heading] { font-size:clamp(28px, 7.4vw, 72px); overflow-wrap:anywhere; }
