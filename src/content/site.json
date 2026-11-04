@@ -9,6 +9,6 @@
     "_meta": "Accounts en eigen concepten via het Supabase-project 'top-locaties' (los van Greenbookings). De publishable key is bedoeld voor de browser; toegang wordt afgedwongen met RLS (supabase/migrations). enabled=false: account en conceptmaker tonen 'binnenkort' (presentatie en downloads werken wel). Voorvertoning in je eigen browser: /account/?voorvertoning=aan (uit: ?voorvertoning=uit). Zet enabled op true zodra supabase/migrations is uitgevoerd en in Supabase Auth de Site URL https://top-locaties.nl is ingesteld.",
     "url": "https://fnzvxwsrlpfnoxwqgomh.supabase.co",
     "publishableKey": "sb_publishable_vCVLLCs916OGOoMU5OQRPg_e0AKy-7y",
-    "enabled": false
+    "enabled": true
   }
 }
