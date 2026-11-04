@@ -13,7 +13,7 @@ let mode = 'login';
 const LABEL = { login: 'INLOGGEN ↗', register: 'ACCOUNT AANMAKEN ↗', recover: 'STUUR HERSTELLINK ↗' };
 function setMode(m) {
   mode = m;
-  document.querySelectorAll('[data-auth-tab]').forEach((b) => { const on = b.dataset.authTab === m; b.setAttribute('aria-pressed', String(on)); b.setAttribute('aria-selected', String(on)); });
+  document.querySelectorAll('[data-auth-tab]').forEach((b) => { const on = b.dataset.authTab === m; b.setAttribute('aria-selected', String(on)); b.classList.toggle('is-active', on); });
   $('[data-auth-password]').hidden = m === 'recover';
   form.elements.password.required = m !== 'recover';
   form.elements.password.autocomplete = m === 'register' ? 'new-password' : 'current-password';

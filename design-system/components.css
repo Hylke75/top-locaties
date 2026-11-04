@@ -1059,3 +1059,17 @@ figure.tl-image-frame { margin:0; }
 .tl-maker__issues li[data-level="ok"] { border-left-color:var(--tl-ink); }
 .tl-lang { display:inline-grid; place-items:center; min-width:44px; min-height:44px; border:1px solid var(--tl-ink); font:400 11px var(--tl-font-mono); letter-spacing:.04em; }
 .tl-lang:hover, .tl-lang:focus-visible { background:var(--tl-ink); color:var(--tl-white); }
+
+/* v1.9 — toegankelijkheid (axe-audit 4 nov 2026): kleine tekst haalt WCAG AA binnen het bestaande palet. */
+.tl-nav a[aria-current="page"] { color:var(--tl-ink); text-decoration:underline; text-decoration-color:var(--tl-coral); text-decoration-thickness:2px; text-underline-offset:6px; }
+.tl-nav a:hover { color:var(--tl-ink); text-decoration:underline; text-decoration-color:var(--tl-coral); text-underline-offset:6px; }
+.tl-section-nav__tabs a:hover, .tl-section-nav__tabs a[aria-current="true"] { color:var(--tl-ink); text-decoration:underline; text-decoration-color:var(--tl-coral); text-decoration-thickness:2px; text-underline-offset:6px; }
+.tl-venue__why b { color:var(--tl-ink); border-left:3px solid var(--tl-coral); padding-left:8px; }
+.tl-venue__watch { color:var(--tl-ink); }
+.tl-section--taupe .tl-catalog-card__desc, .tl-section--taupe .tl-note, .tl-section--taupe .tl-mono.tl-note,
+.tl-section--mist .tl-note, .tl-section--mist .tl-catalog-card__desc, .tl-section--mist .tl-mono.tl-note { color:var(--tl-ink); }
+.tl-account__tabs [role="tab"][aria-selected="true"] { background:var(--tl-coral); border-color:var(--tl-coral); color:var(--tl-ink); }
+/* Op taupe en mist is het grijs te licht voor kleine tekst: daar wordt "muted" inkt. */
+.tl-section--taupe, .tl-section--mist { --tl-muted: var(--tl-ink); }
+.tl-finder-top { --tl-muted: var(--tl-ink); }
+.tl-finder-top [data-saved-count] { color:var(--tl-ink); border-bottom:2px solid var(--tl-coral); }

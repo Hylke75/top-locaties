@@ -121,7 +121,7 @@ check(await page.isHidden('[data-maker-form]'), 'zonder account geen bewerkformu
 
 // 2. Registreren en terug naar de maker
 await page.click('[data-maker-gate] a.tl-button--accent');
-await page.waitForSelector('[data-auth-tab="register"][aria-pressed="true"]');
+await page.waitForSelector('[data-auth-tab="register"][aria-selected="true"]');
 await page.fill('[name=email]', 'test@voorbeeld.nl');
 await page.fill('[name=password]', 'kort');
 await page.click('[data-auth-submit]');

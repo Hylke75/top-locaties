@@ -19,9 +19,9 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'ACCOUNT' }], 'JOUW EIGEN CONCEP
       <h1 class="tl-display" id="accTitle">JOUW<br>CONCEPTEN.<br><span class="tl-accent">BEWAARD.</span></h1>
       <div data-auth-out>
         <div class="tl-chip-set tl-account__tabs" role="tablist" aria-label="Kies">
-          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="true" aria-pressed="true" data-auth-tab="login">INLOGGEN</button>
-          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" aria-pressed="false" data-auth-tab="register">REGISTREREN</button>
-          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" aria-pressed="false" data-auth-tab="recover">WACHTWOORD VERGETEN</button>
+          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="true" data-auth-tab="login">INLOGGEN</button>
+          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" data-auth-tab="register">REGISTREREN</button>
+          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" data-auth-tab="recover">WACHTWOORD VERGETEN</button>
         </div>
         <form class="tl-questionnaire tl-account__form" data-auth-form novalidate>
           <div class="tl-questionnaire__grid tl-questionnaire__grid--two">

@@ -38,7 +38,7 @@ function frame(c, n, title, inner, total, idx, dark = false) {
     shapes.push(rule(M, M + 0.55 * IN, W - 2 * M, fg, 19050));
   }
   shapes.push(...inner);
-  shapes.push(rule(M, H - M - 0.05 * IN, W - 2 * M, dark ? '5A5B5D' : C.line, 9525));
+  shapes.push(rule(M, H - M - 0.05 * IN, W - 2 * M, dark ? '999999' : C.line, 9525));
   shapes.push(box({ x: M, y: H - M, w: W / 2 - M, h: 0.3 * IN, paras: [mono('Top Locaties', fg, 9)] }));
   shapes.push(box({ x: W / 2, y: H - M, w: W / 2 - M, h: 0.3 * IN, paras: [mono(`${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, fg, 9)] }).replace('<a:pPr ', '<a:pPr algn="r" '));
   return shapes;

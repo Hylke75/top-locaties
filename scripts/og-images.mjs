@@ -18,7 +18,7 @@ const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt
 const lines = (arr) => arr.map((l) => esc(l).replace(/\*(.+?)\*/g, '<span style="color:#F45269">$1</span>')).join('<br>');
 const card = ({ kicker, headline, sub, img }) => `<!doctype html><html><head><meta charset="utf-8"><style>${fontCss}
 *{box-sizing:border-box;margin:0}body{width:1200px;height:630px;background:#292A2C;color:#fff;font-family:'DM Sans';display:grid;grid-template-columns:690px 510px;overflow:hidden}
-.l{padding:56px 56px 48px;display:flex;flex-direction:column;justify-content:space-between}.k{font:400 17px 'DM Mono';letter-spacing:.02em;text-transform:uppercase;border-bottom:1px solid #5a5b5d;padding-bottom:14px}
+.l{padding:56px 56px 48px;display:flex;flex-direction:column;justify-content:space-between}.k{font:400 17px 'DM Mono';letter-spacing:.02em;text-transform:uppercase;border-bottom:1px solid #999999;padding-bottom:14px}
 h1{font:400 78px/.88 'Archivo Black';letter-spacing:-.065em;text-transform:uppercase}.s{font:400 17px/1.5 'DM Mono';text-transform:uppercase}.b{font:400 30px/.9 'Archivo Black';letter-spacing:-.07em}
 .r{position:relative;background:#D9C9BF url('${img}') center/cover}.r span{position:absolute;left:18px;bottom:18px;background:#fff;color:#292A2C;font:400 13px 'DM Mono';padding:6px 9px}</style></head>
 <body><div class="l"><div class="k">${esc(kicker)}</div><h1>${headline}</h1><div><div class="s">${esc(sub)}</div><div class="b" style="margin-top:18px">TOP LOCATIES <span style="color:#F45269">✳︎</span></div></div></div><div class="r"><span>SFEERBEELD TER ILLUSTRATIE</span></div></body></html>`;
