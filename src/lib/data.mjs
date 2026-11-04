@@ -84,6 +84,8 @@ export function loadData() {
 
   // Bron leidend: elke gepubliceerde, aangesloten partner is doorzoekbaar (FO §0.4).
   // De redactionele laag is optioneel; zonder redactie tonen we alleen bronfeiten.
+  const SETUP_ORDER = ['theater', 'cabaret', 'school', 'u_vorm', 'carre', 'diner', 'receptie'];
+  const SETUP_LABELS = { theater: 'Theater', cabaret: 'Cabaret', school: 'School', u_vorm: 'U-vorm', carre: 'Carré', diner: 'Diner', receptie: 'Receptie' };
   const SFEER_TO_CHARACTER = { 'Industrieel': ['industrieel'], 'Landelijk & natuur': ['groen'], 'Klassiek & historisch': ['historisch'], 'Creatief & artistiek': ['creatief'] };
   const venues = snapshot.venues
     .map((src, index) => {
@@ -131,6 +133,11 @@ export function loadData() {
         capacityMin: src.capacityMin,
         capacityMax: src.capacityMax,
         capacity: capacityText(src.capacityMin, src.capacityMax),
+        // Uit de bron (read-only): regio, aantal ruimtes en capaciteit per opstelling. Prijs staat niet in de bron → op aanvraag.
+        regio: src.regio || null,
+        roomCount: Number.isFinite(src.roomCount) ? src.roomCount : null,
+        setups: src.setups ? SETUP_ORDER.filter((k) => src.setups[k]).map((k) => ({ key: k, label: SETUP_LABELS[k], max: src.setups[k] })) : [],
+        priceIndication: src.priceIndication || null,
         image,
         profileUrl: snapshot._meta.profileUrlPattern.venue.replace('{slug}', src.greenbookingsSlug),
         sourceUpdatedAt: src.sourceUpdatedAt,

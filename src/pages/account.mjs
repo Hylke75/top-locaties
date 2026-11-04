@@ -129,6 +129,12 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'ZOEKEN' }], 'CONCEPTEN, LOCATIE
   <h2 class="tl-visually-hidden" id="resTitle">Resultaten</h2>
   <p class="tl-mono" role="status" aria-live="polite" data-search-status>Typ een zoekvraag.</p>
   <ol class="tl-search__results" data-search-results></ol>
+  <div class="tl-search__empty" data-search-empty hidden>
+    <h3 class="tl-mono tl-subhead">PROBEER EEN VAN DEZE ZOEKVRAGEN</h3>
+    <p class="tl-chip-set">${['vergaderen utrecht 20 personen', 'diner avond', 'teamdag buiten', 'congres 300 gasten', 'catering'].map((x) => html`<a class="tl-chip-button" href="/zoeken/?q=${encodeURIComponent(x)}">${x}</a>`)}</p>
+    <h3 class="tl-mono tl-subhead tl-body--gap">OF BEGIN BIJ EEN UITGELICHT CONCEPT</h3>
+    <ol class="tl-search__results">${data.concepts.slice(0, 4).map((c) => html`<li class="tl-search__item"><img class="tl-search__thumb" src="${c.hero.src.replace('hero-event.webp', 'hero-event-800.webp').replace('festival-event.webp', 'festival-event-640.webp')}" alt="" loading="lazy" width="120" height="90"><span class="tl-mono">CONCEPT / ${c.dayPartLabel.toUpperCase()}</span><a class="tl-search__title" href="/eventconcepten/${c.slug}/">${c.title} ↗</a><span class="tl-search__desc">${c.teaser || ''}</span></li>`)}</ol>
+  </div>
 </section>
 </main>
 ${footer({ links: [{ href: '/eventconcepten/', label: 'ALLE CONCEPTEN ↗' }, { href: '/locaties/', label: 'LOCATIEZOEKER ↗' }, { href: '/leveranciers/', label: 'LEVERANCIERS ↗' }] })}`;

@@ -35,7 +35,15 @@ function init() {
     const vals = (params.get(name) || '').split(',');
     checks(name).forEach((c) => { c.checked = vals.includes(c.value); });
   }
-  if (params.get('weergave') === 'regio') view = 'regio';
+  const PAGE = 12; // na 12 resultaten 'Toon meer'
+  let limit = Number(params.get('toon')) || PAGE;
+  const applyParams = (ps) => {
+    for (const k of ['q', 'regio', 'gasten', 'concept', 'sort']) els[k].value = ps.get(k) || '';
+    for (const name of ['type', 'karakter']) { const vals = (ps.get(name) || '').split(','); checks(name).forEach((c) => { c.checked = vals.includes(c.value); }); }
+    view = ['regio', 'lijst'].includes(ps.get('weergave')) ? ps.get('weergave') : 'beeld';
+    limit = Number(ps.get('toon')) || PAGE;
+  };
+  applyParams(params);
 
   function state() {
     return {
@@ -45,13 +53,19 @@ function init() {
     };
   }
 
-  function writeUrl(s) {
+  // Filters, zoekterm en weergave staan in de URL: deelbaar, en de terugknop brengt je terug naar je vorige selectie.
+  let lastUrl = location.search;
+  function writeUrl(s, push) {
     const p = new URLSearchParams();
     for (const k of ['q', 'regio', 'gasten', 'concept', 'sort']) if (s[k]) p.set(k, s[k]);
     if (s.type.length) p.set('type', s.type.join(','));
     if (s.karakter.length) p.set('karakter', s.karakter.join(','));
-    if (view === 'regio') p.set('weergave', 'regio');
-    history.replaceState(null, '', p.toString() ? `?${p}` : location.pathname);
+    if (view !== 'beeld') p.set('weergave', view);
+    if (limit > PAGE) p.set('toon', String(limit));
+    const next = p.toString() ? `?${p}` : '';
+    if (next === lastUrl) return;
+    history[push ? 'pushState' : 'replaceState'](null, '', next || location.pathname);
+    lastUrl = next;
   }
 
   function evaluate(card, s) {
@@ -80,16 +94,19 @@ function init() {
   function chip(label, clear) {
     const b = document.createElement('button');
     b.type = 'button'; b.textContent = `${label} ×`; b.setAttribute('aria-label', `Verwijder filter ${label}`);
-    b.addEventListener('click', () => { clear(); render(); });
+    b.addEventListener('click', () => { clear(); render(true); });
     return b;
   }
 
-  function render() {
+  function render(push = false, keepLimit = false) {
+    if (!keepLimit && push) limit = PAGE;
     const s = state();
     const results = cards.map((c) => [c, evaluate(c, s)]);
     const inList = sortCards(results.filter(([, r]) => r === 'in').map(([c]) => c), s);
     const unknown = sortCards(results.filter(([, r]) => r === 'unknown').map(([c]) => c), s);
     results.forEach(([c, r]) => { c.hidden = r === 'out'; });
+    // Toon meer: alleen de eerste `limit` resultaten (bekende capaciteit eerst, dan onbekend).
+    [...inList, ...unknown].forEach((c, i) => { if (i >= limit) c.hidden = true; });
     [...inList, unknownHead, ...unknown].forEach((el) => catalog.appendChild(el));
     unknownHead.hidden = !unknown.length;
     [...inList, ...unknown].forEach((c, i) => { c.querySelector('[data-index]').textContent = pad(i + 1); });
@@ -104,7 +121,12 @@ function init() {
     $('[data-result-label]').textContent = `DE COLLECTIE / ${s.regio ? s.regio.toUpperCase() : 'NEDERLAND'}${s.gasten ? ` / PLEK VOOR ${s.gasten} GASTEN` : ''}`;
     $('[data-result-status]').textContent = `${total} ${total === 1 ? 'locatie' : 'locaties'} gevonden${unknown.length ? `, waarvan ${unknown.length} met onbekende capaciteit` : ''}.`;
     $('[data-empty]').hidden = total > 0;
-    catalog.hidden = view !== 'beeld' || total === 0;
+    catalog.hidden = view === 'regio' || total === 0;
+    catalog.classList.toggle('tl-catalog--list', view === 'lijst');
+    unknownHead.hidden = !unknown.length || inList.length >= limit;
+    const more = $('[data-more]');
+    more.hidden = view === 'regio' || total <= limit;
+    $('[data-more-label]').textContent = `${Math.min(limit, total)} VAN ${total} GETOOND`;
     regionView.hidden = view !== 'regio' || total === 0;
     root.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
 
@@ -126,25 +148,32 @@ function init() {
       b.setAttribute('aria-label', `${on ? 'Verwijder' : 'Bewaar'} ${c.dataset.name}`);
     });
     $('[data-saved-count]').textContent = `${saved.size} BEWAARD`;
-    writeUrl(s);
+    writeUrl(s, push);
   }
 
   function reset() {
     form.reset(); els.concept.value = ''; els.sort.value = '';
     checks('type').concat(checks('karakter')).forEach((c) => { c.checked = false; });
-    render();
+    render(true);
   }
 
   const toast = $('[data-toast]');
   let toastTimer;
   function notify(text) { toast.textContent = text; toast.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { toast.hidden = true; }, 1800); }
 
-  form.addEventListener('submit', (e) => { e.preventDefault(); render(); $('#resultTitle').scrollIntoView({ block: 'start' }); });
-  els.q.addEventListener('input', () => { clearTimeout(els.q._t); els.q._t = setTimeout(render, 180); });
-  [els.regio, els.gasten, els.concept, els.sort].forEach((el) => el.addEventListener('change', render));
-  root.addEventListener('change', (e) => { if (e.target.matches('input[type="checkbox"]')) render(); });
+  form.addEventListener('submit', (e) => { e.preventDefault(); render(true); $('#resultTitle').scrollIntoView({ block: 'start' }); });
+  els.q.addEventListener('input', () => { clearTimeout(els.q._t); els.q._t = setTimeout(() => { limit = PAGE; render(); }, 180); });
+  els.q.addEventListener('change', () => render(true));
+  [els.regio, els.gasten, els.concept, els.sort].forEach((el) => el.addEventListener('change', () => render(true)));
+  root.addEventListener('change', (e) => { if (e.target.matches('input[type="checkbox"]')) render(true); });
+  $('[data-more-button]').addEventListener('click', () => {
+    const first = limit; limit += PAGE; render(false, true);
+    // Focus naar het eerste nieuwe resultaat (toetsenbord en schermlezer).
+    const next = [...catalog.querySelectorAll('[data-venue]:not([hidden])')][first]?.querySelector('h3 a'); next?.focus();
+  });
+  addEventListener('popstate', () => { applyParams(new URLSearchParams(location.search)); lastUrl = location.search; render(false, true); });
   root.querySelectorAll('[data-reset]').forEach((b) => b.addEventListener('click', reset));
-  root.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => { view = b.dataset.view; render(); }));
+  root.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => { view = b.dataset.view; render(true, true); }));
   document.querySelectorAll('[data-reload]').forEach((b) => b.addEventListener('click', () => location.reload()));
   const setPanel = (open) => { panel.dataset.open = String(open); toggle.setAttribute('aria-expanded', String(open)); };
   toggle.addEventListener('click', () => setPanel(panel.dataset.open !== 'true'));

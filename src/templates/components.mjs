@@ -96,6 +96,16 @@ export function venueImage(v, { cls = 'tl-venue__photo', lazy = true } = {}) {
 const longest = (name = '') => Math.max(...String(name).split(/\s+/).map((w) => w.length), 1);
 export const nameAttrs = (base, name) => raw(` class="${base} tl-fit" style="--tl-w:${longest(name)}"`);
 
+/** Kerngegevens van een locatie uit de bron: regio, capaciteit (per opstelling als bekend) en prijs. Nooit verzonnen. */
+export function venueFacts(v, { setups = 3 } = {}) {
+  const per = v.setups?.length ? v.setups.slice(0, setups).map((x) => `${x.label} ${x.max}`).join(' · ') : '';
+  return html`<dl class="tl-venue-facts">
+    <div><dt>REGIO</dt><dd>${v.regio || v.province}</dd></div>
+    <div><dt>CAPACITEIT</dt><dd>${v.capacity.toLowerCase()}${per ? html`<span class="tl-venue-facts__sub">${per}</span>` : ''}</dd></div>
+    <div><dt>PRIJS</dt><dd>${v.priceIndication || 'Op aanvraag'}</dd></div>
+  </dl>`;
+}
+
 export function venueCard(v, match, i) {
   return html`<article class="tl-venue" data-venue-card="${v.id}" data-selected="false">
   ${venueImage(v)}
@@ -104,7 +114,8 @@ export function venueCard(v, match, i) {
     <h3${nameAttrs('tl-venue__name', v.name)}>${v.name}</h3>
     <p class="tl-venue__copy">${v.line}</p>
     <div class="tl-venue__why"><b>${match.role ? `${match.role} — ` : ''}WAAROM DEZE PLEK?</b>${match.reason}${match.pro ? html`<span class="tl-venue__pro">+ ${match.pro}</span>` : ''}${match.watch ? html`<span class="tl-venue__watch">! ${match.watch}</span>` : ''}</div>
-    <p class="tl-venue__facts"><span>${v.capacity}</span><span>BRON: GREENBOOKINGS ${v.sourceDate}</span></p>
+    ${venueFacts(v)}
+    <p class="tl-venue__facts"><span>BRON: GREENBOOKINGS ${v.sourceDate}</span></p>
     <div class="tl-venue__actions">
       <button class="tl-button tl-venue__choose" type="button" data-choose-venue="${v.id}" aria-pressed="false">KIES DEZE PLEK +</button>
       <a class="tl-button tl-button--outline" href="/locaties/${v.slug}/">BEKIJK ↗</a>
@@ -139,8 +150,9 @@ export function catalogCard(v, i, data) {
   <h3${nameAttrs('tl-catalog-card__title', v.name)}><a href="/locaties/${v.slug}/">${v.name}</a></h3>
   <p class="tl-catalog-card__desc">${v.line}</p>
   ${v.concepts.length ? html`<p class="tl-catalog-card__concepts">PAST BIJ: ${v.concepts.map((c, n) => html`${n ? ' / ' : ''}<a href="/eventconcepten/${c.slug}/#locaties">${c.title}</a>`)}</p>` : ''}
+  ${venueFacts(v)}
   <div class="tl-catalog-card__foot">
-    <span>${v.capacity}<br>AANGESLOTEN PARTNER / BRON ${v.sourceDate}</span>
+    <span>AANGESLOTEN PARTNER / BRON ${v.sourceDate}</span>
     <a class="tl-arrow-box" href="/locaties/${v.slug}/" aria-label="Bekijk ${v.name}">↗</a>
   </div>
 </article>`;

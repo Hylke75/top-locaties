@@ -20,7 +20,9 @@
     },
     "scope": "Alle gepubliceerde, aangesloten partnerlocaties op 03-11-2026 (volledige partner-snapshot).",
     "supplierRule": "Leveranciers = Greenbookings-partners: organisaties.type='leverancier' EN aangesloten=true EN status='actief' EN is_test=false (bevestigd door opdrachtgever 03-11-2026).",
-    "imageRights": "Greenbookings-foto's mogen op top-locaties.nl worden getoond (bevestigd door opdrachtgever 03-11-2026)."
+    "imageRights": "Greenbookings-foto's mogen op top-locaties.nl worden getoond (bevestigd door opdrachtgever 03-11-2026).",
+    "extendedAt": "2026-11-04",
+    "extendedFields": "regio (locaties.regio), roomCount (aantal ruimtes), setups (max. capaciteit per opstelling over alle ruimtes: theater, school, u_vorm, carre, diner, receptie, cabaret), priceIndication (locaties.prijs_dagdeel_vanaf: in de bron voor geen enkele locatie ingevuld → null)"
   },
   "venues": [
     {
@@ -46,7 +48,11 @@
       "contactPerson": {
         "name": "Tom Verhaar",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 8,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "nederlands-instituut-voor-beeld-geluid-hilversum",
@@ -80,7 +86,11 @@
       "contactPerson": {
         "name": "Jessie Schaduw",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/1c0a46ff-16ca-4a4d-bd46-06732aa60738/f283e1cc-10da-49be-b05d-f8d5a47caf2d.webp"
-      }
+      },
+      "regio": "'t Gooi",
+      "roomCount": 8,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "tobacco-theater-amsterdam",
@@ -133,7 +143,11 @@
       "contactPerson": {
         "name": "Liza Henzen",
         "photo": null
-      }
+      },
+      "regio": "Groot-Amsterdam",
+      "roomCount": 14,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "geofort",
@@ -158,7 +172,18 @@
       "contactPerson": {
         "name": "Darrel de Zwarte",
         "photo": null
-      }
+      },
+      "regio": null,
+      "roomCount": 20,
+      "setups": {
+        "theater": 250,
+        "school": 56,
+        "u_vorm": 40,
+        "carre": 48,
+        "diner": 325,
+        "receptie": 900
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "euromast",
@@ -199,7 +224,11 @@
       "contactPerson": {
         "name": "Lennard Montizaan",
         "photo": null
-      }
+      },
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "het-nutshuis",
@@ -221,7 +250,19 @@
       },
       "mediaCount": 6,
       "sourceUpdatedAt": "2026-10-21T13:34:02Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 10,
+      "setups": {
+        "theater": 100,
+        "school": 30,
+        "u_vorm": 25,
+        "carre": 30,
+        "diner": 50,
+        "receptie": 150,
+        "cabaret": 50
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "het-spaansche-hof-by-peopleplaces",
@@ -243,7 +284,11 @@
       },
       "mediaCount": 5,
       "sourceUpdatedAt": "2026-10-07T08:02:03Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "de-polderij",
@@ -268,7 +313,11 @@
       "contactPerson": {
         "name": "Tom en Joyce van Zwet",
         "photo": null
-      }
+      },
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "milk-meetings",
@@ -293,7 +342,19 @@
       "contactPerson": {
         "name": "Willeke de Boer",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5b8b9835-4483-4efe-8a5c-151a2d989f3d/69fa295f-7dc7-4dec-aaa9-a7564b035f44.webp"
-      }
+      },
+      "regio": "Utrecht",
+      "roomCount": 2,
+      "setups": {
+        "theater": 40,
+        "school": 25,
+        "u_vorm": 22,
+        "carre": 30,
+        "diner": 36,
+        "receptie": 40,
+        "cabaret": 24
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "nederlands-openluchtmuseum",
@@ -318,7 +379,11 @@
       "contactPerson": {
         "name": "Paul van Zeist",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/f834cc48-868d-43e9-bda5-6c727b8b9674/3d0e240d-834b-4e8e-9f83-f3a95a846e48.webp"
-      }
+      },
+      "regio": "Arnhem-Nijmegen",
+      "roomCount": 10,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "grote-kerk-den-haag",
@@ -343,7 +408,16 @@
       "contactPerson": {
         "name": "Bieke Oosterheert",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 4,
+      "setups": {
+        "theater": 1300,
+        "school": 1300,
+        "diner": 900,
+        "receptie": 650
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "madurodam-events",
@@ -368,7 +442,17 @@
       "contactPerson": {
         "name": "Marianne van de Graaf",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b8104c00-46bb-49d3-9d74-81d828f52b39/6fd13186-2d3e-4878-8c86-794cb1322a7e.webp"
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 7,
+      "setups": {
+        "theater": 300,
+        "u_vorm": 50,
+        "diner": 260,
+        "receptie": 500,
+        "cabaret": 200
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "singer-laren",
@@ -393,7 +477,11 @@
       "contactPerson": {
         "name": "Johan de Jong",
         "photo": null
-      }
+      },
+      "regio": "'t Gooi",
+      "roomCount": 0,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-den-haag-scheveningen-de-pier",
@@ -415,7 +503,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 5,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "abe-lenstra-stadion",
@@ -440,7 +532,11 @@
       "contactPerson": {
         "name": "Elisa",
         "photo": null
-      }
+      },
+      "regio": "Friesland",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "abel-hospitality-leisure",
@@ -462,7 +558,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-27T16:32:17Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "clubspace",
@@ -487,7 +587,11 @@
       "contactPerson": {
         "name": "Ferry",
         "photo": null
-      }
+      },
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "flexlabs-the-court-breda",
@@ -518,7 +622,11 @@
       "contactPerson": {
         "name": "Amber van Bussel",
         "photo": null
-      }
+      },
+      "regio": "West-Brabant",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "flexlabs-the-bridge-rotterdam",
@@ -549,7 +657,11 @@
       "contactPerson": {
         "name": "Amber van Bussel",
         "photo": null
-      }
+      },
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 7,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "flexlabs-the-capital-rotterdam",
@@ -571,7 +683,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-07T08:42:38Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "flexlabs-the-loft-rotterdam",
@@ -596,7 +712,11 @@
       "contactPerson": {
         "name": "Amber van Bussel",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/e8ed252e-6c80-4387-8431-16431dc9755a/9caa289e-09d1-4e75-ab3a-6e4c76288fd0.webp"
-      }
+      },
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "kerkbrink",
@@ -624,7 +744,11 @@
       "contactPerson": {
         "name": "Kaija de Valk",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/163a71c7-fb98-4b13-9a62-62def2648705/34b47a9f-7fea-4def-afd1-fd022802e44f.webp"
-      }
+      },
+      "regio": "'t Gooi",
+      "roomCount": 3,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "groot-obbink",
@@ -646,7 +770,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-15T10:12:18Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Achterhoek",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "het-kooi-stadion",
@@ -668,7 +796,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:27:54Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Friesland",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "hotel-luxer",
@@ -690,7 +822,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "kanteen25",
@@ -712,7 +848,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "koninklijk-instituut-van-ingenieurs-kivi",
@@ -737,7 +877,11 @@
       "contactPerson": {
         "name": "Melanie Hooijmans",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "kunstlinie",
@@ -759,7 +903,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-01T08:24:11Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Flevoland",
+      "roomCount": 4,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "linden-hotel",
@@ -781,7 +929,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "mr-jordaan",
@@ -803,7 +955,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "nieuwe-kerk-den-haag",
@@ -822,7 +978,14 @@
       "heroImage": null,
       "mediaCount": null,
       "sourceUpdatedAt": "2026-11-02T08:12:46Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 4,
+      "setups": {
+        "theater": 35,
+        "receptie": 275
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "oude-kerk-evenementen",
@@ -847,7 +1010,17 @@
       "contactPerson": {
         "name": "David van Kruiselbergen",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/b5122a7a-fa99-444c-8727-b91ec84dc9e9/e3d103d1-11a2-4aff-8a8b-ba732abd6402.webp"
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 4,
+      "setups": {
+        "theater": 350,
+        "u_vorm": 14,
+        "carre": 14,
+        "diner": 200,
+        "receptie": 350
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-almere-green-capitol-towers",
@@ -872,7 +1045,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": "Flevoland",
+      "roomCount": 5,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-amersfoort-centraal-station",
@@ -894,7 +1071,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-15T07:43:45Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Utrecht",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-amersfoort-033",
@@ -916,7 +1097,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-07T08:00:02Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Veluwe",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-amsterdam-arena",
@@ -938,7 +1123,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-07T08:19:00Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "people-places-apeldoorn",
@@ -969,7 +1158,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": "Veluwe",
+      "roomCount": 11,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-arnhem-gelderse-poort",
@@ -994,7 +1187,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": "Arnhem-Nijmegen",
+      "roomCount": 10,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-assen",
@@ -1016,7 +1213,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Drenthe",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-culemborg",
@@ -1041,7 +1242,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": null,
+      "roomCount": 11,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "people-places-den-haag-mauritskade",
@@ -1070,7 +1275,11 @@
       "contactPerson": {
         "name": "Wendy Arnoldus",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 6,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-deventer",
@@ -1092,7 +1301,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Stedendriehoek",
+      "roomCount": 4,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-enschede-technology-base",
@@ -1114,7 +1327,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Twente",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "people-places-hoofddorp",
@@ -1139,7 +1356,11 @@
       "contactPerson": {
         "name": "Erik Werners",
         "photo": null
-      }
+      },
+      "regio": "Groot-Amsterdam",
+      "roomCount": 0,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-naarden",
@@ -1161,7 +1382,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "'t Gooi",
+      "roomCount": 5,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-nijkerk",
@@ -1183,7 +1408,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:27:54Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Veluwe",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-nunspeet",
@@ -1205,7 +1434,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Veluwe",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "peopleplaces-zutphen",
@@ -1227,7 +1460,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Stedendriehoek",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "room-mate-bruno-rotterdam",
@@ -1259,7 +1496,11 @@
       "contactPerson": {
         "name": "Michaël ten Brink",
         "photo": null
-      }
+      },
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 13,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "sanadome-hotel-spa-nijmegen",
@@ -1291,7 +1532,17 @@
       "contactPerson": {
         "name": "Michelle Melsen",
         "photo": null
-      }
+      },
+      "regio": "Arnhem-Nijmegen",
+      "roomCount": 11,
+      "setups": {
+        "theater": 220,
+        "school": 62,
+        "u_vorm": 40,
+        "carre": 56,
+        "cabaret": 112
+      },
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "spaarnwoude-park-hotel",
@@ -1313,7 +1564,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Haarlem & Kennemerland",
+      "roomCount": 5,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "starthub-cafe-utrecht",
@@ -1335,7 +1590,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-15T07:43:45Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Utrecht",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "tasman",
@@ -1357,7 +1616,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-15T12:01:16Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Rotterdam-Rijnmond",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "the-collector-hotel",
@@ -1382,7 +1645,11 @@
       "contactPerson": {
         "name": "Floor de With",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "the-conference-club",
@@ -1407,7 +1674,11 @@
       "contactPerson": {
         "name": "Corina Christiaanse",
         "photo": "https://irheuxoqlrtlxrloamns.supabase.co/storage/v1/object/public/locatie-media/5822ec68-07ce-4e16-aee8-4c7c7cfd2a15/c242159d-630b-4a7b-92bf-a31bb3c90d03.webp"
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 3,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "the-hague-conference-centre",
@@ -1429,7 +1700,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 2,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "diligentia",
@@ -1460,7 +1735,11 @@
       "contactPerson": {
         "name": "Stephanie Roomeijer",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 8,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "thialf",
@@ -1482,7 +1761,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-10-15T07:31:56Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Friesland",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "toussainthuis",
@@ -1507,7 +1790,11 @@
       "contactPerson": {
         "name": "Philip Pieters",
         "photo": null
-      }
+      },
+      "regio": "Den Haag & Haaglanden",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "veluwe-hotel-de-beyaerd",
@@ -1532,7 +1819,11 @@
       "contactPerson": {
         "name": "Anouk van der Meulen",
         "photo": null
-      }
+      },
+      "regio": "Veluwe",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     },
     {
       "greenbookingsSlug": "venue-collective",
@@ -1554,7 +1845,11 @@
       },
       "mediaCount": null,
       "sourceUpdatedAt": "2026-09-25T08:26:42Z",
-      "contactPerson": null
+      "contactPerson": null,
+      "regio": "Groot-Amsterdam",
+      "roomCount": 1,
+      "setups": null,
+      "priceIndication": null
     }
   ],
   "suppliers": [

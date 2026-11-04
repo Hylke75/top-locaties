@@ -73,12 +73,17 @@ write('data/partners.json', JSON.stringify({
 }));
 write('account/index.html', renderAccount(data));
 // Zoekindex (alleen gepubliceerde concepten en aangesloten partners).
+// Kleine afbeelding en één regel uitleg per resultaat.
+const smallImg = (src) => (src || '').replace('/assets/img/hero-event.webp', '/assets/img/hero-event-800.webp').replace('/assets/img/festival-event.webp', '/assets/img/festival-event-640.webp');
+const oneLine = (t = '') => { const x = String(t).replace(/\s+/g, ' ').trim(); return x.length > 140 ? `${x.slice(0, 137).replace(/\s+\S*$/, '')}…` : x; };
 write('data/search.json', JSON.stringify([
   ...data.concepts.map((c) => ({ t: 'concept', title: c.title, url: `/eventconcepten/${c.slug}/`, sub: `${c.categoryLabel} / ${c.dayPartLabel}`, min: c.guestCountMin, max: c.guestCountMax,
+    img: smallImg(c.hero.src), why: oneLine(c.teaser || c.proposition), illustrative: true,
     text: [c.teaser, c.format, c.categoryLabel, c.dayPartLabel, c.duration, ...(c.tags || []), ...(c.audiences || []), ...c.feelings.map((f) => data.feelingLabels[f]), ...(c.occasions || []), c.category, c.dayPart].join(' ') })),
-  ...data.venues.map((v) => ({ t: 'locatie', title: v.name, url: `/locaties/${v.slug}/`, sub: `${v.city}${v.capacityMax ? ` / tot ${v.capacityMax} gasten` : ''}`, place: `${v.city} ${v.province || ''}`, min: v.capacityMin || null, max: v.capacityMax || null,
+  ...data.venues.map((v) => ({ t: 'locatie', title: v.name, url: `/locaties/${v.slug}/`, sub: `${v.city}${v.capacityMax ? ` / tot ${v.capacityMax} gasten` : ''}`,
+    img: v.image.kind === 'none' ? null : v.image.src, why: oneLine(v.line), place: `${v.city} ${v.province || ''}`, min: v.capacityMin || null, max: v.capacityMax || null,
     text: [v.label, v.type, v.sfeer, v.line, v.tagline, ...(v.sfeerTags || []), ...(v.bijeenkomstTypes || []), ...(v.eventTypes || []), ...(v.character || []), ...(v.concepts || []).map((c) => c.title || c)].join(' ') })),
-  ...data.suppliers.map((s) => ({ t: 'maker', title: s.name, url: `/leveranciers/${s.slug}/`, sub: s.label || s.category, place: s.city || '', text: [s.label, s.category, s.tagline].join(' ') })),
+  ...data.suppliers.map((s) => ({ t: 'maker', title: s.name, url: `/leveranciers/${s.slug}/`, sub: s.label || s.category, symbol: s.symbol || '✳', why: oneLine(s.tagline), place: s.city || '', text: [s.label, s.category, s.tagline].join(' ') })),
 ]));
 write('zoeken/index.html', renderSearch(data));
 write('aanmelden/index.html', renderRegister(data));

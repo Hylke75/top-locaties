@@ -163,7 +163,17 @@ ${impactSection(concept, '12')}
 ${playbookSection(data.playbook, '13')}
 </div>
 </main>
-<div class="tl-selection-bar" data-selection-bar hidden><span data-selection-count>0 ONDERDELEN GEKOZEN</span><a href="#samenstellen">${PLAN_CTA} ↓</a></div>
+<div class="tl-selection-bar" data-selection-bar hidden>
+  <div class="tl-selection-bar__panel" id="selectionPanel" hidden data-selection-panel>
+    <span class="tl-selection-bar__label">JOUW KEUZES</span>
+    <ul class="tl-selection-bar__list" data-selection-list></ul>
+  </div>
+  <div class="tl-selection-bar__row">
+    <button class="tl-selection-bar__toggle" type="button" aria-expanded="false" aria-controls="selectionPanel" data-selection-toggle><span data-selection-count>0 ONDERDELEN GEKOZEN</span> <span class="tl-selection-bar__chev" aria-hidden="true">↑</span></button>
+    <a href="#samenstellen">${PLAN_CTA} ↓</a>
+  </div>
+  <span class="tl-visually-hidden" role="status" aria-live="polite" data-selection-live></span>
+</div>
 ${footer({
   left: 'GOEDE IDEEËN WERKEN AANSTEKELIJK.',
   right: 'ONTDEK MEER / TOP LOCATIES',

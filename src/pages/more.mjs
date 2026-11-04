@@ -104,14 +104,15 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/locaties/', label: 'LOCATIES' }
     <div>
       <h2 class="tl-display tl-display--md" id="factsTitle">WAT WE<br><span class="tl-accent">ZEKER WETEN.</span></h2>
       <dl class="tl-facts">
-        <div><dt>PLAATS</dt><dd>${v.city}, ${v.province}</dd></div>
+        <div><dt>PLAATS &amp; REGIO</dt><dd>${v.city}, ${v.province}${v.regio ? ` — regio ${v.regio}` : ''}</dd></div>
         <div><dt>TYPE</dt><dd>${v.type || 'Onbekend'}</dd></div>
-        <div><dt>CAPACITEIT (BRON)</dt><dd>${v.capacityMax ? `${v.capacityMin ? v.capacityMin + '–' : 'tot '}${v.capacityMax} personen` : 'Op aanvraag'}</dd></div>
+        <div><dt>CAPACITEIT (BRON)</dt><dd>${v.capacityMax ? `${v.capacityMin ? v.capacityMin + '–' : 'tot '}${v.capacityMax} personen` : 'Op aanvraag'}${v.roomCount ? ` in ${v.roomCount} ${v.roomCount === 1 ? 'ruimte' : 'ruimtes'}` : ''}</dd></div>
+        <div><dt>PER OPSTELLING (BRON)</dt><dd>${v.setups.length ? v.setups.map((x) => `${x.label} tot ${x.max}`).join(' · ') : 'Niet per opstelling opgegeven in de bron'}</dd></div>
         <div><dt>SFEER (BRON)</dt><dd>${v.sfeer || 'Onbekend'}</dd></div>
         <div><dt>BIJEENKOMSTEN (BRON)</dt><dd>${types}</dd></div>
-        <div><dt>BESCHIKBAARHEID &amp; PRIJS</dt><dd>Niet getoond — vraag dit aan bij de locatie via Greenbookings.</dd></div>
+        <div><dt>BESCHIKBAARHEID &amp; PRIJS</dt><dd>${v.priceIndication ? v.priceIndication : 'Op aanvraag'} — de bron noemt geen prijzen; vraag dit aan bij de locatie.</dd></div>
       </dl>
-      <p class="tl-note tl-note--gap">Capaciteit is het maximum volgens de bron; per opstelling kan dat anders zijn. Top Locaties bevestigt geen beschikbaarheid of reservering.</p>
+      <p class="tl-note tl-note--gap">Capaciteit per opstelling is het maximum over alle ruimtes volgens de bron. Top Locaties bevestigt geen beschikbaarheid of reservering.</p>
       <div class="tl-contact-cta">
         <div><strong class="tl-mono">${v.contactPerson?.name ? `VRAGEN? ${v.contactPerson.name.toUpperCase()} HELPT JE VERDER` : 'VRAGEN OVER DEZE PLEK?'}</strong><span class="tl-note">Beschikbaarheid, ruimtes en prijs vraag je rechtstreeks aan de locatie.</span></div>
         ${contactButton(v)}
@@ -166,7 +167,7 @@ ${footer({ left: 'EEN BIJZONDERE PLEK IS PAS HET BEGIN.', right: 'TOP LOCATIES /
 
 /* ---------------- /leveranciers/ ---------------- */
 function supplierDirCard(s, i) {
-  return html`<article class="tl-supplier" data-supplier-dir="${s.id}" data-category="${s.category}">
+  return html`<article class="tl-supplier" data-supplier-dir="${s.id}" data-category="${supplierGroup(s)}">
   <span class="tl-supplier__meta"><span>${pad(i + 1)} / ${s.label}</span><span>${s.city || 'NL'}</span></span>
   <span class="tl-supplier__mark" aria-hidden="true">${s.symbol}</span>
   <h3${nameAttrs('tl-supplier__name', s.name)}><a href="/leveranciers/${s.slug}/">${s.name}</a></h3>
@@ -175,9 +176,19 @@ function supplierDirCard(s, i) {
 </article>`;
 }
 
+// Vijf hoofdcategorieën in plaats van één filter per vakgebied. Indeling op het vakgebied-label uit de bron/redactie.
+export const SUPPLIER_GROUPS = [
+  { id: 'techniek', label: 'Techniek & AV', test: /\bav\b|techniek|video|livestream|xr/i },
+  { id: 'eten', label: 'Eten & drinken', test: /catering|horeca/i },
+  { id: 'inrichting', label: 'Inrichting & verhuur', test: /verhuur|inrichting|giveaway|keurmerk|duurza/i },
+  { id: 'content', label: 'Content & marketing', test: /media|sales|leads|marketing|content/i },
+  { id: 'software', label: 'Software & platforms', test: /software|platform/i },
+];
+export const supplierGroup = (s) => (SUPPLIER_GROUPS.find((g) => g.test.test(`${s.label || ''} ${s.category || ''}`)) || SUPPLIER_GROUPS[3]).id;
+
 export function renderSuppliers(data) {
   const { suppliers, syncedDate } = data;
-  const cats = [...new Set(suppliers.map((s) => s.category))];
+  const groups = SUPPLIER_GROUPS.map((g) => ({ ...g, n: suppliers.filter((s) => supplierGroup(s) === g.id).length })).filter((g) => g.n);
   const body = html`${header({ current: 'leveranciers' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'LEVERANCIERS' }], `${pad(suppliers.length)} LEVERANCIERSPARTNERS`)}
 <main id="main">
@@ -189,7 +200,7 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'LEVERANCIERS' }], `${pad(suppli
   </div>
   <div class="tl-chip-row" role="group" aria-label="Filter op vakgebied">
     <button class="tl-chip-button" type="button" data-sup-cat="" aria-pressed="true">ALLE VAKGEBIEDEN / ${pad(suppliers.length)}</button>
-    ${cats.map((c) => html`<button class="tl-chip-button" type="button" data-sup-cat="${c}" aria-pressed="false">${c.toUpperCase()} / ${pad(suppliers.filter((s) => s.category === c).length)}</button>`)}
+    ${groups.map((g) => html`<button class="tl-chip-button" type="button" data-sup-cat="${g.id}" aria-pressed="false">${g.label.toUpperCase()} / ${pad(g.n)}</button>`)}
   </div>
   <div class="tl-supplier-grid" data-sup-grid>${suppliers.map(supplierDirCard)}</div>
   <p class="tl-note tl-note--gap">Alle aangesloten leverancierspartners van Greenbookings (bronstand ${syncedDate}). Een vermelding bij een concept is een redactionele suggestie, geen bevestigde samenwerking.</p>

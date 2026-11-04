@@ -128,8 +128,8 @@ check((await page.textContent('#concepten')).includes('Het diner dat verbindt'),
 const np = await page.goto(base + '/locaties/graanfabriek/');
 check(np.status() === 404, 'directe route naar niet-partner → 404');
 await page.goto(base + '/leveranciers/');
-await page.click('[data-sup-cat="Catering"]');
-check(await page.locator('[data-supplier-dir]:not([hidden])').count() === 4, 'leveranciers filter Catering → 4 partners');
+await page.click('[data-sup-cat="eten"]');
+check(await page.locator('[data-supplier-dir]:not([hidden])').count() === 5, 'leveranciers: hoofdcategorie Eten & drinken → 5 partners');
 check(await page.locator('[data-supplier-dir]').count() === 16, 'leveranciersgids toont alle 16 aangesloten partners');
 await page.goto(base + '/leveranciers/bourgonje/');
 check((await page.textContent('main')).includes('Het festival van morgen'), 'leverancierdetail toont rol per concept');

@@ -40,14 +40,14 @@ function paint() {
     card.dataset.selected = String(on);
     const b = card.querySelector('[data-choose-venue]');
     b.setAttribute('aria-pressed', String(on));
-    b.textContent = on ? 'GEKOZEN ✓' : 'KIES DEZE PLEK +';
+    b.textContent = on ? '✓ GEKOZEN' : 'KIES DEZE PLEK +';
   });
   document.querySelectorAll('[data-supplier-card]').forEach((card) => {
     const on = plan.supplierIds.includes(card.dataset.supplierCard);
     card.dataset.selected = String(on);
     const b = card.querySelector('[data-choose-supplier]');
     b.setAttribute('aria-pressed', String(on));
-    b.innerHTML = on ? 'GEKOZEN ✓' : 'VOEG TOE <span aria-hidden="true">+</span>';
+    b.innerHTML = on ? '✓ GEKOZEN' : 'VOEG TOE <span aria-hidden="true">+</span>';
   });
   document.querySelectorAll('[data-composer-feel]').forEach((b) => b.setAttribute('aria-pressed', String(plan.feelings.includes(b.dataset.composerFeel))));
   const sel = $('[data-composer-venue]');
@@ -63,9 +63,30 @@ function paint() {
     ? plan.supplierIds.map((id) => `${data.suppliers[id].name} (${data.suppliers[id].role.toLowerCase()})`).join(' · ')
     : 'Nog geen makers gekozen.';
   const count = (plan.venueId ? 1 : 0) + plan.supplierIds.length;
+  const countEl = bar.querySelector('[data-selection-count]');
+  const prev = Number(bar.dataset.count || 0);
   bar.hidden = count === 0;
-  bar.querySelector('[data-selection-count]').textContent = `${count} ${count === 1 ? 'ONDERDEEL' : 'ONDERDELEN'} GEKOZEN`;
+  countEl.textContent = `${count} ${count === 1 ? 'ONDERDEEL' : 'ONDERDELEN'} GEKOZEN`;
+  bar.dataset.count = String(count);
+  if (count !== prev) { bar.classList.remove('is-bumped'); void bar.offsetWidth; bar.classList.add('is-bumped'); }
+  // Uitklapbare lijst met de gekozen onderdelen, elk met een verwijderknop.
+  const esc = (t) => String(t).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+  const items = [
+    ...(plan.venueId ? [{ kind: 'LOCATIE', name: data.venues[plan.venueId].name, attr: `data-remove-venue="${esc(plan.venueId)}"` }] : []),
+    ...plan.supplierIds.map((id) => ({ kind: data.suppliers[id].role.toUpperCase(), name: data.suppliers[id].name, attr: `data-remove-supplier="${esc(id)}"` })),
+  ];
+  bar.querySelector('[data-selection-list]').innerHTML = items.map((x) => `<li><span class="tl-selection-bar__kind">${esc(x.kind)}</span><strong>${esc(x.name)}</strong><button type="button" ${x.attr} aria-label="Verwijder ${esc(x.name)} uit je plan">×</button></li>`).join('');
+  if (!count) setPanel(false);
 }
+
+function setPanel(open) {
+  const panel = bar.querySelector('[data-selection-panel]');
+  const t = bar.querySelector('[data-selection-toggle]');
+  panel.hidden = !open; t.setAttribute('aria-expanded', String(open));
+  t.querySelector('.tl-selection-bar__chev').textContent = open ? '↓' : '↑';
+}
+bar.querySelector('[data-selection-toggle]').addEventListener('click', () => setPanel(bar.querySelector('[data-selection-panel]').hidden));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !bar.querySelector('[data-selection-panel]').hidden) { setPanel(false); bar.querySelector('[data-selection-toggle]').focus(); } });
 
 function planText() {
   const v = plan.venueId && data.venues[plan.venueId];
@@ -112,14 +133,28 @@ document.addEventListener('click', async (e) => {
   }
   const vb = e.target.closest('[data-choose-venue]');
   const sb = e.target.closest('[data-choose-supplier]');
+  const rv = e.target.closest('[data-remove-venue]');
+  const rs = e.target.closest('[data-remove-supplier]');
+  if (rv || rs) {
+    const name = rv ? data.venues[plan.venueId]?.name : data.suppliers[rs.dataset.removeSupplier]?.name;
+    if (rv) plan.venueId = null; else plan.supplierIds = plan.supplierIds.filter((x) => x !== rs.dataset.removeSupplier);
+    statusEl.textContent = `${name} verwijderd.`;
+    bar.querySelector('[data-selection-live]').textContent = `${name} uit je plan gehaald.`;
+    persist(); paint();
+    bar.querySelector('[data-selection-list] button, [data-selection-toggle]')?.focus();
+    if (plan.answers && typeof renderTailored === 'function') renderTailored();
+    return;
+  }
   if (vb) {
     const id = vb.dataset.chooseVenue;
     plan.venueId = plan.venueId === id ? null : id; // één locatie tegelijk
     statusEl.textContent = plan.venueId ? `${data.venues[id].name} staat in je plan.` : 'Locatie uit je plan gehaald.';
+    bar.querySelector('[data-selection-live]').textContent = statusEl.textContent;
   } else if (sb) {
     const id = sb.dataset.chooseSupplier;
     plan.supplierIds = plan.supplierIds.includes(id) ? plan.supplierIds.filter((x) => x !== id) : [...plan.supplierIds, id];
     statusEl.textContent = plan.supplierIds.includes(id) ? `${data.suppliers[id].name} toegevoegd.` : `${data.suppliers[id].name} verwijderd.`;
+    bar.querySelector('[data-selection-live]').textContent = statusEl.textContent;
   } else if (e.target.closest('[data-plan-reset]')) {
     plan.venueId = null; plan.supplierIds = [];
     statusEl.textContent = 'Keuzes gewist.';

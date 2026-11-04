@@ -54,7 +54,7 @@ ${header({ current: 'locaties' })}
       <div class="tl-toolbar">
         <label class="tl-visually-hidden" for="sort">Sorteer locaties</label>
         <select id="sort" name="sort"><option value="">UITGELICHT</option><option value="naam">NAAM A—Z</option><option value="plaats">PLAATS A—Z</option><option value="capaciteit">MEESTE PLEK</option></select>
-        <div class="tl-segmented" role="group" aria-label="Weergave"><button type="button" data-view="beeld" aria-pressed="true">BEELD</button><button type="button" data-view="regio" aria-pressed="false">REGIO</button></div>
+        <div class="tl-segmented" role="group" aria-label="Weergave"><button type="button" data-view="beeld" aria-pressed="true">BEELD</button><button type="button" data-view="lijst" aria-pressed="false">LIJST</button><button type="button" data-view="regio" aria-pressed="false">REGIO</button></div>
       </div>
     </div>
     <div class="tl-active-filters" aria-label="Actieve filters" data-active-filters></div>
@@ -64,6 +64,7 @@ ${header({ current: 'locaties' })}
       ${venues.map((v, i) => catalogCard(v, i, data))}
       <p class="tl-results-subhead" data-unknown-head hidden>CAPACITEIT ONBEKEND IN DE BRON — VRAAG NA BIJ DE LOCATIE OF DEZE PLEK BIEDT VOOR JE GROEP</p>
     </div>
+    <div class="tl-catalog-more" data-more hidden><span class="tl-mono" data-more-label></span><button class="tl-button tl-button--outline" type="button" data-more-button>TOON MEER ↓</button></div>
     <div data-region-view hidden>
       ${provinces.map((p) => html`<div class="tl-region-group" data-region="${p}"><h3>${p}</h3><div class="tl-region-list">${venues.filter((v) => v.province === p).map((v) => html`<a href="${v.profileUrl}" target="_blank" rel="noopener noreferrer" data-region-item="${v.id}">${v.name} <span>${v.city} &nbsp;↗</span></a>`)}</div></div>`)}
     </div>
