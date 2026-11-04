@@ -60,6 +60,16 @@ ${header({ current: 'concepten', planHref: '#samenstellen' })}
   <figure class="tl-hero__image"><img src="${concept.hero.src}" alt="${concept.hero.alt}" fetchpriority="high"><figcaption>SFEERBEELD TER ILLUSTRATIE / CONCEPTVERKENNING — TOP LOCATIES × GREENBOOKINGS</figcaption></figure>
 </section>
 
+<section class="tl-summary" aria-label="Dit concept in het kort">
+  <dl class="tl-summary__facts">
+    <div><dt>VOOR WIE</dt><dd>${(concept.audiences || []).slice(0, 3).join(', ')}</dd></div>
+    <div><dt>GASTEN</dt><dd>${concept.guestCountMin}–${concept.guestCountMax} <span class="tl-summary__hint">indicatief</span></dd></div>
+    <div><dt>DUUR</dt><dd>${(concept.duration || '').split(',')[0]}</dd></div>
+    <div><dt>PRIJS</dt><dd>Op aanvraag <span class="tl-summary__hint">via offertes bij locatie en makers; wij noemen geen prijzen</span></dd></div>
+  </dl>
+  <a class="tl-button tl-button--accent tl-summary__cta" href="#samenstellen">${PLAN_CTA} ↓</a>
+</section>
+
 <div class="tl-signature" data-signature>
   <span class="tl-signature__intro">DIT CONCEPT GEEFT JE GASTEN</span>
   <span class="tl-signature__tags">${concept.feelings.map((f) => html`<span data-signature-feel="${f}">${feelingLabels[f].toUpperCase()}</span>`)}</span>
@@ -69,7 +79,7 @@ ${header({ current: 'concepten', planHref: '#samenstellen' })}
 
 <nav class="tl-section-nav" aria-label="Onderdelen van dit concept">
   <span class="tl-mono">HET CONCEPT / ${concept.number}</span>
-  <div class="tl-section-nav__tabs"><a href="#het-idee">IDEE</a><a href="#doelen">DOELEN</a><a href="#beleving">BELEVING</a><a href="#programma">PROGRAMMA</a><a href="#draaiboek">DRAAIBOEK</a><a href="#catering">CATERING</a><a href="#locaties">LOCATIES</a><a href="#leveranciers">MAKERS</a><a href="#uitnodiging">COMMUNICATIE</a><a href="#praktisch">HAALBAARHEID</a><a href="#impact">IMPACT</a><a href="#samenstellen">OP MAAT</a></div>
+  <div class="tl-section-nav__tabs tl-steps-nav" data-steps><a href="#het-idee" data-step="idee"><span class="tl-steps-nav__n">01</span> IDEE<span class="tl-steps-nav__check" aria-hidden="true">✓</span><span class="tl-visually-hidden" data-step-state></span></a><a href="#programma" data-step="programma"><span class="tl-steps-nav__n">02</span> PROGRAMMA<span class="tl-steps-nav__check" aria-hidden="true">✓</span><span class="tl-visually-hidden" data-step-state></span></a><a href="#locaties" data-step="locatie"><span class="tl-steps-nav__n">03</span> LOCATIE<span class="tl-steps-nav__check" aria-hidden="true">✓</span><span class="tl-visually-hidden" data-step-state></span></a><a href="#leveranciers" data-step="makers"><span class="tl-steps-nav__n">04</span> MAKERS<span class="tl-steps-nav__check" aria-hidden="true">✓</span><span class="tl-visually-hidden" data-step-state></span></a><a href="#samenstellen" data-step="plan"><span class="tl-steps-nav__n">05</span> PLAN<span class="tl-steps-nav__check" aria-hidden="true">✓</span><span class="tl-visually-hidden" data-step-state></span></a></div>
   <a class="tl-button tl-button--accent" href="#samenstellen">${PLAN_CTA} ↓</a>
 </nav>
 
@@ -130,13 +140,9 @@ ${cateringSection(concept, '06')}
   <div class="tl-supplier-grid">${supplierMatches.map((m, i) => supplierCard(supplierById[m.supplierId], m, i))}</div>
   <p class="tl-note tl-note--gap">* Inspiratiesuggesties, geen bevestigde samenwerkingsverbanden of beschikbaarheidsclaims. Rollen met ‘nog open’ hebben nog geen gekoppelde partner.</p>
 </section>
-${communicationSection(concept, '09')}
-${practicalSection(concept, '10')}
-${impactSection(concept, '11')}
-${playbookSection(data.playbook, '12')}
 
 <section class="tl-section tl-section--dark" id="samenstellen" aria-labelledby="planTitle" data-composer data-concept="${concept.slug}">
-  ${overline('13 / JOUW CONCEPT OP MAAT', 'KIES, BEANTWOORD, NEEM MEE')}
+  ${overline('09 / JOUW CONCEPT OP MAAT', 'KIES, BEANTWOORD, NEEM MEE')}
   <div class="tl-section-head tl-section-head--top">
     <h2 class="tl-display" id="planTitle">MAAK HET<br><span class="tl-accent">VAN JOU.</span></h2>
     <p>Kies hierboven één locatie en je makers, beantwoord de vragen en je krijgt het complete draaiboek op maat: tijden, planning met data, catering, bezetting, checklist en uitnodiging. Het is geen boeking of reservering. Daarna maak je het <a href="/eventconcepten/${concept.slug}/conceptplan/">conceptplan in twaalf hoofdstukken ↗</a> voor je opdrachtgever.</p>
@@ -150,6 +156,12 @@ ${playbookSection(data.playbook, '12')}
     ${takeaway(concept, data)}
   </div>
 </section>
+<div data-step-group="plan">
+${communicationSection(concept, '10')}
+${practicalSection(concept, '11')}
+${impactSection(concept, '12')}
+${playbookSection(data.playbook, '13')}
+</div>
 </main>
 <div class="tl-selection-bar" data-selection-bar hidden><span data-selection-count>0 ONDERDELEN GEKOZEN</span><a href="#samenstellen">${PLAN_CTA} ↓</a></div>
 ${footer({

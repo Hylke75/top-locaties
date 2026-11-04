@@ -1126,3 +1126,39 @@ main .tl-list li, main .tl-steplist li, main .tl-facts dd, .tl-catalog-card__des
 .tl-catalog-card__title.tl-fit { font-size:min(clamp(30px,3.3vw,52px), calc(100cqi / (var(--tl-w) * .8))) !important; }
 /* Lopende tekst: alleen echt lange woorden afbreken (minder streepjes in smalle kolommen) */
 main p, main li, main dd { hyphenate-limit-chars:12 5 5; }
+
+/* v2.0 — samenvatting onder de hero: in één oogopslag voor wie, hoeveel, hoe lang, wat het kost */
+.tl-summary { display:grid; grid-template-columns:1fr auto; align-items:end; gap:20px 40px; padding:clamp(24px,3vw,40px) var(--tl-gutter); background:var(--tl-paper); border-bottom:1px solid var(--tl-line); }
+.tl-summary__facts { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); margin:0; border-left:1px solid var(--tl-line); }
+.tl-summary__facts > div { padding:2px 20px; border-right:1px solid var(--tl-line); }
+.tl-summary__facts dt { font:400 11px/1.4 var(--tl-font-mono); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
+.tl-summary__facts dd { margin:0; font:400 18px/1.35 var(--tl-font-body); }
+.tl-summary__hint { display:block; margin-top:4px; font-size:14px; color:var(--tl-muted); }
+.tl-summary__cta { min-height:52px; }
+@media (max-width: 1024px) { .tl-summary { grid-template-columns:1fr; } .tl-summary__facts { grid-template-columns:repeat(2, minmax(0,1fr)); row-gap:20px; } }
+@media (max-width: 550px) { .tl-summary__facts > div { padding:2px 14px; } .tl-summary__cta { width:100%; } }
+
+/* Inklapbare blokken (draaiboek, aftelplanning, checklist, callsheet, plan B) */
+.tl-fold { margin-top:20px; border-top:1px solid var(--tl-line); border-bottom:1px solid var(--tl-line); }
+.tl-fold + .tl-fold { margin-top:-1px; }
+.tl-fold > summary { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:64px; padding:12px 0; cursor:pointer; list-style:none; }
+.tl-fold > summary::-webkit-details-marker { display:none; }
+.tl-fold > summary:focus-visible { outline:2px solid var(--tl-coral); outline-offset:3px; }
+.tl-fold__title { margin:0; font:400 clamp(20px,2.2vw,30px)/1 var(--tl-font-display); letter-spacing:-.04em; text-transform:uppercase; }
+.tl-fold__meta { display:inline-flex; align-items:center; gap:12px; flex-shrink:0; font:400 11px var(--tl-font-mono); text-transform:uppercase; }
+.tl-fold__meta::after { content:'+'; display:grid; place-items:center; width:36px; height:36px; border:1px solid currentColor; font-size:18px; transition:transform 200ms ease; }
+.tl-fold[open] > summary .tl-fold__meta::after { content:'–'; }
+.tl-fold__body { padding:4px 0 28px; }
+.tl-fold--on-dark { border-color:var(--tl-line-dark); }
+.tl-columns .tl-fold { margin-top:0; }
+@media (prefers-reduced-motion: reduce) { .tl-fold__meta::after { transition:none; } }
+@media print { .tl-fold__meta::after { display:none; } }
+
+/* Stappenbalk: vijf stappen, actieve stap gemarkeerd, vinkje bij stappen met een keuze */
+.tl-steps-nav { gap:clamp(12px,2.4vw,32px); }
+.tl-steps-nav a { display:inline-flex; align-items:center; gap:6px; min-height:44px; }
+.tl-steps-nav__n { color:var(--tl-muted); }
+.tl-steps-nav__check { display:none; color:var(--tl-ink); background:var(--tl-coral); width:18px; height:18px; place-items:center; font-size:11px; }
+.tl-steps-nav a[data-done="true"] .tl-steps-nav__check { display:inline-grid; }
+.tl-steps-nav a[aria-current="step"] { color:var(--tl-ink); text-decoration:underline; text-decoration-color:var(--tl-coral); text-decoration-thickness:2px; text-underline-offset:6px; }
+@media (max-width: 600px) { .tl-steps-nav__n { display:none; } .tl-steps-nav { gap:16px; } }

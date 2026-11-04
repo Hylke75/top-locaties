@@ -47,6 +47,8 @@ copy('src/client', 'assets/js');
 for (const img of ['hero-event.webp', 'festival-event.webp']) copy(`dist/${img}`, `assets/img/${img}`);
 for (const img of ['hero-event-800.webp', 'festival-event-640.webp']) copy(`src/assets/img/${img}`, `assets/img/${img}`);
 copy('src/assets/favicon.svg', 'assets/img/favicon.svg');
+// Eigen conceptbeelden (aangeleverd met gebruiksrecht; zie src/content/concept-images.json).
+if (fs.existsSync(path.join(root, 'src/assets/img/concepten'))) fs.cpSync(path.join(root, 'src/assets/img/concepten'), path.join(out, 'assets/img/concepten'), { recursive: true, filter: (f) => !path.basename(f).startsWith('.') });
 
 write('index.html', renderHome(data));
 data.concepts.forEach((c, i) => write(`eventconcepten/${c.slug}/index.html`, renderConcept(data, c, i)));

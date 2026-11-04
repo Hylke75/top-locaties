@@ -32,7 +32,7 @@ const statusEl = $('[data-plan-status]');
 const fallback = $('[data-plan-fallback]');
 const bar = $('[data-selection-bar]');
 
-function persist() { plan.updatedAt = new Date().toISOString(); plans[concept.slug] = plan; save(KEY, plans); }
+let persist = function persist() { plan.updatedAt = new Date().toISOString(); plans[concept.slug] = plan; save(KEY, plans); };
 
 function paint() {
   document.querySelectorAll('[data-venue-card]').forEach((card) => {
@@ -139,6 +139,35 @@ document.addEventListener('click', async (e) => {
   paint();
 });
 
+/* ---------- Stappenbalk: actieve stap en vinkjes bij stappen met een keuze ---------- */
+const STEP_OF = { 'het-idee': 'idee', doelen: 'idee', beleving: 'idee', programma: 'programma', draaiboek: 'programma', catering: 'programma', locaties: 'locatie', leveranciers: 'makers', samenstellen: 'plan' };
+const stepLinks = [...document.querySelectorAll('[data-steps] [data-step]')];
+const stepSections = [...document.querySelectorAll('main section[id]')].map((el) => ({ el, step: STEP_OF[el.id] || (el.closest('[data-step-group]')?.dataset.stepGroup) })).filter((x) => x.step);
+function paintSteps() {
+  const done = { idee: plan.feelings.length > 0, locatie: Boolean(plan.venueId), makers: plan.supplierIds.length > 0, plan: Boolean(plan.answers) };
+  for (const a of stepLinks) {
+    const k = a.dataset.step;
+    a.dataset.done = String(Boolean(done[k]));
+    a.querySelector('[data-step-state]').textContent = done[k] ? ' (keuze gemaakt)' : '';
+  }
+}
+let stepRaf = 0;
+function activeStep() {
+  stepRaf = 0;
+  const line = innerHeight * 0.3;
+  let cur = null;
+  for (const s of stepSections) if (s.el.getBoundingClientRect().top <= line) cur = s.step;
+  for (const a of stepLinks) { if (a.dataset.step === cur) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }
+}
+addEventListener('scroll', () => { if (!stepRaf) stepRaf = requestAnimationFrame(activeStep); }, { passive: true });
+activeStep();
+const _persist = persist;
+persist = function persistAndSteps() { _persist(); paintSteps(); };
+
+// Print: dichtgeklapte onderdelen gaan mee open op papier.
+addEventListener('beforeprint', () => document.querySelectorAll('details.tl-fold:not([open])').forEach((d) => { d.dataset.printOpened = '1'; d.open = true; }));
+addEventListener('afterprint', () => document.querySelectorAll('details[data-print-opened]').forEach((d) => { d.open = false; delete d.dataset.printOpened; }));
+
 persist();
 paint();
 
@@ -197,16 +226,16 @@ function renderTailored() {
   ${t.season ? `<p class="tl-warning">BUITEN / ${escT(t.season.season.toUpperCase())}: ${escT(t.season.text)}${t.season.risks.length ? ` Plan B: ${t.season.risks.map((r) => escT(r.mitigation)).join(' ')}` : ''}</p>` : ''}
   ${t.adjustment ? `<p class="tl-warning">BIJGESTELD — ${escT(t.adjustment.label.toUpperCase())}: ${escT(t.adjustment.text)}</p>` : ''}
   ${t.variations.length ? `<h4 class="tl-mono tl-subhead tl-body--gap">AANBEVOLEN VARIANT</h4><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${t.variations.map((v) => `<div><dt>${escT(v.title)}</dt><dd>${escT(v.text)}</dd></div>`).join('')}</dl>` : ''}
-  <h4 class="tl-mono tl-subhead tl-body--gap">DAGDRAAIBOEK — ${escT(a.start || '')}${t.timing ? ` TOT ${escT(t.timing.end)}` : ''}</h4>
-  <div class="tl-runbook tl-runbook--on-dark">${t.runbook.map((r) => `<div class="tl-runbook__row"><span class="tl-runbook__time">${escT(r.time)}</span><span class="tl-runbook__duration" data-label="DUUR">${escT(r.duration)}</span><span><strong class="tl-runbook__title">${escT(r.title)}</strong><span class="tl-runbook__desc">${escT(r.description)}</span></span><span class="tl-runbook__meta" data-label="WIE">${escT(r.owner)}</span><span class="tl-runbook__meta" data-label="WAAR">${escT(r.space)}</span></div>`).join('')}</div>
-  <h4 class="tl-mono tl-subhead tl-body--gap">AFTELPLANNING MET DATA</h4>
-  <div class="tl-checklist tl-checklist--on-dark">${t.planning.map((p, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(p.when)}${p.date ? ` — VANAF ${escT(formatDate(p.date).toUpperCase())}` : ''}</strong><span class="tl-runbook__desc">${escT(p.title)}</span>${p.tasks.map((x, j) => check(`p${i}-${j}`, x)).join('')}</div>`).join('')}</div>
+  <details class="tl-fold tl-fold--on-dark"><summary><h4 class="tl-fold__title">DAGDRAAIBOEK — ${escT(a.start || '')}${t.timing ? ` TOT ${escT(t.timing.end)}` : ''}</h4><span class="tl-fold__meta">OPEN</span></summary><div class="tl-fold__body">
+  <div class="tl-runbook tl-runbook--on-dark">${t.runbook.map((r) => `<div class="tl-runbook__row"><span class="tl-runbook__time">${escT(r.time)}</span><span class="tl-runbook__duration" data-label="DUUR">${escT(r.duration)}</span><span><strong class="tl-runbook__title">${escT(r.title)}</strong><span class="tl-runbook__desc">${escT(r.description)}</span></span><span class="tl-runbook__meta" data-label="WIE">${escT(r.owner)}</span><span class="tl-runbook__meta" data-label="WAAR">${escT(r.space)}</span></div>`).join('')}</div></div></details>
+  <details class="tl-fold tl-fold--on-dark"><summary><h4 class="tl-fold__title">AFTELPLANNING MET DATA</h4><span class="tl-fold__meta">OPEN</span></summary><div class="tl-fold__body">
+  <div class="tl-checklist tl-checklist--on-dark">${t.planning.map((p, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(p.when)}${p.date ? ` — VANAF ${escT(formatDate(p.date).toUpperCase())}` : ''}</strong><span class="tl-runbook__desc">${escT(p.title)}</span>${p.tasks.map((x, j) => check(`p${i}-${j}`, x)).join('')}</div>`).join('')}</div></div></details>
   <h4 class="tl-mono tl-subhead tl-body--gap">CATERING${t.guests ? ` VOOR ${t.guests} GASTEN` : ''}${t.diets.length ? ` · DIEETWENSEN: ${escT(t.diets.join(', ').toUpperCase())}` : ''}</h4>
   <div class="tl-menu tl-menu--on-dark">${(concept.catering?.moments || []).map((m) => `<div class="tl-menu__item"><span class="tl-menu__when">${escT(m.time)} / ${escT(m.moment)}</span><p class="tl-menu__dish">${escT(m.proposal)}</p><span class="tl-menu__meta">${escT(m.format)}</span></div>`).join('')}</div>
   <h4 class="tl-mono tl-subhead tl-body--gap">BEZETTING VOOR JOUW GROEP</h4>
   <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${t.crew.map((c) => `<div><dt>${escT(c.role)} — ${escT(c.count)}</dt><dd>${escT(c.task)}</dd></div>`).join('')}</dl>
-  <h4 class="tl-mono tl-subhead tl-body--gap">CHECKLIST</h4>
-  <div class="tl-checklist tl-checklist--on-dark">${(concept.checklist || []).map((g, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(g.group)}</strong>${g.items.map((x, j) => check(`c${i}-${j}`, x)).join('')}</div>`).join('')}${t.extraChecks.length ? `<div class="tl-checklist__group"><strong class="tl-checklist__title">Op maat</strong>${t.extraChecks.map((x, j) => check(`x${j}`, x)).join('')}</div>` : ''}</div>
+  <details class="tl-fold tl-fold--on-dark"><summary><h4 class="tl-fold__title">CHECKLIST</h4><span class="tl-fold__meta">OPEN</span></summary><div class="tl-fold__body">
+  <div class="tl-checklist tl-checklist--on-dark">${(concept.checklist || []).map((g, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(g.group)}</strong>${g.items.map((x, j) => check(`c${i}-${j}`, x)).join('')}</div>`).join('')}${t.extraChecks.length ? `<div class="tl-checklist__group"><strong class="tl-checklist__title">Op maat</strong>${t.extraChecks.map((x, j) => check(`x${j}`, x)).join('')}</div>` : ''}</div></div></details>
   <h4 class="tl-mono tl-subhead tl-body--gap">JOUW UITNODIGING</h4>
   <div class="tl-invite"><strong>${fillT(t.invitation.subject)}</strong><p>${fillT(t.invitation.text)}</p><p class="tl-note tl-on-dark-note">Herinnering: ${fillT(t.invitation.reminder)}</p><p class="tl-note tl-on-dark-note"><span class="tl-fill">gemarkeerd</span> = zelf invullen.</p></div>
   <h4 class="tl-mono tl-subhead tl-body--gap">OFFERTEAANVRAGEN — KLAAR OM TE VERSTUREN</h4>
@@ -214,8 +243,7 @@ function renderTailored() {
     <div class="tl-questionnaire__grid tl-questionnaire__grid--two"><label class="tl-field"><span>JOUW NAAM</span><input name="qname" autocomplete="name" value="${escT(a.contact || '')}" required></label><label class="tl-field"><span>JOUW E-MAILADRES</span><input name="qemail" type="email" autocomplete="email" required></label></div>
     <label class="tl-check tl-check--on-dark"><input type="checkbox" name="qconsent"> Mijn naam, e-mailadres en de aanvraag worden via Greenbookings gedeeld met ${escT(venueQ.to)}.</label>
     <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-quote-status>${plan.quotes?.[plan.venueId] ? `AL VERSTUURD OP ${escT(new Date(plan.quotes[plan.venueId]).toLocaleDateString('nl-NL'))}` : 'Makers hebben nog geen directe route: kopieer hun aanvraag hieronder.'}</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR AANVRAAG ↗</button></div></form>` : ''}<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
-  <h4 class="tl-mono tl-subhead tl-body--gap">CALLSHEET — WIE IS WIE OP DE DAG</h4>
-  <dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${r.name ? escT(r.name) : '<span class="tl-fill" title="Zelf invullen">naam</span>'}${r.party ? ` · ${escT(r.party)}` : ''} · <span class="tl-fill" title="Zelf invullen">telefoon</span></dd></div>`).join('')}</dl>
+  <details class="tl-fold tl-fold--on-dark"><summary><h4 class="tl-fold__title">CALLSHEET — WIE IS WIE OP DE DAG</h4><span class="tl-fold__meta">${callsheet(concept, t).length} ROLLEN</span></summary><div class="tl-fold__body"><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${r.name ? escT(r.name) : '<span class="tl-fill" title="Zelf invullen">naam</span>'}${r.party ? ` · ${escT(r.party)}` : ''} · <span class="tl-fill" title="Zelf invullen">telefoon</span></dd></div>`).join('')}</dl></div></details>
   <p class="tl-note tl-on-dark-note">Downloads, agenda en kopie vind je hieronder bij ‘Neem je plan mee’.</p>`;
   tOut.hidden = false;
 }

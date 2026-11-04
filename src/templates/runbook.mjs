@@ -4,6 +4,9 @@ import { html, pad, raw } from '../lib/html.mjs';
 import { overline } from './components.mjs';
 import { neutral } from '../lib/placeholders.mjs';
 
+/** Inklapbaar blok (standaard dicht): de kop blijft zichtbaar en vindbaar, de details op verzoek. */
+export const fold = (title, meta, body, id = '') => html`<details class="tl-fold"${id ? raw(` id="${id}"`) : ''}><summary><h3 class="tl-fold__title">${title}</h3><span class="tl-fold__meta">${meta}</span></summary><div class="tl-fold__body">${body}</div></details>`;
+
 const list = (items) => html`<ul class="tl-list">${items.map((x) => html`<li>${x}</li>`)}</ul>`;
 
 export function runbookTable(rows) {
@@ -30,9 +33,8 @@ export const runbookSection = (c, n) => html`
     <h2 class="tl-display" id="runTitle">VAN MINUUT<br>TOT <span class="tl-accent">MINUUT.</span></h2>
     <p>Het volledige dagdraaiboek: wat er gebeurt, hoe lang, wie verantwoordelijk is en waar. Maak het onderaan deze pagina op maat met jouw datum, starttijd en groep.</p>
   </div>
-  ${runbookTable(c.runbook || [])}
-  <h3 class="tl-display tl-display--sm tl-section-head tl-body--gap">DE AFTELPLANNING.</h3>
-  ${planningList(c.planning || [])}
+  ${fold('HET DRAAIBOEK, MINUUT VOOR MINUUT', `${(c.runbook || []).length} MOMENTEN`, runbookTable(c.runbook || []))}
+  ${fold('DE AFTELPLANNING', `${(c.planning || []).length} FASES`, planningList(c.planning || []))}
 </section>`;
 
 export const cateringSection = (c, n) => html`
@@ -74,16 +76,14 @@ export const practicalSection = (c, n) => html`
       <dl class="tl-facts tl-facts--stack">${(c.spaces || []).map((x) => html`<div><dt>${x.space}</dt><dd>${x.use}. ${x.requirements}.</dd></div>`)}</dl>
     </div>
   </div>
-  <h3 class="tl-mono tl-subhead tl-body--gap">03 / CHECKLIST</h3>
-  <div class="tl-checklist">${(c.checklist || []).map((g) => html`<div class="tl-checklist__group"><strong class="tl-checklist__title">${g.group}</strong>${list(g.items)}</div>`)}</div>
+  ${fold('03 / CHECKLIST', `${(c.checklist || []).reduce((n, g) => n + g.items.length, 0)} PUNTEN`, html`<div class="tl-checklist">${(c.checklist || []).map((g) => html`<div class="tl-checklist__group"><strong class="tl-checklist__title">${g.group}</strong>${list(g.items)}</div>`)}</div>`)}
   <div class="tl-columns tl-columns--equal tl-body--gap">
     <div>
       <h3 class="tl-mono tl-subhead">04 / VARIANTEN</h3>
       <dl class="tl-facts tl-facts--stack">${(c.variations || []).map((x) => html`<div><dt>${x.title}</dt><dd>${x.text}</dd></div>`)}</dl>
     </div>
     <div>
-      <h3 class="tl-mono tl-subhead">05 / RISICO’S &amp; PLAN B</h3>
-      <dl class="tl-facts tl-facts--stack">${(c.risks || []).map((x) => html`<div><dt>${x.risk}</dt><dd>${x.mitigation}</dd></div>`)}</dl>
+      ${fold('05 / RISICO’S & PLAN B', `${(c.risks || []).length} RISICO’S`, html`<dl class="tl-facts tl-facts--stack">${(c.risks || []).map((x) => html`<div><dt>${x.risk}</dt><dd>${x.mitigation}</dd></div>`)}</dl>`)}
     </div>
   </div>
   <div class="tl-columns tl-columns--equal tl-body--gap">
@@ -114,11 +114,12 @@ export const communicationSection = (c, n) => html`
       <p class="tl-note"><strong>HERINNERING:</strong> ${neutral(c.invitation?.reminder)}</p>
     </div>
   </div>
-  <h3 class="tl-mono tl-subhead tl-body--gap">COMMUNICATIEPLAN</h3>
+  ${fold('COMMUNICATIEPLAN', `${(c.communication || []).length} MOMENTEN`, html`
   <div class="tl-runbook tl-runbook--four" role="table" aria-label="Communicatieplan">
     <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">WANNEER</span><span role="columnheader">KANAAL</span><span role="columnheader">BOODSCHAP</span><span role="columnheader"></span></div>
     ${(c.communication || []).map((x) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${x.when}</span><span class="tl-runbook__duration" role="cell">${x.channel}</span><span role="cell"><span class="tl-runbook__desc">${neutral(x.message)}</span></span><span role="cell"></span></div>`)}
   </div>
+  `)}
 </section>`;
 
 /** 02 — Aanleiding, doelen op drie niveaus en doelgroepinzicht (Event ROI / Event Canvas). */
@@ -174,12 +175,14 @@ export function impactSection(c, n) {
     <h2 class="tl-display" id="impTitle">WANNEER IS HET<br><span class="tl-accent">GESLAAGD?</span></h2>
     <p>Een volle zaal zegt niet of het doel is bereikt. Daarom staat per doel vast wat je meet, hoe en wanneer. Sommige resultaten zie je direct, andere pas na 30, 60 of 90 dagen.</p>
   </div>
+  ${fold('MEETPLAN EN EVALUATIE', `${(c.kpis || []).length} KPI’S`, html`
   <div class="tl-runbook tl-runbook--four" role="table" aria-label="Meetplan">
     <div class="tl-runbook__row tl-runbook__row--head" role="row"><span role="columnheader">DOEL</span><span role="columnheader">WANNEER</span><span role="columnheader">KPI</span><span role="columnheader">HOE</span></div>
     ${(c.kpis || []).map((k) => html`<div class="tl-runbook__row" role="row"><span class="tl-runbook__time" role="cell">${k.goal}</span><span class="tl-runbook__duration" role="cell" data-label="WANNEER">${k.when}</span><span role="cell"><strong class="tl-runbook__title">${k.kpi}</strong></span><span class="tl-runbook__meta" role="cell" data-label="HOE">${k.how}</span></div>`)}
   </div>
-  <h3 class="tl-mono tl-subhead tl-body--gap">EVALUATIE</h3>
+  <h4 class="tl-mono tl-subhead tl-body--gap">EVALUATIE</h4>
   ${list(c.evaluation || [])}
+  `)}
   <p class="tl-note tl-note--gap">Let op: een evenement kan bijdragen aan een resultaat zonder het volledig te veroorzaken. Vergelijk waar mogelijk met een uitgangssituatie.</p>
 </section>`;
 }

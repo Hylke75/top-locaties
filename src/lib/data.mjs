@@ -70,10 +70,17 @@ export function loadData() {
 
   const feelings = feelingsDoc.feelings;
   const feelingLabels = Object.fromEntries(feelings.map((f) => [f.id, f.label]));
+  // Eigen hero-beeld per concept als het bestand bestaat (src/assets/img/concepten/<slug>.webp|.jpg); anders het algemene sfeerbeeld.
+  const imageDoc = fs.existsSync(path.join(root, 'concept-images.json')) ? read('concept-images.json') : { concepts: {} };
+  const ownHero = (c) => {
+    const file = ['webp', 'jpg'].map((ext) => `${c.slug}.${ext}`).find((f) => fs.existsSync(path.join(root, '../assets/img/concepten', f)));
+    const meta = imageDoc.concepts?.[c.slug] || {};
+    return file ? { src: `/assets/img/concepten/${file}`, alt: meta.alt || c.hero.alt, illustrative: true, credit: meta.credit || 'Top Locaties', own: true } : { ...c.hero, own: false };
+  };
   const concepts = conceptDoc.concepts
     .filter((c) => c.status === 'published')
     .sort((a, b) => a.priority - b.priority)
-    .map((c) => ({ ...c, dayPartLabel: (conceptDoc.dayParts || []).find((d) => d.id === c.dayPart)?.label || '' }));
+    .map((c) => ({ ...c, hero: ownHero(c), dayPartLabel: (conceptDoc.dayParts || []).find((d) => d.id === c.dayPart)?.label || '' }));
 
   // Bron leidend: elke gepubliceerde, aangesloten partner is doorzoekbaar (FO §0.4).
   // De redactionele laag is optioneel; zonder redactie tonen we alleen bronfeiten.
