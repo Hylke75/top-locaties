@@ -1010,3 +1010,14 @@ figure.tl-image-frame { margin:0; }
 @media (max-width: 1000px) { .tl-maker__collab { grid-template-columns:1fr; } }
 .tl-search + .tl-chip-row { margin-top:20px; }
 .tl-search { box-shadow:none; }
+
+/* Tabellen met een tekstlabel in de eerste kolom (entertainment, communicatie, meetplan): op mobiel gestapeld. */
+@media (max-width: 800px) {
+  .tl-runbook--four .tl-runbook__row { grid-template-columns:minmax(0,1fr); gap:6px; }
+  .tl-runbook--four .tl-runbook__row > * { grid-column:1 !important; grid-row:auto !important; }
+  .tl-runbook--four .tl-runbook__row > :nth-child(1) { order:0; font:400 11px/1.4 var(--tl-font-mono); letter-spacing:.02em; text-transform:uppercase; }
+  .tl-runbook--four .tl-runbook__row > :nth-child(3) { order:1; }
+  .tl-runbook--four .tl-runbook__row > :nth-child(2) { order:2; }
+  .tl-runbook--four .tl-runbook__row > :nth-child(4) { order:3; }
+  .tl-doc .tl-runbook--four .tl-runbook__row > :nth-child(1) { font:inherit; text-transform:none; }
+}
