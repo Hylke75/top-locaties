@@ -142,10 +142,18 @@ check(await page.locator('[data-plan-item="diner"]').count() === 0, 'plan verwij
 
 // 5. Compleet concept: programma-pop-up, keuzes in de composer, vragenlijst op maat
 await page.goto(base + '/eventconcepten/festival/');
-await page.locator('[data-open-dialog^="prog-festival-1"]').first().click();
-check(await page.isVisible('#prog-festival-1') && (await page.textContent('#prog-festival-1')).includes('ZO PAK JE HET AAN'), 'programma-onderdeel opent pop-up met aanpak');
-await page.keyboard.press('Escape');
-check(!(await page.isVisible('#prog-festival-1')), 'pop-up sluit met Escape');
+check(await page.locator('#prog-festival-1 .tl-agenda__panel').isHidden() && await page.locator('.tl-agenda__item').count() >= 4, 'programma is compact: onderdelen standaard dicht');
+await page.click('#prog-festival-1 summary');
+check(await page.isVisible('#prog-festival-1 .tl-agenda__panel') && (await page.textContent('#prog-festival-1')).includes('ZO PAK JE HET AAN'), 'klik op programma-onderdeel toont de aanpak ter plekke');
+await page.click('#prog-festival-2 summary');
+check(await page.isVisible('#prog-festival-2 .tl-agenda__panel') && await page.locator('#prog-festival-1 .tl-agenda__panel').isHidden(), 'één onderdeel tegelijk open');
+await page.focus('#prog-festival-3 summary');
+await page.keyboard.press('Enter');
+check(await page.isVisible('#prog-festival-3 .tl-agenda__panel'), 'toetsenbord: Enter opent een onderdeel');
+await page.goto(base + '/eventconcepten/festival/#prog-festival-4');
+check(await page.isVisible('#prog-festival-4 .tl-agenda__panel'), 'deeplink #prog-… opent dat onderdeel');
+const emojiArrows = await page.evaluate(() => (document.body.innerText.match(/[↗↘](?!\uFE0E)/g) || []).length);
+check(emojiArrows === 0, 'pijlen staan als tekstteken (geen emoji op iOS)');
 check(!(await page.content()).includes('>VOORBEELD<'), 'programma niet meer als voorbeeld gelabeld');
 await page.selectOption('[data-composer-venue]', 'beeld');
 check((await page.textContent('[data-plan-venue]')).includes('Beeld & Geluid'), 'locatie kiezen in de composer');

@@ -169,3 +169,10 @@ Alle onderstaande componenten staan in `components.css` (sectie v1.1) en in `sty
 | Briefing | `.tl-questionnaire` (donker) + `.tl-concept-card__role`, `.tl-brief-reasons(--watch)` | Acht vragen → drie concepten uit **verschillende** categorieën (BESTE MATCH, ANDERE INVALSHOEK, VERRASSENDE KEUZE). Uitleg met ✓, aandachtspunten met !, nooit een score. Doorklik vult de vragenlijst op maat vooraf in (`?brief=`, gefilterd op bekende velden). |
 | Conceptplan | `.tl-doc`, `.tl-doc__cover`, `.tl-doc__part`, `.tl-doc__item`, `.tl-doc__table--three`, `.tl-doc__input`, `.tl-doc__hint`, `.tl-doc__status` | Volgt het sjabloon *Eventconceptplan voor zakelijke evenementen*: projectgegevens, conceptbelofte en twaalf hoofdstukken. Inhoud uit het concept; wat alleen de organisator weet (eigenaar, nulmeting, ramingen, besluiten, status) is invulbaar en blijft in de browser. Geen bedragen van ons; prijs en beschikbaarheid altijd "op te vragen". Printbaar (richtvragen en knoppen verdwijnen in print). `noindex`. |
 | Kwaliteitstoets | beheer §19 | 100 punten (doelen 25, doelgroep 20, originaliteit 15, betrokkenheid 15, haalbaarheid 15, duurzaamheid/inclusie 10). Alleen de hoofdredacteur; naam en datum worden vastgelegd. Ingevuld en < 70 blokkeert publicatie. |
+
+## J. Uitbreidingen v1.5 — programma-agenda en tekstpijlen (4 november 2026)
+
+| Component | Klasse | Regel |
+|---|---|---|
+| Programma-agenda | `.tl-agenda`, `.tl-agenda__item` (native `<details name>`), `__summary`, `__time`, `__title`, `__toggle`, `__panel` | Compacte regel per onderdeel (tijd + titel + plus/min in een vierkant). Klik of Enter opent het onderdeel ter plekke met wat/waarom/resultaat, aanpak, wie, benodigdheden, draaiboekregels en tip; één tegelijk open. Deeplink `#prog-<slug>-<n>`; bij printen staan alle onderdelen open. Vervangt de programma-dialoog. |
+| Pijlen | `.tl-intro-label::before` (`--tl-arrow-se`, SVG-masker in koraal) | De grote pijl is een vector, geen teken. Inline pijlen (`↗ ↘` e.d.) en `✳` krijgen in de build U+FE0E (tekstpresentatie), zodat iOS ze nooit als emoji toont. |

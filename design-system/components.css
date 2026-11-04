@@ -31,7 +31,8 @@
 .tl-columns { display: grid; grid-template-columns: .72fr 1.4fr; gap: clamp(32px,6vw,100px); }
 .tl-columns--equal { grid-template-columns: 1fr 1fr; }
 .tl-intro-label { font: 400 13px/1.65 var(--tl-font-mono); max-width: 320px; }
-.tl-intro-label:before { content: '↘'; display: block; color: var(--tl-coral); font: 400 75px/.8 var(--tl-font-display); margin-bottom: 42px; }
+.tl-intro-label:before { content: ''; display: block; width: 62px; height: 62px; background: var(--tl-coral); -webkit-mask: var(--tl-arrow-se) center / contain no-repeat; mask: var(--tl-arrow-se) center / contain no-repeat; margin-bottom: 42px; }
+:root { --tl-arrow-se: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M10 10 L52 52 M52 22 V52 H22' fill='none' stroke='%23000' stroke-width='6' stroke-linecap='square'/%3E%3C/svg%3E"); }
 
 /* Brand and navigation */
 .tl-header { min-height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 19px var(--tl-gutter); border-bottom: var(--tl-border); background: var(--tl-paper); }
@@ -523,7 +524,7 @@ html:has(.tl-app) { scroll-padding-top: 80px; }
   .tl-values, .tl-facts { grid-template-columns:1fr; }
   .tl-facts > div + div { padding-left:0; border-left:0; }
   .tl-program { grid-template-columns:1fr; }
-  .tl-program .tl-image-frame { min-height:400px; }
+  .tl-program .tl-image-frame { min-height:0; aspect-ratio:16/10; }
   .tl-pieces { grid-template-columns:1fr; }
   .tl-piece { border-right:0; border-bottom:var(--tl-border); min-height:250px; }
   .tl-piece__title { margin:30px 0 15px; font-size:45px; }
@@ -840,3 +841,29 @@ figure.tl-image-frame { margin:0; }
   .tl-app .tl-doc__hint { display:none; }
   .tl-app .tl-doc__item, .tl-app .tl-doc__row { break-inside:avoid; }
 }
+
+/* v1.5 — programma als agenda: compacte regels, klik opent het onderdeel ter plekke */
+.tl-agenda { border-top:2px solid var(--tl-ink); }
+.tl-agenda__item { border-bottom:var(--tl-border); }
+.tl-agenda__summary { display:grid; grid-template-columns:72px minmax(0,1fr) 44px; gap:16px; align-items:center; min-height:64px; padding:12px 0; cursor:pointer; list-style:none; }
+.tl-agenda__summary::-webkit-details-marker { display:none; }
+.tl-agenda__summary:focus-visible { outline:3px solid var(--tl-cobalt); outline-offset:2px; }
+.tl-agenda__time { font:400 12px var(--tl-font-mono); }
+.tl-agenda__title { font:400 clamp(18px,1.9vw,26px)/1.02 var(--tl-font-display); letter-spacing:-.05em; text-transform:uppercase; transition:color 150ms ease; }
+.tl-agenda__summary:hover .tl-agenda__title, .tl-agenda__item[open] .tl-agenda__title { color:var(--tl-coral); }
+/* Plus/min als twee dunne lijnen in een vierkant: geen icoonfont of emoji */
+.tl-agenda__toggle { position:relative; width:44px; height:44px; border:1px solid var(--tl-ink); transition:background 150ms ease; }
+.tl-agenda__toggle::before, .tl-agenda__toggle::after { content:''; position:absolute; left:50%; top:50%; width:16px; height:1.5px; background:currentColor; transform:translate(-50%,-50%); transition:transform 200ms ease; }
+.tl-agenda__toggle::after { transform:translate(-50%,-50%) rotate(90deg); }
+.tl-agenda__item[open] .tl-agenda__toggle { background:var(--tl-ink); color:var(--tl-white); }
+.tl-agenda__item[open] .tl-agenda__toggle::after { transform:translate(-50%,-50%) rotate(0deg); }
+.tl-agenda__panel { padding:4px 0 30px 88px; animation:tl-agenda-in 250ms ease; }
+.tl-agenda__panel .tl-lead { margin-top:0; }
+@keyframes tl-agenda-in { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+@media (max-width: 800px) {
+  .tl-agenda__summary { grid-template-columns:52px minmax(0,1fr) 40px; gap:12px; }
+  .tl-agenda__toggle { width:40px; height:40px; }
+  .tl-agenda__panel { padding-left:0; }
+}
+@media (prefers-reduced-motion: reduce) { .tl-agenda__panel { animation:none; } .tl-agenda__toggle::before, .tl-agenda__toggle::after { transition:none; } }
+@media print { .tl-app .tl-agenda__panel { display:block !important; padding-left:0; } }

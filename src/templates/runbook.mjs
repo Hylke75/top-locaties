@@ -213,24 +213,19 @@ export function questionnaire(concept) {
 
 const toMin = (t) => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
 
-/** Programma met per onderdeel een dialoog (native <dialog>) met alle details. */
+/** Programma als compacte lijst (tijd + onderdeel); klik opent het onderdeel ter plekke (native <details>, één tegelijk). */
 export function programTimeline(concept) {
   const prog = concept.program || [];
   const rb = concept.runbook || [];
-  return html`<div class="tl-timeline">${prog.map((it, i) => {
+  return html`<div class="tl-agenda" data-program>${prog.map((it, i) => {
     const id = `prog-${concept.slug}-${i + 1}`;
     const from = toMin(it.time);
     const to = i + 1 < prog.length ? toMin(prog[i + 1].time) : Infinity;
     const rows = rb.filter((r) => { const m = toMin(r.time); return m != null && m >= from && m < to; });
     const d = it.details || {};
-    return html`<div class="tl-timeline__item"><span class="tl-timeline__time">${it.time}</span><div>
-      <h3 class="tl-timeline__title"><button class="tl-timeline__open" type="button" data-open-dialog="${id}" aria-haspopup="dialog">${it.title} <span aria-hidden="true">↗</span></button></h3>
-      <p class="tl-timeline__body">${it.description}</p>
-      <button class="tl-text-button" type="button" data-open-dialog="${id}" aria-haspopup="dialog">MEER OVER DIT ONDERDEEL ↗</button>
-    </div></div>
-    <dialog class="tl-dialog" id="${id}" aria-labelledby="${id}-t">
-      <div class="tl-dialog__head"><span class="tl-mono">${pad(i + 1)} / ${it.time} / ${concept.title.toUpperCase()}</span><button class="tl-dialog__close" type="button" data-close-dialog aria-label="Sluiten">SLUITEN ×</button></div>
-      <h2 class="tl-display tl-display--md" id="${id}-t">${it.title}</h2>
+    return html`<details class="tl-agenda__item" id="${id}" name="programma-${concept.slug}">
+    <summary class="tl-agenda__summary"><span class="tl-agenda__time">${it.time}</span><span class="tl-agenda__title">${it.title}</span><span class="tl-agenda__toggle" aria-hidden="true"></span></summary>
+    <div class="tl-agenda__panel">
       <p class="tl-lead">${d.intro || it.description}</p>
       ${(d.why || d.result) ? html`<dl class="tl-facts"><div><dt>WAT GEBEURT ER</dt><dd>${it.description}</dd></div><div><dt>WAAROM</dt><dd>${d.why || ''}</dd></div><div><dt>RESULTAAT</dt><dd>${d.result || ''}</dd></div></dl>` : ''}
       ${d.steps?.length ? html`<h3 class="tl-mono tl-subhead tl-body--gap">ZO PAK JE HET AAN (HOE)</h3><ol class="tl-steplist">${d.steps.map((x) => html`<li>${x}</li>`)}</ol>` : ''}
@@ -240,7 +235,8 @@ export function programTimeline(concept) {
       </div>
       ${rows.length ? html`<h3 class="tl-mono tl-subhead tl-body--gap">IN HET DRAAIBOEK</h3>${runbookTable(rows)}` : ''}
       ${d.tip ? html`<p class="tl-dialog__tip"><strong>TIP</strong> ${d.tip}</p>` : ''}
-    </dialog>`;
+    </div>
+  </details>`;
   })}</div>`;
 }
 

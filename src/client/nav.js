@@ -39,3 +39,14 @@ document.addEventListener('click', (e) => {
   else if (e.target.matches('dialog.tl-dialog')) e.target.close(); // klik op de achtergrond
 });
 document.querySelectorAll('dialog.tl-dialog').forEach((d) => d.addEventListener('close', () => { opener?.focus(); opener = null; }));
+
+// Programma-agenda (<details>): deeplink #prog-… opent dat onderdeel; printen toont alle onderdelen.
+function openFromHash() {
+  const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (el && el.matches('details.tl-agenda__item')) { el.open = true; el.scrollIntoView({ block: 'start' }); }
+}
+openFromHash();
+window.addEventListener('hashchange', openFromHash);
+let printOpened = [];
+window.addEventListener('beforeprint', () => { printOpened = [...document.querySelectorAll('details.tl-agenda__item:not([open])')]; printOpened.forEach((d) => { d.dataset.name = d.getAttribute('name') || ''; d.removeAttribute('name'); d.open = true; }); });
+window.addEventListener('afterprint', () => { printOpened.forEach((d) => { d.open = false; if (d.dataset.name) d.setAttribute('name', d.dataset.name); }); printOpened = []; });

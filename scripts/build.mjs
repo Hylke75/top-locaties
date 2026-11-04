@@ -84,5 +84,19 @@ const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>https://top-locaties.nl${u}</loc></url>`).join('\n')}\n</urlset>\n`);
 write('robots.txt', 'User-agent: *\nDisallow: /prototype/\nDisallow: /styleguide/\nSitemap: https://top-locaties.nl/sitemap.xml\n');
 
+// Pijlen en sterretjes altijd als tekstteken, nooit als emoji (iOS valt anders terug op het emojifont).
+// U+FE0E = tekstpresentatie. Het prototype in /prototype/ blijft ongemoeid.
+const TEXT_GLYPHS = /([↖↗↘↙↔↕✳▶])(?!︎)/g;
+(function textGlyphs(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = path.join(dir, e.name);
+    if (e.isDirectory()) { if (f !== path.join(out, 'prototype')) textGlyphs(f); continue; }
+    if (!/\.(html|js|css)$/.test(e.name)) continue;
+    const src = fs.readFileSync(f, 'utf8');
+    const next = src.replace(TEXT_GLYPHS, '$1︎');
+    if (next !== src) fs.writeFileSync(f, next);
+  }
+})(out);
+
 fs.writeFileSync(path.join(out, 'build-info.json'), JSON.stringify({ builtAt: new Date().toISOString(), pages: urls.length, partnerVenues: data.venues.length, suppliers: data.suppliers.length, concepts: data.concepts.length, syncedAt: data.snapshotMeta.syncedAt }, null, 2));
 console.log(`TOP LOCATIES BUILD / ${urls.length} pagina's → site/ (bronstand Greenbookings ${data.syncedDate})`);
