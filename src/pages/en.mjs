@@ -8,7 +8,7 @@ const EN = JSON.parse(readFileSync(new URL('../content/concepts.en.json', import
 const FEEL = { energie: 'Energy', verbinding: 'Connection', verwondering: 'Wonder', rust: 'Calm', focus: 'Focus', trots: 'Pride' };
 const DAY = { ochtend: 'MORNING / HALF DAY', middag: 'AFTERNOON / HALF DAY', dag: 'FULL DAY', avond: 'EVENING' };
 
-function enHeader(current) {
+function enHeader(current, nlPath = '/') {
   return html`<header class="tl-header">
   <a class="tl-wordmark" href="/en/" aria-label="Top Locaties — English home">TOP<br>LOCATIES<span class="tl-wordmark__star" aria-hidden="true">✳</span></a>
   <div class="tl-header__actions">
@@ -18,7 +18,7 @@ function enHeader(current) {
       <a href="/leveranciers/" hreflang="nl">SUPPLIERS (NL)</a>
       <a class="tl-button" href="/conceptplan/" hreflang="nl">BRIEFING (NL) ↗</a>
     </nav>
-    <a class="tl-lang" href="/" hreflang="nl" lang="nl" aria-label="Nederlandse versie">NL</a>
+    <a class="tl-lang" href="${nlPath}" hreflang="nl" lang="nl" aria-label="Nederlandse versie van deze pagina">NL</a>
     <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>
   </div>
 </header>`;
@@ -77,7 +77,7 @@ export function renderEnConcepts(data) {
   const meetings = data.concepts.filter((c) => c.category === 'vergaderen' || c.dayPart === 'ochtend');
   const day = data.concepts.filter((c) => !meetings.includes(c) && (c.dayPart === 'dag' || c.dayPart === 'middag'));
   const evening = data.concepts.filter((c) => !meetings.includes(c) && c.dayPart === 'avond');
-  const body = html`${enHeader('concepts')}
+  const body = html`${enHeader('concepts', '/eventconcepten/')}
 <main id="main">
 <section class="tl-section tl-section--mist" aria-labelledby="ecTitle">
   ${overline('EVENT CONCEPTS', `${data.concepts.length} COMPLETE CONCEPTS`)}

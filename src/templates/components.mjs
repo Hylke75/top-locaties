@@ -28,7 +28,8 @@ export function wordmark({ light = false, href = '/' } = {}) {
 export const PLAN_CTA = 'STEL MIJN PLAN SAMEN';
 export const navItems = () => NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON);
 
-export function header({ current = '', planHref = '/mijn-plan/' } = {}) {
+// EN-knop alleen op pagina's die een Engelse versie hebben (enPath); hij linkt naar precies die vertaling.
+export function header({ current = '', planHref = '/mijn-plan/', enPath = null } = {}) {
   if (current === 'plan') planHref = '/eventconcepten/op-gevoel/'; // op Mijn plan zelf: begin een nieuw plan
   const scroll = planHref.startsWith('#');
   return html`<header class="tl-header">
@@ -38,7 +39,7 @@ export function header({ current = '', planHref = '/mijn-plan/' } = {}) {
       ${navItems().map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
       <a class="tl-button tl-button--accent" href="${planHref}" data-plan-cta>${PLAN_CTA} ${scroll ? '↓' : '↗'}</a>
     </nav>
-    <a class="tl-lang" href="/en/" hreflang="en" lang="en" aria-label="English version">EN</a>
+    ${enPath ? html`<a class="tl-lang" href="${enPath}" hreflang="en" lang="en" aria-label="English version of this page">EN</a>` : ''}
     <button class="tl-menu-toggle" type="button" aria-expanded="false" aria-controls="tl-nav" data-menu-toggle><span data-menu-label>MENU</span><i class="tl-menu-toggle__bars" aria-hidden="true"></i></button>
   </div>
 </header>`;

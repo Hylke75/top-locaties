@@ -9,7 +9,7 @@ const crumb = (items, right) => html`<nav class="tl-crumb" aria-label="Kruimelpa
 /* ---------------- /eventconcepten/ ---------------- */
 export function renderConceptsOverview(data) {
   const { concepts, feelings, feelingLabels } = data;
-  const body = html`${header({ current: 'concepten' })}
+  const body = html`${header({ current: 'concepten', enPath: '/en/concepts/' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'EVENTCONCEPTEN' }], `COLLECTIE / ${pad(concepts.length)} CONCEPTEN`)}
 <main id="main">
 <section class="tl-section tl-section--taupe tl-section--ring" aria-labelledby="ovTitle" data-concept-overview>

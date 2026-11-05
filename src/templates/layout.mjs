@@ -17,6 +17,7 @@ ${html`<html lang="${lang}">
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonical}">
 ${(alternates || []).map((a) => html`<link rel="alternate" hreflang="${a.lang}" href="${SITE.origin + a.path}">`)}
+${alternates?.length ? html`<link rel="alternate" hreflang="x-default" href="${SITE.origin + (alternates.find((a) => a.lang === 'nl') || alternates[0]).path}">` : ''}
 ${noindex ? raw('<meta name="robots" content="noindex">') : ''}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'nl_NL'}">
