@@ -3,6 +3,28 @@ import { layout } from '../templates/layout.mjs';
 import { header, PLAN_CTA, footer, overline, venueCard, supplierCard, timeline, imageFrame, ext, SITE } from '../templates/components.mjs';
 import { questionnaire, programTimeline, composerChoices, playbookSection, runbookSection, cateringSection, practicalSection, communicationSection, goalsSection, experienceSection, impactSection } from '../templates/runbook.mjs';
 
+/** Eén aanvraagformulier: één verzending naar de gekozen locatie en alle gekozen makers (via /api/aanvraag/). */
+function requestForm(concept) {
+  return html`<form class="tl-questionnaire tl-request" data-request novalidate aria-labelledby="requestTitle">
+  <h3 class="tl-display tl-display--sm" id="requestTitle">VRAAG OFFERTES <span class="tl-accent">AAN.</span></h3>
+  <p class="tl-request__intro">Eén aanvraag naar je gekozen locatie en makers, met je plan en draaiboek erbij. Wat je hierboven al invulde, staat er al. Het is geen boeking: de partijen nemen zelf contact met je op.</p>
+  <div class="tl-request__to" data-request-to aria-live="polite"></div>
+  <div class="tl-questionnaire__grid tl-questionnaire__grid--two">
+    <label class="tl-field"><span>JOUW NAAM *</span><input name="name" autocomplete="name" required aria-describedby="reqErr"></label>
+    <label class="tl-field"><span>E-MAILADRES *</span><input name="email" type="email" autocomplete="email" required aria-describedby="reqErr"></label>
+    <label class="tl-field"><span>ORGANISATIE</span><input name="organisation" autocomplete="organization"></label>
+    <label class="tl-field"><span>DATUM</span><input name="event_date" type="date"></label>
+    <label class="tl-field"><span>AANTAL GASTEN</span><input name="guests" type="number" min="1" max="100000" inputmode="numeric" placeholder="${concept.guestCountMin}–${concept.guestCountMax}"></label>
+    <label class="tl-field tl-questionnaire__wide"><span>OPMERKING (OPTIONEEL)</span><textarea name="message" rows="3" maxlength="2000" placeholder="Bijvoorbeeld: flexibel in datum, graag ook een vegetarische optie."></textarea></label>
+  </div>
+  <div class="tl-visually-hidden" aria-hidden="true"><label>Laat dit veld leeg <input name="website" tabindex="-1" autocomplete="off"></label></div>
+  <label class="tl-check tl-check--on-dark"><input type="checkbox" name="consent" required> Je mag mijn naam, e-mailadres en deze aanvraag delen met de gekozen locatie en makers (via Top Locaties en Greenbookings). *</label>
+  <ul class="tl-request__errors" id="reqErr" data-request-errors hidden></ul>
+  <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-request-status>* verplicht</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR MIJN AANVRAAG ↗</button></div>
+</form>
+<div class="tl-request-done" data-request-done hidden tabindex="-1"></div>`;
+}
+
 /** Eén plek voor alles wat je meeneemt: downloads en (onder 'Meer opties') de minder gebruikte acties. */
 function takeaway(concept, data) {
   const b = 'tl-button tl-button--outline tl-button--on-dark';
@@ -154,6 +176,7 @@ ${cateringSection(concept, '06')}
     <label class="tl-visually-hidden" for="planFallback">Je conceptplan als tekst</label>
     <textarea class="tl-composer__fallback" id="planFallback" readonly hidden data-plan-fallback></textarea>
     ${questionnaire(concept)}
+    ${requestForm(concept)}
     ${takeaway(concept, data)}
   </div>
 </section>
@@ -206,8 +229,9 @@ ${footer({
     data: {
       concept: (({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }) => ({ slug, title, proposition, feelings, objective, audiences, guestCountMin, guestCountMax, runbook, planning, catering, entertainment, crew, spaces, checklist, variations, risks, budgetItems, sustainability, evaluation, invitation, duration }))(concept),
       feelings: Object.entries(feelingLabels).map(([id, label]) => ({ id, label })),
-      venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, url: v.profileUrl, page: `/locaties/${v.slug}/`, capacityMin: v.capacityMin, capacityMax: v.capacityMax }])),
-      suppliers: Object.fromEntries(data.suppliers.map((s) => { const m = supplierMatches.find((x) => x.supplierId === s.id); return [s.id, { name: s.name, role: m ? m.role : s.category, url: s.profileUrl }]; })),
+      venues: Object.fromEntries(data.venues.map((v) => [v.id, { slug: v.slug, name: v.name, city: v.city, url: v.profileUrl, page: `/locaties/${v.slug}/`, capacityMin: v.capacityMin, capacityMax: v.capacityMax }])),
+      suppliers: Object.fromEntries(data.suppliers.map((s) => { const m = supplierMatches.find((x) => x.supplierId === s.id); return [s.id, { slug: s.id, name: s.name, role: m ? m.role : s.category, url: s.profileUrl }]; })),
+      requestEndpoint: data.site.contact?.requestEndpoint || '/api/aanvraag/',
       quoteQuestions: data.playbook?.quoteQuestions || {},
       contactEndpoint: data.site.contact?.endpoint || null,
       origin: SITE.origin,

@@ -49,9 +49,36 @@ async function reload() { content = await call('GET', '/api/content'); }
 function route() {
   const [name, arg] = (location.hash.slice(1) || 'dashboard').split('/');
   document.querySelectorAll('[data-admin-nav] a').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === `#${name === 'concept' ? 'concepten' : name}`));
-  const views = { gids: guideView, dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView, statistiek: statsView };
+  const views = { gids: guideView, dashboard, concepten, concept: () => conceptEditor(arg), locaties, locatie: () => venueEditor(arg), makers, gevoelens, data: dataView, audit: auditView, statistiek: statsView, aanvragen: requestsView };
   (views[name] || dashboard)();
   window.scrollTo(0, 0);
+}
+
+/* ---------- Aanvragen (één aanvraag naar locatie + makers; de redactie stuurt door aan makers) ---------- */
+async function requestsView() {
+  view.innerHTML = `<section class="tl-section">${overline('AANVRAGEN', 'LAATSTE 200 / PERSOONSGEGEVENS — ALLEEN VOOR DOORSTUREN')}<h1 class="tl-display tl-display--md">DOOR<br><span class="tl-accent">STUREN.</span></h1><p class="tl-mono" data-req-status>LADEN…</p><div data-req></div></section>`;
+  const st = $('[data-req-status]');
+  let r; try { r = await call('GET', '/api/requests'); } catch (e) { st.textContent = e.message; return; }
+  if (!r.configured) { st.textContent = 'Nog niet ingesteld: start het beheer met TL_SUPABASE_SERVICE_KEY (service key van het Supabase-project top-locaties) in de omgeving.'; return; }
+  if (r.error) { st.textContent = `Niet geladen: ${r.error}. Is de migratie 20261105 uitgevoerd?`; return; }
+  const titles = Object.fromEntries(content.concepts.map((c) => [c.slug, c.title]));
+  const srcSite = Object.fromEntries((content.supplierSources || []).map((x) => [x.greenbookingsSlug, x.website || '']));
+  const supUrl = Object.fromEntries(((content.suppliers?.suppliers) || []).map((x) => [x.id, srcSite[x.greenbookingsSlug] || '']));
+  st.textContent = `${r.rows.length} aanvragen. Locatie ‘direct’ = al via Greenbookings bij de locatie. Makers krijgen hun deel via jou: kopieer de tekst en stuur hem door.`;
+  const when = (x) => new Date(x).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  $('[data-req]').innerHTML = r.rows.length ? r.rows.map((q) => `<article class="ad-request" data-req-id="${esc(q.id)}">
+    <div class="ad-request__head"><span class="tl-mono">${esc(when(q.created_at))} / ${esc((titles[q.base_slug] || q.base_slug).toUpperCase())}</span>
+      <label class="tl-mono">STATUS <select data-req-state>${['nieuw', 'doorgestuurd', 'afgehandeld', 'spam'].map((s) => `<option${s === q.status ? ' selected' : ''}>${s}</option>`).join('')}</select></label></div>
+    <p><strong>${esc(q.name)}</strong>${q.organisation ? ` · ${esc(q.organisation)}` : ''} · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a> · ${esc(q.event_date || 'datum open')} · ${esc(q.guests || '?')} gasten</p>
+    <p>Locatie: ${q.venue_name ? `${esc(q.venue_name)} — ${q.venue_forwarded ? 'direct ontvangen' : '<b>nog doorsturen</b>'}` : '—'} · Makers: ${(q.suppliers || []).map((x) => `${esc(x.name)}${supUrl[x.slug] ? ` (<a href="${esc(supUrl[x.slug])}" target="_blank" rel="noopener">site</a>)` : ''}`).join(', ') || '—'}</p>
+    ${q.message ? `<p><em>${esc(q.message)}</em></p>` : ''}
+    <details><summary>AANVRAAGTEKST PER PARTIJ</summary>${(q.plan?.quotes || []).map((x) => `<h4>${esc(x.to)}</h4><pre class="ad-pre">${esc(`Onderwerp: ${x.subject}\n\n${x.body}`)}</pre>`).join('') || '<p>Geen teksten meegestuurd.</p>'}</details>
+  </article>`).join('') : '<p>Nog geen aanvragen.</p>';
+  $('[data-req]').onchange = async (e) => {
+    const sel = e.target.closest('[data-req-state]'); if (!sel) return;
+    const id = sel.closest('[data-req-id]').dataset.reqId;
+    try { await call('POST', `/api/requests/${id}`, { status: sel.value }); st.textContent = `Status bijgewerkt: ${sel.value} ✓`; } catch (err) { st.textContent = err.message; }
+  };
 }
 
 /* ---------- Statistiek (anonieme tellers; geen personen) ---------- */
