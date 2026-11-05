@@ -33,6 +33,9 @@ De eerdere ontwerpstudie is geïnspireerd op de typografische lef en redactionel
 |---|---|---|
 | `--tl-ink` | `#292A2C` | Primair tekst, donkere secties, primaire zwarte CTA. |
 | `--tl-coral` | `#F45269` | Merkster, emotioneel accent, grote kleurvelden, geselecteerde interacties. |
+| `--tl-ink-on-coral` | `#1D1E20` | Tekst op koraalvlakken (4,97:1, WCAG AA). Alleen op koraal. |
+| `--tl-coral-deep` | `#C42D46` | Koraal accentwoorden op taupe/mist en kleine koraaltekst op papier (AA). |
+| `--tl-coral-on-dark` | `#F66B7F` | Kleine koraaltekst (labels) op inkt (5,0:1, AA). |
 | `--tl-cobalt` | `#2546BB` | Secundair opvallend accent, focus ring, uitgelichte eerste gevoelsmatch. |
 | `--tl-paper` | `#F6F5F2` | Warm, gebroken wit voor rustige content. |
 | `--tl-taupe` | `#D9C9BF` | Concepten, programma, warme editorial secties. |
@@ -43,7 +46,7 @@ De eerdere ontwerpstudie is geïnspireerd op de typografische lef en redactionel
 
 **Kleurverhouding:** circa 55% papier/wit, 25% taupe/mist, 15% inkt, 5% koraal/kobalt. Dit is een richting, geen pixelquota. Een volledige roze afsluiter mag het ritme juist doorbreken.
 
-**Belangrijk:** op koraal geen kleine witte tekst als het contrast onvoldoende is. Gebruik ink voor kleine labels. Kobalt met wit heeft veel sterker contrast. Focusring altijd duidelijk zichtbaar.
+**Belangrijk (besluit 05-11-2026, WCAG AA):** op koraal altijd `--tl-ink-on-coral`, nooit wit. Koraal als tekstkleur op taupe/mist wordt `--tl-coral-deep`; kleine koraaltekst op inkt `--tl-coral-on-dark`. Grote koraalvlakken en de ster blijven `#F45269`. Kobalt met wit heeft veel sterker contrast. Focusring altijd duidelijk zichtbaar.
 
 Verboden: anonieme paarse gradients, teal, arbitraire pastels, neon-glows, glassmorphism, skeuomorphism en kleur als willekeurige decoratie.
 

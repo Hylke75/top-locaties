@@ -1239,3 +1239,20 @@ main input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), main
   .tl-venue-facts dt { margin:2px 0 0; }
 }
 .tl-catalog--list .tl-catalog-card__save { top:0; right:0; width:44px; height:44px; font-size:18px; }
+
+/* v2.1 — contrast (WCAG AA). Tekst op koraal in --tl-ink-on-coral; koraal accentwoorden op taupe/mist in --tl-coral-deep. */
+.tl-section--coral, .tl-button:hover, .tl-button--accent, .tl-featured__arrow, .tl-search > .tl-button, .tl-footer, .tl-marquee, .tl-signature,
+.tl-venue[data-selected="true"] .tl-venue__choose, .tl-supplier[data-selected="true"] .tl-supplier__choose, .tl-active-filters button:hover,
+.tl-catalog-card__save[aria-pressed="true"], .tl-region-list a:hover, .tl-selection-bar a, .tl-warning, .tl-chip-button--on-dark[aria-pressed="true"],
+.tl-chip-button--on-dark:hover, .tl-journey__step:nth-child(4), .tl-slide__journey li.is-peak, .tl-account__stage[data-stage="afgerond"],
+.tl-quickstart__item--accent, .tl-account__tabs [role="tab"][aria-selected="true"], .tl-steps-nav__check, .tl-selection-bar__list button:hover { --tl-ink: var(--tl-ink-on-coral); --tl-muted: var(--tl-ink-on-coral); color:var(--tl-ink-on-coral); }
+.tl-footer *, .tl-journey__step:nth-child(4) *, .tl-quickstart__item--accent *, .tl-marquee *, .tl-signature * { color:inherit; }
+.tl-signature .tl-signature__tags span { color:var(--tl-white); }
+/* Kleine koraaltekst: op inkt lichter, op papier dieper */
+.tl-ecosystem strong, .tl-selection-bar__label, .tl-section--dark .tl-mono.tl-accent, .tl-section--dark .tl-overline .tl-accent { color:var(--tl-coral-on-dark); }
+.tl-results-head .tl-accent, .tl-mono .tl-accent, .tl-mono.tl-accent { color:var(--tl-coral-deep); }
+.tl-section--dark .tl-mono .tl-accent { color:var(--tl-coral-on-dark); }
+.tl-button:hover, .tl-button--accent, .tl-search > .tl-button, .tl-selection-bar a, .tl-warning, .tl-steps-nav__check, .tl-selection-bar__list button:hover,
+.tl-venue[data-selected="true"] .tl-venue__choose, .tl-supplier[data-selected="true"] .tl-supplier__choose { color:var(--tl-ink-on-coral) !important; }
+.tl-section--taupe .tl-accent, .tl-section--mist .tl-accent, .tl-hero__copy .tl-accent, .tl-finder-top .tl-accent, .tl-feeling-head .tl-accent, .tl-overview-head .tl-accent { color:var(--tl-coral-deep); }
+.tl-signature .tl-signature__tags span[data-chosen="true"] { color:var(--tl-ink); }
