@@ -116,9 +116,9 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'ZOEKEN' }], 'CONCEPTEN, LOCATIE
 <section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="searchTitle">
   ${overline('01 / ZOEKEN', `${data.concepts.length} CONCEPTEN / ${data.venues.length} LOCATIES / ${data.suppliers.length} MAKERS`)}
   <h1 class="tl-display" id="searchTitle">WAT ZOEK<br><span class="tl-accent">JE?</span></h1>
-  <form class="tl-search" role="search" data-search-form action="/zoeken/">
+  <form class="tl-search" role="search" data-search-form action="/zoeken/" toolname="top_locaties_zoekpagina" tooldescription="Zoek op top-locaties.nl naar eventconcepten, aangesloten partnerlocaties en makers.">
     <label class="tl-visually-hidden" for="q">Zoek op concept, plaats, soort bijeenkomst of aantal personen</label>
-    <input class="tl-search__input" id="q" name="q" type="search" autocomplete="off" placeholder="Bijv. vergaderen utrecht 20 personen" data-search-input>
+    <input class="tl-search__input" id="q" name="q" type="search" autocomplete="off" placeholder="Bijv. vergaderen utrecht 20 personen" data-search-input toolparamdescription="Zoekvraag in het Nederlands, bijv. plaats, soort bijeenkomst en aantal personen">
     <button class="tl-button tl-button--accent" type="submit">ZOEK ↓</button>
   </form>
   <div class="tl-chip-row" role="group" aria-label="Soort resultaat">

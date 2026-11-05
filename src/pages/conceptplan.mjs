@@ -22,12 +22,12 @@ ${crumb([{ href: '/', label: 'HOME' }, { href: '/eventconcepten/', label: 'EVENT
     <p class="tl-intro-label">Een eventbureau begint met een briefing en komt terug met drie richtingen. Dat doen wij ook: beantwoord acht vragen en je krijgt drie wezenlijk verschillende concepten uit onze bibliotheek, met de reden waarom ze passen en waar je op moet letten.</p>
     <h1 class="tl-display" id="briefTitle">ACHT<br>VRAGEN.<br><span class="tl-accent">DRIE</span><br>CONCEPTEN.</h1>
   </div>
-  <form class="tl-questionnaire" data-brief-form aria-describedby="briefNote" novalidate>
+  <form class="tl-questionnaire" data-brief-form aria-describedby="briefNote" novalidate toolname="top_locaties_briefing" tooldescription="Beantwoord de briefing (doel, aantal gasten, gevoel, dagdeel, regio) en krijg drie passende eventconcepten uit Top Locaties.">
     <div class="tl-questionnaire__grid">
       <label class="tl-field tl-questionnaire__wide">${q(1, 'AANLEIDING — WAAROM NU?')}<select name="aanleiding"><option value="">Kies een aanleiding</option>${occasionTypes.map((o) => html`<option value="${o.id}">${o.label}</option>`)}</select></label>
-      <label class="tl-field tl-questionnaire__wide">${q(2, 'DOEL — WAT MOET HET OPLEVEREN? *')}<input name="doel" required aria-required="true" aria-describedby="briefErr" placeholder="Bijv. dat iedereen de nieuwe koers kan navertellen"></label>
+      <label class="tl-field tl-questionnaire__wide">${q(2, 'DOEL — WAT MOET HET OPLEVEREN? *')}<input name="doel" toolparamdescription="Wat moet het event opleveren, in één zin" required aria-required="true" aria-describedby="briefErr" placeholder="Bijv. dat iedereen de nieuwe koers kan navertellen"></label>
       <label class="tl-field">${q(3, 'DOELGROEP')}<input name="doelgroep" placeholder="Bijv. alle medewerkers, relaties"></label>
-      <label class="tl-field">${q(4, 'AANTAL GASTEN *')}<input name="gasten" type="number" min="5" max="5000" inputmode="numeric" required aria-required="true" aria-describedby="briefErr" placeholder="Bijv. 80"></label>
+      <label class="tl-field">${q(4, 'AANTAL GASTEN *')}<input name="gasten" type="number" min="5" max="5000" inputmode="numeric" toolparamdescription="Verwacht aantal gasten (5–5000)" required aria-required="true" aria-describedby="briefErr" placeholder="Bijv. 80"></label>
       <fieldset class="tl-field tl-questionnaire__wide"><legend>${pad(5)} / GEVOEL — WAT NEMEN ZE MEE NAAR HUIS? (MAX. TWEE)</legend><div class="tl-chip-set">
         ${feelings.map((f) => html`<button class="tl-chip-button" type="button" data-brief-feel="${f.id}" aria-pressed="false">${f.label.toUpperCase()} +</button>`)}
       </div></fieldset>

@@ -18,7 +18,8 @@ ${html`<html lang="${lang}">
 <link rel="canonical" href="${canonical}">
 ${(alternates || []).map((a) => html`<link rel="alternate" hreflang="${a.lang}" href="${SITE.origin + a.path}">`)}
 ${alternates?.length ? html`<link rel="alternate" hreflang="x-default" href="${SITE.origin + (alternates.find((a) => a.lang === 'nl') || alternates[0]).path}">` : ''}
-${noindex ? raw('<meta name="robots" content="noindex">') : ''}
+${noindex ? raw('<meta name="robots" content="noindex">') : html`<link rel="alternate" type="text/markdown" href="${path}index.md">`}
+<link rel="ai-catalog" href="/.well-known/ai-catalog.json">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'nl_NL'}">
 <meta property="og:site_name" content="Top Locaties">
@@ -50,6 +51,7 @@ ${styles.map((st) => html`<link rel="stylesheet" href="/assets/css/${st}">`)}
 ${body}
 ${data ? html`<script type="application/json" id="tl-data">${raw(JSON.stringify(data).replace(/</g, '\\u003c'))}</script>` : ''}
 <script type="module" src="/assets/js/nav.js"></script>
+<script type="module" src="/assets/js/agent-tools.js"></script>
 <script>/* Vercel Web Analytics: cookieloos, geen persoonsgegevens; alleen op het productiedomein. */
 if (/(^|\.)top-locaties\.nl$/.test(location.hostname) && !navigator.doNotTrack?.startsWith('1')) { window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); }; const s = document.createElement('script'); s.defer = true; s.src = '/_vercel/insights/script.js'; document.head.append(s); }</script>
 ${scripts.map((s) => html`<script type="module" src="/assets/js/${s}"></script>`)}

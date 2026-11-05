@@ -6,5 +6,24 @@
   "redirects": [
     { "source": "/hupr.html", "destination": "/", "permanent": true },
     { "source": "/locaties.html", "destination": "/locaties/", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/", "has": [{ "type": "header", "key": "accept", "value": "(?<md>.*text/markdown.*)" }], "destination": "/index.md" },
+    { "source": "/:path*/", "has": [{ "type": "header", "key": "accept", "value": "(?<md>.*text/markdown.*)" }], "destination": "/:path*/index.md" }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Link", "value": "</.well-known/api-catalog>; rel=\"api-catalog\", </openapi.json>; rel=\"service-desc\"; type=\"application/vnd.oai.openapi+json\", </docs/api/>; rel=\"service-doc\"; type=\"text/html\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </.well-known/ai-catalog.json>; rel=\"describedby\"; type=\"application/json\"" }
+      ]
+    },
+    { "source": "/(.*)", "headers": [{ "key": "Vary", "value": "Accept" }] },
+    { "source": "/(.*)\\.md", "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }, { "key": "Access-Control-Allow-Origin", "value": "*" }] },
+    { "source": "/.well-known/api-catalog", "headers": [{ "key": "Content-Type", "value": "application/linkset+json" }, { "key": "Access-Control-Allow-Origin", "value": "*" }] },
+    { "source": "/.well-known/ai-catalog.json", "headers": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Access-Control-Allow-Origin", "value": "*" }] },
+    { "source": "/.well-known/agent-skills/(.*)", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }] },
+    { "source": "/openapi.json", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }] },
+    { "source": "/data/(.*)", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }] }
   ]
 }
