@@ -19,6 +19,7 @@ const tokens = new Map(); // token -> userId
 const rows = []; // { id, user_id, base_slug, title, data, updated_at, share_token }
 const members = []; // { concept_id, email, role }
 const versions = []; // { id, concept_id, title, data, saved_by_email, created_at }
+const sharedPlans = new Map(); // id -> { base_slug, data, created_at, expires_at }
 const regs = []; // { id, concept_id, name, email, organisation, diet, remarks, created_at }
 let n = 0;
 const json = (route, status, body) => route.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
@@ -43,6 +44,14 @@ async function supabase(route) {
   if (url.pathname === '/auth/v1/logout') return json(route, 204, {});
   const email = [...users.values()].find((u) => u.id === uid)?.email;
   const roleOf = (r) => (r.user_id === uid ? 'owner' : members.find((m) => m.concept_id === r.id && m.email === email)?.role);
+  if (url.pathname === '/rest/v1/rpc/create_shared_plan') {
+    // Zelfde filter als de database: geen naam, organisatie, contact of e-mail.
+    const { contact, organisatie, email: em, naam, ...answers } = body.p_data.answers || {};
+    const id = [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join('');
+    sharedPlans.set(id, { base_slug: body.p_slug, data: { ...body.p_data, answers }, created_at: new Date().toISOString(), expires_at: new Date(Date.now() + 180 * 864e5).toISOString() });
+    return json(route, 200, id);
+  }
+  if (url.pathname === '/rest/v1/rpc/get_shared_plan') return json(route, 200, sharedPlans.has(body.p_id) ? [sharedPlans.get(body.p_id)] : []);
   if (url.pathname === '/rest/v1/rpc/shared_concept') {
     const r = rows.find((x) => x.share_token && x.share_token === body?.token);
     return json(route, 200, r ? [{ title: r.title, base_slug: r.base_slug, data: r.data, updated_at: r.updated_at }] : []);
@@ -335,6 +344,29 @@ check(dl4.suggestedFilename() === 'het-diner-dat-verbindt.pptx' && pptOk, 'Power
 await page.goto(base + '/zoeken/?q=' + encodeURIComponent('vergaderen den haag 20 personen'));
 await page.waitForSelector('.tl-search__item');
 check((await page.textContent('[data-search-results]')).includes('De vergadering die werkt'), 'zoeken vindt concepten en locaties');
+// Fase 6: deellink zonder persoonsgegevens, overnemen en meenemen naar het account
+await page.goto(base + '/eventconcepten/teamdag/');
+await page.evaluate(() => { const p = JSON.parse(localStorage.getItem('tl-plans-v1') || '{}'); p.teamdag = { feelings: ['verbinding'], venueId: null, supplierIds: [], answers: { gasten: '45', organisatie: 'Geheim BV', contact: 'Jan Jansen', datum: '2027-04-02' } }; localStorage.setItem('tl-plans-v1', JSON.stringify(p)); });
+await page.reload();
+await page.click('[data-composer] [data-choose-venue] >> nth=0').catch(() => page.click('[data-choose-venue] >> nth=0'));
+await page.click('[data-share-plan]');
+await page.waitForSelector('[data-takeaway-status] a');
+const planShareUrl = await page.getAttribute('[data-takeaway-status] a', 'href');
+const storedPlan = [...sharedPlans.values()].at(-1);
+check(/\/mijn-plan\/\?p=[a-f0-9]{32}$/.test(planShareUrl), 'deellink: alleen een willekeurig id in de URL');
+check(storedPlan && !JSON.stringify(storedPlan).includes('Geheim BV') && !JSON.stringify(storedPlan).includes('Jan Jansen') && storedPlan.data.answers.gasten === '45' && storedPlan.data.venueId, 'deellink: keuzes mee, geen naam of organisatie');
+const anon2 = await (await (async () => { const c = await browser.newContext(); await c.route(`${SB}/**`, supabase); return c; })()).newPage();
+await anon2.goto(planShareUrl);
+await anon2.waitForSelector('[data-adopt]');
+check((await anon2.textContent('[data-shared-plan]')).includes('De teamdag buiten'), 'gedeeld plan opent zonder account');
+await anon2.click('[data-adopt]');
+check(await anon2.evaluate(() => Boolean(JSON.parse(localStorage.getItem('tl-plans-v1') || '{}').teamdag?.venueId)), 'gedeeld plan overgenomen in de eigen browser');
+const rowsBefore = rows.length;
+await page.goto(base + '/mijn-plan/');
+await page.waitForSelector('[data-keep-in]:not([hidden])');
+await page.click('[data-keep-import]');
+await page.waitForFunction(() => /IN JE ACCOUNT ✓|staan al in je account/.test(document.querySelector('[data-keep-status]').textContent));
+check(rows.length > rowsBefore && rows.some((r) => / \(mijn plan\)$/.test(r.title) && r.data.guests === 45), 'lokale plannen gaan mee naar het account (met antwoorden)');
 check(errors.length === 0, `geen JS-fouten (${errors.join(' | ')})`);
 
 await browser.close();

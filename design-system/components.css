@@ -1256,3 +1256,6 @@ main input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), main
 .tl-venue[data-selected="true"] .tl-venue__choose, .tl-supplier[data-selected="true"] .tl-supplier__choose { color:var(--tl-ink-on-coral) !important; }
 .tl-section--taupe .tl-accent, .tl-section--mist .tl-accent, .tl-hero__copy .tl-accent, .tl-finder-top .tl-accent, .tl-feeling-head .tl-accent, .tl-overview-head .tl-accent { color:var(--tl-coral-deep); }
 .tl-signature .tl-signature__tags span[data-chosen="true"] { color:var(--tl-ink); }
+/* Mijn plannen: gedeeld plan bovenaan */
+.tl-shared-plan { margin-bottom:32px; }
+.tl-plan-item--shared { border:1px solid var(--tl-coral); padding:20px; }

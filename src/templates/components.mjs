@@ -12,8 +12,7 @@ const NAV = [
   { key: 'locaties', href: '/locaties/', label: 'LOCATIES' },
   { key: 'leveranciers', href: '/leveranciers/', label: 'LEVERANCIERS' },
   { key: 'zelf', href: '/zelf-organiseren/', label: 'ZELF ORGANISEREN' },
-  { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLAN' },
-  { key: 'account', href: '/account/', label: 'ACCOUNT' },
+  { key: 'plan', href: '/mijn-plan/', label: 'MIJN PLANNEN' }, // één begrip: plannen in de browser én in je account
   { key: 'zoeken', href: '/zoeken/', label: 'ZOEKEN' },
 ];
 
@@ -26,7 +25,7 @@ export function wordmark({ light = false, href = '/' } = {}) {
 
 // Eén vaste hoofdactie op alle pagina's. Op een conceptpagina scrolt hij naar het samenstellen (↓), elders opent hij Mijn plan (↗).
 export const PLAN_CTA = 'STEL MIJN PLAN SAMEN';
-export const navItems = () => NAV.filter((n) => n.key !== 'account' || ACCOUNTS_ON);
+export const navItems = () => NAV;
 
 // EN-knop alleen op pagina's die een Engelse versie hebben (enPath); hij linkt naar precies die vertaling.
 export function header({ current = '', planHref = '/mijn-plan/', enPath = null } = {}) {
@@ -36,7 +35,7 @@ export function header({ current = '', planHref = '/mijn-plan/', enPath = null }
   ${wordmark()}
   <div class="tl-header__actions">
     <nav class="tl-nav" id="tl-nav" aria-label="Hoofdnavigatie" data-open="false">
-      ${navItems().map((n) => html`<a href="${n.href}"${n.key === current ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
+      ${navItems().map((n) => html`<a href="${n.href}"${n.key === current || (n.key === 'plan' && current === 'account') ? raw(' aria-current="page"') : ''}>${n.label}</a>`)}
       <a class="tl-button tl-button--accent" href="${planHref}" data-plan-cta>${PLAN_CTA} ${scroll ? '↓' : '↗'}</a>
     </nav>
     ${enPath ? html`<a class="tl-lang" href="${enPath}" hreflang="en" lang="en" aria-label="English version of this page">EN</a>` : ''}

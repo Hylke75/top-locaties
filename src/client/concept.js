@@ -340,6 +340,18 @@ if (tForm) {
   // Acties uit 'Neem je plan mee' werken ook zonder ingevulde vragenlijst (dan met de standaardantwoorden).
   document.querySelector('[data-composer]').addEventListener('click', async (e) => {
     if (e.target.closest('[data-tailor-print]')) { window.print(); return; }
+    if (e.target.closest('[data-share-plan]')) {
+      // Deellink: alleen keuzes (geen naam/e-mail) naar de server; de link bevat alleen een willekeurig id.
+      const st = document.querySelector('[data-takeaway-status]');
+      st.textContent = 'DEELLINK WORDT GEMAAKT…';
+      try {
+        const { sharePlan } = await import('./lib/sharedplan.js');
+        const { url } = await sharePlan(concept.slug, plan);
+        let copied = false; try { await navigator.clipboard.writeText(url); copied = true; } catch {}
+        st.innerHTML = `${copied ? 'LINK GEKOPIEERD ✓ ' : 'JOUW LINK: '}<a href="${escT(url)}">${escT(url)}</a> — 180 dagen geldig, zonder naam of e-mail.`;
+      } catch (err) { st.textContent = err.message; }
+      return;
+    }
     if (e.target.closest('[data-tailor-ics]')) {
       const t = currentTailor(); const a = t.answers; const st = document.querySelector('[data-takeaway-status]');
       if (!a.datum) { st.textContent = 'Vul eerst een datum in (vraag 02), dan zetten we het event en de planning in je agenda.'; return; }

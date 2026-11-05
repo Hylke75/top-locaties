@@ -17,6 +17,7 @@ function takeaway(concept, data) {
     <button class="${b}" type="button" data-download-budget>BEGROTING (CSV)</button>
     <button class="${b}" type="button" data-tailor-ics>AGENDA (.ICS)</button>
     <a class="${b}" href="/eventconcepten/${concept.slug}/conceptplan/">CONCEPTPLAN ↗</a>
+    <button class="${b}" type="button" data-share-plan>DEEL MET EEN LINK</button>
   </div>
   <p class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-tools-status data-takeaway-status></p>
   <details class="tl-more">
@@ -149,7 +150,7 @@ ${cateringSection(concept, '06')}
   </div>
   <div class="tl-composer tl-composer--bare">
     ${composerChoices(concept, data)}
-    <p class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-plan-status>Kies wat bij jouw evenement past. Je keuzes worden alleen in deze browser bewaard.</p>
+    <p class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-plan-status>Kies wat bij jouw evenement past. Je keuzes staan in deze browser; in <a href="/mijn-plan/">Mijn plannen</a> bewaar je ze in een account of deel je ze met een link.</p>
     <label class="tl-visually-hidden" for="planFallback">Je conceptplan als tekst</label>
     <textarea class="tl-composer__fallback" id="planFallback" readonly hidden data-plan-fallback></textarea>
     ${questionnaire(concept)}

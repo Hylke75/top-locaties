@@ -54,7 +54,13 @@ async function call(path, { method = 'GET', body, token, headers = {} } = {}) {
   return data;
 }
 
-const redirect = (path = '/account/') => `${location.origin}${path}`;
+// Na bevestigen of inloggen per link terug naar /account/ mét een veilige 'next' (zodat lokale plannen meegaan).
+const redirect = (path = '/account/') => {
+  const next = new URLSearchParams(location.search).get('next');
+  return `${location.origin}${path}${next && /^\/(maker|presentatie|mijn-plan)\//.test(next) ? `?next=${encodeURIComponent(next)}` : ''}`;
+};
+/** Inloggen zonder wachtwoord: een eenmalige link per e-mail (Supabase OTP). Nieuw adres = nieuw account. */
+export async function magicLink(email) { await call(`/auth/v1/otp?redirect_to=${encodeURIComponent(redirect())}`, { method: 'POST', body: { email, create_user: true } }); }
 
 export async function signUp(email, password) {
   const r = await call(`/auth/v1/signup?redirect_to=${encodeURIComponent(redirect())}`, { method: 'POST', body: { email, password } });
