@@ -209,7 +209,6 @@ paint();
 /* ---------- Concept op maat (vragenlijst → compleet draaiboek) ---------- */
 import { tailor, toText, formatDate, quoteRequests, callsheet, budgetCsv, naturalEnd } from './lib/tailor.js';
 import { buildIcs, ICS_MIME } from './lib/ics.js';
-import { sendQuotes, slugFromProfile, quoteResultText } from './lib/quote-send.js';
 const openedAt = Date.now();
 
 const tForm = document.querySelector('[data-tailor-form]');
@@ -273,11 +272,8 @@ function renderTailored() {
   <div class="tl-checklist tl-checklist--on-dark">${(concept.checklist || []).map((g, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(g.group)}</strong>${g.items.map((x, j) => check(`c${i}-${j}`, x)).join('')}</div>`).join('')}${t.extraChecks.length ? `<div class="tl-checklist__group"><strong class="tl-checklist__title">Op maat</strong>${t.extraChecks.map((x, j) => check(`x${j}`, x)).join('')}</div>` : ''}</div></div></details>
   <h4 class="tl-mono tl-subhead tl-body--gap">JOUW UITNODIGING</h4>
   <div class="tl-invite"><strong>${fillT(t.invitation.subject)}</strong><p>${fillT(t.invitation.text)}</p><p class="tl-note tl-on-dark-note">Herinnering: ${fillT(t.invitation.reminder)}</p><p class="tl-note tl-on-dark-note"><span class="tl-fill">gemarkeerd</span> = zelf invullen.</p></div>
-  <h4 class="tl-mono tl-subhead tl-body--gap">OFFERTEAANVRAGEN — KLAAR OM TE VERSTUREN</h4>
-  ${(() => { const qs = quoteRequests(concept, t, data.quoteQuestions); const venueQ = qs.find((q) => q.kind === 'locatie'); return qs.length ? `${venueQ ? `<form class="tl-quote-send" data-quote-send><strong class="tl-mono">VERSTUUR DE AANVRAAG DIRECT AAN ${escT(venueQ.to.toUpperCase())}</strong>
-    <div class="tl-questionnaire__grid tl-questionnaire__grid--two"><label class="tl-field"><span>JOUW NAAM</span><input name="qname" autocomplete="name" value="${escT(a.contact || '')}" required></label><label class="tl-field"><span>JOUW E-MAILADRES</span><input name="qemail" type="email" autocomplete="email" required></label></div>
-    <label class="tl-check tl-check--on-dark"><input type="checkbox" name="qconsent"> Mijn naam, e-mailadres en de aanvraag worden via Greenbookings gedeeld met ${escT(venueQ.to)}.</label>
-    <div class="tl-composer__actions"><span class="tl-mono tl-on-dark-note" role="status" aria-live="polite" data-quote-status>${plan.quotes?.[plan.venueId] ? `AL VERSTUURD OP ${escT(new Date(plan.quotes[plan.venueId]).toLocaleDateString('nl-NL'))}` : 'Makers hebben nog geen directe route: kopieer hun aanvraag hieronder.'}</span><button class="tl-button tl-button--accent" type="submit">VERSTUUR AANVRAAG ↗</button></div></form>` : ''}<div class="tl-checklist tl-checklist--on-dark">${qs.map((q, i) => `<div class="tl-checklist__group"><strong class="tl-checklist__title">${escT(q.to)}</strong><span class="tl-runbook__desc">${escT(q.subject)}</span><button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-copy-quote="${i}">KOPIEER AANVRAAG</button><a class="tl-text-button" href="${escT(q.url)}" target="_blank" rel="noopener noreferrer">PROFIEL ↗</a></div>`).join('')}</div>` : '<p class="tl-note tl-on-dark-note">Kies een locatie en makers in de kolommen hierboven; dan schrijven we voor elk een offerteaanvraag.</p>'; })()}
+  <h4 class="tl-mono tl-subhead tl-body--gap">OFFERTES AANVRAGEN</h4>
+  <p class="tl-note tl-on-dark-note">Per gekozen partij schrijven we een offerteaanvraag op basis van dit draaiboek. Verstuur ze in één keer met het formulier <a href="#requestTitle">‘Vraag offertes aan’</a> hieronder.</p>
   <details class="tl-fold tl-fold--on-dark"><summary><h4 class="tl-fold__title">CALLSHEET — WIE IS WIE OP DE DAG</h4><span class="tl-fold__meta">${callsheet(concept, t).length} ROLLEN</span></summary><div class="tl-fold__body"><dl class="tl-facts tl-facts--stack tl-facts--on-dark">${callsheet(concept, t).map((r) => `<div><dt>${escT(r.role)}${r.arrive ? ` — AANWEZIG ${escT(r.arrive)}` : ''}</dt><dd>${r.name ? escT(r.name) : '<span class="tl-fill" title="Zelf invullen">naam</span>'}${r.party ? ` · ${escT(r.party)}` : ''} · <span class="tl-fill" title="Zelf invullen">telefoon</span></dd></div>`).join('')}</dl></div></details>
   <p class="tl-note tl-on-dark-note">Downloads, agenda en kopie vind je hieronder bij ‘Neem je plan mee’.</p>`;
   tOut.hidden = false;
@@ -315,20 +311,6 @@ if (tForm) {
     tOut.focus();
     tOut.scrollIntoView({ block: 'start' });
   });
-  tOut.addEventListener('submit', async (e) => {
-    const f = e.target.closest('[data-quote-send]'); if (!f) return;
-    e.preventDefault();
-    const st = f.querySelector('[data-quote-status]');
-    const name = f.elements.qname.value.trim(); const email = f.elements.qemail.value.trim();
-    if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { st.textContent = 'Vul je naam en een geldig e-mailadres in.'; return; }
-    if (!f.elements.qconsent.checked) { st.textContent = 'Geef toestemming om je gegevens met de locatie te delen.'; return; }
-    const t = currentTailor(); const q = quoteRequests(concept, t, data.quoteQuestions).find((x) => x.kind === 'locatie');
-    const endpoint = document.querySelector('[data-contact-dialog]')?.dataset.endpoint || data.contactEndpoint || '/api/contact/';
-    st.textContent = 'VERSTUREN…';
-    const [r] = await sendQuotes(endpoint, [{ slug: slugFromProfile(t.venue.url), name: t.venue.name, subject: q.subject, body: q.body.replace('[naam]', name) }], { name, email }, { datum: t.answers.datum, guests: t.guests, opened: openedAt });
-    st.textContent = quoteResultText(r);
-    if (r.ok) { plan.quotes = { ...(plan.quotes || {}), [plan.venueId]: new Date().toISOString() }; persist(); import('./lib/track.js').then((m) => m.track('quote', concept.slug)).catch(() => {}); }
-  });
   tOut.addEventListener('change', (e) => {
     const c = e.target.closest('[data-check]');
     if (!c) return;
@@ -340,6 +322,18 @@ if (tForm) {
   // Acties uit 'Neem je plan mee' werken ook zonder ingevulde vragenlijst (dan met de standaardantwoorden).
   document.querySelector('[data-composer]').addEventListener('click', async (e) => {
     if (e.target.closest('[data-tailor-print]')) { window.print(); return; }
+    if (e.target.closest('[data-share-plan]')) {
+      // Deellink: alleen keuzes (geen naam/e-mail) naar de server; de link bevat alleen een willekeurig id.
+      const st = document.querySelector('[data-takeaway-status]');
+      st.textContent = 'DEELLINK WORDT GEMAAKT…';
+      try {
+        const { sharePlan } = await import('./lib/sharedplan.js');
+        const { url } = await sharePlan(concept.slug, plan);
+        let copied = false; try { await navigator.clipboard.writeText(url); copied = true; } catch {}
+        st.innerHTML = `${copied ? 'LINK GEKOPIEERD ✓ ' : 'JOUW LINK: '}<a href="${escT(url)}">${escT(url)}</a> — 180 dagen geldig, zonder naam of e-mail.`;
+      } catch (err) { st.textContent = err.message; }
+      return;
+    }
     if (e.target.closest('[data-tailor-ics]')) {
       const t = currentTailor(); const a = t.answers; const st = document.querySelector('[data-takeaway-status]');
       if (!a.datum) { st.textContent = 'Vul eerst een datum in (vraag 02), dan zetten we het event en de planning in je agenda.'; return; }
@@ -360,15 +354,6 @@ if (tForm) {
       st0.textContent = 'Begroting gedownload ✓ — vul de bedragen in uit de offertes.';
       return;
     }
-    const cq = e.target.closest('[data-copy-quote]');
-    if (cq) {
-      const q = quoteRequests(concept, currentTailor(), data.quoteQuestions)[Number(cq.dataset.copyQuote)];
-      const text = `Onderwerp: ${q.subject}\n\n${q.body}`;
-      import('./lib/track.js').then((m) => m.track('quote', concept.slug)).catch(() => {});
-      try { await navigator.clipboard.writeText(text); st0.textContent = `Offerteaanvraag voor ${q.to} gekopieerd ✓`; }
-      catch { fallback.value = text; fallback.hidden = false; fallback.select(); st0.textContent = 'Kopiëren lukt hier niet automatisch; selecteer de tekst in het tekstvak.'; }
-      return;
-    }
     if (!e.target.closest('[data-tailor-copy]')) return;
     const text = toText(concept, currentTailor(), labels);
     const st = document.querySelector('[data-takeaway-status]');
@@ -377,4 +362,85 @@ if (tForm) {
   });
   // Locatie- of makerkeuze werkt het draaiboek bij als het al gemaakt is.
   document.addEventListener('click', (e) => { if (plan.answers && e.target.closest('[data-choose-venue],[data-choose-supplier],[data-plan-reset]')) setTimeout(renderTailored, 0); });
+}
+
+/* ---------- Eén aanvraag naar locatie en makers ---------- */
+const rForm = document.querySelector('[data-request]');
+if (rForm) {
+  const rTo = rForm.querySelector('[data-request-to]');
+  const rErr = rForm.querySelector('[data-request-errors]');
+  const rStatus = rForm.querySelector('[data-request-status]');
+  const rDone = document.querySelector('[data-request-done]');
+  const F = rForm.elements;
+  const recipients = () => ({
+    venue: plan.venueId && data.venues[plan.venueId] ? { slug: data.venues[plan.venueId].slug, name: data.venues[plan.venueId].name } : null,
+    suppliers: plan.supplierIds.map((id) => data.suppliers[id]).filter(Boolean).map((x) => ({ slug: x.slug, name: x.name, role: x.role })),
+  });
+  function paintRecipients() {
+    const r = recipients();
+    const items = [...(r.venue ? [`<li><span class="tl-mono">LOCATIE</span> ${escT(r.venue.name)}</li>`] : []), ...r.suppliers.map((x) => `<li><span class="tl-mono">${escT(x.role.toUpperCase())}</span> ${escT(x.name)}</li>`)];
+    rTo.innerHTML = items.length ? `<span class="tl-mono">GAAT NAAR</span><ul>${items.join('')}</ul>` : '<p class="tl-note tl-on-dark-note">Kies hierboven een locatie en/of makers; daar gaat je aanvraag naartoe.</p>';
+  }
+  // Vooraf invullen uit 'Op maat' (alleen lege velden; wat je hier typt blijft staan).
+  function prefill() {
+    const a = plan.answers || {};
+    if (!F.name.value && a.contact) F.name.value = a.contact;
+    if (!F.organisation.value && a.organisatie) F.organisation.value = a.organisatie;
+    if (!F.event_date.value && a.datum) F.event_date.value = a.datum;
+    if (!F.guests.value && Number(a.gasten)) F.guests.value = Number(a.gasten);
+  }
+  paintRecipients(); prefill();
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-choose-venue],[data-choose-supplier],[data-remove-venue],[data-remove-supplier],[data-plan-reset]')) setTimeout(paintRecipients, 0); });
+  document.addEventListener('change', (e) => { if (e.target.closest('[data-composer-venue],[data-composer-supplier]')) setTimeout(paintRecipients, 0); });
+  tForm?.addEventListener('submit', () => setTimeout(prefill, 0));
+
+  const MSG = { naam: 'Vul je naam in (minstens 2 letters).', email: 'Vul een geldig e-mailadres in, bijvoorbeeld naam@bedrijf.nl.', ontvangers: 'Kies eerst een locatie of maker hierboven.', toestemming: 'Geef toestemming om je aanvraag te delen met de gekozen partijen.', gasten: 'Vul het aantal gasten in als een getal.', datum: 'Kies een geldige datum.', concept: 'Dit concept kan nu geen aanvragen ontvangen.' };
+  const FIELD = { naam: 'name', email: 'email', toestemming: 'consent', gasten: 'guests', datum: 'event_date' };
+  function showErrors(list) {
+    rForm.querySelectorAll('[aria-invalid]').forEach((x) => x.removeAttribute('aria-invalid'));
+    rErr.hidden = !list.length;
+    rErr.innerHTML = list.map((k) => `<li>${escT(MSG[k] || 'Controleer je aanvraag.')}</li>`).join('');
+    list.forEach((k) => FIELD[k] && F[FIELD[k]].setAttribute('aria-invalid', 'true'));
+    const first = list.map((k) => FIELD[k]).find(Boolean); if (first) F[first].focus();
+  }
+  rForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const r = recipients();
+    const errs = [];
+    if (F.name.value.trim().length < 2) errs.push('naam');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(F.email.value.trim())) errs.push('email');
+    if (!r.venue && !r.suppliers.length) errs.push('ontvangers');
+    if (!F.consent.checked) errs.push('toestemming');
+    if (errs.length) { showErrors(errs); rStatus.textContent = 'Nog niet verstuurd — zie hierboven.'; return; }
+    showErrors([]);
+    const t = currentTailor();
+    const payload = {
+      base_slug: concept.slug, name: F.name.value.trim(), email: F.email.value.trim(), organisation: F.organisation.value.trim(),
+      event_date: F.event_date.value || null, guests: F.guests.value ? Number(F.guests.value) : null, message: F.message.value.trim(),
+      venue: r.venue, suppliers: r.suppliers, consent: true, website: F.website.value, t: Date.now() - openedAt,
+      quotes: quoteRequests(concept, t, data.quoteQuestions).map((q) => ({ to: q.to, kind: q.kind, subject: q.subject, body: q.body.replace('[naam]', F.name.value.trim()) })),
+      plan: { feelings: plan.feelings, start: t.answers.start || '', end: t.timing?.end || '', doel: t.answers.doel || '' },
+    };
+    rStatus.textContent = 'VERSTUREN…';
+    rForm.querySelector('[type=submit]').disabled = true;
+    let res = null; let body = null;
+    try { res = await fetch(data.requestEndpoint || '/api/aanvraag/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); body = await res.json().catch(() => null); } catch {}
+    rForm.querySelector('[type=submit]').disabled = false;
+    if (!res || !res.ok) {
+      if (res?.status === 422 && body?.fields) { showErrors(body.fields); rStatus.textContent = 'Nog niet verstuurd — zie hierboven.'; return; }
+      rStatus.textContent = res?.status === 429 ? 'Je hebt net al aanvragen verstuurd. Probeer het over een kwartier opnieuw.' : 'Versturen lukte niet. Probeer het opnieuw, of kopieer het draaiboek en neem contact op via het profiel.';
+      return;
+    }
+    plan.quotes = { ...(plan.quotes || {}), sent: new Date().toISOString() }; persist();
+    import('./lib/track.js').then((m) => m.track('quote', concept.slug)).catch(() => {});
+    const steps = [
+      ...(r.venue ? [`<li><strong>${escT(r.venue.name)}</strong> (locatie) ${body.venueForwarded ? 'heeft je aanvraag direct ontvangen via Greenbookings.' : 'krijgt je aanvraag via de redactie van Top Locaties.'}</li>`] : []),
+      ...r.suppliers.map((x) => `<li><strong>${escT(x.name)}</strong> (${escT(x.role.toLowerCase())}) krijgt je aanvraag via de redactie van Top Locaties.</li>`),
+      `<li>${body.mailed ? `Je krijgt een bevestiging op <strong>${escT(payload.email)}</strong>.` : 'We sturen (nog) geen bevestigingsmail; bewaar je aanvraagnummer hieronder.'}</li>`,
+      '<li>De partijen nemen zelf contact met je op. Top Locaties boekt niets en bevestigt geen beschikbaarheid of prijs.</li>',
+    ];
+    rDone.innerHTML = `<h3 class="tl-display tl-display--sm">AANVRAAG <span class="tl-accent">VERSTUURD ✓</span></h3><p class="tl-request__intro">Wat er nu gebeurt:</p><ol class="tl-steplist">${steps.join('')}</ol>${body.id ? `<p class="tl-mono tl-on-dark-note">AANVRAAGNUMMER ${escT(String(body.id).slice(0, 8).toUpperCase())}</p>` : ''}<button class="tl-button tl-button--outline tl-button--on-dark" type="button" data-request-again>NOG EEN AANVRAAG</button>`;
+    rForm.hidden = true; rDone.hidden = false; rDone.focus();
+  });
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-request-again]')) { rDone.hidden = true; rForm.hidden = false; rStatus.textContent = '* verplicht'; F.name.focus(); } });
 }

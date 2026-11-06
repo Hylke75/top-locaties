@@ -10,14 +10,16 @@ const form = $('[data-auth-form]');
 const status = $('[data-auth-status]');
 let mode = 'login';
 
-const LABEL = { login: 'INLOGGEN ↗', register: 'ACCOUNT AANMAKEN ↗', recover: 'STUUR HERSTELLINK ↗' };
+const LABEL = { login: 'INLOGGEN ↗', register: 'ACCOUNT AANMAKEN ↗', recover: 'STUUR HERSTELLINK ↗', link: 'STUUR MIJN INLOGLINK ↗' };
+// Inloglink per e-mail alleen als de mailserver is ingesteld (site.json → accounts.magicLink).
+if (cfg.accounts?.magicLink) document.querySelector('[data-auth-tab="link"]')?.removeAttribute('hidden');
 function setMode(m) {
   mode = m;
   document.querySelectorAll('[data-auth-tab]').forEach((b) => { const on = b.dataset.authTab === m; b.setAttribute('aria-selected', String(on)); b.classList.toggle('is-active', on); });
-  $('[data-auth-password]').hidden = m === 'recover';
-  form.elements.password.required = m !== 'recover';
+  $('[data-auth-password]').hidden = m === 'recover' || m === 'link';
+  form.elements.password.required = m !== 'recover' && m !== 'link';
   form.elements.password.autocomplete = m === 'register' ? 'new-password' : 'current-password';
-  $('[data-auth-consent]').hidden = m !== 'register';
+  $('[data-auth-consent]').hidden = m !== 'register' && m !== 'link';
   $('[data-auth-submit]').textContent = LABEL[m];
   status.textContent = '';
 }
@@ -64,8 +66,8 @@ form.addEventListener('submit', async (e) => {
   const email = form.elements.email.value.trim();
   const pw = form.elements.password.value;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status.textContent = 'Vul een geldig e-mailadres in.'; form.elements.email.focus(); return; }
-  if (mode !== 'recover' && pw.length < 8) { status.textContent = 'Kies een wachtwoord van minstens 8 tekens.'; form.elements.password.focus(); return; }
-  if (mode === 'register' && !form.elements.consent.checked) { status.textContent = 'Ga akkoord met het bewaren van je e-mailadres en concepten.'; return; }
+  if (mode !== 'recover' && mode !== 'link' && pw.length < 8) { status.textContent = 'Kies een wachtwoord van minstens 8 tekens.'; form.elements.password.focus(); return; }
+  if ((mode === 'register' || mode === 'link') && !form.elements.consent.checked) { status.textContent = 'Ga akkoord met het bewaren van je e-mailadres en concepten.'; return; }
   status.textContent = 'EEN MOMENT…';
   try {
     if (mode === 'login') { const s = await A.signIn(email, pw); status.textContent = ''; await afterLogin(s); }
@@ -73,13 +75,14 @@ form.addEventListener('submit', async (e) => {
       const r = await A.signUp(email, pw);
       if (r.session) await afterLogin(r.session);
       else status.textContent = 'Bijna klaar: we hebben je een bevestigingslink gemaild. Klik erop en je bent ingelogd.';
-    } else { await A.recover(email); status.textContent = 'Als dit adres bij ons bekend is, staat er een herstellink in je mail.'; }
+    } else if (mode === 'link') { await A.magicLink(email); status.textContent = 'Check je mail: klik op de link en je bent ingelogd. Je plannen gaan mee.'; }
+    else { await A.recover(email); status.textContent = 'Als dit adres bij ons bekend is, staat er een herstellink in je mail.'; }
   } catch (err) { status.textContent = A.message(err); }
 });
 
 async function afterLogin(s) {
   const next = new URLSearchParams(location.search).get('next');
-  if (next && /^\/(maker|presentatie)\//.test(next)) { location.href = next; return; }
+  if (next && /^\/(maker|presentatie|mijn-plan)\//.test(next)) { location.href = next; return; }
   await showSignedIn(s);
 }
 
@@ -113,6 +116,7 @@ $('[data-new-concept]').addEventListener('submit', (e) => { e.preventDefault(); 
   const r = await A.consumeRedirect();
   if (r?.type === 'recovery') { $('[data-auth-out]').hidden = true; $('[data-new-password]').hidden = false; return; }
   const s = r?.session || await A.session();
+  if (s && r?.session) { await afterLogin(s); return; } // terug via bevestigings- of inloglink
   if (s) await showSignedIn(s); else setMode(new URLSearchParams(location.search).get('stap') === 'registreren' ? 'register' : 'login');
   if (r?.type === 'signup') $('[data-my-status]').textContent = 'Je e-mailadres is bevestigd ✓';
 })();

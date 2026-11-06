@@ -9,18 +9,19 @@ const accountData = (data) => ({ accounts: data.site.accounts || null, privacyUr
 
 export function renderAccount(data) {
   const body = html`${header({ current: 'account' })}
-${crumb([{ href: '/', label: 'HOME' }, { label: 'ACCOUNT' }], 'JOUW EIGEN CONCEPTEN')}
+${crumb([{ href: '/', label: 'HOME' }, { href: '/mijn-plan/', label: 'MIJN PLANNEN' }, { label: 'ACCOUNT' }], 'JOUW PLANNEN, OVERAL')}
 <main id="main" data-account>
 <section class="tl-section tl-section--dark" aria-labelledby="accTitle">
   ${overline('01 / JOUW ACCOUNT', 'GRATIS / ALLEEN E-MAIL EN WACHTWOORD')}
   <div class="tl-columns">
-    <p class="tl-intro-label">Met een account bewaar je eigen concepten. Je kiest een standaardconcept als basis en past alles aan: programma, draaiboek, catering, entertainment, locatie en makers. Daarna download je het als presentatie (PDF), Word of tekst.</p>
+    <p class="tl-intro-label">Zonder account staan je plannen in deze browser. Met een gratis account vind je ze op elk apparaat terug: je plannen uit deze browser gaan mee, je werkt ze uit in de conceptmaker (programma, draaiboek, catering, locatie en makers) en je deelt ze met collega's.</p>
     <div>
       <h1 class="tl-display" id="accTitle">JOUW<br>CONCEPTEN.<br><span class="tl-accent">BEWAARD.</span></h1>
       <div data-auth-out>
         <div class="tl-chip-set tl-account__tabs" role="tablist" aria-label="Kies">
           <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="true" data-auth-tab="login">INLOGGEN</button>
           <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" data-auth-tab="register">REGISTREREN</button>
+          <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" data-auth-tab="link" hidden>INLOGLINK PER MAIL</button>
           <button class="tl-chip-button tl-chip-button--on-dark" type="button" role="tab" aria-selected="false" data-auth-tab="recover">WACHTWOORD VERGETEN</button>
         </div>
         <form class="tl-questionnaire tl-account__form" data-auth-form novalidate>
@@ -115,9 +116,9 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'ZOEKEN' }], 'CONCEPTEN, LOCATIE
 <section class="tl-section tl-section--mist tl-section--ring" aria-labelledby="searchTitle">
   ${overline('01 / ZOEKEN', `${data.concepts.length} CONCEPTEN / ${data.venues.length} LOCATIES / ${data.suppliers.length} MAKERS`)}
   <h1 class="tl-display" id="searchTitle">WAT ZOEK<br><span class="tl-accent">JE?</span></h1>
-  <form class="tl-search" role="search" data-search-form action="/zoeken/">
+  <form class="tl-search" role="search" data-search-form action="/zoeken/" toolname="top_locaties_zoekpagina" tooldescription="Zoek op top-locaties.nl naar eventconcepten, aangesloten partnerlocaties en makers.">
     <label class="tl-visually-hidden" for="q">Zoek op concept, plaats, soort bijeenkomst of aantal personen</label>
-    <input class="tl-search__input" id="q" name="q" type="search" autocomplete="off" placeholder="Bijv. vergaderen utrecht 20 personen" data-search-input>
+    <input class="tl-search__input" id="q" name="q" type="search" autocomplete="off" placeholder="Bijv. vergaderen utrecht 20 personen" data-search-input toolparamdescription="Zoekvraag in het Nederlands, bijv. plaats, soort bijeenkomst en aantal personen">
     <button class="tl-button tl-button--accent" type="submit">ZOEK ↓</button>
   </form>
   <div class="tl-chip-row" role="group" aria-label="Soort resultaat">

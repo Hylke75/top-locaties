@@ -13,6 +13,9 @@ import { renderAccount, renderMaker, renderPresentation, renderSearch, renderReg
 import { renderConcept } from '../src/pages/concept.mjs';
 import { renderLocaties } from '../src/pages/locaties.mjs';
 import { renderLegacy, renderNotFound } from '../src/pages/legacy.mjs';
+import { htmlToMarkdown, estimateTokens } from './lib/html-to-md.mjs';
+import { openApi, apiCatalog, skillMd, skillsIndex, aiCatalog } from './lib/agent-discovery.mjs';
+import { renderApiDocs } from '../src/pages/apidocs.mjs';
 import { renderConceptsOverview, renderOpGevoel, renderVenueDetail, renderSuppliers, renderSupplierDetail, renderPlan, renderAbout, renderPlaybook } from '../src/pages/more.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -115,12 +118,22 @@ write('styleguide/index.html', guide);
 copy('design-system/STYLE-GUIDE.md', 'styleguide/STYLE-GUIDE.md');
 
 // Sitemap: uitsluitend gepubliceerde concepten en AANGESLOTEN partnerlocaties (data.venues is al partner-only).
-const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/', '/zoeken/', '/en/', '/en/concepts/',
+const urls = ['/', '/eventconcepten/', '/eventconcepten/op-gevoel/', '/locaties/', '/leveranciers/', '/over/', '/zelf-organiseren/', '/conceptplan/', '/zoeken/', '/docs/api/', '/en/', '/en/concepts/',
   ...data.concepts.map((c) => `/eventconcepten/${c.slug}/`),
   ...data.venues.map((v) => `/locaties/${v.slug}/`),
   ...data.suppliers.map((s) => `/leveranciers/${s.slug}/`)];
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>https://top-locaties.nl${u}</loc></url>`).join('\n')}\n</urlset>\n`);
-write('robots.txt', 'User-agent: *\nDisallow: /prototype/\nDisallow: /styleguide/\nSitemap: https://top-locaties.nl/sitemap.xml\n');
+// Content Signals (contentsignals.org): wel zoeken en citeren/samenvatten in AI-antwoorden (met link), geen modeltraining.
+write('robots.txt', 'User-agent: *\nContent-Signal: search=yes, ai-input=yes, ai-train=no\nAllow: /\nDisallow: /prototype/\nDisallow: /styleguide/\n\nSitemap: https://top-locaties.nl/sitemap.xml\nAgentmap: https://top-locaties.nl/.well-known/ai-catalog.json\n');
+
+// Ontdekbestanden voor AI-agents (beschrijven alleen wat echt bestaat).
+write('docs/api/index.html', renderApiDocs(data));
+write('openapi.json', JSON.stringify(openApi(data), null, 2));
+write('.well-known/api-catalog', JSON.stringify(apiCatalog(), null, 2));
+const skill = skillMd(data);
+write('.well-known/agent-skills/top-locaties/SKILL.md', skill);
+write('.well-known/agent-skills/index.json', JSON.stringify(skillsIndex(skill), null, 2));
+write('.well-known/ai-catalog.json', JSON.stringify(aiCatalog(data), null, 2));
 
 // Pijlen en sterretjes altijd als tekstteken, nooit als emoji (iOS valt anders terug op het emojifont).
 // U+FE0E = tekstpresentatie. Het prototype in /prototype/ blijft ongemoeid.
@@ -145,6 +158,23 @@ const TEXT_GLYPHS = /([↖↗↘↙↔↕✳▶])(?!︎)/g;
   }
 })(out);
 if (htmlProblems.length) { console.error(htmlProblems.join("\n")); process.exit(1); }
+
+// Markdown voor agents: naast elke publieke index.html een index.md (geserveerd bij Accept: text/markdown).
+const mdTokens = {};
+(function markdown(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = path.join(dir, e.name);
+    const rel = path.relative(out, f);
+    if (e.isDirectory()) { if (!/^(prototype|styleguide|admin|assets|data|\.well-known)$/.test(rel)) markdown(f); continue; }
+    if (e.name !== 'index.html') continue;
+    const html = fs.readFileSync(f, 'utf8');
+    if (/<meta name="robots" content="noindex">/.test(html) || !/<main\b/.test(html)) continue;
+    const pagePath = `/${path.dirname(rel) === '.' ? '' : `${path.dirname(rel).split(path.sep).join('/')}/`}`;
+    const md = htmlToMarkdown(html, { path: pagePath });
+    fs.writeFileSync(path.join(dir, 'index.md'), md);
+    mdTokens[pagePath] = estimateTokens(md);
+  }
+})(out);
 
 fs.writeFileSync(path.join(out, 'build-info.json'), JSON.stringify({ builtAt: new Date().toISOString(), pages: urls.length, partnerVenues: data.venues.length, suppliers: data.suppliers.length, concepts: data.concepts.length, syncedAt: data.snapshotMeta.syncedAt }, null, 2));
 console.log(`TOP LOCATIES BUILD / ${urls.length} pagina's → site/ (bronstand Greenbookings ${data.syncedDate})`);

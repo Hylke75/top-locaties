@@ -18,6 +18,8 @@ jobs:
         run: |
           npm install --no-save playwright@1.63.0
           npx playwright install --with-deps chromium
+      - name: pdfinfo (controle van de PDF-export in account-e2e)
+        run: sudo apt-get install -y --no-install-recommends poppler-utils
       - name: Build, unit-tests en designaudit
         run: |
           node scripts/build.mjs
@@ -43,3 +45,4 @@ jobs:
           SQL
           sudo -u postgres psql -q -v ON_ERROR_STOP=1 -f supabase/migrations/20261104_user_concepts.sql
           sudo -u postgres psql -q -v ON_ERROR_STOP=1 -f supabase/tests/rls_test.sql
+          sudo -u postgres psql -q -v ON_ERROR_STOP=1 -f supabase/migrations/20261105_plans_and_requests.sql -f supabase/tests/plans_requests_test.sql

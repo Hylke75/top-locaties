@@ -9,7 +9,7 @@ const crumb = (items, right) => html`<nav class="tl-crumb" aria-label="Kruimelpa
 /* ---------------- /eventconcepten/ ---------------- */
 export function renderConceptsOverview(data) {
   const { concepts, feelings, feelingLabels } = data;
-  const body = html`${header({ current: 'concepten' })}
+  const body = html`${header({ current: 'concepten', enPath: '/en/concepts/' })}
 ${crumb([{ href: '/', label: 'HOME' }, { label: 'EVENTCONCEPTEN' }], `COLLECTIE / ${pad(concepts.length)} CONCEPTEN`)}
 <main id="main">
 <section class="tl-section tl-section--taupe tl-section--ring" aria-labelledby="ovTitle" data-concept-overview>
@@ -253,14 +253,15 @@ ${footer({ links: [{ href: '/leveranciers/', label: 'ALLE MAKERS ↗' }, { href:
 /* ---------------- /mijn-plan/ ---------------- */
 export function renderPlan(data) {
   const body = html`${header({ current: 'plan' })}
-${crumb([{ href: '/', label: 'HOME' }, { label: 'MIJN PLAN' }], 'ALLEEN IN DEZE BROWSER BEWAARD')}
+${crumb([{ href: '/', label: 'HOME' }, { label: 'MIJN PLANNEN' }], 'IN DEZE BROWSER — OF IN JE ACCOUNT')}
 <main id="main">
 <section class="tl-section tl-section--dark" aria-labelledby="planTitle" data-plan-page>
   ${overline('01 / MIJN EVENTPLAN', 'VAN INSPIRATIE NAAR ACTIE')}
   <div class="tl-section-head tl-section-head--top">
     <h1 class="tl-display" id="planTitle">MAAK HET<br><span class="tl-accent">VAN JOU.</span></h1>
-    <p>Je plannen per concept: gevoel, één locatie en je makers. Kopieer een plan als briefing of ga verder bij de bron. Geen account nodig; we bewaren niets op een server.</p>
+    <p>Je plannen per concept: gevoel, één locatie en je makers. Ze staan in deze browser, zonder account. Wil je ze op elk apparaat terugvinden of samen bewerken? Bewaar ze in een gratis account. Een deellink bevat alleen je keuzes, nooit je naam of e-mailadres.</p>
   </div>
+  <div class="tl-shared-plan" data-shared-plan hidden></div>
   <div data-plan-list></div>
   <div data-plan-empty hidden>${state('empty', 'NOG GEEN PLAN.', 'Kies een concept en selecteer een locatie of makers. Je plan verschijnt dan hier.', html`<span class="tl-chip-set tl-chip-set--center"><a class="tl-button" href="/eventconcepten/op-gevoel/">KIES OP GEVOEL ↗</a><a class="tl-button tl-button--outline" href="/eventconcepten/">ALLE CONCEPTEN ↗</a></span>`)}</div>
   <div data-plan-error hidden>${state('error', 'NIET BESCHIKBAAR.', 'Deze browser staat lokale opslag niet toe. Je kunt een plan op een conceptpagina wel kopiëren.', '')}</div>
@@ -268,17 +269,32 @@ ${crumb([{ href: '/', label: 'HOME' }, { label: 'MIJN PLAN' }], 'ALLEEN IN DEZE 
   <label class="tl-visually-hidden" for="planPageFallback">Plantekst</label>
   <textarea class="tl-composer__fallback" id="planPageFallback" readonly hidden data-plan-page-fallback></textarea>
 </section>
+<section class="tl-section tl-section--taupe" aria-labelledby="keepTitle" data-keep>
+  ${overline('02 / BEWAAR JE PLANNEN', 'OP ELK APPARAAT, OOK SAMEN')}
+  <div class="tl-columns">
+    <p class="tl-intro-label">In deze browser bewaard blijft alles werken. Een account is alleen nodig als je je plannen elders wilt openen, verder wilt uitwerken in de conceptmaker of wilt delen met collega's.</p>
+    <div>
+      <h2 class="tl-display tl-display--md" id="keepTitle">ÉÉN PLEK<br><span class="tl-accent">VOOR JE PLANNEN.</span></h2>
+      <div data-keep-out><p class="tl-body">Maak een gratis account of log in. Je plannen uit deze browser gaan automatisch mee naar ‘Mijn concepten’.</p>
+        <span class="tl-chip-set"><a class="tl-button tl-button--accent" href="/account/?stap=registreren&amp;next=%2Fmijn-plan%2F%3Fmeenemen%3D1">BEWAAR MIJN PLANNEN ↗</a><a class="tl-button tl-button--outline" href="/account/?next=%2Fmijn-plan%2F%3Fmeenemen%3D1">IK HEB AL EEN ACCOUNT ↗</a></span></div>
+      <div data-keep-in hidden><p class="tl-body">Ingelogd als <strong data-keep-email></strong>. Zet je plannen uit deze browser in je account; daar bewerk je ze verder in de conceptmaker.</p>
+        <span class="tl-chip-set"><button class="tl-button tl-button--accent" type="button" data-keep-import>ZET MIJN PLANNEN IN MIJN ACCOUNT ↗</button><a class="tl-button tl-button--outline" href="/account/">MIJN CONCEPTEN ↗</a></span></div>
+      <p class="tl-mono" role="status" aria-live="polite" data-keep-status></p>
+    </div>
+  </div>
+</section>
 <section class="tl-section" aria-labelledby="nextT">
-  ${overline('02 / EN DAN?', 'DE AANVRAAG LOOPT VIA DE BRON')}
-  <div class="tl-steps tl-steps--light"><div><b>01.</b><p>Kopieer je plan als briefing.</p></div><div><b>02.</b><p>Open de locatie op Greenbookings en vraag beschikbaarheid aan.</p></div><div><b>03.</b><p>Neem contact op met de makers via hun profiel.</p></div></div>
+  ${overline('03 / EN DAN?', 'ÉÉN AANVRAAG NAAR LOCATIE EN MAKERS')}
+  <div class="tl-steps tl-steps--light"><div><b>01.</b><p>Open je plan op de conceptpagina en vul de vragen in.</p></div><div><b>02.</b><p>Verstuur één aanvraag: we sturen hem naar je locatie en je makers.</p></div><div><b>03.</b><p>Je krijgt een bevestiging; de locatie en makers nemen contact met je op.</p></div></div>
   <p class="tl-note tl-note--gap" id="nextT">Top Locaties is een inspiratieplatform: we bevestigen geen beschikbaarheid, prijs of reservering.</p>
 </section>
 </main>
 ${footer()}`;
   return layout({
-    title: 'Mijn eventplan | Top Locaties', description: 'Je persoonlijke eventplan: concept, gevoel, locatie en makers — om te kopiëren en mee te nemen.', path: '/mijn-plan/', body, scripts: ['plan.js'], noindex: true,
+    title: 'Mijn plannen | Top Locaties', description: 'Je eventplannen: concept, gevoel, locatie en makers. Bewaard in deze browser of in je account, en te delen met een link.', path: '/mijn-plan/', body, scripts: ['plan.js'], noindex: true,
     data: {
       origin: SITE.origin,
+      accounts: data.site.accounts || null,
       feelings: data.feelings.map(({ id, label }) => ({ id, label })),
       concepts: Object.fromEntries(data.concepts.map((c) => [c.slug, { title: c.title, proposition: c.proposition, feelings: c.feelings }])),
       venues: Object.fromEntries(data.venues.map((v) => [v.id, { name: v.name, city: v.city, url: v.profileUrl, page: `/locaties/${v.slug}/` }])),

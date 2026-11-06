@@ -63,8 +63,24 @@ form.addEventListener('click', (e) => {
   gevoel = gevoel.includes(id) ? gevoel.filter((x) => x !== id) : [...gevoel, id].slice(-2);
   paintFeel();
 });
+// Verplicht: aantal gasten en doel, met vriendelijke uitleg in plaats van een browsermelding.
+function briefErrors() {
+  const errs = [];
+  const n = Number(form.elements.gasten.value);
+  if (!form.elements.doel.value.trim()) errs.push(['doel', 'Vertel in één zin wat het moet opleveren, bijvoorbeeld: “dat iedereen de nieuwe koers kan navertellen”.']);
+  if (!form.elements.gasten.value) errs.push(['gasten', 'Hoeveel gasten verwacht je ongeveer? Een schatting is genoeg.']);
+  else if (!Number.isInteger(n) || n < 5 || n > 5000) errs.push(['gasten', 'Vul een aantal gasten tussen 5 en 5000 in.']);
+  const box = document.querySelector('[data-brief-errors]');
+  form.querySelectorAll('[aria-invalid]').forEach((x) => x.removeAttribute('aria-invalid'));
+  box.hidden = !errs.length;
+  box.innerHTML = errs.map(([, m]) => `<li>${m}</li>`).join('');
+  errs.forEach(([k]) => form.elements[k].setAttribute('aria-invalid', 'true'));
+  if (errs.length) form.elements[errs[0][0]].focus();
+  return errs.length;
+}
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  if (briefErrors()) { status.textContent = 'Nog twee dingen nodig — zie hierboven.'; return; }
   const brief = read();
   try { localStorage.setItem(KEY, JSON.stringify(brief)); } catch {}
   try { if (brief.gevoel.length) sessionStorage.setItem('tl-feelings', JSON.stringify(brief.gevoel)); } catch {}

@@ -41,3 +41,6 @@
   .ad-login { grid-template-columns:1fr; }
   .ad-table { display:block; overflow-x:auto; }
 }
+.ad-request { border-top:1px solid var(--tl-line); padding:16px 0; }
+.ad-request__head { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; }
+.ad-request p { margin:6px 0; font:400 16px/1.5 var(--tl-font-body); }

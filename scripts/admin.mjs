@@ -128,6 +128,29 @@ async function api(req, res, user, url) {
       return send(res, 200, { configured: true, since, rows: await r.json() });
     } catch (e) { return send(res, 200, { configured: true, error: String(e.message || e) }); }
   }
+  // Aanvragen (fase 7): alleen in het lokale beheer, met de service key van Top Locaties uit de omgeving.
+  if (p === '/requests' || p.startsWith('/requests/')) {
+    const key = process.env.TL_SUPABASE_SERVICE_KEY;
+    const sbUrl = readDoc('site').accounts?.url;
+    if (!key || !sbUrl) return send(res, 200, { configured: false });
+    const h = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+    try {
+      if (m === 'GET' && p === '/requests') {
+        const r = await fetch(`${sbUrl}/rest/v1/quote_requests?select=*&order=created_at.desc&limit=200`, { headers: h });
+        if (!r.ok) return send(res, 200, { configured: true, error: `Supabase ${r.status}` });
+        return send(res, 200, { configured: true, rows: await r.json() });
+      }
+      const id = p.split('/')[2];
+      if (m === 'POST' && /^[0-9a-f-]{36}$/.test(id)) {
+        const body = await readBody(req);
+        if (!['nieuw', 'doorgestuurd', 'afgehandeld', 'spam'].includes(body.status)) return send(res, 400, { error: 'Ongeldige status' });
+        const r = await fetch(`${sbUrl}/rest/v1/quote_requests?id=eq.${id}`, { method: 'PATCH', headers: { ...h, Prefer: 'return=minimal' }, body: JSON.stringify({ status: body.status }) });
+        if (!r.ok) return send(res, 502, { error: `Supabase ${r.status}` });
+        audit(user, 'aanvraag-status', `${id.slice(0, 8)} → ${body.status}`);
+        return send(res, 200, { ok: true });
+      }
+    } catch (e) { return send(res, 200, { configured: true, error: String(e.message || e) }); }
+  }
   if (m === 'GET' && p === '/audit') {
     const lines = fs.existsSync(AUDIT) ? fs.readFileSync(AUDIT, 'utf8').trim().split('\n').filter(Boolean).slice(-200).reverse().map((l) => JSON.parse(l)) : [];
     return send(res, 200, lines);

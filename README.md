@@ -62,6 +62,8 @@ Na wijzigingen: commit `src/content/`, push, en Vercel bouwt de site opnieuw (of
 - `api/contact.mjs` (Vercel-functie) schrijft berichten naar Greenbookings `contactberichten` met `bron = 'top-locaties'`, alleen voor gepubliceerde én aangesloten locaties, met honeypot en snelheidslimiet.
 - Zet in Vercel de omgevingsvariabele `GREENBOOKINGS_SUPABASE_SERVICE_KEY` (type *Sensitive*). Zonder die sleutel rondt de bezoeker af op het Greenbookings-profiel.
 - Optioneel: `RESEND_API_KEY` en `CONTACT_FROM` (bv. `Top Locaties <hallo@top-locaties.nl>`) voor een bevestigingsmail aan de bezoeker.
+- `api/aanvraag.mjs` (fase 7): één aanvraag vanaf de conceptpagina naar de gekozen locatie én alle gekozen makers. Opslag in Top Locaties via RPC `submit_quote_request` (tabel `quote_requests`, RLS zonder publieke toegang; migratie `supabase/migrations/20261105_plans_and_requests.sql`). Met `GREENBOOKINGS_SUPABASE_SERVICE_KEY` gaat het locatiedeel direct naar Greenbookings; makers krijgen hun deel via de redactie (Beheer → Aanvragen, met `TL_SUPABASE_SERVICE_KEY`). Bevestigingsmail met dezelfde Resend-variabelen.
+- Deellinks (fase 6): RPC's `create_shared_plan` / `get_shared_plan` (tabel `shared_plans`, alleen keuzes, 180 dagen). Inloglink per e-mail: zet `accounts.magicLink` in `site.json` op `true` zodra Supabase Auth een eigen SMTP-server (Resend) gebruikt.
 
 ## Statistiek
 

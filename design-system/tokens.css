@@ -3,6 +3,9 @@
 :root {
   --tl-ink: #292a2c;
   --tl-coral: #f45269;
+  --tl-ink-on-coral: #1d1e20; /* tekst op koraalvlakken: 4,97:1 (WCAG AA) */
+  --tl-coral-deep: #c42d46; /* koraal accentwoorden op taupe/mist: 3,4–4,3:1 (AA groot) */
+  --tl-coral-on-dark: #f66b7f; /* kleine koraaltekst op inkt: 5,0:1 (WCAG AA) */
   --tl-cobalt: #2546bb;
   --tl-paper: #f6f5f2;
   --tl-taupe: #d9c9bf;

@@ -1239,3 +1239,37 @@ main input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), main
   .tl-venue-facts dt { margin:2px 0 0; }
 }
 .tl-catalog--list .tl-catalog-card__save { top:0; right:0; width:44px; height:44px; font-size:18px; }
+
+/* v2.1 — contrast (WCAG AA). Tekst op koraal in --tl-ink-on-coral; koraal accentwoorden op taupe/mist in --tl-coral-deep. */
+.tl-section--coral, .tl-button:hover, .tl-button--accent, .tl-featured__arrow, .tl-search > .tl-button, .tl-footer, .tl-marquee, .tl-signature,
+.tl-venue[data-selected="true"] .tl-venue__choose, .tl-supplier[data-selected="true"] .tl-supplier__choose, .tl-active-filters button:hover,
+.tl-catalog-card__save[aria-pressed="true"], .tl-region-list a:hover, .tl-selection-bar a, .tl-warning, .tl-chip-button--on-dark[aria-pressed="true"],
+.tl-chip-button--on-dark:hover, .tl-journey__step:nth-child(4), .tl-slide__journey li.is-peak, .tl-account__stage[data-stage="afgerond"],
+.tl-quickstart__item--accent, .tl-account__tabs [role="tab"][aria-selected="true"], .tl-steps-nav__check, .tl-selection-bar__list button:hover { --tl-ink: var(--tl-ink-on-coral); --tl-muted: var(--tl-ink-on-coral); color:var(--tl-ink-on-coral); }
+.tl-footer *, .tl-journey__step:nth-child(4) *, .tl-quickstart__item--accent *, .tl-marquee *, .tl-signature * { color:inherit; }
+.tl-signature .tl-signature__tags span { color:var(--tl-white); }
+/* Kleine koraaltekst: op inkt lichter, op papier dieper */
+.tl-ecosystem strong, .tl-selection-bar__label, .tl-section--dark .tl-mono.tl-accent, .tl-section--dark .tl-overline .tl-accent { color:var(--tl-coral-on-dark); }
+.tl-results-head .tl-accent, .tl-mono .tl-accent, .tl-mono.tl-accent { color:var(--tl-coral-deep); }
+.tl-section--dark .tl-mono .tl-accent { color:var(--tl-coral-on-dark); }
+.tl-button:hover, .tl-button--accent, .tl-search > .tl-button, .tl-selection-bar a, .tl-warning, .tl-steps-nav__check, .tl-selection-bar__list button:hover,
+.tl-venue[data-selected="true"] .tl-venue__choose, .tl-supplier[data-selected="true"] .tl-supplier__choose { color:var(--tl-ink-on-coral) !important; }
+.tl-section--taupe .tl-accent, .tl-section--mist .tl-accent, .tl-hero__copy .tl-accent, .tl-finder-top .tl-accent, .tl-feeling-head .tl-accent, .tl-overview-head .tl-accent { color:var(--tl-coral-deep); }
+.tl-signature .tl-signature__tags span[data-chosen="true"] { color:var(--tl-ink); }
+/* Mijn plannen: gedeeld plan bovenaan */
+.tl-shared-plan { margin-bottom:32px; }
+.tl-plan-item--shared { border:1px solid var(--tl-coral); padding:20px; }
+
+/* v2.1 — één aanvraagformulier (locatie + makers) en bevestiging */
+.tl-request { margin-top:clamp(36px,5vw,64px); padding-top:28px; border-top:1px solid var(--tl-line-dark); }
+.tl-request__intro { max-width:680px; margin:10px 0 18px; font:400 16px/1.6 var(--tl-font-body); }
+.tl-request__to { margin:0 0 20px; }
+.tl-request__to ul { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.tl-request__to li { display:inline-flex; align-items:baseline; gap:10px; padding:10px 14px; border:1px solid var(--tl-line-dark); font:400 16px/1.3 var(--tl-font-body); }
+.tl-request__to li .tl-mono { font-size:10px; color:var(--tl-coral-on-dark); }
+.tl-request textarea { width:100%; min-height:96px; font:400 16px/1.5 var(--tl-font-body); }
+.tl-request__errors { margin:14px 0 0; padding:12px 16px 12px 32px; border-left:4px solid var(--tl-coral); background:var(--tl-paper); color:var(--tl-ink); font:400 16px/1.5 var(--tl-font-body); }
+.tl-request [aria-invalid="true"] { outline:2px solid var(--tl-coral); outline-offset:2px; }
+.tl-request-done { margin-top:clamp(36px,5vw,64px); padding:28px; border:1px solid var(--tl-coral); }
+.tl-request-done:focus { outline:2px solid var(--tl-coral); outline-offset:4px; }
+.tl-request-done .tl-steplist { margin:12px 0 20px; font:400 16px/1.6 var(--tl-font-body); }

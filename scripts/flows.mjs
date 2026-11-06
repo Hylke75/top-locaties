@@ -96,6 +96,9 @@ check(await page.locator('[data-concept-card]:not([hidden])').count() === 4, 'da
 
 // Briefing → drie concepten → concept met vooringevulde vragenlijst → conceptplan (sjabloon, 12 hoofdstukken)
 await page.goto(base + '/conceptplan/');
+await page.evaluate(() => localStorage.removeItem('tl-brief-v1'));
+await page.click('[data-brief-form] button[type=submit]');
+check(!(await page.isHidden('[data-brief-errors]')) && (await page.textContent('[data-brief-errors]')).includes('Hoeveel gasten') && (await page.getAttribute('[name=doel]', 'aria-invalid')) === 'true', 'briefing: gasten en doel verplicht, met vriendelijke uitleg');
 await page.selectOption('[name=aanleiding]', 'strategie');
 await page.fill('[name=gasten]', '14');
 await page.fill('[name=doel]', 'Drie besluiten over de koers');
@@ -178,10 +181,20 @@ check(out.includes('10:00') && out.includes('Inloop en registratie'), 'draaiboek
 check(/VANAF .*2026/.test(out), 'aftelplanning met echte data');
 check(out.includes('700 GASTEN') && out.includes('VEGAN'), 'catering op maat met aantallen en dieet');
 check(out.includes('Groter (500+ gasten)'), 'passende variant aanbevolen bij 700 gasten');
-check(out.includes('OFFERTEAANVRAGEN') && await page.locator('[data-copy-quote]').count() === 3, 'offerteaanvragen voor locatie en 2 makers');
-await page.click('[data-copy-quote="0"]');
-const q = await page.evaluate(() => navigator.clipboard.readText());
-check(q.includes('700 gasten') && q.includes('Beeld & Geluid'), 'offerteaanvraag gekopieerd met gegevens');
+// Eén aanvraagformulier: vooraf ingevuld, validatie, één verzending naar locatie + makers, bevestiging.
+let sentRequest = null;
+await page.route('**/api/aanvraag/', (route) => { sentRequest = JSON.parse(route.request().postData()); route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, id: '3f2a9c10-0000-4000-8000-000000000000', stored: true, venueForwarded: false, makers: sentRequest.suppliers.map((s) => s.name), mailed: false }) }); });
+check((await page.inputValue('[data-request] [name=name]')) === 'Sam' && (await page.inputValue('[data-request] [name=guests]')) === '700' && (await page.inputValue('[data-request] [name=organisation]')) === 'Testbedrijf', 'aanvraagformulier vooraf ingevuld vanuit Op maat');
+check((await page.textContent('[data-request-to]')).includes('Beeld & Geluid'), 'aanvraag toont naar wie hij gaat');
+await page.click('[data-request] [type=submit]');
+check(!(await page.isHidden('[data-request-errors]')) && (await page.textContent('[data-request-errors]')).includes('e-mailadres'), 'aanvraag: vriendelijke foutmelding bij ontbrekend e-mailadres');
+await page.fill('[data-request] [name=email]', 'sam@example.com');
+await page.check('[data-request] [name=consent]');
+await page.waitForTimeout(4100 - Math.min(4100, 0));
+await page.click('[data-request] [type=submit]');
+await page.waitForSelector('[data-request-done]:not([hidden])');
+check(sentRequest && sentRequest.venue && sentRequest.suppliers.length === 2 && sentRequest.quotes.length === 3 && sentRequest.website === '', 'één verzending naar locatie en 2 makers, met offertetekst per partij');
+check((await page.textContent('[data-request-done]')).includes('Wat er nu gebeurt') && (await page.textContent('[data-request-done]')).includes('AANVRAAGNUMMER 3F2A9C10'), 'bevestiging met wat er nu gebeurt en aanvraagnummer');
 const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-download-budget]')]);
 check(dl.suggestedFilename() === 'begroting-festival.csv', 'begroting downloadbaar als CSV');
 await page.evaluate(() => { document.querySelector('.tl-takeaway .tl-more').open = true; });
